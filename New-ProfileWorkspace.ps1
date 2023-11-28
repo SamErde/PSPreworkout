@@ -85,8 +85,8 @@ function New-ProfileWorkspace {
     $JunctionPoints = @{
         "PowerShell" = "$WorkspacePath\PowerShell"
         "WindowsPowerShell" = "$WorkspacePath\WindowsPowerShell"
-        "Code" = "$WorkspacePath\Code"
-        "WindowsTerminal" = "$WorkspacePath\WindowsTerminal"
+        "Code" = "$env:AppData\Code\User"
+        "WindowsTerminal" = "$env:LocalAppData\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState"
     }
 
     foreach ( $item in $JunctionPoints.GetEnumerator() ) {
