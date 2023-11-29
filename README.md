@@ -8,6 +8,11 @@ My boosted and caffeinated mix of tools to help jump start your PowerShell sessi
 
 1. [New-ProfileWorkspace](#newprofileworkspace)
 2. [New-DotSourcedProfile](#newdotsourcedprofile)
+3. [Get-MsModules](#getmsmodules)
+4. [Install-MsModules](#installmsmodules)
+5. [Update-MsModules](#updatemsmodules)
+6. [Get-RecommendedModules](#getrecommendedmodules)
+7. [Install-RecommendedModules](#installrecommendedmodules)
 
 <a name="newprofileworkspace"></a><div id='newprofileworkspace' />
 ## New-ProfileWorkspace
@@ -31,3 +36,24 @@ I wanted an easy way to maintain all of my CurrentUser PowerShell profiles, and 
 ## New-DotSourcedProfile
 
 I need to automate this one still, but it will be a script that creates one central profile script and then sets each CurrentUser profile to dot source that central profile for easier sync across all of your profiles for PowerShell, PowerShell ISE, Visual Studio Code, Windows PowerShell, etc.
+
+<a name="getmsmodules"></a><div id='getmsmodules' />
+## Get-MsModules
+
+List all of the Microsoft PowerShell modules that you need for working with Azure, Microsoft 365, or Microsoft Graph.
+
+<a name="installmsmodules"></a><div id='installmsmodules' />
+## Install-MsModules
+
+Quickly install all or any of the Microsoft PowerShell modules that you need for working with Azure, Microsoft 365, or Microsoft Graph.
+
+<a name="updatemsmodules"></a><div id='updatemsmodules' />
+## Update-MsModules
+
+Quickly install all or any of the Microsoft PowerShell modules that you need for working with Azure, Microsoft 365, or Microsoft Graph.
+
+<a name="getrecommendedmodules"></a><div id='getrecommendedmodules' />
+## Get-RecommendedModules
+
+<a name="installrecommendedmodules"></a><div id='installrecommendedmodules' />
+## Install-RecommendedModules
