@@ -29,7 +29,7 @@ function Install-PowerShellISE {
         Restart-Service wuauserv
 
         try {
-            Get-WindowsCapability -Name Microsoft.Windows.PowerShell.ISE~~~~0.0.1.0 -Online | Add-WindowsCapability –Online -Verbose
+            Get-WindowsCapability -Name Microsoft.Windows.PowerShell.ISE~~~~0.0.1.0 -Online | Add-WindowsCapability -Online -Verbose
         }
         catch {
             Write-Error "There was a problem adding the Windows PowerShell ISE: $error"
