@@ -1,6 +1,6 @@
 # PowerShell Pre-Workout
 
-My little collection of tools and scripts to help jump start your PowerShell session!
+My boosted and caffeinated mix of tools to help jump start your PowerShell session!
 
 ## New-ProfileWorkspace
 
@@ -10,7 +10,7 @@ Setup a folder and VS Code Workspace for maintaining your PowerShell profiles, V
 
 ### Description
 
-I wanted an easy way to maintain all of my CurrentUser PowerShell profiles and settings for Visual Studio Code and Windows Terminal. There are probably easier ways to accomplish this, but my basic goal was to not have to hunt for these files across the file system in order to edit them. This script creates a folder that contains:
+I wanted an easy way to maintain all of my CurrentUser PowerShell profiles, and my settings files for Visual Studio Code and Windows Terminal. There are probably easier ways to accomplish this, but my basic goal was to not have to hunt for these files across the file system in order to edit them. This over-engineered idea creates a folder that contains:
 
   - Junction points to the locations of your CurrentUser PowerShell and Windows PowerShell folders
   - Junction points to the locations of your settings for VS Code and Windows Terminal
