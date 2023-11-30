@@ -16,8 +16,7 @@ My boosted and caffeinated mix of tools to help jump start your PowerShell sessi
 - [Get-RecommendedModules](#getrecommendedmodules)
 - [Install-RecommendedModules](#installrecommendedmodules)
 
-[:top:](#top)
-<a name="newprofileworkspace"></a><div id='newprofileworkspace' />
+<a name="newprofileworkspace"></a><div id='newprofileworkspace' /> [:top:](#top)
 ## New-ProfileWorkspace
 
 ### Synopsis
@@ -38,14 +37,12 @@ I wanted an easy way to maintain all of my CurrentUser PowerShell profiles, and 
 - Script: [New-ProfileWorkspace.ps1](New-ProfileWorkspace.ps1)
 - Status: Working :runner:
 
-[:top:](#top)
-<a name="newdotsourcedprofile"></a><div id='newdotsourcedprofile' />
+<a name="newdotsourcedprofile"></a><div id='newdotsourcedprofile' /> [:top:](#top)
 ## New-DotSourcedProfile
 
 I need to automate this one still, but it will be a script that creates one central profile script and then sets each CurrentUser profile to dot source that central profile for easier sync across all of your profiles for PowerShell, PowerShell ISE, Visual Studio Code, Windows PowerShell, etc.
 
-[:top:](#top)
-<a name="installpowershellise"></a><div id='installpowershellise' />
+<a name="installpowershellise"></a><div id='installpowershellise' /> [:top:](#top)
 ## Install-PowerShellISE
 
 Install the PowerShell ISE if it was removed. It can be helpful to keep the ISE installed for compatibility testing.
@@ -53,8 +50,7 @@ Install the PowerShell ISE if it was removed. It can be helpful to keep the ISE 
 - Script: [Install-PowerShellISE.ps1](Install-PowerShellISE.ps1)
 - Status: Working :runner:
 
-[:top:](#top)
-<a name="getmsmodules"></a><div id='getmsmodules' />
+<a name="getmsmodules"></a><div id='getmsmodules' /> [:top:](#top)
 ## Get-MsModules
 
 List all of the Microsoft PowerShell modules that you need for working with Azure, Microsoft 365, or Microsoft Graph.
@@ -62,26 +58,22 @@ List all of the Microsoft PowerShell modules that you need for working with Azur
 - Script: [Get-MsModules.ps1](Get-MsModules.ps1)
 - Status: In Progress :construction_worker:
 
-[:top:](#top)
-<a name="installmsmodules"></a><div id='installmsmodules' />
+<a name="installmsmodules"></a><div id='installmsmodules' /> [:top:](#top)
 ## Install-MsModules
 
 Quickly install all or any of the Microsoft PowerShell modules that you need for working with Azure, Microsoft 365, or Microsoft Graph.
 
-[:top:](#top)
-<a name="updatemsmodules"></a><div id='updatemsmodules' />
+<a name="updatemsmodules"></a><div id='updatemsmodules' /> [:top:](#top)
 ## Update-MsModules
 
 Quickly update all or any of the Microsoft PowerShell modules that you need for working with Azure, Microsoft 365, or Microsoft Graph.
 
-[:top:](#top)
-<a name="getrecommendedmodules"></a><div id='getrecommendedmodules' />
+<a name="getrecommendedmodules"></a><div id='getrecommendedmodules' /> [:top:](#top)
 ## Get-RecommendedModules
 
 Get a list of recommended PowerShell modules authored by  Microsoft and the community.
 
-[:top:](#top)
-<a name="installrecommendedmodules"></a><div id='installrecommendedmodules' />
+<a name="installrecommendedmodules"></a><div id='installrecommendedmodules' /> [:top:](#top)
 ## Install-RecommendedModules
 
 Install your choice of recommended PowerShell modules authored by  Microsoft and the community.
