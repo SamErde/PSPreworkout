@@ -33,6 +33,7 @@ I wanted an easy way to maintain all of my CurrentUser PowerShell profiles, and 
   - EditorConfig and Visual Studio Code settings files for consistent editing
   - A .gitignore file in case you want to use this as a git repository (test?)
 
+Status: Working :runner:
 Script: [New-ProfileWorkspace.ps1](New-ProfileWorkspace.ps1)
 
 <a name="newdotsourcedprofile"></a><div id='newdotsourcedprofile' />
@@ -45,6 +46,7 @@ I need to automate this one still, but it will be a script that creates one cent
 
 Install the PowerShell ISE if it was removed. It can be helpful to keep the ISE installed for compatibility testing.
 
+Status: Working :runner:
 Script: [Install-PowerShellISE.ps1](Install-PowerShellISE.ps1)
 
 <a name="getmsmodules"></a><div id='getmsmodules' />
@@ -52,6 +54,7 @@ Script: [Install-PowerShellISE.ps1](Install-PowerShellISE.ps1)
 
 List all of the Microsoft PowerShell modules that you need for working with Azure, Microsoft 365, or Microsoft Graph.
 
+Status: In Progress :construction_worker:
 Script: [Get-MsModules.ps1](Get-MsModules.ps1)
 
 <a name="installmsmodules"></a><div id='installmsmodules' />
