@@ -21,7 +21,11 @@ My boosted and caffeinated mix of tools to help jump start your PowerShell sessi
 - [Get-RecommendedModules](#getrecommendedmodules): Get a list of community recommended modules.
 - [Install-RecommendedModules](#installrecommendedmodules): Easily install optional recommended modules.
 
+-----
+
 Which TOC style do we like better, bullets or a table?
+
+-----
 
   | Script | Description |
   | :---   | :---         |
@@ -35,7 +39,11 @@ Which TOC style do we like better, bullets or a table?
   | [Get-RecommendedModules](#getrecommendedmodules) | Get a list of community recommended modules. |
   | [Install-RecommendedModules](#installrecommendedmodules) | Easily install optional recommended modules. |
 
-I think I prefer the table *if* descriptions are being included.  
+-----
+
+I think I prefer the table *if* descriptions are being included.
+
+-----
 
 <a name="newprofileworkspace"></a><div id='newprofileworkspace' />
 ## New-ProfileWorkspace [:top:](#top "Go to the top of the page.")
