@@ -55,7 +55,7 @@ Install Oh My Posh, or update it if already installed.
 
 ### Description
 
-This is a quick installer for Oh My Posh. It's almost unnecessary because of how easy OMP is to install, but may be helpful to people who are brand new to it and want to save time. Includes steps to install Nerd Fonts, which are required to get the most out of Oh My Posh and some modules like Posh-Git, and Terminal Icons.
+This is a quick installer for Oh My Posh. It's almost unnecessary because of how easy OMP is to install, but may be helpful to people who are brand new to it and want to save time. Includes steps to install Nerd Fonts. Nerd Fonts are required to get the most out of Oh My Posh and some great modules like Posh-Git, and Terminal Icons.
 
 <a name="installpowershellise"></a><div id='installpowershellise' />
 ## Install-PowerShellISE [:top:](#top)
