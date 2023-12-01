@@ -23,6 +23,9 @@ My boosted and caffeinated mix of tools to help jump start your PowerShell sessi
 
 Setup a folder and VS Code Workspace for maintaining your PowerShell profiles, VS Code settings, and Windows Terminal settings.
 
+- Script: [New-ProfileWorkspace.ps1](New-ProfileWorkspace.ps1)
+- Status: Working :runner:
+
 ### Description
 
 I wanted an easy way to maintain all of my CurrentUser PowerShell profiles, and my settings files for Visual Studio Code and Windows Terminal. There are probably easier ways to accomplish this, but my basic goal was to not have to hunt for these files across the file system in order to edit them. This over-engineered idea creates a folder that contains:
@@ -33,9 +36,6 @@ I wanted an easy way to maintain all of my CurrentUser PowerShell profiles, and 
   - A Visual Studio Code workspace file that opens this new folder
   - EditorConfig and Visual Studio Code settings files for consistent editing
   - A .gitignore file in case you want to use this as a git repository (test?)
-
-- Script: [New-ProfileWorkspace.ps1](New-ProfileWorkspace.ps1)
-- Status: Working :runner:
 
 <a name="newdotsourcedprofile"></a><div id='newdotsourcedprofile' />
 ## New-DotSourcedProfile [:top:](#top)
