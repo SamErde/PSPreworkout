@@ -7,18 +7,34 @@ My boosted and caffeinated mix of tools to help jump start your PowerShell sessi
 
 ## Contents
 
-- [New-ProfileWorkspace](#newprofileworkspace)
-- [New-DotSourcedProfile](#newdotsourcedprofile)
-- [Install-OhMyPosh](#installohmyposh)
-- [Install-PowerShellISE](#installpowershellise)
-- [Get-MsModules](#getmsmodules)
-- [Install-MsModules](#installmsmodules)
-- [Update-MsModules](#updatemsmodules)
-- [Get-RecommendedModules](#getrecommendedmodules)
-- [Install-RecommendedModules](#installrecommendedmodules)
+- [New-ProfileWorkspace](#newprofileworkspace): Setup a folder and VS Code Workspace for maintaining your PowerShell profiles, VS Code settings, and Windows Terminal settings.
+- [New-DotSourcedProfile](#newdotsourcedprofile): Point all of your CurrentUserHost PowerShell profiles to a central dot sourced profile.
+- [Install-OhMyPosh](#installohmyposh): Install Oh My Posh with Nerd Fonts to make your shell beautiful and functional.
+- [Install-PowerShellISE](#installpowershellise): Reinstall the PowerShell ISE for compatibility testing. :wink:
+- [Get-MsModules](#getmsmodules): Get a list of Microsoft's core modules for Azure, Graph, and M365.
+- [Install-MsModules](#installmsmodules): A helper for installing Microsoft's core modules for Azure, Graph, and M365.
+- [Update-MsModules](#updatemsmodules): A helper for updating Microsoft's core modules for Azure, Graph, and M365.
+- [Get-RecommendedModules](#getrecommendedmodules): Get a list of community recommended modules.
+- [Install-RecommendedModules](#installrecommendedmodules): Easily install optional recommended modules.
+
+Which TOC style do we like better, bullets or a table?
+
+  | Script | Description |
+  | :---   | :---         |
+  | [New-ProfileWorkspace](#newprofileworkspace) | Setup a folder and VS Code Workspace for maintaining your PowerShell profiles, VS Code settings, and Windows Terminal settings.
+  | [New-DotSourcedProfile](#newdotsourcedprofile) | Point all of your CurrentUserHost PowerShell profiles to a central dot sourced profile. |
+  | [Install-OhMyPosh](#installohmyposh) | Install Oh My Posh with Nerd Fonts to make your shell beautiful and functional. |
+  | [Install-PowerShellISE](#installpowershellise) | Reinstall the PowerShell ISE for compatibility testing. :wink: |
+  | [Get-MsModules](#getmsmodules) | Get a list of Microsoft's core modules for Azure, Graph, and M365. |
+  | [Install-MsModules](#installmsmodules) | Get a list of Microsoft's core modules for Azure, Graph, and M365. |
+  | [Update-MsModules](#updatemsmodules) | A helper for updating Microsoft's core modules for Azure, Graph, and M365. |
+  | [Get-RecommendedModules](#getrecommendedmodules) | Get a list of community recommended modules. |
+  | [Install-RecommendedModules](#installrecommendedmodules) | Easily install optional recommended modules. |
+
+I think I prefer the table *if* descriptions are being included.  
 
 <a name="newprofileworkspace"></a><div id='newprofileworkspace' />
-## New-ProfileWorkspace [:top:](#top)
+## New-ProfileWorkspace [:top:](#top "Go to the top of the page.")
 
 ### Synopsis
 
