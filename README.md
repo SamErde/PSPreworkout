@@ -9,6 +9,7 @@ My boosted and caffeinated mix of tools to help jump start your PowerShell sessi
 
 - [New-ProfileWorkspace](#newprofileworkspace)
 - [New-DotSourcedProfile](#newdotsourcedprofile)
+- [Install-OhMyPosh](#installohmyposh)
 - [Install-PowerShellISE](#installpowershellise)
 - [Get-MsModules](#getmsmodules)
 - [Install-MsModules](#installmsmodules)
@@ -41,6 +42,20 @@ I wanted an easy way to maintain all of my CurrentUser PowerShell profiles, and 
 ## New-DotSourcedProfile [:top:](#top)
 
 I need to automate this one still, but it will be a script that creates one central profile script and then sets each CurrentUser profile to dot source that central profile for easier sync across all of your profiles for PowerShell, PowerShell ISE, Visual Studio Code, Windows PowerShell, etc.
+
+<a name='installohmyposh'></a><div id='installohmyposh' />
+## Install-OhMyPosh [:top:](#top)
+
+### Synopsis
+
+Install Oh My Posh, or update it if already installed.
+
+- Script: [Install-OhMyPosh.ps1](Install-OhMyPosh.ps1)
+- Status: Working :runner:
+
+### Description
+
+This is a quick installer for Oh My Posh. It's almost unnecessary because of how easy OMP is to install, but may be helpful to people who are brand new to it and want to save time. Includes steps to install Nerd Fonts, which are required to get the most out of Oh My Posh and some modules like Posh-Git, and Terminal Icons.
 
 <a name="installpowershellise"></a><div id='installpowershellise' />
 ## Install-PowerShellISE [:top:](#top)
