@@ -29,3 +29,16 @@ function Read-ModuleInfo {
         Find-Module -Name $Module.name
     }
 }
+
+<#
+    Compare with sample from checker.ps1
+    # Convert files from YAML
+    $moduleDataObj = Get-ChildItem -Path $dataFolderPath | ForEach-Object {
+        @{
+        FileName = $PSItem.Name
+        Content = ConvertFrom-Yaml -Yaml (
+            Get-Content -Path $PSItem -Raw
+            ).replace("---`n", "").trim()
+        }
+    }
+#>
