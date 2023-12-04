@@ -1,11 +1,19 @@
 function Install-OhMyPosh {
 <#
     .SYNOPSIS
-        Install OhMyPosh and add it to your profile.
+        Install Oh My Posh and add it to your profile.
 
     .DESCRIPTION
 
-    .PARAMETER Source
+    .PARAMETER Method
+        Specify which tool to install Oh My Posh with.
+
+            chocolatey
+            direct (default)
+            scoop
+            winget
+
+    .PARAMETER WingetSource
         Specify which source to install from.
 
             winget  - Install from winget (default).
@@ -28,9 +36,9 @@ function Install-OhMyPosh {
     param (
         [Parameter()]
             [ValidateSet("winget","msstore")]
-            [string]$Source = "winget",
+            [string]$WingetSource = "winget",
         [Parameter()]
-            [ValidateSet("chocolatey","winget","scoop","direct")]
+            [ValidateSet("chocolatey","direct","scoop","winget")]
             [string]$Method = "direct",
 
         [Parameter(ParameterSetName = 'Font')]
@@ -42,12 +50,17 @@ function Install-OhMyPosh {
 
     switch ($Method) {
         chocolatey {
-            choco install oh-my-posh
+            if (choco.exe) {
+                choco install oh-my-posh
+            }
+            else {
+                Write-Error -Message "Chocolatey was not found. Please install it or try another method." -ErrorAction Stop
+            }
         }
         winget {
             # Install Oh My Posh using Winget
             if (winget.exe) {
-                winget install --id JanDeDobbeleer.OhMyPosh --source $Source
+                winget install --id JanDeDobbeleer.OhMyPosh --source $WingetSource
             }
             else {
                 $Response = Read-Host -Prompt "Winget was not found. Would you like to try to install it?"
@@ -63,7 +76,7 @@ function Install-OhMyPosh {
                         Add-AppxPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
 
                         if (winget.exe) {
-                            winget install --id JanDeDobbeleer.OhMyPosh --source $Source
+                            winget install --id JanDeDobbeleer.OhMyPosh --source $WingetSource
                         }
                     }
                     catch {
