@@ -1,47 +1,29 @@
 <#
-.SYNOPSIS
-    Trying to figure out how to query the PowerShell Gallery for all modules created/owned by Microsoft,
-    then get their latest GA and prerelease versions of each.
+    .SYNOPSIS
+        Trying to figure out how to query the PowerShell Gallery for all modules created/owned by Microsoft,
+        then get their latest GA and prerelease versions of each.
 #>
 $Author = 'Microsoft Corporation'
 $BaseUrl = 'https://www.powershellgallery.com/api/v2/Packages'
 $Filter = "?`$filter=Authors eq '$Author'"
-$url = $BaseUrl + $Filter
-
-# The API will limit these results to 100
-$Results = (Invoke-RestMethod -Uri $url).properties
-$Results.Count
-$Results.properties.Title
-
-<#
-    Here is Bing Chat's suggestion for getting all paged results from the API.
-#>
-$authorName = 'Microsoft Corporation'
-$baseUrl = 'https://www.powershellgallery.com/api/v2/Packages'
-$filter = "?`$filter=Authors eq '$authorName'"
 $skip = 0
 $modules = @()
 
 do {
-    $url = $baseUrl + $filter + "&`$skip=$skip"
-    $response = Invoke-RestMethod -Uri $url
+    # This loop takes 3+ minutes.
+    $Url = $BaseUrl + $Filter + "&`$skip=$skip"
+    $Response = Invoke-RestMethod -Uri $Url
 
-    $modules += $response.properties
+    $Modules += $Response.properties
     $skip += 100
 } while ($response.properties.Id)
 
-<#
-    It is returning XML and I'm not proficient enough to parse that easily yet.
-#>
+# It's returning XML and I haven't yet learned how to effectively parse that.
 
 # For a start, this takes the full results and groups them by Id to find the most recent version (by date) of each.
-$Modules | Group-Object Id |
-    ForEach-Object {$_.Group | Sort-Object LastEdited.'#text' | Select-Object -first 1} |
-    Format-Table Id,Version,Title
+$Modules | Sort-Object -Property Id | Group-Object -Property Id |
+    ForEach-Object {
+        $_.Group | Sort-Object LastEdited.'#text' | Select-Object -First 1
+    } | Format-Table Id,Version,Title -AutoSize
 
-<#
-    $Results[0].properties | select Id,Title,Version,Authors,Created,Description,IsLatestVersion,IsAbsoluteLatestVersion,IsPrerelease,LastUpdated
-    $Results[0].properties.IsLatestVersion
-    $Results[0].properties.IsAbsoluteLatestVersion
-    $Results[0].properties.IsPrerelease
-#>
+# This is close, but doesn't include the actual title for 95% of the modules listed. Just the text "Title."
