@@ -30,8 +30,8 @@ function Install-OhMyPosh {
             [ValidateSet("winget","msstore")]
             [string]$Source = "winget",
         [Parameter()]
-            [ValidateSet("winget","scoop","direct")]
-            [string]$Method = "winget",
+            [ValidateSet("chocolatey","winget","scoop","direct")]
+            [string]$Method = "direct",
 
         [Parameter(ParameterSetName = 'Font')]
             [switch]$InstallNerdFont,
@@ -41,6 +41,9 @@ function Install-OhMyPosh {
     )
 
     switch ($Method) {
+        chocolatey {
+            choco install oh-my-posh
+        }
         winget {
             # Install Oh My Posh using Winget
             if (winget.exe) {
