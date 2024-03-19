@@ -107,7 +107,7 @@ function New-ProfileWorkspace {
         }
       )
     }
-    $WorkspaceContent | ConvertTo-Json | Out-File -FilePath "$WorkspacePath\ProfileWorkspace.code-workspace" -Encoding utf8 -Force
+    $WorkspaceContent | ConvertTo-Json | Set-Content (Join-Path $WorkspacePath 'ProfileWorkspace.code-workspace') -Encoding utf8 -Force
 
     if ($Launch) {
         code "$WorkspacePath\ProfileWorkspace.code-workspace"
