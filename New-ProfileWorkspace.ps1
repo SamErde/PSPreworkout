@@ -14,8 +14,8 @@ function New-ProfileWorkspace {
             - A .gitignore file in case you want to use this as a git repository (test?)
 
     .PARAMETER WorkspacePath
-        The location to create your profile workspace in. The default value is a "Repositories\ProfileWorkspace" folder in
-        the current user's home folder. Example: "C:\Users\sam.erde\Repositories\ProfileWorkspace"
+        The location to create your profile workspace in. The default value is a "Repositories/ProfileWorkspace" folder in
+        the current user's home folder. Example: "C:/Users/sam.erde/Repositories/ProfileWorkspace"
 
     .PARAMETER PowerShellPath
         The location of the current user's PowerShell folder that should contain their profile.
@@ -31,16 +31,16 @@ function New-ProfileWorkspace {
         Created: 2023/11/28
 
         Profile Locations on Windows:
-            ~\Documents\PowerShell\profile.ps1
-            ~\Documents\PowerShell\Microsoft.PowerShell_profile.ps1
+            ~/Documents/PowerShell/profile.ps1
+            ~/Documents/PowerShell/Microsoft.PowerShell_profile.ps1
 
-            ~\Documents\WindowsPowerShell\profile.ps1
-            ~\Documents\WindowsPowerShell\Microsoft.VSCode_profile.ps1
-            ~\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1
+            ~/Documents/WindowsPowerShell/profile.ps1
+            ~/Documents/WindowsPowerShell/Microsoft.VSCode_profile.ps1
+            ~/Documents/WindowsPowerShell/Microsoft.PowerShell_profile.ps1
 
         Settings Locations on Windows:
-            ~\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json
-            ~\AppData\Roaming\Code\User\settings.json
+            ~/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json
+            ~/AppData/Roaming/Code/User/settings.json
 
         To Do:
             - [ ] Check for existence of junction points and target locations
@@ -56,13 +56,13 @@ function New-ProfileWorkspace {
     param (
         [Parameter()]
             [string]
-            $WorkspacePath = "~\Repositories\ProfileWorkspace",
+            $WorkspacePath = "~/Repositories/ProfileWorkspace",
         [Parameter()]
             [string]
-            $PowerShellPath = ( [System.Environment]::GetFolderPath("MyDocuments") + "\WindowsPowerShell" ),
+            $PowerShellPath = ( [System.Environment]::GetFolderPath("MyDocuments") + "/WindowsPowerShell" ),
         [Parameter()]
             [string]
-            $WindowsPowerShellPath = ( [System.Environment]::GetFolderPath("MyDocuments") + "\WindowsPowerShell" ),
+            $WindowsPowerShellPath = ( [System.Environment]::GetFolderPath("MyDocuments") + "/WindowsPowerShell" ),
         [Parameter()]
             [switch]
             $Launch
@@ -83,10 +83,10 @@ function New-ProfileWorkspace {
     Set-Location -Path $WorkspacePath
 
     $JunctionPoints = @{
-        "PowerShell" = "$WorkspacePath\PowerShell"
-        "WindowsPowerShell" = "$WorkspacePath\WindowsPowerShell"
-        "Code" = "$env:AppData\Code\User"
-        "WindowsTerminal" = "$env:LocalAppData\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState"
+        "PowerShell" = "$WorkspacePath/PowerShell"
+        "WindowsPowerShell" = "$WorkspacePath/WindowsPowerShell"
+        "Code" = "$env:AppData/Code/User"
+        "WindowsTerminal" = "$env:LocalAppData/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState"
     }
 
     foreach ( $item in $JunctionPoints.GetEnumerator() ) {
@@ -110,7 +110,7 @@ function New-ProfileWorkspace {
     $WorkspaceContent | ConvertTo-Json | Set-Content (Join-Path $WorkspacePath 'ProfileWorkspace.code-workspace') -Encoding utf8 -Force
 
     if ($Launch) {
-        code "$WorkspacePath\ProfileWorkspace.code-workspace"
+        code "$WorkspacePath/ProfileWorkspace.code-workspace"
     }
 
     $InformationPreference = $CurrentInformationPreference
