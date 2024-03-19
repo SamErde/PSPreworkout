@@ -59,10 +59,10 @@ function New-ProfileWorkspace {
             $WorkspacePath = "~/Repositories/ProfileWorkspace",
         [Parameter()]
             [string]
-            $PowerShellPath = ( [System.Environment]::GetFolderPath("MyDocuments") + "/WindowsPowerShell" ),
+            $PowerShellPath = ( Join-Path ([System.Environment]::GetFolderPath('MyDocuments')) '/PowerShell' ),
         [Parameter()]
             [string]
-            $WindowsPowerShellPath = ( [System.Environment]::GetFolderPath("MyDocuments") + "/WindowsPowerShell" ),
+            $WindowsPowerShellPath = ( Join-Path ([System.Environment]::GetFolderPath('MyDocuments')) '/WindowsPowerShell' ),
         [Parameter()]
             [switch]
             $Launch
@@ -83,10 +83,10 @@ function New-ProfileWorkspace {
     Set-Location -Path $WorkspacePath
 
     $JunctionPoints = @{
-        "PowerShell" = "$WorkspacePath/PowerShell"
-        "WindowsPowerShell" = "$WorkspacePath/WindowsPowerShell"
-        "Code" = "$env:AppData/Code/User"
-        "WindowsTerminal" = "$env:LocalAppData/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState"
+        "PowerShell"        = ( Join-Path -Path $WorkspacePath -ChildPath 'PowerShell' )
+        "WindowsPowerShell" = ( Join-Path -Path $WorkspacePath -ChildPath 'WindowsPowerShell' )
+        "Code"              = ( Join-Path -Path $env:AppData -ChildPath '/Code/User' )
+        "WindowsTerminal"   = ( Join-Path -Path $env:LocalAppData -ChildPath '/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState' )
     }
 
     foreach ( $item in $JunctionPoints.GetEnumerator() ) {
@@ -110,7 +110,7 @@ function New-ProfileWorkspace {
     $WorkspaceContent | ConvertTo-Json | Set-Content (Join-Path $WorkspacePath 'ProfileWorkspace.code-workspace') -Encoding utf8 -Force
 
     if ($Launch) {
-        code "$WorkspacePath/ProfileWorkspace.code-workspace"
+        code Join-Path -Path $WorkspacePath -ChildPath '/ProfileWorkspace.code-workspace'
     }
 
     $InformationPreference = $CurrentInformationPreference
