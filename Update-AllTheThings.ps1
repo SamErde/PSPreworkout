@@ -4,9 +4,9 @@
 .AUTHOR Sam Erde
 .COPYRIGHT (c) Sam Erde
 .TAGS Update PowerShell Windows Linux macOS
-.LICENSEURI 
+.LICENSEURI
 .PROJECTURI https://github.com/SamErde
-.ICONURI 
+.ICONURI
 #>
 
 function Update-AllTheThings {
@@ -53,13 +53,13 @@ function Update-AllTheThings {
     Write-Host @'
   __  __        __     __         ___   ____
  / / / /__  ___/ /__ _/ /____    / _ | / / /
-/ /_/ / _ \/ _  / _ `/ __/ -_)  / __ |/ / / 
-\____/ .__/\_,_/\_,_/\__/\__/  /_/ |_/_/_/  
- ___/_/__         ________   _             
+/ /_/ / _ \/ _  / _ `/ __/ -_)  / __ |/ / /
+\____/ .__/\_,_/\_,_/\__/\__/  /_/ |_/_/_/
+ ___/_/__         ________   _
 /_  __/ /  ___   /_  __/ /  (_)__  ___ ____
  / / / _ \/ -_)   / / / _ \/ / _ \/ _ `(_-<
 /_/ /_//_/\__/   /_/ /_//_/_/_//_/\_, /___/
-                                 /___/     
+                                 /___/
 
 '@
     # Get all installed PowerShell modules
@@ -159,15 +159,16 @@ function Update-AllTheThings {
         winget upgrade --silent --scope user --accept-package-agreements --accept-source-agreements --all
     }
 
-    # Early testing, no progress bar yet. Need to check for admin.
+    # Early testing. No progress bar yet. Need to check for admin, different distros, and different package managers.
     if ($IsLinux) {
         if (Get-Command apt -ErrorAction SilentlyContinue) {
             Write-Host '[6] Updating apt packages.'
-            apt update
+            sudo apt update
+            sudo apt upgrade
         }
     }
 
-    # Early testing, no progress bar yet. Need to check for admin.
+    # Early testing. No progress bar yet. Need to check for admin and different package managers.
     if ($IsMacOS) {
         softwareupdate -l
         if (Get-Command brew -ErrorAction SilentlyContinue) {
