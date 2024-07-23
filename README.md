@@ -9,6 +9,7 @@ A special mix of tools (and experiments) to help jump start your PowerShell sess
 
   | Script | Description |
   | :---   | :---         |
+  | [Update-AllTheThings](#updateallthethings) | All-in-one script to update PowerShell modules, PowerShell help, and multiple types of packages (apt, brew, Chocolatey, and winget). |
   | [New-ProfileWorkspace](#newprofileworkspace) | Setup a folder and VS Code Workspace for maintaining your PowerShell profiles, VS Code settings, and Windows Terminal settings. |
   | [New-DotSourcedProfile](#newdotsourcedprofile) | Point all of your CurrentUserHost PowerShell profiles to a central dot sourced profile. |
   | [Install-OhMyPosh](#installohmyposh) | Install Oh My Posh with Nerd Fonts to make your shell beautiful and functional. |
@@ -22,6 +23,19 @@ A special mix of tools (and experiments) to help jump start your PowerShell sess
   | [Install-RecommendedModules](#installrecommendedmodules) | Easily install optional recommended modules. |
 
 ## Script Details
+
+$~$
+
+<a name="updateallthethings"></a><div id='updateallthethings' />
+## Update-AllTheThings [:top:](#top "Go to the top of the page.")
+
+### Synopsis
+
+Run one command to update all of the things!
+
+### Description
+
+A script that works on Windows, Linux, and macOS to update PowerShell modules, PowerShell help, and packages with apt, brew, Chocolately, and winget.
 
 $~$
 
