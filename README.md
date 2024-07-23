@@ -12,7 +12,7 @@ A special mix of tools (and experiments) to help jump start your PowerShell sess
   | [Update-AllTheThings](#updateallthethings) | All-in-one script to update PowerShell modules, PowerShell help, and multiple types of packages (apt, brew, Chocolatey, and winget). |
   | [Install-PowerShellISE](#installpowershellise) | Reinstall the PowerShell ISE for compatibility testing. :wink: |
   | [Get-EnvironmentVariable](#getenvironmentvariable) | Easily get one or all environment variables. |
-  | [Set-EnvironmentVariable](#setenvironmentvariable) | Easily set an environment variables. |
+  | [Set-EnvironmentVariable](#setenvironmentvariable) | Easily set an environment variable. |
 
 ## Experimental and Incomplete Functions
 
