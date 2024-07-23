@@ -1,11 +1,12 @@
 <#PSScriptInfo
-.VERSION 0.3.0
+.DESCRIPTION A script to automatically update all PowerShell modules, PowerShell Help, and packages (apt, brew, chocolately, winget).
+.VERSION 0.3.0-preview
 .GUID 3a1a1ec9-0ef6-4f84-963d-be1505dab6a8
 .AUTHOR Sam Erde
 .COPYRIGHT (c) Sam Erde
-.TAGS Update PowerShell Windows Linux macOS
-.LICENSEURI
-.PROJECTURI https://github.com/SamErde
+.TAGS Update PowerShell Windows macOS Linux Ubuntu
+.LICENSEURI https://github.com/SamErde/PowerShell-Pre-Workout/blob/main/LICENSE
+.PROJECTURI https://github.com/SamErde/PowerShell-Pre-Workout/
 .ICONURI
 #>
 
@@ -34,8 +35,8 @@ function Update-AllTheThings {
 
     .NOTES
     Author: Sam Erde
-    Version: 0.2.1
-    Modified: 2024/07/22
+    Version: 0.3.0-preview
+    Modified: 2024/07/23
 
     Ideas to do:
         - Check for Windows or Linux
