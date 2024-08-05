@@ -8,11 +8,11 @@
     Description          = 'A special mix of tools (and experiments) to help jump start your PowerShell work session!'
     FunctionsToExport    = @('Get-EnvironmentVariable', 'Install-OhMyPosh', 'Install-PowerShellISE', 'New-ProfileWorkspace', 'Set-EnvironmentVariable', 'Update-AllTheThings')
     GUID                 = '3ea876cf-733d-4ac4-bd85-25503534c966'
-    ModuleVersion        = '0.0.2'
+    ModuleVersion        = '0.0.3'
     PowerShellVersion    = '5.1'
     PrivateData          = @{
         PSData = @{
-            ExternalModuleDependencies = @('powershellget')
+            ExternalModuleDependencies = @('PowerShellGet')
             Tags                       = @('Windows', 'MacOS', 'Linux', 'PowerShell', 'Utility')
         }
     }
@@ -28,6 +28,6 @@
             Guid          = 'a94c8c7e-9810-47c0-b8af-65089c13a35a'
             ModuleName    = 'Microsoft.PowerShell.Security'
             ModuleVersion = '3.0.0.0'
-        }, 'powershellget')
+        }, 'PowerShellGet')
     RootModule           = 'PSPreWorkout.psm1'
 }

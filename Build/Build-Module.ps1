@@ -1,7 +1,7 @@
 ﻿Build-Module -ModuleName 'PSPreWorkout' {
     # Usual defaults as per standard module
     $Manifest = [ordered] @{
-        ModuleVersion          = '0.0.2'
+        ModuleVersion          = '0.0.3'
         CompatiblePSEditions   = @('Desktop', 'Core')
         GUID                   = '3ea876cf-733d-4ac4-bd85-25503534c966'
         Author                 = 'Sam Erde'
@@ -19,7 +19,7 @@
     }
 
     # Add external module dependencies, using loop for simplicity
-    foreach ($Module in @('powershellget')) {
+    foreach ($Module in @('PowerShellGet')) {
          New-ConfigurationModule -Type ExternalModule -Name $Module
     }
 
