@@ -6,7 +6,7 @@
     CompatiblePSEditions = @('Desktop', 'Core')
     Copyright            = '(c) 2024 Sam Erde. All rights reserved.'
     Description          = 'A special mix of tools (and experiments) to help jump start your PowerShell work session!'
-    FunctionsToExport    = @('Get-MsShellsModules', 'Read-ModuleInfo', 'Get-EnvironmentVariable', 'Install-OhMyPosh', 'Install-PowerShellISE', 'New-ProfileWorkspace', 'Set-EnvironmentVariable', 'Update-AllTheThings')
+    FunctionsToExport    = @('Get-EnvironmentVariable', 'Install-OhMyPosh', 'Install-PowerShellISE', 'New-ProfileWorkspace', 'Set-EnvironmentVariable', 'Update-AllTheThings')
     GUID                 = '3ea876cf-733d-4ac4-bd85-25503534c966'
     ModuleVersion        = '0.0.2'
     PowerShellVersion    = '5.1'
