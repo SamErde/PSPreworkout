@@ -41,7 +41,7 @@ function Update-AllTheThings {
     [CmdletBinding()]
     [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', 'Update-AllTheThings', Justification = 'Riding the "{___} all the things train!"')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '', Justification = 'Interactive Use')]
-    [Alias("Update-Everything,","UATT")]
+    [Alias("UATT")]
     param ()
 
     # Spacing to get host output from script, winget, and choco all below the progress bar.
