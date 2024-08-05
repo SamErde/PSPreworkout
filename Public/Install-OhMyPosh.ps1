@@ -33,6 +33,7 @@ function Install-OhMyPosh {
         Created: 12/01/2023
 #>
     [CmdletBinding()]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingInvokeExpression', '', Justification = 'Invoke-Expression is used for online OMP installer.')]
     param (
         [Parameter()]
             [ValidateSet("winget","msstore")]

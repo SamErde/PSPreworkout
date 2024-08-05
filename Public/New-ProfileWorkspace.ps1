@@ -71,6 +71,8 @@ function New-ProfileWorkspace {
     $CurrentInformationPreference = $InformationPreference
     $InformationPreference = 'Continue'
 
+    [void]$WindowsPowerShellPath # Is this used?
+
     # Check for the workspace path before creating it
     if (-not (Test-Path $WorkspacePath) ) {
         Write-Information -MessageData "Creating directory `"$WorkspacePath`"." -Tags "WorkspacePath"

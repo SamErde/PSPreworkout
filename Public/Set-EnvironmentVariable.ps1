@@ -16,16 +16,16 @@ function Set-EnvironmentVariable {
         [System.EnvironmentVariableTarget]
         $Target
     )
-    
+
     begin {
-        
+        #
     }
-    
+
     process {
         [Environment]::SetEnvironmentVariable($Name, $Value, $Target)
     }
-    
+
     end {
-        
+        #
     }
 }

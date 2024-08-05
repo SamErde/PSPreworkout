@@ -27,7 +27,7 @@ function Get-EnvironmentVariable {
             the calling process), whereas Target={User,Machine} causes a registry lookup against environment
             data in either HKCU or HKLM.
 
-            The relevant sources for the User and Machine targets are in the registry at: 
+            The relevant sources for the User and Machine targets are in the registry at:
             - HKEY_CURRENT_USER\Environment
             - HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment
         .LINK
@@ -36,6 +36,7 @@ function Get-EnvironmentVariable {
     [Alias("gev")]
     [Outputs([System.String])]
     [CmdletBinding()]
+    [OutputType([string],[System.Collections.IDictionary])]
     param (
         # The name of the environment variable to retrieve. If not specified, all environment variables are returned.
         [Parameter()]
@@ -51,11 +52,11 @@ function Get-EnvironmentVariable {
         [switch]
         $All
     )
-    
+
     begin {
-        
+        #
     }
-    
+
     process {
         if ( $PSBoundParameters.Contains($Variable) ) {
             [Environment]::GetEnvironmentVariable($Variable, $Target)
@@ -72,8 +73,8 @@ function Get-EnvironmentVariable {
             [Environment]::GetEnvironmentVariables([System.EnvironmentVariableTarget]::Machine)
         }
     }
-    
+
     end {
-        
+        #
     }
 }

@@ -1,4 +1,6 @@
 .DS_Store
 desktop.ini
-Artefacts/*
-Ignore/*
+/Artefacts
+/Artefacts/*
+/Ignore
+/Ignore/*
