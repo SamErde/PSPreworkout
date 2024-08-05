@@ -30,4 +30,5 @@
             ModuleVersion = '3.0.0.0'
         }, 'powershellget')
     RootModule           = 'PSPreWorkout.psm1'
+    ScriptsToProcess     = @()
 }
