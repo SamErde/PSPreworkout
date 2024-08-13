@@ -148,10 +148,12 @@ function Update-AllTheThings {
             PercentComplete = $PercentCompleteOuter
         }
         Write-Progress @ProgressParamOuter
-        <# Check for Windows and/or winget.exe
-        if () { }
-        #>
-        winget upgrade --silent --scope user --accept-package-agreements --accept-source-agreements --all
+        if (Get-Command winget) {
+                winget upgrade --silent --scope user --accept-package-agreements --accept-source-agreements --all
+        }
+        else {
+            Write-Host "[5] Winget was not found. Skipping winget update."
+        }
     }
 
     # Early testing. No progress bar yet. Need to check for admin, different distros, and different package managers.
@@ -185,11 +187,11 @@ function Update-AllTheThings {
             PercentComplete = $PercentCompleteOuter
         }
         Write-Progress @ProgressParamOuter
-        Write-Host "[5] Updating Chocolatey Packages"
+        Write-Host "[8] Updating Chocolatey Packages"
         choco upgrade chocolatey --limitoutput --yes
         choco upgrade all --limitoutput --yes
     } else {
-        Write-Host "[5] Chocolatey is not installed. Skipping choco update."
+        Write-Host "[8] Chocolatey is not installed. Skipping choco update."
     }
 
 
