@@ -136,6 +136,11 @@ function Update-AllTheThings {
     }
 
     if ($IsWindows -or ($PSVersionTable.PSVersion -like "5.1.*")) {
+        if ((Get-CimInstance -ClassName CIM_OperatingSystem).Caption -notmatch 'Server') {
+            # If on Windows Server, prompt to continue before automatically updating packages.
+            Write-Warning -Message "This is a server and updates could affect production systems. Do you want to continue with updating packages?" -WarningAction Inquire
+        }
+
         # Update all winget packages
         Write-Host "[4] Updating Winget Packages"
         # Update the outer progress bar
@@ -152,27 +157,33 @@ function Update-AllTheThings {
                 winget upgrade --silent --scope user --accept-package-agreements --accept-source-agreements --all
         }
         else {
-            Write-Host "[5] Winget was not found. Skipping winget update."
+            Write-Host "[4] Winget was not found. Skipping winget update."
         }
+    } else {
+        Write-Verbose "[4] Not Windows. Skipping section."
     }
 
     # Early testing. No progress bar yet. Need to check for admin, different distros, and different package managers.
     if ($IsLinux) {
         if (Get-Command apt -ErrorAction SilentlyContinue) {
-            Write-Host '[6] Updating apt packages.'
+            Write-Host '[5] Updating apt packages.'
             sudo apt update
             sudo apt upgrade
         }
+    } else {
+        Write-Verbose "[5] Not Linux. Skipping section."
     }
 
     # Early testing. No progress bar yet. Need to check for admin and different package managers.
     if ($IsMacOS) {
         softwareupdate -l
         if (Get-Command brew -ErrorAction SilentlyContinue) {
-            Write-Host '[7] Updating brew packages.'
+            Write-Host '[6] Updating brew packages.'
             brew update
             brew upgrade
         }
+    } else {
+        Write-Verbose "[6] Not macOS. Skipping section."
     }
 
     # Upgrade Chocolatey packages. Need to check for admin.
@@ -187,11 +198,11 @@ function Update-AllTheThings {
             PercentComplete = $PercentCompleteOuter
         }
         Write-Progress @ProgressParamOuter
-        Write-Host "[8] Updating Chocolatey Packages"
+        Write-Host "[7] Updating Chocolatey Packages"
         choco upgrade chocolatey --limitoutput --yes
         choco upgrade all --limitoutput --yes
     } else {
-        Write-Host "[8] Chocolatey is not installed. Skipping choco update."
+        Write-Host "[7] Chocolatey is not installed. Skipping choco update."
     }
 
 
