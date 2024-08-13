@@ -34,7 +34,7 @@ function Update-AllTheThings {
 
     .NOTES
     Author: Sam Erde
-    Version: 0.3.3
+    Version: 0.3.4
     Modified: 2024/08/05
     #>
 
