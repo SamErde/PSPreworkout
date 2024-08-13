@@ -44,8 +44,9 @@ function Update-AllTheThings {
     [Alias("UATT")]
     param ()
 
+    begin {
     # Spacing to get host output from script, winget, and choco all below the progress bar.
-    Write-Host @'
+$Banner = @'
   __  __        __     __         ___   ____
  / / / /__  ___/ /__ _/ /____    / _ | / / /
 / /_/ / _ \/ _  / _ `/ __/ -_)  / __ |/ / /
@@ -57,182 +58,189 @@ function Update-AllTheThings {
                                  /___/
 
 '@
-    # Get all installed PowerShell modules
-    Write-Host "[1] Getting Installed PowerShell Modules"
-    # Update the outer progress bar
-    $PercentCompleteOuter = 1
-    $ProgressParamOuter = @{
-        Id = 0
-        Activity = 'Update Everything'
-        CurrentOperation = 'Getting Installed PowerShell Modules'
-        Status = "Progress: $PercentCompleteOuter`% Complete"
-        PercentComplete = $PercentCompleteOuter
-    }
-    Write-Progress @ProgressParamOuter
-    $Modules = (Get-InstalledModule)
-    $ModuleCount = $Modules.Count
+        Write-Host $Banner
+    } # end begin block
 
-
-    # Update all PowerShell modules
-    Write-Host "[2] Updating $ModuleCount PowerShell Modules"
-    # Estimate 10% progress so far and 70% at the next step
-    $PercentCompleteOuter_Modules = 10
-    [int]$Module_i = 0
-
-    foreach ($module in $Modules) {
-        # Update the module loop counter and percent complete for both progress bars
-        ++$Module_i
-        [double]$PercentCompleteInner = [math]::ceiling( (($Module_i / $ModuleCount)*100) )
-        [double]$PercentCompleteOuter = [math]::ceiling( $PercentCompleteOuter_Modules + (60*($PercentCompleteInner/100)) )
-
+    process {
+        # Get all installed PowerShell modules
+        Write-Host "[1] Getting Installed PowerShell Modules"
         # Update the outer progress bar
+        $PercentCompleteOuter = 1
         $ProgressParamOuter = @{
             Id = 0
             Activity = 'Update Everything'
+            CurrentOperation = 'Getting Installed PowerShell Modules'
             Status = "Progress: $PercentCompleteOuter`% Complete"
             PercentComplete = $PercentCompleteOuter
         }
         Write-Progress @ProgressParamOuter
-
-        # Update the child progress bar
-        $ProgressParam1 = @{
-            Id = 1
-            ParentId = 0
-            Activity = 'Updating PowerShell Modules'
-            CurrentOperation = "$($module.Name)"
-            Status = "Progress: $PercentCompleteInner`% Complete"
-            PercentComplete = $PercentCompleteInner
-        }
-        Write-Progress @ProgressParam1
-
-        # Update the current module
-        try {
-            Update-Module $ -ErrorAction SilentlyContinue
-        } catch [Microsoft.PowerShell.Commands.WriteErrorException] {
-            Write-Verbose $_
-        }
-    }
-    # Complete the child progress bar
-    Write-Progress -Id 1 -Activity 'Updating PowerShell Modules' -Completed
+        $Modules = (Get-InstalledModule)
+        $ModuleCount = $Modules.Count
 
 
-    # Update PowerShell Help
-    Write-Host "[3] Updating PowerShell Help"
-    # Update the outer progress bar
-    $PercentCompleteOuter = 70
-    $ProgressParamOuter = @{
-        Id = 0
-        Activity = 'Update Everything'
-        CurrentOperation = 'Updating PowerShell Help'
-        Status = "Progress: $PercentCompleteOuter`% Complete"
-        PercentComplete = $PercentCompleteOuter
-    }
-    Write-Progress @ProgressParamOuter
-    # Fixes error with culture ID 127 (Invariant Country), which is not associated with any language
-    if ((Get-Culture).LCID -eq 127) {
-        Update-Help -UICulture en-US -ErrorAction SilentlyContinue
-    } else {
-        Update-Help -ErrorAction SilentlyContinue
-    }
+        # Update all PowerShell modules
+        Write-Host "[2] Updating $ModuleCount PowerShell Modules"
+        # Estimate 10% progress so far and 70% at the next step
+        $PercentCompleteOuter_Modules = 10
+        [int]$Module_i = 0
 
-    if ($IsWindows -or ($PSVersionTable.PSVersion -like "5.1.*")) {
-        if ((Get-CimInstance -ClassName CIM_OperatingSystem).Caption -notmatch 'Server') {
-            # If on Windows Server, prompt to continue before automatically updating packages.
-            Write-Warning -Message "This is a server and updates could affect production systems. Do you want to continue with updating packages?"
+        foreach ($module in $Modules) {
+            # Update the module loop counter and percent complete for both progress bars
+            ++$Module_i
+            [double]$PercentCompleteInner = [math]::ceiling( (($Module_i / $ModuleCount)*100) )
+            [double]$PercentCompleteOuter = [math]::ceiling( $PercentCompleteOuter_Modules + (60*($PercentCompleteInner/100)) )
 
-            $Yes = New-Object System.Management.Automation.Host.ChoiceDescription "&Yes","Description."
-            $No = New-Object System.Management.Automation.Host.ChoiceDescription "&No","Description."
-            $Options = [System.Management.Automation.Host.ChoiceDescription[]]($Yes, $No)
+            # Update the outer progress bar
+            $ProgressParamOuter = @{
+                Id = 0
+                Activity = 'Update Everything'
+                Status = "Progress: $PercentCompleteOuter`% Complete"
+                PercentComplete = $PercentCompleteOuter
+            }
+            Write-Progress @ProgressParamOuter
 
-            $Title = "Windows Server OS Found"
-            $Message = "Do you want to run 'winget update' on your server?"
-            $Result = $Host.UI.PromptForChoice($Title, $Message, $Options, 1)
-            switch ($Result) {
-                0 {
-                    Write-Host "Yes"
-                }
-                1 {
-                    Write-Host "No"
-                }
+            # Update the child progress bar
+            $ProgressParam1 = @{
+                Id = 1
+                ParentId = 0
+                Activity = 'Updating PowerShell Modules'
+                CurrentOperation = "$($module.Name)"
+                Status = "Progress: $PercentCompleteInner`% Complete"
+                PercentComplete = $PercentCompleteInner
+            }
+            Write-Progress @ProgressParam1
+
+            # Update the current module
+            try {
+                Update-Module $ -ErrorAction SilentlyContinue
+            } catch [Microsoft.PowerShell.Commands.WriteErrorException] {
+                Write-Verbose $_
             }
         }
+        # Complete the child progress bar
+        Write-Progress -Id 1 -Activity 'Updating PowerShell Modules' -Completed
 
-        # Update all winget packages
-        Write-Host "[4] Updating Winget Packages"
+
+        # Update PowerShell Help
+        Write-Host "[3] Updating PowerShell Help"
         # Update the outer progress bar
-        $PercentCompleteOuter = 80
+        $PercentCompleteOuter = 70
         $ProgressParamOuter = @{
             Id = 0
             Activity = 'Update Everything'
-            CurrentOperation = 'Updating Winget Packages'
+            CurrentOperation = 'Updating PowerShell Help'
             Status = "Progress: $PercentCompleteOuter`% Complete"
             PercentComplete = $PercentCompleteOuter
         }
         Write-Progress @ProgressParamOuter
-        if (Get-Command winget) {
-                winget upgrade --silent --scope user --accept-package-agreements --accept-source-agreements --all
+        # Fixes error with culture ID 127 (Invariant Country), which is not associated with any language
+        if ((Get-Culture).LCID -eq 127) {
+            Update-Help -UICulture en-US -ErrorAction SilentlyContinue
+        } else {
+            Update-Help -ErrorAction SilentlyContinue
         }
-        else {
-            Write-Host "[4] Winget was not found. Skipping winget update."
-        }
-    } else {
-        Write-Verbose "[4] Not Windows. Skipping section."
-    }
 
-    # Early testing. No progress bar yet. Need to check for admin, different distros, and different package managers.
-    if ($IsLinux) {
-        if (Get-Command apt -ErrorAction SilentlyContinue) {
-            Write-Host '[5] Updating apt packages.'
-            sudo apt update
-            sudo apt upgrade
-        }
-    } else {
-        Write-Verbose "[5] Not Linux. Skipping section."
-    }
+        if ($IsWindows -or ($PSVersionTable.PSVersion -like "5.1.*")) {
+            if ((Get-CimInstance -ClassName CIM_OperatingSystem).Caption -match 'Server') {
+                # If on Windows Server, prompt to continue before automatically updating packages.
+                Write-Warning -Message "This is a server and updates could affect production systems. Do you want to continue with updating packages?"
 
-    # Early testing. No progress bar yet. Need to check for admin and different package managers.
-    if ($IsMacOS) {
-        softwareupdate -l
-        if (Get-Command brew -ErrorAction SilentlyContinue) {
-            Write-Host '[6] Updating brew packages.'
-            brew update
-            brew upgrade
-        }
-    } else {
-        Write-Verbose "[6] Not macOS. Skipping section."
-    }
+                $Yes = New-Object System.Management.Automation.Host.ChoiceDescription "&Yes","Description."
+                $No = New-Object System.Management.Automation.Host.ChoiceDescription "&No","Description."
+                $Options = [System.Management.Automation.Host.ChoiceDescription[]]($Yes, $No)
 
-    # Upgrade Chocolatey packages. Need to check for admin.
-    if (Get-Command choco -ErrorAction SilentlyContinue) {
+                $Title = "Windows Server OS Found"
+                $Message = "Do you want to run 'winget update' on your server?"
+                $Result = $Host.UI.PromptForChoice($Title, $Message, $Options, 1)
+                switch ($Result) {
+                    0 {
+                        continue
+                    }
+                    1 {
+                        break
+                    }
+                }
+            }
+
+            # Update all winget packages
+            Write-Host "[4] Updating Winget Packages"
+            # Update the outer progress bar
+            $PercentCompleteOuter = 80
+            $ProgressParamOuter = @{
+                Id = 0
+                Activity = 'Update Everything'
+                CurrentOperation = 'Updating Winget Packages'
+                Status = "Progress: $PercentCompleteOuter`% Complete"
+                PercentComplete = $PercentCompleteOuter
+            }
+            Write-Progress @ProgressParamOuter
+            if (Get-Command winget) {
+                    winget upgrade --silent --scope user --accept-package-agreements --accept-source-agreements --all
+            }
+            else {
+                Write-Host "[4] Winget was not found. Skipping winget update."
+            }
+        } else {
+            Write-Verbose "[4] Not Windows. Skipping section."
+        }
+
+        # Early testing. No progress bar yet. Need to check for admin, different distros, and different package managers.
+        if ($IsLinux) {
+            if (Get-Command apt -ErrorAction SilentlyContinue) {
+                Write-Host '[5] Updating apt packages.'
+                sudo apt update
+                sudo apt upgrade
+            }
+        } else {
+            Write-Verbose "[5] Not Linux. Skipping section."
+        }
+
+        # Early testing. No progress bar yet. Need to check for admin and different package managers.
+        if ($IsMacOS) {
+            softwareupdate -l
+            if (Get-Command brew -ErrorAction SilentlyContinue) {
+                Write-Host '[6] Updating brew packages.'
+                brew update
+                brew upgrade
+            }
+        } else {
+            Write-Verbose "[6] Not macOS. Skipping section."
+        }
+
+        # Upgrade Chocolatey packages. Need to check for admin.
+        if (Get-Command choco -ErrorAction SilentlyContinue) {
+            # Update the outer progress bar
+            $PercentCompleteOuter = 90
+            $ProgressParamOuter = @{
+                Id = 0
+                Activity = 'Update Everything'
+                CurrentOperation = 'Updating Chocolatey Packages'
+                Status = "Progress: $PercentCompleteOuter`% Complete"
+                PercentComplete = $PercentCompleteOuter
+            }
+            Write-Progress @ProgressParamOuter
+            Write-Host "[7] Updating Chocolatey Packages"
+            choco upgrade chocolatey --limitoutput --yes
+            choco upgrade all --limitoutput --yes
+        } else {
+            Write-Host "[7] Chocolatey is not installed. Skipping choco update."
+        }
+
+    } # end process block
+
+    end {
         # Update the outer progress bar
-        $PercentCompleteOuter = 90
+        $PercentCompleteOuter = 100
         $ProgressParamOuter = @{
             Id = 0
             Activity = 'Update Everything'
-            CurrentOperation = 'Updating Chocolatey Packages'
+            CurrentOperation = 'Finished'
             Status = "Progress: $PercentCompleteOuter`% Complete"
             PercentComplete = $PercentCompleteOuter
         }
         Write-Progress @ProgressParamOuter
-        Write-Host "[7] Updating Chocolatey Packages"
-        choco upgrade chocolatey --limitoutput --yes
-        choco upgrade all --limitoutput --yes
-    } else {
-        Write-Host "[7] Chocolatey is not installed. Skipping choco update."
+        # Complete the outer progress bar
+        Write-Progress -Id 0 -Activity 'Update Everything' -Completed
     }
-
-
-    # Update the outer progress bar
-    $PercentCompleteOuter = 100
-    $ProgressParamOuter = @{
-        Id = 0
-        Activity = 'Update Everything'
-        CurrentOperation = 'Finished'
-        Status = "Progress: $PercentCompleteOuter`% Complete"
-        PercentComplete = $PercentCompleteOuter
-    }
-    Write-Progress @ProgressParamOuter
-    # Complete the outer progress bar
-    Write-Progress -Id 0 -Activity 'Update Everything' -Completed
 
 }
