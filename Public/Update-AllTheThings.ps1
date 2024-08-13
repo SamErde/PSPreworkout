@@ -138,7 +138,23 @@ function Update-AllTheThings {
     if ($IsWindows -or ($PSVersionTable.PSVersion -like "5.1.*")) {
         if ((Get-CimInstance -ClassName CIM_OperatingSystem).Caption -notmatch 'Server') {
             # If on Windows Server, prompt to continue before automatically updating packages.
-            Write-Warning -Message "This is a server and updates could affect production systems. Do you want to continue with updating packages?" -WarningAction Inquire
+            Write-Warning -Message "This is a server and updates could affect production systems. Do you want to continue with updating packages?"
+
+            $Yes = New-Object System.Management.Automation.Host.ChoiceDescription "&Yes","Description."
+            $No = New-Object System.Management.Automation.Host.ChoiceDescription "&No","Description."
+            $Options = [System.Management.Automation.Host.ChoiceDescription[]]($Yes, $No)
+
+            $Title = "Windows Server OS Found"
+            $Message = "Do you want to run 'winget update' on your server?"
+            $Result = $Host.UI.PromptForChoice($Title, $Message, $Options, 1)
+            switch ($Result) {
+                0 {
+                    Write-Host "Yes"
+                }
+                1 {
+                    Write-Host "No"
+                }
+            }
         }
 
         # Update all winget packages
