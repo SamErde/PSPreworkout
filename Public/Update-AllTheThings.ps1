@@ -62,6 +62,7 @@ $Banner = @'
     } # end begin block
 
     process {
+        #region UpdatePowerShell
         # Get all installed PowerShell modules
         Write-Host "[1] Getting Installed PowerShell Modules"
         # Update the outer progress bar
@@ -139,7 +140,9 @@ $Banner = @'
         } else {
             Update-Help -ErrorAction SilentlyContinue
         }
+        #endregion UpdatePowerShell
 
+        #region UpdateWinget
         if ($IsWindows -or ($PSVersionTable.PSVersion -like "5.1.*")) {
             if ((Get-CimInstance -ClassName CIM_OperatingSystem).Caption -match 'Server') {
                 # If on Windows Server, prompt to continue before automatically updating packages.
@@ -183,7 +186,9 @@ $Banner = @'
         } else {
             Write-Verbose "[4] Not Windows. Skipping section."
         }
+        #endregion UpdateWinget
 
+        #region UpdateLinuxPackages
         # Early testing. No progress bar yet. Need to check for admin, different distros, and different package managers.
         if ($IsLinux) {
             if (Get-Command apt -ErrorAction SilentlyContinue) {
@@ -194,7 +199,9 @@ $Banner = @'
         } else {
             Write-Verbose "[5] Not Linux. Skipping section."
         }
+        #endregion UpdateLinuxPackages
 
+        #region UpdateMacOS
         # Early testing. No progress bar yet. Need to check for admin and different package managers.
         if ($IsMacOS) {
             softwareupdate -l
@@ -206,7 +213,9 @@ $Banner = @'
         } else {
             Write-Verbose "[6] Not macOS. Skipping section."
         }
+        #endregion UpdateMacOS
 
+        #region UpdateChocolatey
         # Upgrade Chocolatey packages. Need to check for admin.
         if (Get-Command choco -ErrorAction SilentlyContinue) {
             # Update the outer progress bar
@@ -222,9 +231,12 @@ $Banner = @'
             Write-Host "[7] Updating Chocolatey Packages"
             choco upgrade chocolatey --limitoutput --yes
             choco upgrade all --limitoutput --yes
+            # Padding to reset host before updating the progress bar.
+            Write-Host ""
         } else {
             Write-Host "[7] Chocolatey is not installed. Skipping choco update."
         }
+        #endregion UpdateChocolatey
 
     } # end process block
 
