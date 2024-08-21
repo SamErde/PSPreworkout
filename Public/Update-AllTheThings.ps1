@@ -34,19 +34,19 @@ function Update-AllTheThings {
 
     .NOTES
     Author: Sam Erde
-    Version: 0.3.4
+    Version: 0.3.5
     Modified: 2024/08/05
     #>
 
     [CmdletBinding()]
     [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', 'Update-AllTheThings', Justification = 'Riding the "{___} all the things train!"')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '', Justification = 'Interactive Use')]
-    [Alias("UATT")]
+    [Alias('UATT')]
     param ()
 
     begin {
-    # Spacing to get host output from script, winget, and choco all below the progress bar.
-$Banner = @'
+        # Spacing to get host output from script, winget, and choco all below the progress bar.
+        $Banner = @'
   __  __        __     __         ___   ____
  / / / /__  ___/ /__ _/ /____    / _ | / / /
 / /_/ / _ \/ _  / _ `/ __/ -_)  / __ |/ / /
@@ -62,17 +62,21 @@ $Banner = @'
     } # end begin block
 
     process {
+        Write-Verbose 'Set the PowerShell Gallery as a trusted installation source.'
+        Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
+        Set-PSResourceRepository -Name 'PSGallery' -Trusted
+
         #region UpdatePowerShell
         # Get all installed PowerShell modules
-        Write-Host "[1] Getting Installed PowerShell Modules"
+        Write-Host '[1] Getting Installed PowerShell Modules'
         # Update the outer progress bar
         $PercentCompleteOuter = 1
         $ProgressParamOuter = @{
-            Id = 0
-            Activity = 'Update Everything'
+            Id               = 0
+            Activity         = 'Update Everything'
             CurrentOperation = 'Getting Installed PowerShell Modules'
-            Status = "Progress: $PercentCompleteOuter`% Complete"
-            PercentComplete = $PercentCompleteOuter
+            Status           = "Progress: $PercentCompleteOuter`% Complete"
+            PercentComplete  = $PercentCompleteOuter
         }
         Write-Progress @ProgressParamOuter
         $Modules = (Get-InstalledModule)
@@ -88,26 +92,26 @@ $Banner = @'
         foreach ($module in $Modules) {
             # Update the module loop counter and percent complete for both progress bars
             ++$Module_i
-            [double]$PercentCompleteInner = [math]::ceiling( (($Module_i / $ModuleCount)*100) )
-            [double]$PercentCompleteOuter = [math]::ceiling( $PercentCompleteOuter_Modules + (60*($PercentCompleteInner/100)) )
+            [double]$PercentCompleteInner = [math]::ceiling( (($Module_i / $ModuleCount) * 100) )
+            [double]$PercentCompleteOuter = [math]::ceiling( $PercentCompleteOuter_Modules + (60 * ($PercentCompleteInner / 100)) )
 
             # Update the outer progress bar
             $ProgressParamOuter = @{
-                Id = 0
-                Activity = 'Update Everything'
-                Status = "Progress: $PercentCompleteOuter`% Complete"
+                Id              = 0
+                Activity        = 'Update Everything'
+                Status          = "Progress: $PercentCompleteOuter`% Complete"
                 PercentComplete = $PercentCompleteOuter
             }
             Write-Progress @ProgressParamOuter
 
             # Update the child progress bar
             $ProgressParam1 = @{
-                Id = 1
-                ParentId = 0
-                Activity = 'Updating PowerShell Modules'
+                Id               = 1
+                ParentId         = 0
+                Activity         = 'Updating PowerShell Modules'
                 CurrentOperation = "$($module.Name)"
-                Status = "Progress: $PercentCompleteInner`% Complete"
-                PercentComplete = $PercentCompleteInner
+                Status           = "Progress: $PercentCompleteInner`% Complete"
+                PercentComplete  = $PercentCompleteInner
             }
             Write-Progress @ProgressParam1
 
@@ -123,15 +127,15 @@ $Banner = @'
 
 
         # Update PowerShell Help
-        Write-Host "[3] Updating PowerShell Help"
+        Write-Host '[3] Updating PowerShell Help'
         # Update the outer progress bar
         $PercentCompleteOuter = 70
         $ProgressParamOuter = @{
-            Id = 0
-            Activity = 'Update Everything'
+            Id               = 0
+            Activity         = 'Update Everything'
             CurrentOperation = 'Updating PowerShell Help'
-            Status = "Progress: $PercentCompleteOuter`% Complete"
-            PercentComplete = $PercentCompleteOuter
+            Status           = "Progress: $PercentCompleteOuter`% Complete"
+            PercentComplete  = $PercentCompleteOuter
         }
         Write-Progress @ProgressParamOuter
         # Fixes error with culture ID 127 (Invariant Country), which is not associated with any language
@@ -143,16 +147,16 @@ $Banner = @'
         #endregion UpdatePowerShell
 
         #region UpdateWinget
-        if ($IsWindows -or ($PSVersionTable.PSVersion -like "5.1.*")) {
+        if ($IsWindows -or ($PSVersionTable.PSVersion -ge [version]'5.1')) {
             if ((Get-CimInstance -ClassName CIM_OperatingSystem).Caption -match 'Server') {
                 # If on Windows Server, prompt to continue before automatically updating packages.
-                Write-Warning -Message "This is a server and updates could affect production systems. Do you want to continue with updating packages?"
+                Write-Warning -Message 'This is a server and updates could affect production systems. Do you want to continue with updating packages?'
 
-                $Yes = New-Object System.Management.Automation.Host.ChoiceDescription "&Yes","Description."
-                $No = New-Object System.Management.Automation.Host.ChoiceDescription "&No","Description."
+                $Yes = New-Object System.Management.Automation.Host.ChoiceDescription '&Yes', 'Description.'
+                $No = New-Object System.Management.Automation.Host.ChoiceDescription '&No', 'Description.'
                 $Options = [System.Management.Automation.Host.ChoiceDescription[]]($Yes, $No)
 
-                $Title = "Windows Server OS Found"
+                $Title = 'Windows Server OS Found'
                 $Message = "Do you want to run 'winget update' on your server?"
                 $Result = $Host.UI.PromptForChoice($Title, $Message, $Options, 1)
                 switch ($Result) {
@@ -166,25 +170,24 @@ $Banner = @'
             }
 
             # Update all winget packages
-            Write-Host "[4] Updating Winget Packages"
+            Write-Host '[4] Updating Winget Packages'
             # Update the outer progress bar
             $PercentCompleteOuter = 80
             $ProgressParamOuter = @{
-                Id = 0
-                Activity = 'Update Everything'
+                Id               = 0
+                Activity         = 'Update Everything'
                 CurrentOperation = 'Updating Winget Packages'
-                Status = "Progress: $PercentCompleteOuter`% Complete"
-                PercentComplete = $PercentCompleteOuter
+                Status           = "Progress: $PercentCompleteOuter`% Complete"
+                PercentComplete  = $PercentCompleteOuter
             }
             Write-Progress @ProgressParamOuter
             if (Get-Command winget) {
-                    winget upgrade --silent --scope user --accept-package-agreements --accept-source-agreements --all
-            }
-            else {
-                Write-Host "[4] Winget was not found. Skipping winget update."
+                winget upgrade --silent --scope user --accept-package-agreements --accept-source-agreements --all
+            } else {
+                Write-Host '[4] Winget was not found. Skipping winget update.'
             }
         } else {
-            Write-Verbose "[4] Not Windows. Skipping section."
+            Write-Verbose '[4] Not Windows. Skipping section.'
         }
         #endregion UpdateWinget
 
@@ -197,7 +200,7 @@ $Banner = @'
                 sudo apt upgrade
             }
         } else {
-            Write-Verbose "[5] Not Linux. Skipping section."
+            Write-Verbose '[5] Not Linux. Skipping section.'
         }
         #endregion UpdateLinuxPackages
 
@@ -211,7 +214,7 @@ $Banner = @'
                 brew upgrade
             }
         } else {
-            Write-Verbose "[6] Not macOS. Skipping section."
+            Write-Verbose '[6] Not macOS. Skipping section.'
         }
         #endregion UpdateMacOS
 
@@ -221,20 +224,20 @@ $Banner = @'
             # Update the outer progress bar
             $PercentCompleteOuter = 90
             $ProgressParamOuter = @{
-                Id = 0
-                Activity = 'Update Everything'
+                Id               = 0
+                Activity         = 'Update Everything'
                 CurrentOperation = 'Updating Chocolatey Packages'
-                Status = "Progress: $PercentCompleteOuter`% Complete"
-                PercentComplete = $PercentCompleteOuter
+                Status           = "Progress: $PercentCompleteOuter`% Complete"
+                PercentComplete  = $PercentCompleteOuter
             }
             Write-Progress @ProgressParamOuter
-            Write-Host "[7] Updating Chocolatey Packages"
+            Write-Host '[7] Updating Chocolatey Packages'
             choco upgrade chocolatey --limitoutput --yes
             choco upgrade all --limitoutput --yes
             # Padding to reset host before updating the progress bar.
-            Write-Host ""
+            Write-Host ''
         } else {
-            Write-Host "[7] Chocolatey is not installed. Skipping choco update."
+            Write-Host '[7] Chocolatey is not installed. Skipping choco update.'
         }
         #endregion UpdateChocolatey
 
@@ -244,11 +247,11 @@ $Banner = @'
         # Update the outer progress bar
         $PercentCompleteOuter = 100
         $ProgressParamOuter = @{
-            Id = 0
-            Activity = 'Update Everything'
+            Id               = 0
+            Activity         = 'Update Everything'
             CurrentOperation = 'Finished'
-            Status = "Progress: $PercentCompleteOuter`% Complete"
-            PercentComplete = $PercentCompleteOuter
+            Status           = "Progress: $PercentCompleteOuter`% Complete"
+            PercentComplete  = $PercentCompleteOuter
         }
         Write-Progress @ProgressParamOuter
         # Complete the outer progress bar
