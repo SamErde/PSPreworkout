@@ -42,7 +42,12 @@ function Update-AllTheThings {
     [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', 'Update-AllTheThings', Justification = 'Riding the "{___} all the things train!"')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '', Justification = 'Interactive Use')]
     [Alias('UATT')]
-    param ()
+    param (
+        # Allow updates to pre-release PowerShell modules
+        [Parameter()]
+        [switch]
+        $AllowPrerelease
+    )
 
     begin {
         # Spacing to get host output from script, winget, and choco all below the progress bar.
@@ -117,7 +122,11 @@ function Update-AllTheThings {
 
             # Update the current module
             try {
-                Update-Module $ -ErrorAction SilentlyContinue
+                if ($AllowPrerelease.IsPresent) {
+                    Update-Module $module -AllowPrerelease -ErrorAction SilentlyContinue
+                } else {
+                    Update-Module $module -ErrorAction SilentlyContinue
+                }
             } catch [Microsoft.PowerShell.Commands.WriteErrorException] {
                 Write-Verbose $_
             }
