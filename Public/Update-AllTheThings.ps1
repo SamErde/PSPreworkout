@@ -1,9 +1,9 @@
 <#PSScriptInfo
 .DESCRIPTION A script to automatically update all PowerShell modules, PowerShell Help, and packages (apt, brew, chocolately, winget).
-.VERSION 0.3.4
+.VERSION 0.4.2
 .GUID 3a1a1ec9-0ef6-4f84-963d-be1505dab6a8
 .AUTHOR Sam Erde
-.COPYRIGHT (c) Sam Erde
+.COPYRIGHT (c) 2024 Sam Erde. All rights reserved.
 .TAGS Update PowerShell Windows macOS Linux Ubuntu
 .LICENSEURI https://github.com/SamErde/PowerShell-Pre-Workout/blob/main/LICENSE
 .PROJECTURI https://github.com/SamErde/PowerShell-Pre-Workout/
@@ -29,13 +29,6 @@ function Update-AllTheThings {
     .OUTPUTS
     None. Update-Everything does not return any objects.
 
-    .LINK
-    Twitter https://twitter.com/SamErde
-
-    .NOTES
-    Author: Sam Erde
-    Version: 0.3.5
-    Modified: 2024/08/05
     #>
 
     [CmdletBinding()]
@@ -60,7 +53,7 @@ function Update-AllTheThings {
 /_  __/ /  ___   /_  __/ /  (_)__  ___ ____
  / / / _ \/ -_)   / / / _ \/ / _ \/ _ `(_-<
 /_/ /_//_/\__/   /_/ /_//_/_/_//_/\_, /___/
-                                 /___/
+                                 /___/ v0.4.2
 
 '@
         Write-Host $Banner
@@ -69,7 +62,9 @@ function Update-AllTheThings {
     process {
         Write-Verbose 'Set the PowerShell Gallery as a trusted installation source.'
         Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
-        Set-PSResourceRepository -Name 'PSGallery' -Trusted
+        if (Get-Command -Name Set-PSResourceRepository -ErrorAction SilentlyContinue) {
+            Set-PSResourceRepository -Name 'PSGallery' -Trusted
+        }
 
         #region UpdatePowerShell
         # Get all installed PowerShell modules
@@ -122,11 +117,14 @@ function Update-AllTheThings {
 
             # Update the current module
             try {
-                if ($AllowPrerelease.IsPresent) {
-                    Update-Module $module -AllowPrerelease -ErrorAction SilentlyContinue
+                Update-Module $module.Name
+                <# Test targeted prerelease updates
+                if ($module.Version -match 'alpha|beta|prelease|preview') {
+                    Update-Module $module.Name -AllowPrerelease -ErrorAction SilentlyContinue
                 } else {
-                    Update-Module $module -ErrorAction SilentlyContinue
+                    Update-Module $module.Name -ErrorAction SilentlyContinue
                 }
+                #>
             } catch [Microsoft.PowerShell.Commands.WriteErrorException] {
                 Write-Verbose $_
             }
@@ -241,10 +239,9 @@ function Update-AllTheThings {
             }
             Write-Progress @ProgressParamOuter
             Write-Host '[7] Updating Chocolatey Packages'
-            choco upgrade chocolatey --limitoutput --yes
-            choco upgrade all --limitoutput --yes
+            choco upgrade chocolatey -y --limit-output --accept-license --no-color
+            choco upgrade all -y --limit-output --accept-license --no-color
             # Padding to reset host before updating the progress bar.
-            Write-Host ''
         } else {
             Write-Host '[7] Chocolatey is not installed. Skipping choco update.'
         }
