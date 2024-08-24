@@ -24,17 +24,14 @@ A special mix of tools (and experiments) to help jump start your PowerShell sess
   | [New-ProfileWorkspace](#newprofileworkspace) | Setup a folder and VS Code Workspace for maintaining your PowerShell profiles, VS Code settings, and Windows Terminal settings. |
   | [New-DotSourcedProfile](#newdotsourcedprofile) | Point all of your CurrentUserHost PowerShell profiles to a central dot sourced profile. |
   | [Install-OhMyPosh](#installohmyposh) | Install Oh My Posh with Nerd Fonts to make your shell beautiful and functional. |
-  | [Get-MsModules](#getmsmodules) | Get a list of Microsoft's core modules for Azure, Graph, and M365. |
-  | [Install-MsModules](#installmsmodules) | Get a list of Microsoft's core modules for Azure, Graph, and M365. |
-  | [Update-MsModules](#updatemsmodules) | A helper for updating Microsoft's core modules for Azure, Graph, and M365. |
   | [Get-RecommendedModules](#getrecommendedmodules) | Get a list of community recommended modules. |
   | [Install-RecommendedModules](#installrecommendedmodules) | Easily install optional recommended modules. |
 
-$~$
+&nbsp;
 
 ## Script Details
 
-$~$
+&nbsp;
 
 <a name="updateallthethings"></a><div id='updateallthethings' />
 ## Update-AllTheThings [:top:](#top "Go to the top of the page.")
@@ -47,7 +44,7 @@ Run one command to update all of the things!
 
 A script that works on Windows, Linux, and macOS to update PowerShell modules, PowerShell help, and packages with apt, brew, Chocolately, and winget.
 
-$~$
+&nbsp;
 
 <a name="newprofileworkspace"></a><div id='newprofileworkspace' />
 ## New-ProfileWorkspace [:top:](#top "Go to the top of the page.")
@@ -74,14 +71,14 @@ I wanted an easy way to maintain all of my CurrentUser PowerShell profiles, and 
   - EditorConfig and Visual Studio Code settings files for consistent editing
   - A .gitignore file in case you want to use this as a git repository (test?)
 
-$~$
+&nbsp;
 
 <a name="newdotsourcedprofile"></a><div id='newdotsourcedprofile' />
 ## New-DotSourcedProfile [:top:](#top)
 
 I need to automate this one still, but it will be a script that creates one central profile script and then sets each CurrentUser profile to dot source that central profile for easier sync across all of your profiles for PowerShell, PowerShell ISE, Visual Studio Code, Windows PowerShell, etc.
 
-$~$
+&nbsp;
 
 <a name='installohmyposh'></a><div id='installohmyposh' />
 ## Install-OhMyPosh [:top:](#top)
@@ -101,7 +98,7 @@ Install Oh My Posh, or update it if already installed.
 
 This is a quick installer for Oh My Posh. It's almost unnecessary because of how easy OMP is to install, but may be helpful to people who are brand new to it and want to save time. Includes steps to install Nerd Fonts. Nerd Fonts are required to get the most out of Oh My Posh and some great modules like Posh-Git, and Terminal Icons.
 
-$~$
+&nbsp;
 
 <a name="installpowershellise"></a><div id='installpowershellise' />
 ## Install-PowerShellISE [:top:](#top)
@@ -111,7 +108,7 @@ Install the PowerShell ISE if it was removed. It can be helpful to keep the ISE 
 - Script: [Install-PowerShellISE.ps1](Install-PowerShellISE.ps1)
 - Status: Working :runner:
 
-$~$
+&nbsp;
 
 <a name="getenvironmentvariable"></a><div id='getenvironmentvariable' />
 ## Get-EnvironmentVariable [:top:](#top)
@@ -121,7 +118,7 @@ Easily get a specific environment variable or list all of them.
 - Script: [Get-EnvironmentVariable.ps1](Get-EnvironmentVariable.ps1)
 - Status: Working :runner:
 
-$~$
+&nbsp;
 
 <a name="setenvironmentvariable"></a><div id='setenvironmentvariable' />
 ## Set-EnvironmentVariable [:top:](#top)
@@ -131,38 +128,14 @@ Set an environment variable.
 - Script: [Set-EnvironmentVariable.ps1](Set-EnvironmentVariable.ps1)
 - Status: Working :runner:
 
-$~$
-
-<a name="getmsmodules"></a><div id='getmsmodules' />
-## Get-MsModules [:top:](#top)
-
-List all of the Microsoft PowerShell modules that you need for working with Azure, Microsoft 365, or Microsoft Graph.
-
-- Script: [Get-MsModules.ps1](Get-MsModules.ps1)
-- Status: In Progress :construction_worker:
-
-$~$
-
-<a name="installmsmodules"></a><div id='installmsmodules' />
-## Install-MsModules [:top:](#top)
-
-Quickly install all or any of the Microsoft PowerShell modules that you need for working with Azure, Microsoft 365, or Microsoft Graph.
-
-$~$
-
-<a name="updatemsmodules"></a><div id='updatemsmodules' />
-## Update-MsModules [:top:](#top)
-
-Quickly update all or any of the Microsoft PowerShell modules that you need for working with Azure, Microsoft 365, or Microsoft Graph.
-
-$~$
+&nbsp;
 
 <a name="getrecommendedmodules"></a><div id='getrecommendedmodules' />
 ## Get-RecommendedModules [:top:](#top)
 
 Get a list of recommended PowerShell modules authored by Microsoft and the community.
 
-$~$
+&nbsp;
 
 <a name="installrecommendedmodules"></a><div id='installrecommendedmodules' />
 ## Install-RecommendedModules [:top:](#top)
