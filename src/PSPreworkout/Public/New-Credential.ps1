@@ -9,6 +9,7 @@ function New-Credential {
     .EXAMPLE
     $Credential = New-Credential
     #>
+    [CmdletBinding(SupportsShouldProcess)]
     Write-Output "Create a Credential"
     $User = Read-Host -Prompt "User"
     $Password = Read-Host "Password for user $User" -AsSecureString
