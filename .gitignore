@@ -1,6 +1,18 @@
-.DS_Store
-desktop.ini
+Archive
+Artifacts
+cov.xml
+coverage.xml
 /Artefacts
 /Artefacts/*
 /Ignore
 /Ignore/*
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+desktop.ini
+ehthumbs.db
+Thumbs.db

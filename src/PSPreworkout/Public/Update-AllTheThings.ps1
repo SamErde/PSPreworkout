@@ -26,20 +26,17 @@ function Update-AllTheThings {
     .INPUTS
     None. You can't pipe objects to Update-Everything.
 
-    .OUTPUTS
-    None. Update-Everything does not return any objects.
-
     #>
 
-    [CmdletBinding()]
-    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', 'Update-AllTheThings', Justification = 'Riding the "{___} all the things train!"')]
+    [CmdletBinding(SupportsShouldProcess)]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', 'Update-AllTheThings', Justification = 'This is what we do.')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '', Justification = 'Interactive Use')]
     [Alias('UATT')]
     param (
         # Allow updates to pre-release PowerShell modules
-        [Parameter()]
-        [switch]
-        $AllowPrerelease
+        #[Parameter()]
+        #[switch]
+        #$AllowPrerelease
     )
 
     begin {

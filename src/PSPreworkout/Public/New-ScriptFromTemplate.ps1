@@ -29,13 +29,11 @@ function New-ScriptFromTemplate {
         .EXAMPLE
         New-Function -Name "Get-Demo" -Synopsis "Get a demo." -Description "This function gets a demo." -Alias "Get-Sample"
 
-        .NOTES
-        Author: Sam Erde
-        Version: 0.0.1
-        Modified: 2024-07-02
     #>
 
     [CmdletBinding()]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'OK')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '', Justification = 'Making it pretty.')]
     [Alias('New-Script')]
     param (
         # The name of the new function.

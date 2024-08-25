@@ -5,13 +5,7 @@ function New-ProfileWorkspace {
 
     .DESCRIPTION
         I wanted an easy way to maintain all of my CurrentUser PowerShell profiles and settings for Visual Studio Code
-        and Windows Terminal. This script creates a folder that contains:
-
-            - Junction points to the locations of your CurrentUser PowerShell and Windows PowerShell folders
-            - Junction points to the locations of your settings for VS Code and Windows Terminal
-            - A Visual Studio Code workspace file that opens this new folder
-            - EditorConfig and Visual Studio Code settings files for consistent editing
-            - A .gitignore file in case you want to use this as a git repository (test?)
+        and Windows Terminal.
 
     .PARAMETER WorkspacePath
         The location to create your profile workspace in. The default value is a "Repositories/ProfileWorkspace" folder in
@@ -26,9 +20,20 @@ function New-ProfileWorkspace {
     .PARAMETER Launch
         A switch that, if used, will launch the VS Code workspace upon completion of this script.
 
+    .EXAMPLE
+        New-ProfileWorkspace
+
     .NOTES
         Author: Sam Erde, https://www.twitter.com/SamErde
         Created: 2023/11/28
+
+        This script creates a folder that contains:
+
+            - Junction points to the locations of your CurrentUser PowerShell and Windows PowerShell folders
+            - Junction points to the locations of your settings for VS Code and Windows Terminal
+            - A Visual Studio Code workspace file that opens this new folder
+            - EditorConfig and Visual Studio Code settings files for consistent editing
+            - A .gitignore file in case you want to use this as a git repository (test?)
 
         Profile Locations on Windows:
             ~/Documents/PowerShell/profile.ps1
@@ -52,20 +57,20 @@ function New-ProfileWorkspace {
     .LINK
         https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_profiles
     #>
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter()]
-            [string]
-            $WorkspacePath = "~/Repositories/ProfileWorkspace",
+        [string]
+        $WorkspacePath = '~/Repositories/ProfileWorkspace',
         [Parameter()]
-            [string]
-            $PowerShellPath = ( Join-Path ([System.Environment]::GetFolderPath('MyDocuments')) '/PowerShell' ),
+        [string]
+        $PowerShellPath = ( Join-Path ([System.Environment]::GetFolderPath('MyDocuments')) '/PowerShell' ),
         [Parameter()]
-            [string]
-            $WindowsPowerShellPath = ( Join-Path ([System.Environment]::GetFolderPath('MyDocuments')) '/WindowsPowerShell' ),
+        [string]
+        $WindowsPowerShellPath = ( Join-Path ([System.Environment]::GetFolderPath('MyDocuments')) '/WindowsPowerShell' ),
         [Parameter()]
-            [switch]
-            $Launch
+        [switch]
+        $Launch
     )
 
     $CurrentInformationPreference = $InformationPreference
@@ -75,39 +80,37 @@ function New-ProfileWorkspace {
 
     # Check for the workspace path before creating it
     if (-not (Test-Path $WorkspacePath) ) {
-        Write-Information -MessageData "Creating directory `"$WorkspacePath`"." -Tags "WorkspacePath"
+        Write-Information -MessageData "Creating directory `"$WorkspacePath`"." -Tags 'WorkspacePath'
         New-Item -ItemType Directory -Path $WorkspacePath | Out-Null
-    }
-    else {
-        Write-Information -MessageData "Found `"$WorkspacePath`". Continuing..." -Tags "WorkspacePath"
+    } else {
+        Write-Information -MessageData "Found `"$WorkspacePath`". Continuing..." -Tags 'WorkspacePath'
     }
     $WorkspacePath = (Get-Item $WorkspacePath).FullName
     Set-Location -Path $WorkspacePath
 
     $JunctionPoints = @{
-        "PowerShell"        = ( Join-Path -Path $WorkspacePath -ChildPath 'PowerShell' )
-        "WindowsPowerShell" = ( Join-Path -Path $WorkspacePath -ChildPath 'WindowsPowerShell' )
-        "Code"              = ( Join-Path -Path $env:AppData -ChildPath '/Code/User' )
-        "WindowsTerminal"   = ( Join-Path -Path $env:LocalAppData -ChildPath '/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState' )
+        'PowerShell'        = ( Join-Path -Path $WorkspacePath -ChildPath 'PowerShell' )
+        'WindowsPowerShell' = ( Join-Path -Path $WorkspacePath -ChildPath 'WindowsPowerShell' )
+        'Code'              = ( Join-Path -Path $env:AppData -ChildPath '/Code/User' )
+        'WindowsTerminal'   = ( Join-Path -Path $env:LocalAppData -ChildPath '/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState' )
     }
 
     foreach ( $item in $JunctionPoints.GetEnumerator() ) {
-        Write-Information -MessageData "Looking for $($item.Name) at $($item.Value)" -Tags "JunctionPoints"
+        Write-Information -MessageData "Looking for $($item.Name) at $($item.Value)" -Tags 'JunctionPoints'
         if (-not (Test-Path -Path $($item.Value) -Verbose) ) {
             New-Item -Type Junction -Path $($item.Value) -Name $($item.Name) -Value $PowerShellPath | Out-Null
-            Write-Information -MessageData "Created $($item.Name) junction point in $($item.Value). No action required.`n"  -Tags "JunctionPoints"
-        }
-        else {
-            Write-Information -MessageData "Found a $($item.Name) junction point at $($item.Value). No action required.`n"  -Tags "JunctionPoints"
+            Write-Information -MessageData "Created $($item.Name) junction point in $($item.Value). No action required.`n" -Tags 'JunctionPoints'
+        } else {
+            Write-Information -MessageData "Found a $($item.Name) junction point at $($item.Value). No action required.`n" -Tags 'JunctionPoints'
         }
     }
 
     $workspaceContent = @{
-      folders = @(
-          @{
-          path = $WorkspacePath
-        }
-      )
+        folders = @(
+            @{
+                path = $WorkspacePath
+            }
+        )
     }
     $WorkspaceContent | ConvertTo-Json | Set-Content (Join-Path $WorkspacePath 'ProfileWorkspace.code-workspace') -Encoding utf8 -Force
 

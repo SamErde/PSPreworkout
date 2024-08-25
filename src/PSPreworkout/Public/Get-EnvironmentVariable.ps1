@@ -14,10 +14,6 @@ function Get-EnvironmentVariable {
             Get-EnvironmentVariable -Name "PATH"
             Retrieves the value of the "PATH" environment variable.
 
-        .OUTPUTS
-            System.String
-            The value of the environment variable.
-
         .NOTES
             Variable names are case-sensitive on Linux and macOS, but not on Windows.
 
@@ -33,10 +29,11 @@ function Get-EnvironmentVariable {
         .LINK
             https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_environment_variables
     #>
-    [Alias("gev")]
-    [Outputs([System.String])]
+    [Alias('gev')]
+    #[Outputs([System.String])]
     [CmdletBinding()]
-    [OutputType([string],[System.Collections.IDictionary])]
+    #[OutputType([string],[System.Collections.IDictionary])]
+    [OutputType([string])]
     param (
         # The name of the environment variable to retrieve. If not specified, all environment variables are returned.
         [Parameter()]
@@ -65,11 +62,11 @@ function Get-EnvironmentVariable {
         }
 
         if ($All) {
-            Write-Output "Process Environment Variables:"
+            Write-Output 'Process Environment Variables:'
             [Environment]::GetEnvironmentVariables([System.EnvironmentVariableTarget]::Process)
-            Write-Output "User Environment Variables:"
+            Write-Output 'User Environment Variables:'
             [Environment]::GetEnvironmentVariables([System.EnvironmentVariableTarget]::User)
-            Write-Output "Machine Environment Variables:"
+            Write-Output 'Machine Environment Variables:'
             [Environment]::GetEnvironmentVariables([System.EnvironmentVariableTarget]::Machine)
         }
     }

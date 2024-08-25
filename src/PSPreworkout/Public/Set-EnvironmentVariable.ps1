@@ -1,6 +1,29 @@
 function Set-EnvironmentVariable {
-    [Alias("sev")]
+    <#
+    .SYNOPSIS
+    Set environment variables.
+
+    .DESCRIPTION
+    Set environment variables in any OS using .NET types.
+
+    .PARAMETER Name
+    Parameter description
+
+    .PARAMETER Value
+    Parameter description
+
+    .PARAMETER Target
+    Parameter description
+
+    .EXAMPLE
+    An example
+
+    .NOTES
+    General notes
+    #>
+    [Alias('sev')]
     [CmdletBinding()]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'OK')]
     param (
         # The name of the environment variable to set.
         [Parameter(Mandatory)]
