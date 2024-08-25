@@ -8,7 +8,7 @@
 # mkdocs.yml
 
 site_name: PowerShell Pre-Workout
-site_url: https://day3bits.com/PowerShell-Pre-Workout
+# site_url: https://day3bits.com/PowerShell-Pre-Workout
 repo_url: https://github.com/SamErde/PowerShell-Pre-Workout
 repo_name: PowerShell-Pre-Workout
 # edit_uri: edit/main/docs/
