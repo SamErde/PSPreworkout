@@ -34,6 +34,5 @@ theme: readthedocs
 # include_sidebar: true
 nav:
   - Home: index.md
-  - Change Log: CHANGELOG.md
   # - Functions:
   #   - Function1: functions/function1.md
