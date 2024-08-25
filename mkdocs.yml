@@ -7,24 +7,24 @@
 # https://github.com/mkdocs/mkdocs/blob/master/mkdocs.yml
 # mkdocs.yml
 
-site_name: PSPreworkout PowerShell Module
-site_url: https://day3bits.com/PSPreworkout
-repo_url: https://github.com/SamErde/PSPreworkout
-repo_name: PSPreworkout
+site_name: 'PSPreworkout PowerShell Module'
+site_url: 'https://day3bits.com/PSPreworkout'
+repo_url: 'https://github.com/SamErde/PSPreworkout'
+repo_name: 'PSPreworkout'
 # edit_uri: edit/main/docs/
 # edit_uri_template:
 site_description: 'PowerShell Preworkout: a mix of tools (and experiments) to help jump start your PowerShell session!' # meta tag to the generated HTML heade
-site_author: Sam Erde # meta tag to the generated HTML header
-copyright: (c) 2024 Sam Erde.
+site_author: 'Sam Erde' # meta tag to the generated HTML header
+copyright: '(c) 2024 Sam Erde.'
 # remote_branch:
 # remote_name:
-docs_dir: docs
+docs_dir: 'docs'
 # site_dir:
 # extra_css:
 # extra_javascript:
 # extra_templates:
 # extra:
-theme: material
+theme: 'material'
 # theme:
 #     name: readthedocs
 #     locale: en
@@ -33,6 +33,6 @@ theme: material
 #     - sitemap.html
 # include_sidebar: true
 nav:
-  - Home: index.md
+  - Home: 'index.md'
   # - Functions:
   #   - Function1: functions/function1.md
