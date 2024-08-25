@@ -10,7 +10,7 @@
 site_name: PowerShell Pre-Workout
 site_url: https://day3bits.com/PSPreWorkout
 repo_url: https://github.com/SamErde/PowerShell-Pre-Workout
-repo_name: PowerShell-Pre-Workout
+repo_name: PSPreWorkout
 # edit_uri: edit/main/docs/
 # edit_uri_template:
 site_description: A special mix of tools (and experiments) to help jump start your PowerShell session! # meta tag to the generated HTML header
