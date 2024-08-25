@@ -68,6 +68,7 @@
         'Get-EnvironmentVariable',
         'Install-OhMyPosh',
         'Install-PowerShellISE',
+        'New-Credential',
         'New-ScriptFromTemplate',
         'New-ProfileWorkspace',
         'Update-AllTheThings',
