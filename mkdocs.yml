@@ -13,7 +13,7 @@ repo_url: https://github.com/SamErde/PSPreWorkout
 repo_name: PSPreWorkout
 # edit_uri: edit/main/docs/
 # edit_uri_template:
-site_description: PowerShell Pre-workout: a special mix of tools (and experiments) to help jump start your PowerShell session! # meta tag to the generated HTML heade
+site_description: 'PowerShell Pre-workout: a mix of tools (and experiments) to help jump start your PowerShell session!' # meta tag to the generated HTML heade
 site_author: Sam Erde # meta tag to the generated HTML header
 copyright: (c) 2024 Sam Erde.
 # remote_branch:
