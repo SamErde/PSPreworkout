@@ -9,7 +9,8 @@ function New-Credential {
     .EXAMPLE
     $Credential = New-Credential
     #>
-    [CmdletBinding(SupportsShouldProcess)]
+    [CmdletBinding()]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'OK')]
     Write-Output "Create a Credential"
     $User = Read-Host -Prompt "User"
     $Password = Read-Host "Password for user $User" -AsSecureString
