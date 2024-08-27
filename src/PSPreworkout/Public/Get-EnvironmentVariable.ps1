@@ -53,9 +53,9 @@ function Get-EnvironmentVariable {
     }
 
     process {
-        if ( $PSBoundParameters.Contains($Variable) ) {
+        if ( $PSBoundParameters.Contains('Variable') ) {
             [Environment]::GetEnvironmentVariable($Variable, $Target)
-        } elseif (-not $PSBoundParameters.Contains($All) ) {
+        } elseif (-not $PSBoundParameters.Contains('All') ) {
             [Environment]::GetEnvironmentVariables()
         }
 
