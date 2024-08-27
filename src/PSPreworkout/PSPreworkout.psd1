@@ -7,7 +7,7 @@
     RootModule        = 'PSPreworkout.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.0.5'
+    ModuleVersion     = '0.1.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -70,7 +70,6 @@
         'Install-PowerShellISE',
         'New-Credential',
         'New-ScriptFromTemplate',
-        'New-ProfileWorkspace',
         'Set-EnvironmentVariable',
         'Update-AllTheThings'
     )
@@ -83,9 +82,10 @@
 
     # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
     AliasesToExport   = @(
-        'UATT',
         'genv',
-        'senv'
+        'senv',
+        'uatt',
+        'New-Script'
     )
 
     # DSC resources to export from this module
@@ -103,13 +103,13 @@
         PSData = @{
 
             # Tags applied to this module. These help with module discovery in online galleries.
-            # Tags = @()
+            Tags       = @('PowerShell', 'Windows', 'Utility', 'Tools')
 
             # A URL to the license for this module.
-            # LicenseUri = ''
+            LicenseUri = 'https://github.com/SamErde/PSPreworkout/blob/main/LICENSE'
 
             # A URL to the main website for this project.
-            # ProjectUri = ''
+            ProjectUri = 'https://github.com/SamErde/PSPreworkout'
 
             # A URL to an icon representing this module.
             # IconUri = ''
