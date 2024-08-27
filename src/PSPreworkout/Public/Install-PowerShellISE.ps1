@@ -16,9 +16,11 @@ function Install-PowerShellISE {
         To Do:
             - Check for Windows client vs Windows Server OS
             - Add parameter to make the Windows Update registry change optional
+            - Requires admin but adding that breaks the build
     #>
 
-    #Requires -RunAsAdministrator
+    [CmdletBinding()]
+    param ()
 
     if ((Get-WindowsCapability -Name 'Microsoft.Windows.PowerShell.ISE~~~~0.0.1.0' -Online).State -eq 'Installed') {
         Write-Output 'The Windows PowerShell ISE is already installed.'
