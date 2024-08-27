@@ -35,7 +35,7 @@ function Get-EnvironmentVariable {
     param (
         # The name of the environment variable to retrieve. If not specified, all environment variables are returned.
         [Parameter()]
-        [string]$Variable,
+        [string]$Name,
 
         # The target of the environment variable to retrieve. Defaults to Machine. (Process, User, or Machine)
         [Parameter()]
@@ -53,9 +53,9 @@ function Get-EnvironmentVariable {
     }
 
     process {
-        if ( $PSBoundParameters.Contains('Variable') ) {
-            [Environment]::GetEnvironmentVariable($Variable, $Target)
-        } elseif (-not $PSBoundParameters.Contains('All') ) {
+        if ( $PSBoundParameters.Keys.Contains('Name') ) {
+            [Environment]::GetEnvironmentVariable($Name, $Target)
+        } elseif (-not $PSBoundParameters.Keys.Contains('All') ) {
             [Environment]::GetEnvironmentVariables()
         }
 

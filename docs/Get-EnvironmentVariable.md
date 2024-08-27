@@ -13,7 +13,7 @@ Retrieves the value of an environment variable.
 ## SYNTAX
 
 ```
-Get-EnvironmentVariable [[-Variable] <String>] [[-Target] <EnvironmentVariableTarget>] [-All]
+Get-EnvironmentVariable [[-Name] <String>] [[-Target] <EnvironmentVariableTarget>] [-All]
  [<CommonParameters>]
 ```
 
@@ -31,9 +31,8 @@ Retrieves the value of the "PATH" environment variable.
 
 ## PARAMETERS
 
-### -Variable
+### -Name
 The name of the environment variable to retrieve.
-If not specified, all environment variables are returned.
 
 ```yaml
 Type: String
