@@ -25,7 +25,7 @@
     Copyright         = '(c) Sam Erde. All rights reserved.'
 
     # Description of the functionality provided by this module
-    Description       = 'A special mix of tools (and experiments) to help jump start your PowerShell session!'
+    Description       = 'A special mix of tools to help jump start your PowerShell session!'
 
     # Minimum version of the PowerShell engine required by this module
     PowerShellVersion = '5.1'
@@ -71,15 +71,15 @@
         'New-Credential',
         'New-ScriptFromTemplate',
         'New-ProfileWorkspace',
-        'Update-AllTheThings',
-        'Set-EnvironmentVariable'
+        'Set-EnvironmentVariable',
+        'Update-AllTheThings'
     )
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
-    CmdletsToExport   = ''
+    CmdletsToExport   = @()
 
     # Variables to export from this module
-    VariablesToExport = ''
+    VariablesToExport = @()
 
     # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
     AliasesToExport   = @(
