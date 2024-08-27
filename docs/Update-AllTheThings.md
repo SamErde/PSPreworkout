@@ -1,14 +1,14 @@
 ---
 external help file: PSPreworkout-help.xml
 Module Name: PSPreworkout
-online version: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_profiles
+online version: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_environment_variables
 schema: 2.0.0
 ---
 
 # Update-AllTheThings
 
 ## SYNOPSIS
-Update-AllTheThings: Update all the things!
+Update all the things!
 
 ## SYNTAX
 
@@ -67,7 +67,6 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 
 ## INPUTS
 
-### None. You can't pipe objects to Update-Everything.
 ## OUTPUTS
 
 ## NOTES

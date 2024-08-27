@@ -2,7 +2,7 @@
 Module Name: PSPreworkout
 Module Guid: 378339de-a0df-4d44-873b-4fd32c388e06
 Download Help Link: NA
-Help Version: 0.0.5
+Help Version: 0.1.0
 Locale: en-US
 ---
 
@@ -23,9 +23,6 @@ Install the Windows PowerShell ISE if you removed it after installing VS Code.
 ### [New-Credential](New-Credential.md)
 Create a new secure credential.
 
-### [New-ProfileWorkspace](New-ProfileWorkspace.md)
-Setup a folder and VS Code Workspace for maintaining your PowerShell profiles, VS Code settings, and Windows Terminal settings.
-
 ### [New-ScriptFromTemplate](New-ScriptFromTemplate.md)
 Create a new advanced function from a template.
 
@@ -33,7 +30,7 @@ Create a new advanced function from a template.
 Set environment variables.
 
 ### [Update-AllTheThings](Update-AllTheThings.md)
-Update-AllTheThings: Update all the things! Update-AllTheThings.ps1 
+Update all the things! Update-AllTheThings.ps1 
 
 
 
