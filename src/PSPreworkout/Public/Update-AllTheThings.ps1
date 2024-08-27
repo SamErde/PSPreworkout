@@ -1,19 +1,19 @@
 <#PSScriptInfo
 .DESCRIPTION A script to automatically update all PowerShell modules, PowerShell Help, and packages (apt, brew, chocolately, winget).
-.VERSION 0.4.2
+.VERSION 0.4.3
 .GUID 3a1a1ec9-0ef6-4f84-963d-be1505dab6a8
 .AUTHOR Sam Erde
 .COPYRIGHT (c) 2024 Sam Erde. All rights reserved.
 .TAGS Update PowerShell Windows macOS Linux Ubuntu
-.LICENSEURI https://github.com/SamErde/PowerShell-Pre-Workout/blob/main/LICENSE
-.PROJECTURI https://github.com/SamErde/PowerShell-Pre-Workout/
+.LICENSEURI https://github.com/SamErde/PSPreWorkout/blob/main/LICENSE
+.PROJECTURI https://github.com/SamErde/PSPreWorkout/
 .ICONURI
 #>
 
 function Update-AllTheThings {
     <#
     .SYNOPSIS
-    Update-AllTheThings: Update all the things!
+    Update all the things!
 
     .DESCRIPTION
     A script to automatically update all PowerShell modules, PowerShell Help, and packages (apt, brew, chocolately, winget).
@@ -22,16 +22,12 @@ function Update-AllTheThings {
     PS> Update-AllTheThings
 
     Updates all of the things it can!
-
-    .INPUTS
-    None. You can't pipe objects to Update-Everything.
-
     #>
 
     [CmdletBinding(SupportsShouldProcess)]
     [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', 'Update-AllTheThings', Justification = 'This is what we do.')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '', Justification = 'Interactive Use')]
-    [Alias('UATT')]
+    [Alias('uatt')]
     param (
         # Allow updates to pre-release PowerShell modules
         #[Parameter()]
@@ -41,7 +37,7 @@ function Update-AllTheThings {
 
     begin {
         # Spacing to get host output from script, winget, and choco all below the progress bar.
-        $Banner = @'
+        $Banner = @"
   __  __        __     __         ___   ____
  / / / /__  ___/ /__ _/ /____    / _ | / / /
 / /_/ / _ \/ _  / _ `/ __/ -_)  / __ |/ / /
@@ -50,9 +46,9 @@ function Update-AllTheThings {
 /_  __/ /  ___   /_  __/ /  (_)__  ___ ____
  / / / _ \/ -_)   / / / _ \/ / _ \/ _ `(_-<
 /_/ /_//_/\__/   /_/ /_//_/_/_//_/\_, /___/
-                                 /___/ v0.4.2
+                                 /___/ v0.4.3
 
-'@
+"@
         Write-Host $Banner
     } # end begin block
 
