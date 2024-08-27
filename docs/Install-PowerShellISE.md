@@ -13,7 +13,7 @@ Install the Windows PowerShell ISE if you removed it after installing VS Code.
 ## SYNTAX
 
 ```
-Install-PowerShellISE
+Install-PowerShellISE [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -34,6 +34,10 @@ Install-PowerShellISE
 
 ## PARAMETERS
 
+### CommonParameters
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -Verbose, -WarningAction, -WarningVariable, and -ProgressAction. 
+For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
+
 ## INPUTS
 
 ## OUTPUTS
@@ -42,5 +46,6 @@ Install-PowerShellISE
 To Do:
     - Check for Windows client vs Windows Server OS
     - Add parameter to make the Windows Update registry change optional
+    - Requires admin but adding that breaks the build
 
 ## RELATED LINKS
