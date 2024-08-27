@@ -34,7 +34,7 @@ A special mix of tools (and experiments) to help jump start your PowerShell sess
 &nbsp;
 
 <a name="updateallthethings"></a><div id='updateallthethings' />
-## Update-AllTheThings [:top:](#top "Go to the top of the page.")
+## Update-AllTheThings (#top "Go to the top of the page.")
 
 ### Synopsis
 
@@ -47,7 +47,7 @@ A script that works on Windows, Linux, and macOS to update PowerShell modules, P
 &nbsp;
 
 <a name="newprofileworkspace"></a><div id='newprofileworkspace' />
-## New-ProfileWorkspace [:top:](#top "Go to the top of the page.")
+## New-ProfileWorkspace (#top "Go to the top of the page.")
 
 <!-- markdownlint-disable no-duplicate-heading -->
 ### Synopsis
@@ -74,14 +74,14 @@ I wanted an easy way to maintain all of my CurrentUser PowerShell profiles, and 
 &nbsp;
 
 <a name="newdotsourcedprofile"></a><div id='newdotsourcedprofile' />
-## New-DotSourcedProfile [:top:](#top)
+## New-DotSourcedProfile
 
 I need to automate this one still, but it will be a script that creates one central profile script and then sets each CurrentUser profile to dot source that central profile for easier sync across all of your profiles for PowerShell, PowerShell ISE, Visual Studio Code, Windows PowerShell, etc.
 
 &nbsp;
 
 <a name='installohmyposh'></a><div id='installohmyposh' />
-## Install-OhMyPosh [:top:](#top)
+## Install-OhMyPosh
 
 <!-- markdownlint-disable no-duplicate-heading -->
 ### Synopsis
@@ -101,7 +101,7 @@ This is a quick installer for Oh My Posh. It's almost unnecessary because of how
 &nbsp;
 
 <a name="installpowershellise"></a><div id='installpowershellise' />
-## Install-PowerShellISE [:top:](#top)
+## Install-PowerShellISE
 
 Install the PowerShell ISE if it was removed. It can be helpful to keep the ISE installed for compatibility testing.
 
@@ -111,7 +111,7 @@ Install the PowerShell ISE if it was removed. It can be helpful to keep the ISE 
 &nbsp;
 
 <a name="getenvironmentvariable"></a><div id='getenvironmentvariable' />
-## Get-EnvironmentVariable [:top:](#top)
+## Get-EnvironmentVariable
 
 Easily get a specific environment variable or list all of them.
 
@@ -121,23 +121,9 @@ Easily get a specific environment variable or list all of them.
 &nbsp;
 
 <a name="setenvironmentvariable"></a><div id='setenvironmentvariable' />
-## Set-EnvironmentVariable [:top:](#top)
+## Set-EnvironmentVariable
 
 Set an environment variable.
 
 - Script: [Set-EnvironmentVariable.ps1](Set-EnvironmentVariable.ps1)
 - Status: Working :runner:
-
-&nbsp;
-
-<a name="getrecommendedmodules"></a><div id='getrecommendedmodules' />
-## Get-RecommendedModules [:top:](#top)
-
-Get a list of recommended PowerShell modules authored by Microsoft and the community.
-
-&nbsp;
-
-<a name="installrecommendedmodules"></a><div id='installrecommendedmodules' />
-## Install-RecommendedModules [:top:](#top)
-
-Install your choice of recommended PowerShell modules authored by Microsoft and the community.
