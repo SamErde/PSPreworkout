@@ -27,3 +27,13 @@ jobs:
         run: |
           mkdocs build
           mkdocs gh-deploy --force
+
+      - name: Copy Module MD to Repository README
+        shell: pwsh
+        run: Copy-Item ./docs/index.md ./README.md
+        # git-auto-commit-action only runs on Linux-based platforms.
+      - name: Commit Changes to Repo
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'Automated action: copy ModuleName.md from docs to repo README'
+          file_pattern: "README.md"
