@@ -43,7 +43,7 @@ A special mix of tools (and experiments) to help jump start your PowerShell sess
 &nbsp;
 
 <a name="updateallthethings"></a><div id='updateallthethings' />
-## Update-AllTheThings (#top "Go to the top of the page.")
+## Update-AllTheThings
 
 ### Synopsis
 
@@ -52,33 +52,6 @@ Run one command to update all of the things!
 ### Description
 
 A script that works on Windows, Linux, and macOS to update PowerShell modules, PowerShell help, and packages with apt, brew, Chocolately, and winget.
-
-&nbsp;
-
-<a name="newprofileworkspace"></a><div id='newprofileworkspace' />
-## New-ProfileWorkspace (#top "Go to the top of the page.")
-
-<!-- markdownlint-disable no-duplicate-heading -->
-### Synopsis
-<!-- markdownlint-enable no-duplicate-heading -->
-
-Setup a folder and VS Code Workspace for maintaining your PowerShell profiles, VS Code settings, and Windows Terminal settings.
-
-- Script: [New-ProfileWorkspace.ps1](New-ProfileWorkspace.ps1)
-- Status: Working :runner:
-
-<!-- markdownlint-disable no-duplicate-heading -->
-### Description
-<!-- markdownlint-enable no-duplicate-heading -->
-
-I wanted an easy way to maintain all of my CurrentUser PowerShell profiles, and my settings files for Visual Studio Code and Windows Terminal. There are probably easier ways to accomplish this, but my basic goal was to not have to hunt for these files across the file system in order to edit them. This _admittedly over-engineered_ idea creates a folder that contains:
-
-- Junction points to the locations of your CurrentUser PowerShell and Windows PowerShell folders
-- Junction points to the locations of your settings for VS Code and Windows Terminal
-- Structural artifacts in case you want to save this as a repository
-  - A Visual Studio Code workspace file that opens this new folder
-  - EditorConfig and Visual Studio Code settings files for consistent editing
-  - A .gitignore file in case you want to use this as a git repository (test?)
 
 &nbsp;
 
