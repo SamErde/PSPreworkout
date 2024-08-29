@@ -11,6 +11,8 @@ A special mix of tools (and experiments) to help jump start your PowerShell sess
 [![GitHub contributors](https://img.shields.io/github/contributors/samerde/PSPreworkout.svg)](https://github.com/samerde/PSPreworkout/graphs/contributors/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/ae92f0d929de494690e712b68fb3b52c)](https://app.codacy.com/gh/SamErde/PSPreworkout/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/SamErde/PSPreworkout/.github%2Fworkflows%2FBuild_ModuleRepo.yml)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/SamErde/PSPreworkout/.github%2Fworkflows%2FDeploy_MkDocs.yml?label=MkDocs) 
 ![PowerShell Gallery Version](https://img.shields.io/powershellgallery/v/PSPreworkout?include_prereleases)
 ![PowerShell Gallery Downloads](https://img.shields.io/powershellgallery/dt/PSPreworkout)
 <!-- badges-end -->
