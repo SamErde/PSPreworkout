@@ -7,8 +7,8 @@
 A special mix of tools (and experiments) to help jump start your PowerShell session!
 
 <!-- badges-start -->
-[![GitHub stars](https://img.shields.io/github/stars/samerde/powershell?cacheSeconds=3600)](https://github.com/samerde/PSPreworkout/stargazers/)
-[![GitHub contributors](https://img.shields.io/github/contributors/samerde/powershell.svg)](https://github.com/samerde/PSPreworkout/graphs/contributors/)
+[![GitHub stars](https://img.shields.io/github/stars/samerde/PSPreworkout?cacheSeconds=3600)](https://github.com/samerde/PSPreworkout/stargazers/)
+[![GitHub contributors](https://img.shields.io/github/contributors/samerde/PSPreworkout.svg)](https://github.com/samerde/PSPreworkout/graphs/contributors/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/ae92f0d929de494690e712b68fb3b52c)](https://app.codacy.com/gh/SamErde/PSPreworkout/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 ![PowerShell Gallery Version](https://img.shields.io/powershellgallery/v/PSPreworkout?include_prereleases)
