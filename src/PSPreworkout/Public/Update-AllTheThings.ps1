@@ -1,6 +1,6 @@
 <#PSScriptInfo
 .DESCRIPTION A script to automatically update all PowerShell modules, PowerShell Help, and packages (apt, brew, chocolately, winget).
-.VERSION 0.4.3
+.VERSION 0.4.4
 .GUID 3a1a1ec9-0ef6-4f84-963d-be1505dab6a8
 .AUTHOR Sam Erde
 .COPYRIGHT (c) 2024 Sam Erde. All rights reserved.
@@ -46,7 +46,7 @@ function Update-AllTheThings {
 /_  __/ /  ___   /_  __/ /  (_)__  ___ ____
  / / / _ \/ -_)   / / / _ \/ / _ \/ _ `(_-<
 /_/ /_//_/\__/   /_/ /_//_/_/_//_/\_, /___/
-                                 /___/ v0.4.3
+                                 /___/ v0.4.4
 
 "@
         Write-Host $Banner
@@ -219,7 +219,7 @@ function Update-AllTheThings {
         #endregion UpdateMacOS
 
         #region UpdateChocolatey
-        # Upgrade Chocolatey packages. Need to check for admin.
+        # Upgrade Chocolatey packages. Need to check for admin to avoid errors/warnings.
         if (Get-Command choco -ErrorAction SilentlyContinue) {
             # Update the outer progress bar
             $PercentCompleteOuter = 90
@@ -232,6 +232,9 @@ function Update-AllTheThings {
             }
             Write-Progress @ProgressParamOuter
             Write-Host '[7] Updating Chocolatey Packages'
+            # Add a function/parameter to run these two feature configuration options, which requires admin to set.
+            choco feature enable -n=allowGlobalConfirmation
+            choco feature disable --name=showNonElevatedWarnings
             choco upgrade chocolatey -y --limit-output --accept-license --no-color
             choco upgrade all -y --limit-output --accept-license --no-color
             # Padding to reset host before updating the progress bar.
