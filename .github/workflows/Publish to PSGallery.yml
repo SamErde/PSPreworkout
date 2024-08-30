@@ -8,8 +8,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Publish Module to PowerShell Gallery
-        uses: pcgeek86/publish-powershell-module-action@v20
-        id: publish-module
-        with:
-          NuGetApiKey: ${{ secrets.POWERSHELLGALLERY_PSPREWORKOUT }}
+#      - name: Publish Module to PowerShell Gallery
+#        uses: pcgeek86/publish-powershell-module-action@v20
+#        id: publish-module
+#        with:
+#          NuGetApiKey: ${{ secrets.POWERSHELLGALLERY_PSPREWORKOUT }}
+      - name: Publish PowerShell Module
+        shell: pwsh
+        run: |
+          Publish-Module -Path src/PSPreworkout -NuGetApiKey ${{ secrets.POWERSHELL_GALLERY_APIKEY }}
