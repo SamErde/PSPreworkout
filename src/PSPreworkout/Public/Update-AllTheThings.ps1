@@ -233,11 +233,16 @@ function Update-AllTheThings {
             Write-Progress @ProgressParamOuter
             Write-Host '[7] Updating Chocolatey Packages'
             # Add a function/parameter to run these two feature configuration options, which requires admin to set.
-            choco feature enable -n=allowGlobalConfirmation
-            choco feature disable --name=showNonElevatedWarnings
+            if (Test-IsElevated) {
+                choco feature enable -n=allowGlobalConfirmation
+                choco feature disable --name=showNonElevatedWarnings
+            } else {
+                Write-Verbose "Run once as an administrator to disable Chocoately's showNonElevatedWarnings." -Verbose
+            }
             choco upgrade chocolatey -y --limit-output --accept-license --no-color
             choco upgrade all -y --limit-output --accept-license --no-color
             # Padding to reset host before updating the progress bar.
+            Write-Host ' '
         } else {
             Write-Host '[7] Chocolatey is not installed. Skipping choco update.'
         }
