@@ -12,6 +12,8 @@ on:
       - '**.md'
       - 'docs/**'
   push:
+    paths:
+      - 'src/**'
     paths-ignore:
       - '**.md'
       - 'docs/**'
