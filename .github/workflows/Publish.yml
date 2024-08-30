@@ -10,4 +10,5 @@ jobs:
     - name: Publish PowerShell Module
       shell: pwsh
       run: |
-        ./publish.ps1 -PSGalleryApiKey ${{ secrets.POWERSHELLGALLERY_PSPREWORKOUT }}
+        #./publish.ps1 -PSGalleryApiKey ${{ secrets.POWERSHELLGALLERY_PSPREWORKOUT }}
+        Publish-Module -Path ./src/PSPreworkout {{ secrets.POWERSHELLGALLERY_PSPREWORKOUT }}
