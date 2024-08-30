@@ -4,7 +4,7 @@ param  (
 
 # Purpose: Cleans the module directory to prepare for publication to PowerShell Gallery
 $ErrorActionPreference = 'stop'
-$ModulePath = "$PSScriptRoot/../src/PSPreworkout"
+$ModulePath = "./src/PSPreworkout"
 
 # Build directory should work on Windows or Linux
 $BuildDirectory = $env:TEMP ? "$env:TEMP/Build" : "/tmp/Build"
