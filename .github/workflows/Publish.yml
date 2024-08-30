@@ -11,4 +11,5 @@ jobs:
       shell: pwsh
       run: |
         #./publish.ps1 -PSGalleryApiKey ${{ secrets.POWERSHELLGALLERY_PSPREWORKOUT }}
-        Publish-Module -Path ./src/PSPreworkout -NugetApiKey {{ secrets.POWERSHELLGALLERY_PSPREWORKOUT }}
+        # Publish-Module -Path ./src/PSPreworkout -NugetApiKey {{ secrets.POWERSHELLGALLERY_PSPREWORKOUT }}
+        Publish-Module -Path ./scc/PSPreworkout -NugetApiKey {{ secrets.POWERSHELLGALLERY_PSPREWORKOUT }}
