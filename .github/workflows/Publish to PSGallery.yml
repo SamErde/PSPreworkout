@@ -17,4 +17,5 @@ jobs:
         shell: pwsh
         run: |
           Write-Output "$pwd`n$PSScriptRoot"
-          Publish-Module -Path "$pwd/src/PSPreworkout" -NuGetApiKey ${{ secrets.POWERSHELLGALLERY_PSPREWORKOUT }}
+          ls
+         #Publish-Module -Path "$pwd/src/PSPreworkout" -NuGetApiKey ${{ secrets.POWERSHELLGALLERY_PSPREWORKOUT }}
