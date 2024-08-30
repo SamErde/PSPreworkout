@@ -3,9 +3,10 @@ name: Deploy MkDocs to GitHub Pages
 on:
   push:
     branches:
-      - main  # or the branch you want to deploy from
-    paths:
-      - '/docs/**'
+      - main  # The branch you want to deploy from
+    paths:  # Only deploy MkDocs when the contents of the docs folder change or when this workflow changes.
+      - 'docs/**'
+      - '.github/workflows/Deploy MkDocs.yml'
 
 jobs:
   build:
