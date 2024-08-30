@@ -10,4 +10,4 @@ jobs:
     - name: Publish PowerShell Module
       shell: pwsh
       run: |
-        Publish-Module -Path ./src/PSPreworkout -NugetApiKey {{ secrets.POWERSHELLGALLERY_KEY }}
+        Publish-Module -Path ./src/PSPreworkout -NugetApiKey {{ secrets.POWERSHELLGALLERY_PSPREWORKOUT }}
