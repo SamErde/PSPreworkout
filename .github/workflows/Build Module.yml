@@ -15,9 +15,9 @@ on:
     paths:
       - 'src/**'
       - '.github/workflows/Build Module.yml'
-    paths-ignore:
-      - '**.md'
-      - 'docs/**'
+    #paths-ignore:
+    #  - '**.md'
+    #  - 'docs/**'
 jobs:
   test:
     name: Run Tests
