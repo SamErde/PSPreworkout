@@ -7,7 +7,7 @@
     RootModule        = 'PSPreworkout.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.1.3'
+    ModuleVersion     = '0.1.4'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -71,6 +71,7 @@
         'New-Credential',
         'New-ScriptFromTemplate',
         'Set-EnvironmentVariable',
+        'Test-IsElevated',
         'Update-AllTheThings'
     )
 
@@ -82,6 +83,8 @@
 
     # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
     AliasesToExport   = @(
+        'isadmin',
+        'isroot',
         'gev',
         'sev',
         'uatt',

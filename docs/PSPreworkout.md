@@ -1,8 +1,8 @@
 ---
 Module Name: PSPreworkout
-Module Guid: 378339de-a0df-4d44-873b-4fd32c388e06 378339de-a0df-4d44-873b-4fd32c388e06
+Module Guid: 378339de-a0df-4d44-873b-4fd32c388e06
 Download Help Link: NA
-Help Version: 0.1.3
+Help Version: 0.1.4
 Locale: en-US
 ---
 
@@ -28,6 +28,9 @@ Create a new advanced function from a template.
 
 ### [Set-EnvironmentVariable](Set-EnvironmentVariable.md)
 Set environment variables.
+
+### [Test-IsElevated](Test-IsElevated.md)
+Check if you are running an elevated shell with administrator or root privileges.
 
 ### [Update-AllTheThings](Update-AllTheThings.md)
 Update all the things! Update-AllTheThings.ps1 
