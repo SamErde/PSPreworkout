@@ -1,3 +1,5 @@
+name: Publish Module to PowerShell Gallery
+
 on:
   workflow_dispatch:
 
