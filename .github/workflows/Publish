@@ -1,0 +1,14 @@
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clone Project Files
+      uses: actions/checkout@v3.5.0
+    - name: Publish PowerShell Module
+      shell: pwsh
+      run: |
+        ./publish.ps1 -PSGalleryApiKey ${{ secrets.POWERSHELLGALLERY_PSPREWORKOUT }}
