@@ -11,8 +11,9 @@ A special mix of tools (and experiments) to help jump start your PowerShell sess
 ![PowerShell Gallery Version](https://img.shields.io/powershellgallery/v/PSPreworkout?include_prereleases)
 ![PowerShell Gallery Downloads](https://img.shields.io/powershellgallery/dt/PSPreworkout)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
-
 [![GitHub contributors](https://img.shields.io/github/contributors/samerde/PSPreworkout.svg)](https://github.com/samerde/PSPreworkout/graphs/contributors/)
+
+![GitHub top language](https://img.shields.io/github/languages/top/SamErde/PSPreworkout)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/ae92f0d929de494690e712b68fb3b52c)](https://app.codacy.com/gh/SamErde/PSPreworkout/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/SamErde/PSPreworkout/.github%2Fworkflows%2FBuild%20Module.yml)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/SamErde/PSPreworkout/.github%2Fworkflows%2FDeploy%20MkDocs.yml?label=MkDocs) 
