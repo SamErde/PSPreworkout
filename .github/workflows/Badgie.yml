@@ -1,8 +1,8 @@
 name: Badgie
 
 on:
-  push:
-  pull_request:
+  #push:
+  #pull_request:
   workflow_dispatch:
 
 jobs:
@@ -18,7 +18,7 @@ jobs:
 
     - name: Run Badgie
       run: |
-        docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace brettops/badgie:latest
+        docker run --rm -v brettops/badgie:latest
 
     - name: Commit and push changes
       run: |
