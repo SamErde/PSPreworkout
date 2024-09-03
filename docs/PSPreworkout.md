@@ -2,7 +2,7 @@
 Module Name: PSPreworkout
 Module Guid: 378339de-a0df-4d44-873b-4fd32c388e06
 Download Help Link: NA
-Help Version: 0.1.4
+Help Version: 0.2.0
 Locale: en-US
 ---
 
@@ -13,6 +13,9 @@ A special mix of tools to help jump start your PowerShell session!
 ## PSPreworkout Cmdlets
 ### [Get-EnvironmentVariable](Get-EnvironmentVariable.md)
 Retrieves the value of an environment variable.
+
+### [Initialize-Configuration](Initialize-Configuration.md)
+Initialize configuration your PowerShell environment and git.
 
 ### [Install-OhMyPosh](Install-OhMyPosh.md)
 Install Oh My Posh and add it to your profile.
