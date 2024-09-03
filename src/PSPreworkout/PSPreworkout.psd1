@@ -7,7 +7,7 @@
     RootModule        = 'PSPreworkout.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.1.5'
+    ModuleVersion     = '0.2.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -66,6 +66,7 @@
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
     FunctionsToExport = @(
         'Get-EnvironmentVariable',
+        'Initialize-Configuration',
         'Install-OhMyPosh',
         'Install-PowerShellISE',
         'New-Credential',
@@ -83,6 +84,8 @@
 
     # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
     AliasesToExport   = @(
+        'Init-Config',
+        'Init-Configuration',
         'isadmin',
         'isroot',
         'gev',
@@ -115,7 +118,7 @@
             ProjectUri = 'https://github.com/SamErde/PSPreworkout'
 
             # A URL to an icon representing this module.
-            # IconUri = ''
+            IconUri    = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/media/PSPreworkout-Icon.png'
 
             # ReleaseNotes of this module
             # ReleaseNotes = ''
