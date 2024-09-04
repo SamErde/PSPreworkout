@@ -1,6 +1,6 @@
 <#PSScriptInfo
 .DESCRIPTION A script to automatically update all PowerShell modules, PowerShell Help, and packages (apt, brew, chocolately, winget).
-.VERSION 0.4.5
+.VERSION 0.5.2
 .GUID 3a1a1ec9-0ef6-4f84-963d-be1505dab6a8
 .AUTHOR Sam Erde
 .COPYRIGHT (c) 2024 Sam Erde. All rights reserved.
@@ -33,6 +33,32 @@ function Update-AllTheThings {
         #[Parameter()]
         #[switch]
         #$AllowPrerelease
+
+        # Skip the step that updates PowerShell modules
+        [Parameter()]
+        [switch]
+        $SkipModules,
+
+        # Skip the step that updates PowerShell scripts
+        [Parameter()]
+        [switch]
+        $SkipScripts,
+
+        # Skip the step that updates PowerShell help
+        [Parameter()]
+        [switch]
+        $SkipHelp,
+
+        # Skip the step that updates WinGet packages
+        [Parameter()]
+        [switch]
+        $SkipWinGet,
+
+        # Skip the step that updates Chocolatey packages
+        [Parameter()]
+        [Alias('Skip-Choco')]
+        [switch]
+        $SkipChocolatey
     )
 
     begin {
@@ -46,13 +72,16 @@ function Update-AllTheThings {
 /_  __/ /  ___   /_  __/ /  (_)__  ___ ____
  / / / _ \/ -_)   / / / _ \/ / _ \/ _ `(_-<
 /_/ /_//_/\__/   /_/ /_//_/_/_//_/\_, /___/
-                                 /___/ v0.4.5
+                                 /___/ v0.5.2
 
 "@
         Write-Host $Banner
     } # end begin block
 
     process {
+        $Skip = @($SkipModules, $SkipScripts, $SkipHelp, $SkipWinGet, $SkipChocolatey)
+        [void]$Skip
+
         Write-Verbose 'Set the PowerShell Gallery as a trusted installation source.'
         Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
         if (Get-Command -Name Set-PSResourceRepository -ErrorAction SilentlyContinue) {
@@ -75,6 +104,11 @@ function Update-AllTheThings {
         $Modules = (Get-InstalledModule)
         $ModuleCount = $Modules.Count
 
+        # ##### Add a section for installed scripts +++++
+        if (-not $SkipScripts) {
+            Update-Script
+        }
+        # ##### Add a section for installed scripts +++++
 
         # Update all PowerShell modules
         Write-Host "[2] Updating $ModuleCount PowerShell Modules"
@@ -108,16 +142,14 @@ function Update-AllTheThings {
             }
             Write-Progress @ProgressParam1
 
+            if ($module.Version -match 'alpha|beta|prelease|preview') {
+                Write-Verbose "`t`tSkipping $($module.Name) because a prerelease version is currently installed.)"
+                continue
+            }
+
             # Update the current module
             try {
                 Update-Module $module.Name
-                <# Test targeted prerelease updates
-                if ($module.Version -match 'alpha|beta|prelease|preview') {
-                    Update-Module $module.Name -AllowPrerelease -ErrorAction SilentlyContinue
-                } else {
-                    Update-Module $module.Name -ErrorAction SilentlyContinue
-                }
-                #>
             } catch [Microsoft.PowerShell.Commands.WriteErrorException] {
                 Write-Verbose $_
             }
@@ -162,10 +194,10 @@ function Update-AllTheThings {
                 $Result = $Host.UI.PromptForChoice($Title, $Message, $Options, 1)
                 switch ($Result) {
                     0 {
-                        $SkipServer = $false
+                        continue
                     }
                     1 {
-                        $SkipServer = $true
+                        $SkipWinGet = $SkipChocolatey = $true
                     }
                 }
             }
@@ -182,7 +214,7 @@ function Update-AllTheThings {
                 PercentComplete  = $PercentCompleteOuter
             }
             Write-Progress @ProgressParamOuter
-            if (Get-Command winget -and -not $SkipServer) {
+            if ((Get-Command winget -ErrorAction SilentlyContinue) -and -not $SkipWinGet) {
                 winget upgrade --silent --scope user --accept-package-agreements --accept-source-agreements --all
             } else {
                 Write-Host '[4] WinGet was not found or this is a server. Skipping winget update.'
@@ -221,7 +253,7 @@ function Update-AllTheThings {
 
         #region UpdateChocolatey
         # Upgrade Chocolatey packages. Need to check for admin to avoid errors/warnings.
-        if (Get-Command choco -ErrorAction SilentlyContinue -and -not $SkipServer) {
+        if ((Get-Command choco -ErrorAction SilentlyContinue) -and -not $SkipChocolatey) {
             # Update the outer progress bar
             $PercentCompleteOuter = 90
             $ProgressParamOuter = @{
