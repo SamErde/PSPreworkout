@@ -16,4 +16,3 @@ If you discover a vulnerability in PSPreworkout, please follow the _following pr
    Please **do not disclose the vulnerability publicly** until a fix is released!
 
 4. Once we have either a) published a fix, or b) declined to address the vulnerability for whatever reason, you are free to publicly disclose it.
-
