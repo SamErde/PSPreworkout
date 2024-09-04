@@ -27,7 +27,7 @@ jobs:
         release_name: Release ${{ github.ref }}
         draft: true
         prerelease: false
-        artifacts: "PSPreworkout-${{ tag_name }}.zip"
+        artifacts: "PSPreworkout-${{ github.ref }}.zip"
         generateReleaseNotes: true
 
     #- name: Get Repo Name
