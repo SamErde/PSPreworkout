@@ -17,34 +17,34 @@ jobs:
     - uses: actions/checkout@v4
     - uses: ncipollo/release-action@v1
 
+    - name: Get Repo Name
+      id: get_repo_name
+      run: |
+        # Extract repo name from GITHUB_REPOSITORY variable
+        repo_fullname="${{ github.repository }}"
+        repo_name="${repo_fullname##*/}"
+        echo "REPO_NAME=${repo_name}" >> $GITHUB_ENV
+
+    - name: Get Tag Name
+      id: get_tag_name
+      run: |
+        # Extract tag or branch name from GITHUB_REF
+        tag_name="${{ github.ref }}"
+        tag_name="${tag_name#refs/tags/}"
+        echo "TAG_NAME=${tag_name}" >> $GITHUB_ENV
+
     - name: Create GitHub Release
       id: create_release
       uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #env:
+      #  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ github.ref }}
         release_name: Release ${{ github.ref }}
         draft: true
         prerelease: false
-        artifacts: "PSPreworkout-${{ github.ref }}.zip"
+        artifacts: "${REPO_NAME}/${REPO_NAME}-${TAG_NAME}.zip"
         generateReleaseNotes: true
-
-    #- name: Get Repo Name
-    #  id: get_repo_name
-    #  run: |
-    #    # Extract repo name from GITHUB_REPOSITORY variable
-    #    repo_fullname="${{ github.repository }}"
-    #    repo_name="${repo_fullname##*/}"
-    #    echo "REPO_NAME=${repo_name}" >> $GITHUB_ENV
-
-    #- name: Get Tag Name
-    #  id: get_tag_name
-    #  run: |
-    #    # Extract tag or branch name from GITHUB_REF
-    #    tag_name="${{ github.ref }}"
-    #    tag_name="${tag_name#refs/tags/}"
-    #    echo "TAG_NAME=${tag_name}" >> $GITHUB_ENV
 
   #  - name: Create Release
   #    run: |
