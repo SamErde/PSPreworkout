@@ -32,8 +32,8 @@ Install-OhMyPosh
 ### -WingetSource
 Specify which source to install from.
 
-    winget  - Install from winget (default).
-    msstore - Install from the Microsoft Store.
+ - winget  - Install from winget (default).
+ - msstore - Install from the Microsoft Store.
 
 ```yaml
 Type: String
@@ -50,10 +50,10 @@ Accept wildcard characters: False
 ### -Method
 Specify which tool to install Oh My Posh with.
 
-    chocolatey
-    direct (default)
-    scoop
-    winget
+- chocolatey
+- direct (default)
+- scoop
+- winget
 
 ```yaml
 Type: String
@@ -85,8 +85,8 @@ Accept wildcard characters: False
 ### -Font
 Choose a nerd font to install.
 
-    Default - Installs "Meslo" as the default nerd font.
-    Select  - Lets you choose a nerd font from the list.
+- Default - Installs "Meslo" as the default nerd font.
+- Select  - Lets you choose a nerd font from the list.
 
 ```yaml
 Type: String
