@@ -1,0 +1,68 @@
+name: Create and Publish Release # and Publish PowerShell Module
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # Triggers the workflow on version tags
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+
+    - uses: actions/checkout@v4
+    - uses: ncipollo/release-action
+
+    - name: Create GitHub Release
+      id: create_release
+      uses: actions/create-release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: true
+        prerelease: false
+        artifacts: "PSPreworkout-${{ tag_name }}.zip"
+        generateReleaseNotes: true
+
+    #- name: Get Repo Name
+    #  id: get_repo_name
+    #  run: |
+    #    # Extract repo name from GITHUB_REPOSITORY variable
+    #    repo_fullname="${{ github.repository }}"
+    #    repo_name="${repo_fullname##*/}"
+    #    echo "REPO_NAME=${repo_name}" >> $GITHUB_ENV
+
+    #- name: Get Tag Name
+    #  id: get_tag_name
+    #  run: |
+    #    # Extract tag or branch name from GITHUB_REF
+    #    tag_name="${{ github.ref }}"
+    #    tag_name="${tag_name#refs/tags/}"
+    #    echo "TAG_NAME=${tag_name}" >> $GITHUB_ENV
+
+  #  - name: Create Release
+  #    run: |
+  #      echo "Repository Name: $REPO_NAME"
+  #      echo "Tag Name: $TAG_NAME"
+  #      git archive --format zip --prefix="${REPO_NAME}/" --output "${REPO_NAME}-${TAG_NAME}.zip" HEAD
+  #      echo "REPO_NAME=${REPO_NAME}" >> $GITHUB_ENV
+  #      echo "TAG_NAME=${TAG_NAME}" >> $GITHUB_ENV
+
+  #  - name: Create Zip Files
+  #    run: |
+  #      mkdir output
+  #      zip -r output/module.zip . -x '*.git*' -x '.github/*'
+
+
+  #  - name: Publish to PowerShell Gallery
+  #    run: |
+  #      Install-Module -Name PowerShellGet -Force -AllowClobber
+  #      Publish-Module -Path ./output/module.zip -NuGetApiKey ${{ secrets.POWERSHELLGALLERY_KEY }}
+  #    env:
+  #      PS_GALLERY_KEY: ${{ secrets.POWERSHELLGALLERY_KEY }}
