@@ -1,6 +1,6 @@
 <#PSScriptInfo
 .DESCRIPTION A script to automatically update all PowerShell modules, PowerShell Help, and packages (apt, brew, chocolately, winget).
-.VERSION 0.5.2
+.VERSION 0.5.6
 .GUID 3a1a1ec9-0ef6-4f84-963d-be1505dab6a8
 .AUTHOR Sam Erde
 .COPYRIGHT (c) 2024 Sam Erde. All rights reserved.
@@ -72,16 +72,13 @@ function Update-AllTheThings {
 /_  __/ /  ___   /_  __/ /  (_)__  ___ ____
  / / / _ \/ -_)   / / / _ \/ / _ \/ _ `(_-<
 /_/ /_//_/\__/   /_/ /_//_/_/_//_/\_, /___/
-                                 /___/ v0.5.2
+                                 /___/ v0.5.6
 
 "@
         Write-Host $Banner
     } # end begin block
 
     process {
-        $Skip = @($SkipModules, $SkipScripts, $SkipHelp, $SkipWinGet, $SkipChocolatey)
-        [void]$Skip
-
         Write-Verbose 'Set the PowerShell Gallery as a trusted installation source.'
         Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
         if (Get-Command -Name Set-PSResourceRepository -ErrorAction SilentlyContinue) {
@@ -89,8 +86,9 @@ function Update-AllTheThings {
         }
 
         #region UpdatePowerShell
-        # Get all installed PowerShell modules
-        Write-Host '[1] Getting Installed PowerShell Modules'
+
+        # ==================== Update PowerShell Modules ====================
+
         # Update the outer progress bar
         $PercentCompleteOuter = 1
         $ProgressParamOuter = @{
@@ -101,28 +99,29 @@ function Update-AllTheThings {
             PercentComplete  = $PercentCompleteOuter
         }
         Write-Progress @ProgressParamOuter
-        $Modules = (Get-InstalledModule)
-        $ModuleCount = $Modules.Count
 
-        # ##### Add a section for installed scripts +++++
-        if (-not $SkipScripts) {
-            Update-Script
+        if (-not $SkipModules) {
+            # Get all installed PowerShell modules
+            Write-Host '[1] Getting Installed PowerShell Modules'
+            $Modules = (Get-InstalledModule)
+            $ModuleCount = $Modules.Count
+            Write-Host "[2] Updating $ModuleCount PowerShell Modules"
+        } else {
+            Write-Host '[1] Skipping PowerShell Modules'
         }
-        # ##### Add a section for installed scripts +++++
 
-        # Update all PowerShell modules
-        Write-Host "[2] Updating $ModuleCount PowerShell Modules"
         # Estimate 10% progress so far and 70% at the next step
         $PercentCompleteOuter_Modules = 10
         [int]$Module_i = 0
 
+        # Update all PowerShell modules
         foreach ($module in $Modules) {
             # Update the module loop counter and percent complete for both progress bars
             ++$Module_i
             [double]$PercentCompleteInner = [math]::ceiling( (($Module_i / $ModuleCount) * 100) )
             [double]$PercentCompleteOuter = [math]::ceiling( $PercentCompleteOuter_Modules + (60 * ($PercentCompleteInner / 100)) )
 
-            # Update the outer progress bar
+            # Update the outer progress bar while updating modules
             $ProgressParamOuter = @{
                 Id              = 0
                 Activity        = 'Update Everything'
@@ -131,7 +130,7 @@ function Update-AllTheThings {
             }
             Write-Progress @ProgressParamOuter
 
-            # Update the child progress bar
+            # Update the child progress bar while updating modules
             $ProgressParam1 = @{
                 Id               = 1
                 ParentId         = 0
@@ -142,25 +141,36 @@ function Update-AllTheThings {
             }
             Write-Progress @ProgressParam1
 
+            # Do not update prerelease modules
             if ($module.Version -match 'alpha|beta|prelease|preview') {
-                Write-Verbose "`t`tSkipping $($module.Name) because a prerelease version is currently installed.)"
+                Write-Information "`t`tSkipping $($module.Name) because a prerelease version is currently installed." -InformationAction Continue
                 continue
             }
 
-            # Update the current module
+            # Finally update the current module
             try {
                 Update-Module $module.Name
             } catch [Microsoft.PowerShell.Commands.WriteErrorException] {
                 Write-Verbose $_
             }
         }
-        # Complete the child progress bar
+
+        # ##### Add a section for installed scripts +++++
+        if (-not $SkipScripts) {
+            Write-Host '[2] Updating PowerShell Scripts'
+            Update-Script
+        } else {
+            Write-Host '[2] Skipping PowerShell Scripts'
+        }
+        # ##### Add a section for installed scripts +++++
+
+        # Complete the child progress bar after updating modules
         Write-Progress -Id 1 -Activity 'Updating PowerShell Modules' -Completed
 
 
-        # Update PowerShell Help
-        Write-Host '[3] Updating PowerShell Help'
-        # Update the outer progress bar
+        # ==================== Update PowerShell Help ====================
+
+        # Update the outer progress bar while updating help
         $PercentCompleteOuter = 70
         $ProgressParamOuter = @{
             Id               = 0
@@ -170,15 +180,22 @@ function Update-AllTheThings {
             PercentComplete  = $PercentCompleteOuter
         }
         Write-Progress @ProgressParamOuter
-        # Fixes error with culture ID 127 (Invariant Country), which is not associated with any language
-        if ((Get-Culture).LCID -eq 127) {
-            Update-Help -UICulture en-US -ErrorAction SilentlyContinue
+
+        if (-not $SkipHelp) {
+            Write-Host '[3] Updating PowerShell Help'
+            # Fixes error with culture ID 127 (Invariant Country), which is not associated with any language
+            if ((Get-Culture).LCID -eq 127) {
+                Update-Help -UICulture en-US -ErrorAction SilentlyContinue
+            } else {
+                Update-Help -ErrorAction SilentlyContinue
+            }
         } else {
-            Update-Help -ErrorAction SilentlyContinue
+            Write-Host '[3] Skipping PowerShell Help'
         }
         #endregion UpdatePowerShell
 
         #region UpdateWinget
+        # >>> Create a section to check OS and client/server OS at the top of the script <<< #
         if ($IsWindows -or ($PSVersionTable.PSVersion -ge [version]'5.1')) {
 
             if ((Get-CimInstance -ClassName CIM_OperatingSystem).Caption -match 'Server') {
@@ -202,22 +219,27 @@ function Update-AllTheThings {
                 }
             }
 
-            # Update all winget packages
-            Write-Host '[4] Updating Winget Packages'
-            # Update the outer progress bar
-            $PercentCompleteOuter = 80
-            $ProgressParamOuter = @{
-                Id               = 0
-                Activity         = 'Update Everything'
-                CurrentOperation = 'Updating Winget Packages'
-                Status           = "Progress: $PercentCompleteOuter`% Complete"
-                PercentComplete  = $PercentCompleteOuter
-            }
-            Write-Progress @ProgressParamOuter
-            if ((Get-Command winget -ErrorAction SilentlyContinue) -and -not $SkipWinGet) {
-                winget upgrade --silent --scope user --accept-package-agreements --accept-source-agreements --all
+            if (-not $SkipWinGet) {
+                # Update all winget packages
+                Write-Host '[4] Updating Winget Packages'
+                # Update the outer progress bar for winget section
+                $PercentCompleteOuter = 80
+                $ProgressParamOuter = @{
+                    Id               = 0
+                    Activity         = 'Update Everything'
+                    CurrentOperation = 'Updating Winget Packages'
+                    Status           = "Progress: $PercentCompleteOuter`% Complete"
+                    PercentComplete  = $PercentCompleteOuter
+                }
+                Write-Progress @ProgressParamOuter
+                if (Get-Command winget -ErrorAction SilentlyContinue) {
+                    winget upgrade --silent --scope user --accept-package-agreements --accept-source-agreements --all
+                } else {
+                    Write-Host '[4] WinGet was not found. Skipping WinGet update.'
+                }
             } else {
-                Write-Host '[4] WinGet was not found or this is a server. Skipping winget update.'
+                Write-Host '[3] Skipping WinGet'
+                continue
             }
         } else {
             Write-Verbose '[4] Not Windows. Skipping WinGet.'
@@ -277,13 +299,14 @@ function Update-AllTheThings {
             # Padding to reset host before updating the progress bar.
             Write-Host ' '
         } else {
-            Write-Host '[7] Chocolatey is not installed. Skipping choco update.'
+            Write-Host '[7] Skipping Chocolatey'
         }
         #endregion UpdateChocolatey
 
     } # end process block
 
     end {
+        Write-Host 'Done.'
         # Update the outer progress bar
         $PercentCompleteOuter = 100
         $ProgressParamOuter = @{
