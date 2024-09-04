@@ -9,16 +9,16 @@ function Install-OhMyPosh {
     .PARAMETER Method
         Specify which tool to install Oh My Posh with.
 
-            chocolatey
-            direct (default)
-            scoop
-            winget
+        - chocolatey
+        - direct (default)
+        - scoop
+        - winget
 
     .PARAMETER WingetSource
         Specify which source to install from.
 
-            winget  - Install from winget (default).
-            msstore - Install from the Microsoft Store.
+         - winget  - Install from winget (default).
+         - msstore - Install from the Microsoft Store.
 
     .PARAMETER InstallNerdFont
         Use this switch if you want to install a nerd font for full glyph capabilities in your prompt.
@@ -26,8 +26,8 @@ function Install-OhMyPosh {
     .PARAMETER Font
         Choose a nerd font to install.
 
-            Default - Installs "Meslo" as the default nerd font.
-            Select  - Lets you choose a nerd font from the list.
+        - Default - Installs "Meslo" as the default nerd font.
+        - Select  - Lets you choose a nerd font from the list.
 
     .EXAMPLE
         Install-OhMyPosh
