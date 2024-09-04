@@ -13,7 +13,8 @@ Update all the things!
 ## SYNTAX
 
 ```
-Update-AllTheThings [-WhatIf] [-Confirm] [<CommonParameters>]
+Update-AllTheThings [-SkipModules] [-SkipScripts] [-SkipHelp] [-SkipWinGet] [-SkipChocolatey]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -29,6 +30,81 @@ Update-AllTheThings
 Updates all of the things it can!
 
 ## PARAMETERS
+
+### -SkipModules
+Skip the step that updates PowerShell modules
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SkipScripts
+Skip the step that updates PowerShell scripts
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SkipHelp
+Skip the step that updates PowerShell help
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SkipWinGet
+Skip the step that updates WinGet packages
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SkipChocolatey
+Skip the step that updates Chocolatey packages
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: Skip-Choco
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
 
 ### -WhatIf
 Shows what would happen if the cmdlet runs.
