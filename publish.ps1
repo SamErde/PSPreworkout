@@ -1,8 +1,8 @@
 param  (
-  [string] $PSGalleryApiKey
+    [string] $PSGalleryApiKey
 )
 
 $ErrorActionPreference = 'stop'
-$ModulePath = "./src/PSPreworkout"
+$ModulePath = './src/PSPreworkout'
 
 Publish-Module -Path $ModulePath -NuGetApiKey $PSGalleryApiKey
