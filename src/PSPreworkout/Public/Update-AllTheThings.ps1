@@ -1,6 +1,6 @@
 <#PSScriptInfo
 .DESCRIPTION A script to automatically update all PowerShell modules, PowerShell Help, and packages (apt, brew, chocolately, winget).
-.VERSION 0.4.4
+.VERSION 0.4.5
 .GUID 3a1a1ec9-0ef6-4f84-963d-be1505dab6a8
 .AUTHOR Sam Erde
 .COPYRIGHT (c) 2024 Sam Erde. All rights reserved.
@@ -46,7 +46,7 @@ function Update-AllTheThings {
 /_  __/ /  ___   /_  __/ /  (_)__  ___ ____
  / / / _ \/ -_)   / / / _ \/ / _ \/ _ `(_-<
 /_/ /_//_/\__/   /_/ /_//_/_/_//_/\_, /___/
-                                 /___/ v0.4.4
+                                 /___/ v0.4.5
 
 "@
         Write-Host $Banner
@@ -148,6 +148,7 @@ function Update-AllTheThings {
 
         #region UpdateWinget
         if ($IsWindows -or ($PSVersionTable.PSVersion -ge [version]'5.1')) {
+
             if ((Get-CimInstance -ClassName CIM_OperatingSystem).Caption -match 'Server') {
                 # If on Windows Server, prompt to continue before automatically updating packages.
                 Write-Warning -Message 'This is a server and updates could affect production systems. Do you want to continue with updating packages?'
@@ -161,10 +162,10 @@ function Update-AllTheThings {
                 $Result = $Host.UI.PromptForChoice($Title, $Message, $Options, 1)
                 switch ($Result) {
                     0 {
-                        continue
+                        $SkipServer = $false
                     }
                     1 {
-                        break
+                        $SkipServer = $true
                     }
                 }
             }
@@ -181,13 +182,13 @@ function Update-AllTheThings {
                 PercentComplete  = $PercentCompleteOuter
             }
             Write-Progress @ProgressParamOuter
-            if (Get-Command winget) {
+            if (Get-Command winget -and -not $SkipServer) {
                 winget upgrade --silent --scope user --accept-package-agreements --accept-source-agreements --all
             } else {
-                Write-Host '[4] Winget was not found. Skipping winget update.'
+                Write-Host '[4] WinGet was not found or this is a server. Skipping winget update.'
             }
         } else {
-            Write-Verbose '[4] Not Windows. Skipping section.'
+            Write-Verbose '[4] Not Windows. Skipping WinGet.'
         }
         #endregion UpdateWinget
 
@@ -220,7 +221,7 @@ function Update-AllTheThings {
 
         #region UpdateChocolatey
         # Upgrade Chocolatey packages. Need to check for admin to avoid errors/warnings.
-        if (Get-Command choco -ErrorAction SilentlyContinue) {
+        if (Get-Command choco -ErrorAction SilentlyContinue -and -not $SkipServer) {
             # Update the outer progress bar
             $PercentCompleteOuter = 90
             $ProgressParamOuter = @{
