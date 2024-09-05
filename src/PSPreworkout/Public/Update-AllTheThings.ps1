@@ -58,7 +58,7 @@ function Update-AllTheThings {
         [Parameter()]
         [Alias('Skip-Choco')]
         [switch]
-        $SkipChocolatey
+        $IncludeChocolatey
     )
 
     begin {
@@ -151,6 +151,7 @@ function Update-AllTheThings {
             try {
                 Update-Module $module.Name
             } catch [Microsoft.PowerShell.Commands.WriteErrorException] {
+                # Add a catch for mismatched certificates between module versions.
                 Write-Verbose $_
             }
         }
@@ -275,7 +276,7 @@ function Update-AllTheThings {
 
         #region UpdateChocolatey
         # Upgrade Chocolatey packages. Need to check for admin to avoid errors/warnings.
-        if ((Get-Command choco -ErrorAction SilentlyContinue) -and -not $SkipChocolatey) {
+        if ((Get-Command choco -ErrorAction SilentlyContinue) -and $IncludeChocolatey) {
             # Update the outer progress bar
             $PercentCompleteOuter = 90
             $ProgressParamOuter = @{
@@ -289,6 +290,7 @@ function Update-AllTheThings {
             Write-Host '[7] Updating Chocolatey Packages'
             # Add a function/parameter to run these two feature configuration options, which requires admin to set.
             if (Test-IsElevated) {
+                # Oops, this depends on PSPreworkout being installed or that function otherwise being available.
                 choco feature enable -n=allowGlobalConfirmation
                 choco feature disable --name=showNonElevatedWarnings
             } else {
