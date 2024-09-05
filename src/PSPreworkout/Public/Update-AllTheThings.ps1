@@ -215,7 +215,7 @@ function Update-AllTheThings {
                         continue
                     }
                     1 {
-                        $SkipWinGet = $SkipChocolatey = $true
+                        $SkipWinGet = $true
                     }
                 }
             }
