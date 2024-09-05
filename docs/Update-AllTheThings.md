@@ -13,7 +13,7 @@ Update all the things!
 ## SYNTAX
 
 ```
-Update-AllTheThings [-SkipModules] [-SkipScripts] [-SkipHelp] [-SkipWinGet] [-SkipChocolatey]
+Update-AllTheThings [-SkipModules] [-SkipScripts] [-SkipHelp] [-SkipWinGet] [-IncludeChocolatey]
  [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
@@ -91,7 +91,7 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -SkipChocolatey
+### -IncludeChocolatey
 Skip the step that updates Chocolatey packages
 
 ```yaml
