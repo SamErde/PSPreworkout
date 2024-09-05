@@ -5,6 +5,7 @@
 # https://mkdocs.readthedocs.io/en/0.15.2/user-guide/styling-your-docs/
 # https://example-mkdocs-basic.readthedocs.io/en/latest/
 # https://github.com/mkdocs/mkdocs/blob/master/mkdocs.yml
+# https://squidfunk.github.io/mkdocs-material/creating-your-site/
 # mkdocs.yml
 
 site_name: "PSPreworkout PowerShell Module"
@@ -22,17 +23,68 @@ docs_dir: "docs"
 # site_dir:
 # extra_css:
 # extra_javascript:
+# markdown_extensions:
+# Python Markdown
+# - admonition
+# - toc:
+#     permalink: true
+# code highlighting
+# - pymdownx.highlight:
+#     use_pygments: true
+# - pymdownx.highlight:
+#     anchor_linenums: true
+# - pymdownx.inlinehilite
+# - pymdownx.snippets
+# - pymdownx.superfences
+
 # extra_templates:
 # extra:
-theme: "material"
-# theme:
-#     name: readthedocs
-#     locale: en
-# custom_dir: my_theme_customizations/
-# static_templates:
-#     - sitemap.html
-# include_sidebar: true
+
+theme:
+  name: material
+  palette:
+    # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+
+  language: en
+  # custom_dir: overrides
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.path
+  # favicon:
+  # icon:
+  #   repo:
+  # font:
+  #   text: Work Sans
+  # logo:
+
 nav:
   - Home: "index.md"
-  # - Functions:
-  #   - Function1: functions/function1.md
+  - Functions:
+      - Get-EnvironmentVariable: "Get-EnvironmentVariable.md"
+      - Set-EnvironmentVariable: "Set-EnvironmentVariable.md"
+      - Initialize-Configuration: "Initialize-Configuration.md"
+      - Install-OhMyPosh: "Install-OhMyPosh.md"
+      - Install-PowerShellISE: "Install-PowerShellISE"
+      - New-Credential: "New-Credential.md"
+      - New-ScriptFromTemplate: "New-ScriptFromTemplate.md"
+      - Test-IsElevated: "Test-IsElevated.md"
+      - Update-AllTheThings: "Update-AllTheThings.md"
