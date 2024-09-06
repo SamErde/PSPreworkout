@@ -79,11 +79,13 @@ theme:
 nav:
   - Home: "index.md"
   - Functions:
+      - Edit-WinGetSettings: "Edit-WinGetSettings.md"
       - Get-EnvironmentVariable: "Get-EnvironmentVariable.md"
       - Set-EnvironmentVariable: "Set-EnvironmentVariable.md"
       - Initialize-Configuration: "Initialize-Configuration.md"
       - Install-OhMyPosh: "Install-OhMyPosh.md"
-      - Install-PowerShellISE: "Install-PowerShellISE"
+      - Install-PowerShellISE: "Install-PowerShellISE.md"
+      - Install-WinGet: "Install-WinGet.md"
       - New-Credential: "New-Credential.md"
       - New-ScriptFromTemplate: "New-ScriptFromTemplate.md"
       - Test-IsElevated: "Test-IsElevated.md"
