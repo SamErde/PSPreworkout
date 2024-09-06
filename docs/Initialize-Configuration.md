@@ -14,8 +14,8 @@ Initialize configuration your PowerShell environment and git.
 
 ```
 Initialize-Configuration [[-Name] <String>] [[-Email] <String>] [[-CentralProfile] <String>]
- [[-ConsoleFont] <String>] [[-Packages] <String[]>] [-SkipPackages] [-PickPackages]
- [<CommonParameters>]
+ [[-ConsoleFont] <String>] [[-Packages] <String[]>] [-SkipPackages] [-PickPackages] [[-Modules] <String[]>]
+ [-SkipModules] [-PickModules] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -137,6 +137,51 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Modules
+PowerShell modules to install.
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 6
+Default value: @('CompletionPredictor', 'Microsoft.PowerShell.ConsoleGuiTools', 'Microsoft.PowerShell.PSResourceGet', 'posh-git', 'PowerShellForGitHub', 'Terminal-Icons')
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SkipModules
+Option to skip installation of default modules.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PickModules
+Choose which modules you want to install.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### CommonParameters
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -Verbose, -WarningAction, -WarningVariable, and -ProgressAction. 
 For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
@@ -146,9 +191,10 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## OUTPUTS
 
 ## NOTES
-To Do:
-- Create basic starter profile if none exist
-- Create dot-sourced profile
-- Create interactive picker for packages and modules (separate functions)
+To Do
+  Create basic starter profile if none exist
+  Create dot-sourced profile
+  Create interactive picker for packages and modules (separate functions)
+  Bootstrap Out-GridView or Out-ConsoleGridView
 
 ## RELATED LINKS
