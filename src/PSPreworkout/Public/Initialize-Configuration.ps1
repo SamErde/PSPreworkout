@@ -18,6 +18,15 @@ function Initialize-Configuration {
     .PARAMETER ConsoleFont
     The font to use for your consoles (PowerShell, Windows PowerShell, git bash, etc.)
 
+    .PARAMETER Modules
+    PowerShell modules to install.
+
+    .PARAMETER SkipModules
+    Option to skip installation of default modules.
+
+    .PARAMETER PickModules
+    Choose which modules you want to install.
+
     .PARAMETER Packages
     Packages to install with winget.
 
@@ -33,10 +42,11 @@ function Initialize-Configuration {
     Init-Configuration -Name 'Sam Erde' -Email 'sam@example.local' -ConsoleFont 'FiraCode Nerd Font'
 
     .NOTES
-        To Do:
-        - Create basic starter profile if none exist
-        - Create dot-sourced profile
-        - Create interactive picker for packages and modules (separate functions)
+        To Do
+          Create basic starter profile if none exist
+          Create dot-sourced profile
+          Create interactive picker for packages and modules (separate functions)
+          Bootstrap Out-GridView or Out-ConsoleGridView
     #>
 
     [CmdletBinding()]
@@ -91,7 +101,22 @@ function Initialize-Configuration {
         # Choose from a list of packages to install
         [Parameter()]
         [switch]
-        $PickPackages
+        $PickPackages,
+
+        # PowerShell modules to install
+        [Parameter()]
+        [string[]]
+        $Modules = @('CompletionPredictor', 'Microsoft.PowerShell.ConsoleGuiTools', 'Microsoft.PowerShell.PSResourceGet', 'posh-git', 'PowerShellForGitHub', 'Terminal-Icons'),
+
+        # Do not install any modules
+        [Parameter()]
+        [switch]
+        $SkipModules,
+
+        # Choose from a list of PowerShell modules to install
+        [Parameter()]
+        [switch]
+        $PickModules
     )
 
     begin {
@@ -100,8 +125,8 @@ function Initialize-Configuration {
 
     process {
         # Configure git user settings
-        git config --global user.name $Name
-        git config --global user.email $Email
+        if ($PSBoundParameters.ContainsKey('Name')) { git config --global user.name $Name }
+        if ($PSBoundParameters.ContainsKey('Email')) { git config --global user.email $Email }
 
         # Set the font for all registered consoles (Windows only)
         if ($PSBoundParameters.ContainsKey('ConsoleFont')) {
@@ -114,17 +139,31 @@ function Initialize-Configuration {
             }
         }
 
+        # Install PowerShell modules
+        if ($Modules -and -not $SkipModules.IsPresent) {
+            foreach ($module in $Modules) {
+                try {
+                    Write-Verbose "Installing module: $module"
+                    Install-Module -Name $module -Scope CurrentUser -AcceptLicense -Force
+                } catch {
+                    $_
+                }
+            }
+        }
+
         # Install packages
         if ($Packages -and -not $SkipPackages.IsPresent) {
             foreach ($package in $Packages) {
                 try {
+                    Write-Verbose "Installing package: $package."
                     winget install --id $package --accept-source-agreements --accept-package-agreements --scope user
                 } catch {
                     $_
                 }
             }
         }
-    }
+    } # end process block
+
     end {
 
     }
