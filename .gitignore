@@ -1,18 +1,15 @@
+# Project Files #
 Archive
 Artifacts
 cov.xml
 coverage.xml
-/Artefacts
-/Artefacts/*
-/Ignore
-/Ignore/*
-# OS generated files #
-######################
+# OS Generated Files #
 .DS_Store
 .DS_Store?
 ._*
 .Spotlight-V100
 .Trashes
-desktop.ini
 ehthumbs.db
 Thumbs.db
+*.dtmp
+*.bkp
