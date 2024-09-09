@@ -35,7 +35,7 @@ jobs:
         shell: pwsh
         run: |
           Copy-Item ./docs/index.md ./README.md
-          $ReadmeTop = Get-Content -Path ./README.md -TotalCount 24
+          $ReadmeTop = Get-Content -Path ./README.md -TotalCount 23
           $ReadmeContent = Get-Content -Path ./docs/PSPreworkout.md | Select-Object -Skip 8
           $CombinedContent = $ReadmeTop + $ReadmeContent
           $CombinedContent | Set-Content -Path ./README.md
