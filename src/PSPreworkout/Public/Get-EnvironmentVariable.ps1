@@ -26,8 +26,8 @@ function Get-EnvironmentVariable {
             The relevant sources for the User and Machine targets are in the registry at:
             - HKEY_CURRENT_USER\Environment
             - HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment
-        .LINK
-            https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_environment_variables
+
+            See more at <https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_environment_variables>.
     #>
     [Alias('gev')]
     [CmdletBinding()]
