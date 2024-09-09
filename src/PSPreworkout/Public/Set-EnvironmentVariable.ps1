@@ -18,8 +18,6 @@ function Set-EnvironmentVariable {
     .EXAMPLE
     Set-EnvironmentVariable -Name 'FavoriteDrink' -Value 'Coffee' -Target 'User'
 
-    .NOTES
-    General notes
     #>
     [Alias('sev')]
     [CmdletBinding()]
