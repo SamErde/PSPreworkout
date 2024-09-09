@@ -83,6 +83,18 @@ function Get-EnvironmentVariable {
 
 
 
+function Get-Types {
+    <#
+.EXTERNALHELP PSPreworkout-help.xml
+#>
+    [CmdletBinding()]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', 'Get-Types', Justification = 'The types are plural.')]
+    param ()
+    [PSObject].Assembly.GetType('System.Management.Automation.TypeAccelerators')::Get
+}
+
+
+
 function Initialize-Configuration {
     <#
 .EXTERNALHELP PSPreworkout-help.xml

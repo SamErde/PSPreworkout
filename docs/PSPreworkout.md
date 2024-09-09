@@ -2,7 +2,7 @@
 Module Name: PSPreworkout
 Module Guid: 378339de-a0df-4d44-873b-4fd32c388e06
 Download Help Link: NA
-Help Version: 0.3.2
+Help Version: 0.4.0
 Locale: en-US
 ---
 
@@ -42,4 +42,7 @@ Set environment variables.
 Check if you are running an elevated shell with administrator or root privileges.
 
 ### [Update-AllTheThings](Update-AllTheThings.md)
-Update all the things!
+Update all the things! Update-AllTheThings.ps1 
+
+
+
