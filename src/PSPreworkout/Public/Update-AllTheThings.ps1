@@ -19,7 +19,7 @@ function Update-AllTheThings {
     A script to automatically update all PowerShell modules, PowerShell Help, and packages (apt, brew, chocolately, winget).
 
     .EXAMPLE
-    PS> Update-AllTheThings
+    Update-AllTheThings
 
     Updates all of the things it can!
     #>
