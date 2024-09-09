@@ -34,7 +34,7 @@ jobs:
       - name: Copy Module MD to Repository README
         shell: pwsh
         run: |
-          $ReadmeTop = Get-Content -Path ./index.md -TotalCount 23
+          $ReadmeTop = Get-Content -Path ./docs/index.md -TotalCount 23
           $ReadmeContent = Get-Content -Path ./docs/PSPreworkout.md | Select-Object -Skip 8
           $CombinedContent = $ReadmeTop + $ReadmeContent
           $CombinedContent | Set-Content -Path ./docs/index.md
