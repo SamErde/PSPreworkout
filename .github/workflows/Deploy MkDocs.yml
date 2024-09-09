@@ -33,7 +33,13 @@ jobs:
 
       - name: Copy Module MD to Repository README
         shell: pwsh
-        run: Copy-Item ./docs/index.md ./README.md
+        run: |
+          Copy-Item ./docs/index.md ./README.md
+          $ReadmeTop = Get-Content -Path ./README.md -TotalCount 24
+          $ReadmeContent = Get-Content -Path ./docs/index.md | Select-Object -Skip 7
+          $CombinedContent = $ReadmeTop + $ReadmeContent
+          $CombinedContent | Set-Content -Path ./README.md
+
         # git-auto-commit-action only runs on Linux-based platforms.
       - name: Commit Changes to Repo
         uses: stefanzweifel/git-auto-commit-action@v5
