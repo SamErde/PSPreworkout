@@ -206,14 +206,12 @@ Add-BuildTask AnalyzeTests -After Analyze {
 #Synopsis: Analyze scripts to verify if they adhere to desired coding format (Stroustrup / OTBS / Allman)
 Add-BuildTask FormattingCheck {
 
-
     $scriptAnalyzerParams = @{
         Setting     = 'CodeFormattingOTBS'
         ExcludeRule = 'PSUseConsistentWhitespace'
         Recurse     = $true
         Verbose     = $false
     }
-
 
     Write-Build White '      Performing script formatting checks...'
     $scriptAnalyzerResults = Get-ChildItem -Path $script:ModuleSourcePath -Exclude '*.psd1' | Invoke-ScriptAnalyzer @scriptAnalyzerParams
@@ -278,12 +276,6 @@ Add-BuildTask Test {
         if ($testResults.CodeCoverage.NumberOfCommandsExecuted -ne 0) {
             $coveragePercent = '{0:N2}' -f ($testResults.CodeCoverage.CommandsExecutedCount / $testResults.CodeCoverage.CommandsAnalyzedCount * 100)
 
-            <#
-            if ($testResults.CodeCoverage.NumberOfCommandsMissed -gt 0) {
-                'Failed to analyze "{0}" commands' -f $testResults.CodeCoverage.NumberOfCommandsMissed
-            }
-            Write-Host "PowerShell Commands not tested:`n$(ConvertTo-Json -InputObject $testResults.CodeCoverage.MissedCommands)"
-            #>
             if ([Int]$coveragePercent -lt $coverageThreshold) {
                 throw ('Failed to meet code coverage threshold of {0}% with only {1}% coverage' -f $coverageThreshold, $coveragePercent)
             } else {
@@ -459,9 +451,7 @@ Add-BuildTask Build {
     Write-Build Gray '        ...manifest copy complete.'
 
     Write-Build Gray '        Merging Public and Private functions to one module file...'
-    #$private = "$script:ModuleSourcePath\Private"
     $scriptContent = [System.Text.StringBuilder]::new()
-    #$powerShellScripts = Get-ChildItem -Path $script:ModuleSourcePath -Filter '*.ps1' -Recurse
     $powerShellScripts = Get-ChildItem -Path $script:ArtifactsPath -Recurse | Where-Object { $_.Name -match '^*.ps1$' }
     foreach ($script in $powerShellScripts) {
         $null = $scriptContent.Append((Get-Content -Path $script.FullName -Raw))
