@@ -16,7 +16,7 @@ function Set-EnvironmentVariable {
     Parameter description
 
     .EXAMPLE
-    An example
+    Set-EnvironmentVariable -Name 'FavoriteDrink' -Value 'Coffee' -Target 'User'
 
     .NOTES
     General notes
