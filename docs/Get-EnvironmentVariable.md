@@ -1,7 +1,7 @@
 ---
 external help file: PSPreworkout-help.xml
 Module Name: PSPreworkout
-online version: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_environment_variables
+online version:
 schema: 2.0.0
 ---
 
@@ -103,6 +103,6 @@ The relevant sources for the User and Machine targets are in the registry at:
 - HKEY_CURRENT_USER\Environment
 - HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment
 
-## RELATED LINKS
+See more at \<https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_environment_variables\>.
 
-[https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_environment_variables](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_environment_variables)
+## RELATED LINKS

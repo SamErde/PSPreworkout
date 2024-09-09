@@ -1,7 +1,7 @@
 ---
 external help file: PSPreworkout-help.xml
 Module Name: PSPreworkout
-online version: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_environment_variables
+online version:
 schema: 2.0.0
 ---
 

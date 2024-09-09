@@ -1,7 +1,7 @@
 ---
 external help file: PSPreworkout-help.xml
 Module Name: PSPreworkout
-online version: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_environment_variables
+online version:
 schema: 2.0.0
 ---
 
@@ -32,7 +32,7 @@ Updates all of the things it can!
 ## PARAMETERS
 
 ### -SkipModules
-Skip the step that updates PowerShell modules
+Skip the step that updates PowerShell modules.
 
 ```yaml
 Type: SwitchParameter
@@ -47,7 +47,7 @@ Accept wildcard characters: False
 ```
 
 ### -SkipScripts
-Skip the step that updates PowerShell scripts
+Skip the step that updates PowerShell scripts.
 
 ```yaml
 Type: SwitchParameter
@@ -62,7 +62,7 @@ Accept wildcard characters: False
 ```
 
 ### -SkipHelp
-Skip the step that updates PowerShell help
+Skip the step that updates PowerShell help.
 
 ```yaml
 Type: SwitchParameter
@@ -77,7 +77,7 @@ Accept wildcard characters: False
 ```
 
 ### -SkipWinGet
-Skip the step that updates WinGet packages
+Skip the step the updates WinGet packages.
 
 ```yaml
 Type: SwitchParameter
@@ -92,7 +92,7 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeChocolatey
-Skip the step that updates Chocolatey packages
+Include Chocolatey package updates.
 
 ```yaml
 Type: SwitchParameter

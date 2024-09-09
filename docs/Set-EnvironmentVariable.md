@@ -1,7 +1,7 @@
 ---
 external help file: PSPreworkout-help.xml
 Module Name: PSPreworkout
-online version: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_environment_variables
+online version:
 schema: 2.0.0
 ---
 
@@ -24,7 +24,7 @@ Set environment variables in any OS using .NET types.
 
 ### EXAMPLE 1
 ```
-An example
+Set-EnvironmentVariable -Name 'FavoriteDrink' -Value 'Coffee' -Target 'User'
 ```
 
 ## PARAMETERS
@@ -84,6 +84,5 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## OUTPUTS
 
 ## NOTES
-General notes
 
 ## RELATED LINKS
