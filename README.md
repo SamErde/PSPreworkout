@@ -54,7 +54,4 @@ Set environment variables.
 Check if you are running an elevated shell with administrator or root privileges.
 
 ### [Update-AllTheThings](Update-AllTheThings.md)
-Update all the things! Update-AllTheThings.ps1 
-
-
-
+Update all the things!
