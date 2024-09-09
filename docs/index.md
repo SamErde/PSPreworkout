@@ -23,7 +23,6 @@ A special mix of tools (and experiments) to help jump start your PowerShell sess
 &nbsp;  
 
 ## PSPreworkout Cmdlets
-
 ### [Edit-WingetSettings](Edit-WingetSettings.md)
 Edit the WinGet settings file.
 
@@ -55,4 +54,7 @@ Set environment variables.
 Check if you are running an elevated shell with administrator or root privileges.
 
 ### [Update-AllTheThings](Update-AllTheThings.md)
-Update all the things! 
+Update all the things! Update-AllTheThings.ps1 
+
+
+
