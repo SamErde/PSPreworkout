@@ -23,37 +23,37 @@ A special mix of tools (and experiments) to help jump start your PowerShell sess
 &nbsp;
 
 ## PSPreworkout Cmdlets
-### [Edit-WingetSettings](Edit-WingetSettings.md)
+### [Edit-WingetSettings](./docs/Edit-WingetSettings.md)
 Edit the WinGet settings file.
 
-### [Get-EnvironmentVariable](Get-EnvironmentVariable.md)
+### [Get-EnvironmentVariable](./docs/Get-EnvironmentVariable.md)
 Retrieves the value of an environment variable.
 
-### [Initialize-Configuration](Initialize-Configuration.md)
+### [Initialize-Configuration](./docs/Initialize-Configuration.md)
 Initialize configuration your PowerShell environment and git.
 
-### [Install-OhMyPosh](Install-OhMyPosh.md)
+### [Install-OhMyPosh](./docs/Install-OhMyPosh.md)
 Install Oh My Posh and add it to your profile.
 
-### [Install-PowerShellISE](Install-PowerShellISE.md)
+### [Install-PowerShellISE](./docs/Install-PowerShellISE.md)
 Install the Windows PowerShell ISE if you removed it after installing VS Code.
 
-### [Install-WinGet](Install-WinGet.md)
+### [Install-WinGet](./docs/Install-WinGet.md)
 Install Winget
 
-### [New-Credential](New-Credential.md)
+### [New-Credential](./docs/New-Credential.md)
 Create a new secure credential.
 
-### [New-ScriptFromTemplate](New-ScriptFromTemplate.md)
+### [New-ScriptFromTemplate](./docs/New-ScriptFromTemplate.md)
 Create a new advanced function from a template.
 
-### [Set-EnvironmentVariable](Set-EnvironmentVariable.md)
+### [Set-EnvironmentVariable](./docs/Set-EnvironmentVariable.md)
 Set environment variables.
 
-### [Test-IsElevated](Test-IsElevated.md)
+### [Test-IsElevated](./docs/Test-IsElevated.md)
 Check if you are running an elevated shell with administrator or root privileges.
 
-### [Update-AllTheThings](Update-AllTheThings.md)
+### [Update-AllTheThings](./docs/Update-AllTheThings.md)
 Update all the things! Update-AllTheThings.ps1 
 
 
