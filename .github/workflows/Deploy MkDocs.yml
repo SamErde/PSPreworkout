@@ -36,10 +36,12 @@ jobs:
         run: |
           $ReadmeTop = Get-Content -Path ./docs/index.md -TotalCount 25
           $ReadmeContent = Get-Content -Path ./docs/PSPreworkout.md | Select-Object -Skip 13
-          $ReadmeContent = $ReadmeContent.Replace( '](' , '](./docs/' )
           $CombinedContent = $ReadmeTop + $ReadmeContent
           $CombinedContent | Set-Content -Path ./docs/index.md
-          Copy-Item ./docs/index.md ./README.md
+          $ReadmeContent = $ReadmeContent.Replace( '](' , '](./docs/' )
+          $CombinedContent = $ReadmeTop + $ReadmeContent
+          $CombinedContent | Set-Content -Path ./README.md
+          # Copy-Item ./docs/index.md ./README.md
 
         # git-auto-commit-action only runs on Linux-based platforms.
       - name: Commit Changes to Repo
