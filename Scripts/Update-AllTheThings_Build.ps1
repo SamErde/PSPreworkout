@@ -8,7 +8,12 @@ param (
     # Custom version declaration
     [Parameter()]
     [version]
-    $CustomVersion
+    $CustomVersion,
+
+    # Publish the script
+    [Parameter()]
+    [switch]
+    $Publish
 )
 
 # Detect if running as a script or copy/paste in shell ($PSScriptRoot vs $PWD).
@@ -63,3 +68,7 @@ $Content2 = $Content2.Replace($($SemVerMatch.Value), $NewVersion)
 
 # Write the PSScriptInfo and scripts into the merged script.
 $Content0 + $Content1 + $Content2 | Set-Content -Path 'Update-AllTheThings.ps1'
+
+if ($PSBoundParameters.ContainsKey('Publish')) {
+    # Publish-Script -Path ./Update-AllTheThings -NuGetApiKey ${{ secrets.POWERSHELLGALLERY_KEY }}
+}
