@@ -29,7 +29,6 @@ Install-Module -Name PSPreworkout -Scope CurrentUser
 Get-Command -Module PSPreworkout
 ```
 
-## PSPreworkout Cmdlets
 ### [Edit-WingetSettings](Edit-WingetSettings.md)
 Edit the WinGet settings file.
 
@@ -37,7 +36,7 @@ Edit the WinGet settings file.
 Retrieves the value of an environment variable.
 
 ### [Get-Types](Get-Types.md)
-List all available types and type accelerators.
+List all available .NET types and type accelerators.
 
 ### [Initialize-Configuration](Initialize-Configuration.md)
 Initialize configuration your PowerShell environment and git.
@@ -63,8 +62,14 @@ Set the font for your consoles.
 ### [Set-EnvironmentVariable](Set-EnvironmentVariable.md)
 Set environment variables.
 
+### [Show-LoadedAssemblies](Show-LoadedAssemblies.md)
+Show all assemblies loaded in PowerShell.
+
 ### [Test-IsElevated](Test-IsElevated.md)
 Check if you are running an elevated shell with administrator or root privileges.
 
 ### [Update-AllTheThings](Update-AllTheThings.md)
-Update all the things! Update-AllTheThings.ps1
+Update all the things! Update-AllTheThings.ps1 
+
+
+
