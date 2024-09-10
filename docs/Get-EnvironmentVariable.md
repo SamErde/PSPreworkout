@@ -48,7 +48,7 @@ Accept wildcard characters: False
 
 ### -Target
 The target of the environment variable to retrieve.
-Defaults to Machine.
+Defaults to User.
 (Process, User, or Machine)
 
 ```yaml
@@ -59,7 +59,7 @@ Accepted values: Process, User, Machine
 
 Required: False
 Position: 2
-Default value: Machine
+Default value: User
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

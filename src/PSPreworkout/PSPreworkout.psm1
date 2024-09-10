@@ -28,4 +28,4 @@ foreach ($file in @($public + $private)) {
 }
 
 # export all public functions
-Export-ModuleMember -Function $Public.Basename
+Export-ModuleMember -Function $Public.Basename -Alias *

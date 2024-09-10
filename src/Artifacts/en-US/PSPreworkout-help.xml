@@ -66,7 +66,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>Target</maml:name>
           <maml:Description>
-            <maml:para>The target of the environment variable to retrieve. Defaults to Machine. (Process, User, or Machine)</maml:para>
+            <maml:para>The target of the environment variable to retrieve. Defaults to User. (Process, User, or Machine)</maml:para>
           </maml:Description>
           <command:parameterValueGroup>
             <command:parameterValue required="false" command:variableLength="false">Process</command:parameterValue>
@@ -78,7 +78,7 @@
             <maml:name>EnvironmentVariableTarget</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>Machine</dev:defaultValue>
+          <dev:defaultValue>User</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>All</maml:name>
@@ -109,14 +109,14 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>Target</maml:name>
         <maml:Description>
-          <maml:para>The target of the environment variable to retrieve. Defaults to Machine. (Process, User, or Machine)</maml:para>
+          <maml:para>The target of the environment variable to retrieve. Defaults to User. (Process, User, or Machine)</maml:para>
         </maml:Description>
         <command:parameterValue required="true" variableLength="false">EnvironmentVariableTarget</command:parameterValue>
         <dev:type>
           <maml:name>EnvironmentVariableTarget</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>Machine</dev:defaultValue>
+        <dev:defaultValue>User</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>All</maml:name>
