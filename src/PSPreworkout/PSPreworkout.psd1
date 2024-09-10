@@ -6,7 +6,7 @@
     RootModule        = 'PSPreworkout.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.4.1'
+    ModuleVersion     = '0.4.2'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -66,6 +66,7 @@
     FunctionsToExport = @(
         'Edit-WinGetSettings',
         'Get-EnvironmentVariable',
+        'Get-Types',
         'Initialize-Configuration',
         'Install-OhMyPosh',
         'Install-PowerShellISE',
