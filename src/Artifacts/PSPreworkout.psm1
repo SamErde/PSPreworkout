@@ -41,11 +41,11 @@ function Get-EnvironmentVariable {
     [OutputType([string])]
     param (
         # The name of the environment variable to retrieve. If not specified, all environment variables are returned.
-        [Parameter()]
+        [Parameter(Position = 0)]
         [string]$Name,
 
         # The target of the environment variable to retrieve. Defaults to Machine. (Process, User, or Machine)
-        [Parameter()]
+        [Parameter(Position = 1)]
         [System.EnvironmentVariableTarget]
         $Target = [System.EnvironmentVariableTarget]::Machine,
 
@@ -529,16 +529,16 @@ function Set-EnvironmentVariable {
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'OK')]
     param (
         # The name of the environment variable to set.
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, Position = 0)]
         [string]$Name,
 
         # The value of environment variable to set.
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, Position = 1)]
         [string]
         $Value,
 
         # The target of the environment variable to set.
-        [Parameter()]
+        [Parameter(Mandatory, Position = 2)]
         [System.EnvironmentVariableTarget]
         $Target
     )

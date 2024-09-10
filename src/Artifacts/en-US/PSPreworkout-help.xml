@@ -1100,7 +1100,7 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>Target</maml:name>
           <maml:Description>
             <maml:para>Parameter description</maml:para>
@@ -1144,7 +1144,7 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>Target</maml:name>
         <maml:Description>
           <maml:para>Parameter description</maml:para>
