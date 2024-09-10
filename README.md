@@ -29,6 +29,9 @@ Edit the WinGet settings file.
 ### [Get-EnvironmentVariable](./docs/Get-EnvironmentVariable.md)
 Retrieves the value of an environment variable.
 
+### [Get-Types](./docs/Get-Types.md)
+List all available types and type accelerators.
+
 ### [Initialize-Configuration](./docs/Initialize-Configuration.md)
 Initialize configuration your PowerShell environment and git.
 
