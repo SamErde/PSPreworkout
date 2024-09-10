@@ -4,3 +4,4 @@
 
 # region Script Variables
 # $script:resourcePath = "$PSScriptRoot\Resources"
+Export-ModuleMember -Alias *
