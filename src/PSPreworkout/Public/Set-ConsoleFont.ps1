@@ -15,6 +15,10 @@ function Set-ConsoleFont {
     Set-ConsoleFont -Font 'FiraCode Nerd Font'
 #>
     [CmdletBinding()]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'Agument completers are weird.')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]
     param (
         [Parameter(Mandatory = $true)]
         [ArgumentCompleter({
@@ -25,6 +29,8 @@ function Set-ConsoleFont {
             })]
         [string]$Font
     )
+    # Suppress PSScriptAnalyzer Errors
+    $commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameter | Out-Null
 
     # Your logic to set the console font goes here
     Write-Output "Setting console font to $Font."
@@ -41,8 +47,15 @@ function Set-ConsoleFont {
 
 # Register the argument completer for Set-ConsoleFont.
 Register-ArgumentCompleter -CommandName Set-ConsoleFont -ParameterName Font -ScriptBlock {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'Agument completers are weird.')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]
     param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameter)
     [System.Drawing.Text.InstalledFontCollection]::new().Families |
         Where-Object { $_.Name -match 'Mono|Courier|Consolas|Fixed|Console|Terminal|Nerd Font|NF[\s|\b]|NFP' } |
             ForEach-Object { "'$($_.Name)'" }
+
+    # Suppress PSScriptAnalyzer Errors
+    $commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameter | Out-Null
 }

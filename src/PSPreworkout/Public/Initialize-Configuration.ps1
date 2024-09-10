@@ -50,6 +50,10 @@ function Initialize-Configuration {
     #>
 
     [CmdletBinding()]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'Agument completers are weird.')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]
     [Alias('Init-Config', 'Init-Configuration')]
     param (
         # Your name (used for Git config)
@@ -111,7 +115,8 @@ function Initialize-Configuration {
     )
 
     begin {
-
+        # Suppress PSScriptAnalyzer Errors
+        $commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameter | Out-Null
     }
 
     process {
@@ -162,8 +167,15 @@ function Initialize-Configuration {
 
 # Register the argument completer for Set-ConsoleFont.
 Register-ArgumentCompleter -CommandName Set-ConsoleFont -ParameterName Font -ScriptBlock {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'Agument completers are weird.')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]
     param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameter)
     [System.Drawing.Text.InstalledFontCollection]::new().Families |
         Where-Object { $_.Name -match 'Mono|Courier|Consolas|Fixed|Console|Terminal|Nerd Font|NF[\s|\b]|NFP' } |
             ForEach-Object { "'$($_.Name)'" }
+
+    # Suppress PSScriptAnalyzer Errors
+    $commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameter | Out-Null
 }
