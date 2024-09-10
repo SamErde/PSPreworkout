@@ -1,9 +1,9 @@
 name: Create and Publish Release # and Publish PowerShell Module
 
 on:
-  push:
-    tags:
-      - 'v*.*.*'  # Triggers the workflow on version tags
+  #push:
+  #  tags:
+  #    - 'v*.*.*'  # Triggers the workflow on version tags
   workflow_dispatch:
 
 jobs:
