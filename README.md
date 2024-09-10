@@ -50,6 +50,9 @@ Create a new secure credential.
 ### [New-ScriptFromTemplate](./docs/New-ScriptFromTemplate.md)
 Create a new advanced function from a template.
 
+### [Set-ConsoleFont](./docs/Set-ConsoleFont.md)
+Set the font for your consoles.
+
 ### [Set-EnvironmentVariable](./docs/Set-EnvironmentVariable.md)
 Set environment variables.
 
