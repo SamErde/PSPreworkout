@@ -15,7 +15,7 @@ function Initialize-Configuration {
     .PARAMETER CentralProfile
     The file path to your central PowerShell profile.
 
-    .PARAMETER ConsoleFont
+    .PARAMETER Font
     The font to use for your consoles (PowerShell, Windows PowerShell, git bash, etc.)
 
     .PARAMETER Modules
@@ -63,17 +63,6 @@ function Initialize-Configuration {
         [string]
         $Email,
 
-        <#
-        # Path to your central profile repository directory, if you use this feature
-        [Parameter(
-            ParameterSetName = 'CentralProfileRepository'
-        )]
-            [Alias('Repo')]
-            [ValidateScript({Test-Path -Path $_ -PathType Container -IsValid})]
-            [string]
-            $ProfileRepository,
-        #>
-
         # Path to your central profile, if you use this feature
         [Parameter()]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -IsValid })]
@@ -81,12 +70,14 @@ function Initialize-Configuration {
         $CentralProfile,
 
         # The font that you want to use for consoles
-        # Would be cool to register an autocompleter for this
         [Parameter()]
-        [Alias('Font')]
-        [ArgumentCompleter({ FontNameCompleter @args })]
-        [string]
-        $ConsoleFont,
+        [ArgumentCompleter({
+                param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameter)
+                [System.Drawing.Text.InstalledFontCollection]::new().Families |
+                    Where-Object { $_.Name -match 'Mono|Courier|Consolas|Fixed|Console|Terminal|Nerd Font|NF[\s|\b]|NFP' } |
+                        ForEach-Object { "'$($_.Name)'" }
+            })]
+        [string]$Font,
 
         # Packages to install
         [Parameter()]
@@ -129,7 +120,7 @@ function Initialize-Configuration {
         if ($PSBoundParameters.ContainsKey('Email')) { git config --global user.email $Email }
 
         # Set the font for all registered consoles (Windows only)
-        if ($PSBoundParameters.ContainsKey('ConsoleFont')) {
+        if ($PSBoundParameters.ContainsKey('ConsoleFont') -or $PSBoundParameters.ContainsKey('Font')) {
             if ($IsLinux -or $IsMacOS) {
                 Write-Information 'Setting the font is not yet supported in Linux or macOS.' -InformationAction Continue
                 continue
@@ -169,27 +160,10 @@ function Initialize-Configuration {
     }
 }
 
-function FontNameCompleter {
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter')]
-    param(
-        $commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameters
-    )
-
-    Add-Type -AssemblyName System.Drawing
-    $MonospaceFonts = (New-Object System.Drawing.Text.InstalledFontCollection).Families | Where-Object {
-        $_.Name -match 'Mono|Courier|Consolas|Fixed|Console|Terminal|Nerd Font|NF[\s|\b]|NFP'
-    } | Select-Object -ExpandProperty Name
-
-    if ($fakeBoundParameters.ContainsKey('ConsoleFont')) {
-        $MonospaceFonts | Where-Object { $_.Name -like "$wordToComplete*" } | ForEach-Object {
-            "'$_'"
-        }
-    } else {
-        $MonospaceFonts | ForEach-Object {
-            "'$_'"
-        }
-    }
-
+# Register the argument completer for Set-ConsoleFont.
+Register-ArgumentCompleter -CommandName Set-ConsoleFont -ParameterName Font -ScriptBlock {
+    param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameter)
+    [System.Drawing.Text.InstalledFontCollection]::new().Families |
+        Where-Object { $_.Name -match 'Mono|Courier|Consolas|Fixed|Console|Terminal|Nerd Font|NF[\s|\b]|NFP' } |
+            ForEach-Object { "'$($_.Name)'" }
 }
-
-Register-ArgumentCompleter -CommandName Initialize-Configuration -ParameterName ConsoleFont -ScriptBlock $FontNameCompleter
