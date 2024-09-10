@@ -34,11 +34,11 @@ function Get-EnvironmentVariable {
     [OutputType([string])]
     param (
         # The name of the environment variable to retrieve. If not specified, all environment variables are returned.
-        [Parameter()]
+        [Parameter(Position = 0)]
         [string]$Name,
 
         # The target of the environment variable to retrieve. Defaults to Machine. (Process, User, or Machine)
-        [Parameter()]
+        [Parameter(Position = 1)]
         [System.EnvironmentVariableTarget]
         $Target = [System.EnvironmentVariableTarget]::Machine,
 

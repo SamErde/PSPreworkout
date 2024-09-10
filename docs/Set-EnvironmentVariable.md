@@ -13,7 +13,7 @@ Set environment variables.
 ## SYNTAX
 
 ```
-Set-EnvironmentVariable [-Name] <String> [-Value] <String> [[-Target] <EnvironmentVariableTarget>]
+Set-EnvironmentVariable [-Name] <String> [-Value] <String> [-Target] <EnvironmentVariableTarget>
  [<CommonParameters>]
 ```
 
@@ -68,7 +68,7 @@ Parameter Sets: (All)
 Aliases:
 Accepted values: Process, User, Machine
 
-Required: False
+Required: True
 Position: 3
 Default value: None
 Accept pipeline input: False
