@@ -82,6 +82,8 @@ nav:
       - Edit-WinGetSettings: "Edit-WinGetSettings.md"
       - Get-EnvironmentVariable: "Get-EnvironmentVariable.md"
       - Set-EnvironmentVariable: "Set-EnvironmentVariable.md"
+      - Get-Types: "Get-Types.md"
+      - Show-LoadedAssemblies: "Show-LoadedAssemblies.md"
       - Initialize-Configuration: "Initialize-Configuration.md"
       - Install-OhMyPosh: "Install-OhMyPosh.md"
       - Install-PowerShellISE: "Install-PowerShellISE.md"
