@@ -37,10 +37,10 @@ function Get-EnvironmentVariable {
         [Parameter(Position = 0)]
         [string]$Name,
 
-        # The target of the environment variable to retrieve. Defaults to Machine. (Process, User, or Machine)
+        # The target of the environment variable to retrieve. Defaults to User. (Process, User, or Machine)
         [Parameter(Position = 1)]
         [System.EnvironmentVariableTarget]
-        $Target = [System.EnvironmentVariableTarget]::Machine,
+        $Target = [System.EnvironmentVariableTarget]::User,
 
         # Switch to show environment variables in all target scopes.
         [Parameter()]
@@ -48,28 +48,26 @@ function Get-EnvironmentVariable {
         $All
     )
 
-    begin {
-        #
+    # If a variable name was specified, get that environment variable from the default target or specified target.
+    if ( $PSBoundParameters.Keys.Contains('Name') ) {
+        [Environment]::GetEnvironmentVariable($Name, $Target)
+    } elseif (-not $PSBoundParameters.Keys.Contains('All') ) {
+        [Environment]::GetEnvironmentVariables()
     }
 
-    process {
-        if ( $PSBoundParameters.Keys.Contains('Name') ) {
-            [Environment]::GetEnvironmentVariable($Name, $Target)
-        } elseif (-not $PSBoundParameters.Keys.Contains('All') ) {
-            [Environment]::GetEnvironmentVariables()
-        }
-
-        if ($All) {
-            Write-Output 'Process Environment Variables:'
-            [Environment]::GetEnvironmentVariables([System.EnvironmentVariableTarget]::Process)
-            Write-Output 'User Environment Variables:'
-            [Environment]::GetEnvironmentVariables([System.EnvironmentVariableTarget]::User)
-            Write-Output 'Machine Environment Variables:'
-            [Environment]::GetEnvironmentVariables([System.EnvironmentVariableTarget]::Machine)
-        }
+    # If only the target is specified, get all environment variables from that target.
+    if ( $PSBoundParameters.Keys.Contains('Target') -and -not $PSBoundParameters.ContainsKey('Name') ) {
+        [System.Environment]::GetEnvironmentVariables([System.EnvironmentVariableTarget]::$Target)
     }
 
-    end {
-        #
+    # Get all environment variables from all targets.
+    # To Do: Get the specified variable name from all targets if a name and -All are specified.
+    if ($All) {
+        Write-Output 'Process Environment Variables:'
+        [Environment]::GetEnvironmentVariables([System.EnvironmentVariableTarget]::Process)
+        Write-Output 'User Environment Variables:'
+        [Environment]::GetEnvironmentVariables([System.EnvironmentVariableTarget]::User)
+        Write-Output 'Machine Environment Variables:'
+        [Environment]::GetEnvironmentVariables([System.EnvironmentVariableTarget]::Machine)
     }
 }
