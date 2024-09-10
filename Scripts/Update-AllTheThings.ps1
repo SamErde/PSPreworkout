@@ -1,6 +1,6 @@
 <#PSScriptInfo
 .DESCRIPTION A script to automatically update all PowerShell modules, PowerShell Help, and packages (apt, brew, chocolately, winget).
-.VERSION 0.5.7
+.VERSION 0.5.8
 .GUID 3a1a1ec9-0ef6-4f84-963d-be1505dab6a8
 .AUTHOR Sam Erde
 .COPYRIGHT (c) 2024 Sam Erde. All rights reserved.
@@ -9,7 +9,32 @@
 .PROJECTURI https://github.com/SamErde/PSPreWorkout/
 .ICONURI
 #>
+function Test-IsElevated {
+    <#
+    .SYNOPSIS
+    Check if you are running an elevated shell with administrator or root privileges.
 
+    .DESCRIPTION
+    Check if you are running an elevated shell with administrator or root privileges.
+
+    .EXAMPLE
+    Test-IsElevated
+
+    .OUTPUTS
+    Boolean
+    #>
+    [CmdletBinding()]
+    [Alias('isadmin', 'isroot')]
+    param ()
+
+    if (($PSVersionTable.PSVersion.Major -le 5) -or $IsWindows) {
+        $CurrentUser = [Security.Principal.WindowsPrincipal]([Security.Principal.WindowsIdentity]::GetCurrent())
+        return $CurrentUser.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+    } else {
+        # Must be Linux or OSX, so use the id util. Root has userid of 0.
+        return 0 -eq (id -u)
+    }
+}
 function Update-AllTheThings {
     <#
     .SYNOPSIS
@@ -17,6 +42,21 @@ function Update-AllTheThings {
 
     .DESCRIPTION
     A script to automatically update all PowerShell modules, PowerShell Help, and packages (apt, brew, chocolately, winget).
+
+    .PARAMETER SkipModules
+    Skip the step that updates PowerShell modules.
+
+    .PARAMETER SkipScripts
+    Skip the step that updates PowerShell scripts.
+
+    .PARAMETER SkipHelp
+    Skip the step that updates PowerShell help.
+
+    .PARAMETER SkipWinGet
+    Skip the step the updates WinGet packages.
+
+    .PARAMETER IncludeChocolatey
+    Include Chocolatey package updates.
 
     .EXAMPLE
     Update-AllTheThings
@@ -29,11 +69,6 @@ function Update-AllTheThings {
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '', Justification = 'Interactive Use')]
     [Alias('uatt')]
     param (
-        # Allow updates to pre-release PowerShell modules
-        #[Parameter()]
-        #[switch]
-        #$AllowPrerelease
-
         # Skip the step that updates PowerShell modules
         [Parameter()]
         [switch]
@@ -72,7 +107,7 @@ function Update-AllTheThings {
 /_  __/ /  ___   /_  __/ /  (_)__  ___ ____
  / / / _ \/ -_)   / / / _ \/ / _ \/ _ `(_-<
 /_/ /_//_/\__/   /_/ /_//_/_/_//_/\_, /___/
-                                 /___/ v0.5.7
+                                 /___/ v0.5.8
 
 "@
         Write-Host $Banner
