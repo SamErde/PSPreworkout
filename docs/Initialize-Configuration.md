@@ -13,9 +13,9 @@ Initialize configuration your PowerShell environment and git.
 ## SYNTAX
 
 ```
-Initialize-Configuration [[-Name] <String>] [[-Email] <String>] [[-CentralProfile] <String>]
- [[-ConsoleFont] <String>] [[-Packages] <String[]>] [-SkipPackages] [-PickPackages] [[-Modules] <String[]>]
- [-SkipModules] [-PickModules] [<CommonParameters>]
+Initialize-Configuration [[-Name] <String>] [[-Email] <String>] [[-CentralProfile] <String>] [[-Font] <String>]
+ [[-Packages] <String[]>] [-SkipPackages] [-PickPackages] [[-Modules] <String[]>] [-SkipModules] [-PickModules]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -77,13 +77,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ConsoleFont
+### -Font
 The font to use for your consoles (PowerShell, Windows PowerShell, git bash, etc.)
 
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases: Font
+Aliases:
 
 Required: False
 Position: 4

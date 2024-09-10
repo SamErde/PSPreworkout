@@ -2,7 +2,7 @@
 Module Name: PSPreworkout
 Module Guid: 378339de-a0df-4d44-873b-4fd32c388e06 378339de-a0df-4d44-873b-4fd32c388e06
 Download Help Link: NA
-Help Version: 0.4.2
+Help Version: 0.5.0
 Locale: en-US
 ---
 
@@ -37,6 +37,9 @@ Create a new secure credential.
 
 ### [New-ScriptFromTemplate](New-ScriptFromTemplate.md)
 Create a new advanced function from a template.
+
+### [Set-ConsoleFont](Set-ConsoleFont.md)
+Set the font for your consoles.
 
 ### [Set-EnvironmentVariable](Set-EnvironmentVariable.md)
 Set environment variables.
