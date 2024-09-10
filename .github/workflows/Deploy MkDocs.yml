@@ -39,7 +39,7 @@ jobs:
           $CombinedContent = $ReadmeTop + $ReadmeContent
           $CombinedContent | Set-Content -Path ./docs/index.md
           $Doc = Get-Content -Path './docs/index.md'
-          $Doc.Replace('.ps1](','.ps1](./docs/,) | Set-Content -Path './README.md'
+          $Doc.Replace('.ps1](','.ps1](./docs/) | Set-Content -Path './README.md'
           # Copy-Item ./docs/index.md ./README.md
 
         # git-auto-commit-action only runs on Linux-based platforms.
