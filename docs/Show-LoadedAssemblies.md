@@ -5,26 +5,25 @@ online version:
 schema: 2.0.0
 ---
 
-# Get-Types
+# Show-LoadedAssemblies
 
 ## SYNOPSIS
-List all available .NET types and type accelerators.
+Show all assemblies loaded in PowerShell.
 
 ## SYNTAX
 
 ```
-Get-Types [<CommonParameters>]
+Show-LoadedAssemblies [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-List all available types and type accelerators.
-These can be useful when trying to find or remember the different types and accellerators that are available to use in PowerShell.
+Show all assemblies loaded in PowerShell.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Get-Types
+Show-LoadedAssemblies
 ```
 
 ## PARAMETERS

@@ -6,7 +6,7 @@
     RootModule        = 'PSPreworkout.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.5.0'
+    ModuleVersion     = '0.5.2'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -27,7 +27,7 @@
     Description       = 'A special mix of tools to help jump start your PowerShell session!'
 
     # Minimum version of the PowerShell engine required by this module
-    PowerShellVersion = '5.1'
+    PowerShellVersion = '5.2'
 
     # Name of the PowerShell host required by this module
     # PowerShellHostName = ''
@@ -75,6 +75,7 @@
         'New-ScriptFromTemplate',
         'Set-ConsoleFont',
         'Set-EnvironmentVariable',
+        'Show-LoadedAssemblies',
         'Test-IsElevated',
         'Update-AllTheThings'
     )

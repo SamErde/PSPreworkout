@@ -100,6 +100,10 @@ function Initialize-Configuration {
 #>
 
     [CmdletBinding()]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'Agument completers are weird.')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]
     [Alias('Init-Config', 'Init-Configuration')]
     param (
         # Your name (used for Git config)
@@ -113,17 +117,6 @@ function Initialize-Configuration {
         [string]
         $Email,
 
-        <#
-        # Path to your central profile repository directory, if you use this feature
-        [Parameter(
-            ParameterSetName = 'CentralProfileRepository'
-        )]
-            [Alias('Repo')]
-            [ValidateScript({Test-Path -Path $_ -PathType Container -IsValid})]
-            [string]
-            $ProfileRepository,
-        #>
-
         # Path to your central profile, if you use this feature
         [Parameter()]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -IsValid })]
@@ -131,12 +124,14 @@ function Initialize-Configuration {
         $CentralProfile,
 
         # The font that you want to use for consoles
-        # Would be cool to register an autocompleter for this
         [Parameter()]
-        [Alias('Font')]
-        [ArgumentCompleter({ FontNameCompleter @args })]
-        [string]
-        $ConsoleFont,
+        [ArgumentCompleter({
+                param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameter)
+                [System.Drawing.Text.InstalledFontCollection]::new().Families |
+                    Where-Object { $_.Name -match 'Mono|Courier|Consolas|Fixed|Console|Terminal|Nerd Font|NF[\s|\b]|NFP' } |
+                        ForEach-Object { "'$($_.Name)'" }
+            })]
+        [string]$Font,
 
         # Packages to install
         [Parameter()]
@@ -170,7 +165,8 @@ function Initialize-Configuration {
     )
 
     begin {
-
+        # Suppress PSScriptAnalyzer Errors
+        $commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameter | Out-Null
     }
 
     process {
@@ -179,7 +175,7 @@ function Initialize-Configuration {
         if ($PSBoundParameters.ContainsKey('Email')) { git config --global user.email $Email }
 
         # Set the font for all registered consoles (Windows only)
-        if ($PSBoundParameters.ContainsKey('ConsoleFont')) {
+        if ($PSBoundParameters.ContainsKey('ConsoleFont') -or $PSBoundParameters.ContainsKey('Font')) {
             if ($IsLinux -or $IsMacOS) {
                 Write-Information 'Setting the font is not yet supported in Linux or macOS.' -InformationAction Continue
                 continue
@@ -219,30 +215,20 @@ function Initialize-Configuration {
     }
 }
 
-function FontNameCompleter {
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter')]
-    param(
-        $commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameters
-    )
+# Register the argument completer for Set-ConsoleFont.
+Register-ArgumentCompleter -CommandName Set-ConsoleFont -ParameterName Font -ScriptBlock {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'Agument completers are weird.')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]
+    param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameter)
+    [System.Drawing.Text.InstalledFontCollection]::new().Families |
+        Where-Object { $_.Name -match 'Mono|Courier|Consolas|Fixed|Console|Terminal|Nerd Font|NF[\s|\b]|NFP' } |
+            ForEach-Object { "'$($_.Name)'" }
 
-    Add-Type -AssemblyName System.Drawing
-    $MonospaceFonts = (New-Object System.Drawing.Text.InstalledFontCollection).Families | Where-Object {
-        $_.Name -match 'Mono|Courier|Consolas|Fixed|Console|Terminal|Nerd Font|NF[\s|\b]|NFP'
-    } | Select-Object -ExpandProperty Name
-
-    if ($fakeBoundParameters.ContainsKey('ConsoleFont')) {
-        $MonospaceFonts | Where-Object { $_.Name -like "$wordToComplete*" } | ForEach-Object {
-            "'$_'"
-        }
-    } else {
-        $MonospaceFonts | ForEach-Object {
-            "'$_'"
-        }
-    }
-
+    # Suppress PSScriptAnalyzer Errors
+    $commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameter | Out-Null
 }
-
-Register-ArgumentCompleter -CommandName Initialize-Configuration -ParameterName ConsoleFont -ScriptBlock $FontNameCompleter
 
 
 
@@ -519,6 +505,58 @@ function New-ScriptFromTemplate {
 
 
 
+function Set-ConsoleFont {
+    <#
+.EXTERNALHELP PSPreworkout-help.xml
+#>
+    [CmdletBinding()]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'Agument completers are weird.')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]
+    param (
+        [Parameter(Mandatory = $true)]
+        [ArgumentCompleter({
+                param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameter)
+                [System.Drawing.Text.InstalledFontCollection]::new().Families |
+                    Where-Object { $_.Name -match 'Mono|Courier|Consolas|Fixed|Console|Terminal|Nerd Font|NF[\s|\b]|NFP' } |
+                        ForEach-Object { "'$($_.Name)'" }
+            })]
+        [string]$Font
+    )
+    # Suppress PSScriptAnalyzer Errors
+    $commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameter | Out-Null
+
+    # Your logic to set the console font goes here
+    Write-Output "Setting console font to $Font."
+
+    if ($IsLinux -or $IsMacOS) {
+        Write-Information 'Setting the font is not yet supported in Linux or macOS.' -InformationAction Continue
+        return
+    }
+
+    Get-ChildItem -Path 'HKCU:\Console' | ForEach-Object {
+        Set-ItemProperty -Path (($_.Name).Replace('HKEY_CURRENT_USER', 'HKCU:')) -Name 'FaceName' -Value $Font
+    }
+}
+
+# Register the argument completer for Set-ConsoleFont.
+Register-ArgumentCompleter -CommandName Set-ConsoleFont -ParameterName Font -ScriptBlock {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'Agument completers are weird.')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]
+    param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameter)
+    [System.Drawing.Text.InstalledFontCollection]::new().Families |
+        Where-Object { $_.Name -match 'Mono|Courier|Consolas|Fixed|Console|Terminal|Nerd Font|NF[\s|\b]|NFP' } |
+            ForEach-Object { "'$($_.Name)'" }
+
+    # Suppress PSScriptAnalyzer Errors
+    $commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameter | Out-Null
+}
+
+
+
 function Set-EnvironmentVariable {
     <#
 .EXTERNALHELP PSPreworkout-help.xml
@@ -552,6 +590,39 @@ function Set-EnvironmentVariable {
 
     end {
         #
+    }
+}
+
+
+
+function Show-LoadedAssemblies {
+    <#
+.EXTERNALHELP PSPreworkout-help.xml
+#>
+    [CmdletBinding()]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'But this is better.')]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '', Justification = 'There is a lot of them.')]
+    [Alias('Show-Assemblies')]
+    param ( )
+
+    if (Get-Command -Name Out-ConsoleGridView) {
+        [System.AppDomain]::CurrentDomain.GetAssemblies() |
+            Where-Object -FilterScript { $_.Location } |
+                Sort-Object -Property FullName |
+                    Select-Object -Property FullName, Location, GlobalAssemblyCache, IsFullyTrusted |
+                        Out-ConsoleGridView -OutputMode Multiple
+    } elseif (Get-Command -Name Out-GridView) {
+        [System.AppDomain]::CurrentDomain.GetAssemblies() |
+            Where-Object -FilterScript { $_.Location } |
+                Sort-Object -Property FullName |
+                    Select-Object -Property FullName, Location, GlobalAssemblyCache, IsFullyTrusted |
+                        Out-GridView -OutputMode Multiple
+    } else {
+        [System.AppDomain]::CurrentDomain.GetAssemblies() |
+            Where-Object -FilterScript { $_.Location } |
+                Sort-Object -Property FullName |
+                    Select-Object -Property FullName, Location, GlobalAssemblyCache, IsFullyTrusted |
+                        Format-Table -AutoSize
     }
 }
 
