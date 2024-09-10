@@ -38,7 +38,9 @@ jobs:
           $ReadmeContent = Get-Content -Path ./docs/PSPreworkout.md | Select-Object -Skip 13
           $CombinedContent = $ReadmeTop + $ReadmeContent
           $CombinedContent | Set-Content -Path ./docs/index.md
-          Copy-Item ./docs/index.md ./README.md
+          $Doc = Get-Content -Path './docs/index.md'
+          $Doc.Replace('.ps1](','.ps1](./docs/,) | Set-Content -Path './README.md'
+          # Copy-Item ./docs/index.md ./README.md
 
         # git-auto-commit-action only runs on Linux-based platforms.
       - name: Commit Changes to Repo
