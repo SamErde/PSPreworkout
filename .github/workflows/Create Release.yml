@@ -43,8 +43,8 @@ jobs:
         release_name: Release ${{ github.ref }}
         draft: true
         prerelease: false
-        artifacts: "${REPO_NAME}/${REPO_NAME}-${TAG_NAME}.zip"
-        generateReleaseNotes: true
+  #      artifacts: "${{ REPO_NAME }}/${{ REPO_NAME }}-${{ TAG_NAME }}.zip"
+  #      generateReleaseNotes: true
 
   #  - name: Create Release
   #    run: |

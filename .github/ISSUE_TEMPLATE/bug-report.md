@@ -1,7 +1,7 @@
 ---
-name: Bug report
+name: Bug Report
 about: Submit a new bug
-title: Bug report
+title: '🪲 Bug report'
 labels: 'bug'
 assignees: ''
 
@@ -34,6 +34,3 @@ assignees: ''
 * PowerShell versions as reported by `$PSVersionTable.PSEdition`:
 
 <!--- Provide a general summary of the issue in the Title above -->
-
-### Detailed Description
-<!--- Provide a detailed description of the issue you are facing -->
