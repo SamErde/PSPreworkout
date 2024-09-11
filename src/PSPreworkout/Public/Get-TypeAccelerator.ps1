@@ -20,6 +20,7 @@ function Get-TypeAccelerator {
 
     #>
     [CmdletBinding()]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'Fighting with VS Code autoformatting.')]
     #[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', 'Get-TypeAccelerators', Justification = 'The type accelerators are plural.')]
     param (
 
