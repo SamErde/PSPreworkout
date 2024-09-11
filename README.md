@@ -24,7 +24,9 @@ A special mix of tools to help jump start your PowerShell session!
 
 ## Inspiration
 
-Why PSPreworkout? Whether you are developing PowerShell code or performing daily tasks, the goal of PSPreworkout is to start working efficiently as quickly as possible. The idea for the name was inspired by the pre-workout mix that I sometimes drink for an extra kick of energy and focus before working out. This module contains shortcuts for setting up a PowerShell environment, configuring Git, customizing the shell, working with environment variables, creating new script files from a template, and more.
+Why PSPreworkout? Whether you are developing PowerShell code or performing daily tasks, the goal of PSPreworkout is to start working efficiently as quickly as possible. The idea for the name was inspired by the pre-workout mix that I sometimes drink for an extra kick of energy and focus before working out.
+
+This module contains shortcuts for setting up a PowerShell environment, configuring Git, customizing the shell, working with environment variables, creating new script files from a template, and more.
 
 ## Getting Started
 
@@ -36,6 +38,8 @@ Get-Command -Module PSPreworkout
 ## Contributing
 
 Please feel free to use the issues or a PR to report bugs, suggest improvements, or add new ideas to the module!
+
+## PSPreworkout Cmdlets
 ### [Edit-WingetSettings](./docs/Edit-WingetSettings.md)
 Edit the WinGet settings file.
 
