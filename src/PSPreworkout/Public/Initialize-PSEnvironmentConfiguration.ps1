@@ -1,4 +1,4 @@
-function Initialize-Configuration {
+function Initialize-PSEnvironmentConfiguration {
     <#
     .SYNOPSIS
     Initialize configuration your PowerShell environment and git.
@@ -37,9 +37,9 @@ function Initialize-Configuration {
     Choose which packages you want to install.
 
     .EXAMPLE
-    Initialize-Configuration
+    Initialize the PowerShell working environment with a custom font, and set my name and email address for Git commits.
 
-    Init-Configuration -Name 'Sam Erde' -Email 'sam@example.local' -ConsoleFont 'FiraCode Nerd Font'
+    Initialize-PSEnvironmentConfiguration -Name 'Sam Erde' -Email 'sam@example.local' -ConsoleFont 'FiraCode Nerd Font'
 
     .NOTES
         To Do
@@ -54,7 +54,7 @@ function Initialize-Configuration {
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]
-    [Alias('Init-Config', 'Init-Configuration')]
+    [Alias('Init-PSEnvConfig')]
     param (
         # Your name (used for Git config)
         [Parameter()]
