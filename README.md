@@ -47,10 +47,13 @@ Edit the WinGet settings file.
 ### [Get-EnvironmentVariable](./docs/Get-EnvironmentVariable.md)
 Retrieves the value of an environment variable.
 
-### [Get-Types](./docs/Get-Types.md)
-List all available .NET types and type accelerators.
+### [Get-LoadedAssembly](./docs/Get-LoadedAssembly.md)
+Get all assemblies loaded in PowerShell.
 
-### [Initialize-Configuration](./docs/Initialize-Configuration.md)
+### [Get-TypeAccelerator](./docs/Get-TypeAccelerator.md)
+Get available type accelerators.
+
+### [Initialize-PSEnvironmentConfiguration](./docs/Initialize-PSEnvironmentConfiguration.md)
 Initialize configuration your PowerShell environment and git.
 
 ### [Install-OhMyPosh](./docs/Install-OhMyPosh.md)
@@ -73,9 +76,6 @@ Set the font for your consoles.
 
 ### [Set-EnvironmentVariable](./docs/Set-EnvironmentVariable.md)
 Set environment variables.
-
-### [Show-LoadedAssemblies](./docs/Show-LoadedAssemblies.md)
-Show all assemblies loaded in PowerShell.
 
 ### [Test-IsElevated](./docs/Test-IsElevated.md)
 Check if you are running an elevated shell with administrator or root privileges.
