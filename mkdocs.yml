@@ -79,14 +79,15 @@ theme:
 nav:
   - Home: "index.md"
   - Customize:
-      - Initialize-Configuration: "Initialize-Configuration.md"
+      - Initialize-PSEnvironmentConfiguration: "Initialize-PSEnvironmentConfiguration.md"
       - Edit-WinGetSettings: "Edit-WinGetSettings.md"
       - Install-OhMyPosh: "Install-OhMyPosh.md"
       - Install-PowerShellISE: "Install-PowerShellISE.md"
       - Install-WinGet: "Install-WinGet.md"
+      - Set-ConsoleFont" "Set-ConsoleFont.md"
   - Develop:
-      - Get-Types: "Get-Types.md"
-      - Show-LoadedAssemblies: "Show-LoadedAssemblies.md"
+      - Get-TypeAccelerator: "Get-TypeAccelerator.md"
+      - Get-LoadedAssembly: "Show-LoadedAssembly.md"
       - New-ScriptFromTemplate: "New-ScriptFromTemplate.md"
   - Daily Functions:
       - Get-EnvironmentVariable: "Get-EnvironmentVariable.md"
