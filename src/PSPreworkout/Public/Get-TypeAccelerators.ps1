@@ -19,6 +19,13 @@ function Get-TypeAccelerators {
     [CmdletBinding()]
     [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', 'Get-TypeAccelerators', Justification = 'The type accelerators are plural.')]
     param (
+
+        # Parameter help description
+        [Parameter(Position = 0, HelpMessage = 'The name of the type accelerator, such as "ADSI."')]
+        [SupportsWildcards()]
+        [string]
+        $Name = '*',
+
         # Show a grid view of the loaded assemblies
         [Parameter()]
         [switch]
@@ -26,15 +33,16 @@ function Get-TypeAccelerators {
     )
 
     $TypeAccelerators = ([PSObject].Assembly.GetType('System.Management.Automation.TypeAccelerators')::Get).GetEnumerator() |
-        ForEach-Object {
-            # Create a custom object to store the type name and the type itself.
-            [PSCustomObject]@{
-                PSTypeName = 'PSTypeAccelerator'
-                PSVersion  = $PSVersionTable.PSVersion
-                Name       = $_.Key
-                Type       = $_.Value.FullName
+        Where-Object { $_.Key -like $Name } |
+            ForEach-Object {
+                # Create a custom object to store the type name and the type itself.
+                [PSCustomObject]@{
+                    PSTypeName = 'PSTypeAccelerator'
+                    PSVersion  = $PSVersionTable.PSVersion
+                    Name       = $_.Key
+                    Type       = $_.Value.FullName
+                }
             }
-        }
 
     if ($PSBoundParameters.ContainsKey('GridView')) {
 
