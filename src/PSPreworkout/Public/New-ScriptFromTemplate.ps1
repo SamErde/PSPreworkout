@@ -27,7 +27,7 @@ function New-ScriptFromTemplate {
         Optionally skip validation of the script name. This will not check for use of approved verbs or restricted characters.
 
         .EXAMPLE
-        New-Function -Name "Get-Demo" -Synopsis "Get a demo." -Description "This function gets a demo." -Alias "Get-Sample"
+        New-ScriptFromTemplate -Name "Get-Demo" -Synopsis "Get a demo." -Description "This function gets a demo." -Alias "Get-Sample"
 
     #>
 
