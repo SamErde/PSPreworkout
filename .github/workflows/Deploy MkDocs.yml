@@ -34,7 +34,7 @@ jobs:
       - name: Update Index and Readme Documentation
         shell: pwsh
         run: |
-          $IndexTop = Get-Content -Path ./docs/index.md -TotalCount 41
+          $IndexTop = Get-Content -Path ./docs/index.md -TotalCount 42
           $ModuleContent = Get-Content -Path ./docs/PSPreworkout.md | Select-Object -Skip 12
           $CombinedContent = $IndexTop + $ModuleContent
           $CombinedContent | Set-Content -Path ./docs/index.md
