@@ -1,4 +1,4 @@
-function Get-LoadedAssemblies {
+function Get-LoadedAssembly {
     <#
     .SYNOPSIS
     Get all assemblies loaded in PowerShell.
@@ -10,18 +10,22 @@ function Get-LoadedAssemblies {
     Show the results in a grid view.
 
     .EXAMPLE
-    Get-LoadedAssemblies
+    Get-LoadedAssembly
 
     Returns a list of all loaded assemblies.
 
     .EXAMPLE
-    Get-LoadedAssemblies -GridView
+    Get-LoadedAssembly -GridView
 
     Shows a list of all loaded assemblies in a grid view.
+
+    .NOTES
+    To Do: Add -Name parameter to get a specific one.
+
     #>
     [CmdletBinding()]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'But this is better.')]
-    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '', Justification = 'There is a lot of them.')]
+    # [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '', Justification = 'There is a lot of them.')]
     [Alias('Show-Assemblies')]
     param (
         # Show a grid view of the loaded assemblies

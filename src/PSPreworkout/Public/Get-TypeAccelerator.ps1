@@ -1,23 +1,26 @@
-function Get-TypeAccelerators {
+function Get-TypeAccelerator {
     <#
     .SYNOPSIS
-    List all available type accelerators.
+    Get available type accelerators.
 
     .DESCRIPTION
-    List all available type accelerators. These can be useful when trying to find or remember the different type accellerators that are available to use in PowerShell.
+    Get available type accelerators. These can be useful when trying to find or remember the different type accellerators that are available to use in PowerShell.
+
+    .PARAMETER Name
+    The name of a specific type accelerator to get.
 
     .PARAMETER GridView
     Show the output in a grid view.
 
     .EXAMPLE
-    Get-TypeAccelerators
+    Get-TypeAccelerator -Name ADSI
 
     .NOTES
     Thanks to Jeff Hicks (@JDHITSolutions) for helpful suggestions and improvements on this output!
 
     #>
     [CmdletBinding()]
-    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', 'Get-TypeAccelerators', Justification = 'The type accelerators are plural.')]
+    #[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', 'Get-TypeAccelerators', Justification = 'The type accelerators are plural.')]
     param (
 
         # Parameter help description
