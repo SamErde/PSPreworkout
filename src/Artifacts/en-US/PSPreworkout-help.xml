@@ -166,33 +166,148 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
-      <command:name>Get-Types</command:name>
+      <command:name>Get-LoadedAssembly</command:name>
       <command:verb>Get</command:verb>
-      <command:noun>Types</command:noun>
+      <command:noun>LoadedAssembly</command:noun>
       <maml:description>
-        <maml:para>List all available .NET types and type accelerators.</maml:para>
+        <maml:para>Get all assemblies loaded in PowerShell.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>List all available types and type accelerators. These can be useful when trying to find or remember the different types and accellerators that are available to use in PowerShell.</maml:para>
+      <maml:para>Get all assemblies loaded in PowerShell.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
-        <maml:name>Get-Types</maml:name>
+        <maml:name>Get-LoadedAssembly</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>GridView</maml:name>
+          <maml:Description>
+            <maml:para>Show the results in a grid view.</maml:para>
+          </maml:Description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
-    <command:parameters />
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>GridView</maml:name>
+        <maml:Description>
+          <maml:para>Show the results in a grid view.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
     <command:inputTypes />
     <command:returnValues />
     <maml:alertSet>
       <maml:alert>
-        <maml:para></maml:para>
+        <maml:para>To Do: Add -Name parameter to get a specific one.</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
       <command:example>
         <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
-        <dev:code>Get-Types</dev:code>
+        <dev:code>Get-LoadedAssembly</dev:code>
+        <dev:remarks>
+          <maml:para>Returns a list of all loaded assemblies.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 2 --------------------------</maml:title>
+        <dev:code>Get-LoadedAssembly -GridView</dev:code>
+        <dev:remarks>
+          <maml:para>Shows a list of all loaded assemblies in a grid view.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Get-TypeAccelerator</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>TypeAccelerator</command:noun>
+      <maml:description>
+        <maml:para>Get available type accelerators.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Get available type accelerators. These can be useful when trying to find or remember the different type accellerators that are available to use in PowerShell.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-TypeAccelerator</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="true" pipelineInput="False" position="1" aliases="none">
+          <maml:name>Name</maml:name>
+          <maml:Description>
+            <maml:para>The name of a specific type accelerator to get.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>*</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>GridView</maml:name>
+          <maml:Description>
+            <maml:para>Show the output in a grid view.</maml:para>
+          </maml:Description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="true" pipelineInput="False" position="1" aliases="none">
+        <maml:name>Name</maml:name>
+        <maml:Description>
+          <maml:para>The name of a specific type accelerator to get.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>*</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>GridView</maml:name>
+        <maml:Description>
+          <maml:para>Show the output in a grid view.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes />
+    <command:returnValues />
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para>Thanks to Jeff Hicks (@JDHITSolutions) for helpful suggestions and improvements on this output!</maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
+        <dev:code>Get-TypeAccelerator -Name ADSI</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
@@ -202,9 +317,9 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
-      <command:name>Initialize-Configuration</command:name>
+      <command:name>Initialize-PSEnvironmentConfiguration</command:name>
       <command:verb>Initialize</command:verb>
-      <command:noun>Configuration</command:noun>
+      <command:noun>PSEnvironmentConfiguration</command:noun>
       <maml:description>
         <maml:para>Initialize configuration your PowerShell environment and git.</maml:para>
       </maml:description>
@@ -214,7 +329,7 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
-        <maml:name>Initialize-Configuration</maml:name>
+        <maml:name>Initialize-PSEnvironmentConfiguration</maml:name>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>Name</maml:name>
           <maml:Description>
@@ -465,9 +580,9 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
     <command:examples>
       <command:example>
         <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
-        <dev:code>Initialize-Configuration</dev:code>
+        <dev:code>Initialize the PowerShell working environment with a custom font, and set my name and email address for Git commits.</dev:code>
         <dev:remarks>
-          <maml:para>Init-Configuration -Name 'Sam Erde' -Email 'sam@example.local' -ConsoleFont 'FiraCode Nerd Font'</maml:para>
+          <maml:para>Initialize-PSEnvironmentConfiguration -Name 'Sam Erde' -Email 'sam@example.local' -ConsoleFont 'FiraCode Nerd Font'</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
@@ -1265,42 +1380,6 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
       <command:example>
         <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
         <dev:code>Set-EnvironmentVariable -Name 'FavoriteDrink' -Value 'Coffee' -Target 'User'</dev:code>
-        <dev:remarks>
-          <maml:para></maml:para>
-        </dev:remarks>
-      </command:example>
-    </command:examples>
-    <command:relatedLinks />
-  </command:command>
-  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
-    <command:details>
-      <command:name>Show-LoadedAssemblies</command:name>
-      <command:verb>Show</command:verb>
-      <command:noun>LoadedAssemblies</command:noun>
-      <maml:description>
-        <maml:para>Show all assemblies loaded in PowerShell.</maml:para>
-      </maml:description>
-    </command:details>
-    <maml:description>
-      <maml:para>Show all assemblies loaded in PowerShell.</maml:para>
-    </maml:description>
-    <command:syntax>
-      <command:syntaxItem>
-        <maml:name>Show-LoadedAssemblies</maml:name>
-      </command:syntaxItem>
-    </command:syntax>
-    <command:parameters />
-    <command:inputTypes />
-    <command:returnValues />
-    <maml:alertSet>
-      <maml:alert>
-        <maml:para></maml:para>
-      </maml:alert>
-    </maml:alertSet>
-    <command:examples>
-      <command:example>
-        <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
-        <dev:code>Show-LoadedAssemblies</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>

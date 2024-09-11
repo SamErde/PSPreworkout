@@ -5,7 +5,7 @@ online version:
 schema: 2.0.0
 ---
 
-# Initialize-Configuration
+# Initialize-PSEnvironmentConfiguration
 
 ## SYNOPSIS
 Initialize configuration your PowerShell environment and git.
@@ -13,9 +13,9 @@ Initialize configuration your PowerShell environment and git.
 ## SYNTAX
 
 ```
-Initialize-Configuration [[-Name] <String>] [[-Email] <String>] [[-CentralProfile] <String>] [[-Font] <String>]
- [[-Packages] <String[]>] [-SkipPackages] [-PickPackages] [[-Modules] <String[]>] [-SkipModules] [-PickModules]
- [<CommonParameters>]
+Initialize-PSEnvironmentConfiguration [[-Name] <String>] [[-Email] <String>] [[-CentralProfile] <String>]
+ [[-Font] <String>] [[-Packages] <String[]>] [-SkipPackages] [-PickPackages] [[-Modules] <String[]>]
+ [-SkipModules] [-PickModules] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -25,10 +25,10 @@ Install supporting packages, configure git, and set your console font with this 
 
 ### EXAMPLE 1
 ```
-Initialize-Configuration
+Initialize the PowerShell working environment with a custom font, and set my name and email address for Git commits.
 ```
 
-Init-Configuration -Name 'Sam Erde' -Email 'sam@example.local' -ConsoleFont 'FiraCode Nerd Font'
+Initialize-PSEnvironmentConfiguration -Name 'Sam Erde' -Email 'sam@example.local' -ConsoleFont 'FiraCode Nerd Font'
 
 ## PARAMETERS
 

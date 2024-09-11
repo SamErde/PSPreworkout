@@ -82,19 +82,98 @@ function Get-EnvironmentVariable {
 
 
 
-function Get-Types {
+function Get-LoadedAssembly {
     <#
 .EXTERNALHELP PSPreworkout-help.xml
 #>
     [CmdletBinding()]
-    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', 'Get-Types', Justification = 'The types are plural.')]
-    param ()
-    [PSObject].Assembly.GetType('System.Management.Automation.TypeAccelerators')::Get
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'But this is better.')]
+    # [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '', Justification = 'There is a lot of them.')]
+    [Alias('Show-Assemblies')]
+    param (
+        # Show a grid view of the loaded assemblies
+        [Parameter()]
+        [switch]
+        $GridView
+    )
+
+    $LoadedAssemblies = [System.AppDomain]::CurrentDomain.GetAssemblies() | Where-Object -FilterScript { $_.Location } | Sort-Object -Property FullName | Select-Object -Property FullName, Location, GlobalAssemblyCache, IsFullyTrusted
+
+    if ($PSBoundParameters.ContainsKey('GridView')) {
+
+        if ((Get-Command -Name Out-ConsoleGridView -ErrorAction SilentlyContinue) -and ($PSVersionTable.PSEdition -eq 'Core')) {
+
+            $LoadedAssemblies | Out-ConsoleGridView -OutputMode Multiple
+
+        } elseif ((Get-Command -Name Out-GridView -ErrorAction SilentlyContinue) -and ($PSVersionTable.PSEdition -eq 'Desktop')) {
+
+            $LoadedAssemblies | Out-GridView -OutputMode Multiple
+
+        } else {
+            Write-Output 'The Out-GridView and Out-ConsoleGridView cmdlets were not found. Please install the Microsoft.PowerShell.ConsoleGuiTools module or re-install the PowerShell ISE if using Windows PowerShell 5.1.'
+            $LoadedAssemblies | Format-Table -AutoSize
+        }
+    }
+    $LoadedAssemblies
 }
 
 
 
-function Initialize-Configuration {
+function Get-TypeAccelerator {
+    <#
+.EXTERNALHELP PSPreworkout-help.xml
+#>
+    [CmdletBinding()]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'Fighting with VS Code autoformatting.')]
+    #[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', 'Get-TypeAccelerators', Justification = 'The type accelerators are plural.')]
+    param (
+
+        # Parameter help description
+        [Parameter(Position = 0, HelpMessage = 'The name of the type accelerator, such as "ADSI."')]
+        [SupportsWildcards()]
+        [string]
+        $Name = '*',
+
+        # Show a grid view of the loaded assemblies
+        [Parameter()]
+        [switch]
+        $GridView
+    )
+
+    $TypeAccelerators = ([PSObject].Assembly.GetType('System.Management.Automation.TypeAccelerators')::Get).GetEnumerator() |
+        Where-Object { $_.Key -like $Name } |
+            ForEach-Object {
+                # Create a custom object to store the type name and the type itself.
+                [PSCustomObject]@{
+                    PSTypeName = 'PSTypeAccelerator'
+                    PSVersion  = $PSVersionTable.PSVersion
+                    Name       = $_.Key
+                    Type       = $_.Value.FullName
+                }
+            }
+
+    if ($PSBoundParameters.ContainsKey('GridView')) {
+
+        if ((Get-Command -Name Out-ConsoleGridView -ErrorAction SilentlyContinue) -and ($PSVersionTable.PSEdition -eq 'Core')) {
+
+            $TypeAccelerators | Out-ConsoleGridView -OutputMode Multiple
+
+        } elseif ((Get-Command -Name Out-GridView -ErrorAction SilentlyContinue) -and ($PSVersionTable.PSEdition -eq 'Desktop')) {
+
+            $TypeAccelerators | Out-GridView -OutputMode Multiple
+
+        } else {
+            Write-Output 'The Out-GridView and Out-ConsoleGridView cmdlets were not found. Please install the Microsoft.PowerShell.ConsoleGuiTools module or re-install the PowerShell ISE if using Windows PowerShell 5.1.'
+            $TypeAccelerators | Format-Table -AutoSize
+        }
+    }
+
+    $TypeAccelerators
+}
+
+
+
+function Initialize-PSEnvironmentConfiguration {
     <#
 .EXTERNALHELP PSPreworkout-help.xml
 #>
@@ -104,7 +183,7 @@ function Initialize-Configuration {
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]
-    [Alias('Init-Config', 'Init-Configuration')]
+    [Alias('Init-PSEnvConfig')]
     param (
         # Your name (used for Git config)
         [Parameter()]
@@ -590,39 +669,6 @@ function Set-EnvironmentVariable {
 
     end {
         #
-    }
-}
-
-
-
-function Show-LoadedAssemblies {
-    <#
-.EXTERNALHELP PSPreworkout-help.xml
-#>
-    [CmdletBinding()]
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'But this is better.')]
-    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '', Justification = 'There is a lot of them.')]
-    [Alias('Show-Assemblies')]
-    param ( )
-
-    if (Get-Command -Name Out-ConsoleGridView) {
-        [System.AppDomain]::CurrentDomain.GetAssemblies() |
-            Where-Object -FilterScript { $_.Location } |
-                Sort-Object -Property FullName |
-                    Select-Object -Property FullName, Location, GlobalAssemblyCache, IsFullyTrusted |
-                        Out-ConsoleGridView -OutputMode Multiple
-    } elseif (Get-Command -Name Out-GridView) {
-        [System.AppDomain]::CurrentDomain.GetAssemblies() |
-            Where-Object -FilterScript { $_.Location } |
-                Sort-Object -Property FullName |
-                    Select-Object -Property FullName, Location, GlobalAssemblyCache, IsFullyTrusted |
-                        Out-GridView -OutputMode Multiple
-    } else {
-        [System.AppDomain]::CurrentDomain.GetAssemblies() |
-            Where-Object -FilterScript { $_.Location } |
-                Sort-Object -Property FullName |
-                    Select-Object -Property FullName, Location, GlobalAssemblyCache, IsFullyTrusted |
-                        Format-Table -AutoSize
     }
 }
 
