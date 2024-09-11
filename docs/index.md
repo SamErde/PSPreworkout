@@ -40,6 +40,7 @@ Get-Command -Module PSPreworkout
 
 Please feel free to use the issues or a PR to report bugs, suggest improvements, or add new ideas to the module!
 
+## PSPreworkout Cmdlets
 ### [Edit-WingetSettings](Edit-WingetSettings.md)
 Edit the WinGet settings file.
 
@@ -80,4 +81,7 @@ Show all assemblies loaded in PowerShell.
 Check if you are running an elevated shell with administrator or root privileges.
 
 ### [Update-AllTheThings](Update-AllTheThings.md)
-Update all the things! Update-AllTheThings.ps1
+Update all the things! Update-AllTheThings.ps1 
+
+
+
