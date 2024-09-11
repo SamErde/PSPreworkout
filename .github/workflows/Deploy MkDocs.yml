@@ -31,15 +31,15 @@ jobs:
           mkdocs build
           mkdocs gh-deploy --force
 
-      - name: Copy Module MD to Repository README
+      - name: Update Index and Readme Documentation
         shell: pwsh
         run: |
-          $ReadmeTop = Get-Content -Path ./docs/index.md -TotalCount 31
-          $ReadmeContent = Get-Content -Path ./docs/PSPreworkout.md | Select-Object -Skip 13
-          $CombinedContent = $ReadmeTop + $ReadmeContent
+          $IndexTop = Get-Content -Path ./docs/index.md -TotalCount 39
+          $ModuleContent = Get-Content -Path ./docs/PSPreworkout.md | Select-Object -Skip 13
+          $CombinedContent = $IndexTop + $ModuleContent
           $CombinedContent | Set-Content -Path ./docs/index.md
-          $ReadmeContent = $ReadmeContent.Replace( '](' , '](./docs/' )
-          $CombinedContent = $ReadmeTop + $ReadmeContent
+          $ModuleContent = $ModuleContent.Replace( '](' , '](./docs/' )
+          $CombinedContent = $IndexTop + $ModuleContent
           $CombinedContent | Set-Content -Path ./README.md
           # Copy-Item ./docs/index.md ./README.md
 
