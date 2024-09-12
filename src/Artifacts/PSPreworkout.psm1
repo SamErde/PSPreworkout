@@ -543,6 +543,7 @@ function New-ScriptFromTemplate {
     $FunctionBody = $FunctionBody -Replace '__SYNOPSIS__', $Synopsis
     $FunctionBody = $FunctionBody -Replace '__DESCRIPTION__', $Description
     $FunctionBody = $FunctionBody -Replace '__DATE__', (Get-Date -Format 'yyyy-MM-dd')
+    $FunctionBody = $FunctionBody -Replace '__AUTHOR__', $Author
     # Set an alias for the new function if one is given in parameters.
     if ($PSBoundParameters.ContainsKey('Alias')) {
         $FunctionBody = $FunctionBody -Replace '__ALIAS__', "[Alias(`'$Alias`')]"

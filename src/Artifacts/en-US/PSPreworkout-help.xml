@@ -906,7 +906,7 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
     <command:syntax>
       <command:syntaxItem>
         <maml:name>New-ScriptFromTemplate</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>Name</maml:name>
           <maml:Description>
             <maml:para>The name of the new function to create. It is recommended to use ApprovedVerb-Noun for names.</maml:para>
@@ -967,18 +967,6 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
           <dev:defaultValue>(Get-CimInstance -ClassName Win32_UserAccount -Filter "Name = `'$([System.Security.Principal.WindowsIdentity]::GetCurrent().Name.Split('\')[1])`'").FullName</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>Parameter</maml:name>
-          <maml:Description>
-            <maml:para>Name (or an array of names) of parameter[s] to include in the script.</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
-          <dev:type>
-            <maml:name>String[]</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Path</maml:name>
           <maml:Description>
             <maml:para>The path of the directory to save the new script in.</maml:para>
@@ -1004,7 +992,7 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
       </command:syntaxItem>
       <command:syntaxItem>
         <maml:name>New-ScriptFromTemplate</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>Verb</maml:name>
           <maml:Description>
             <maml:para>The verb to use for the function name.</maml:para>
@@ -1016,7 +1004,7 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>Noun</maml:name>
           <maml:Description>
             <maml:para>The noun to use for the function name.</maml:para>
@@ -1077,18 +1065,6 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
           <dev:defaultValue>(Get-CimInstance -ClassName Win32_UserAccount -Filter "Name = `'$([System.Security.Principal.WindowsIdentity]::GetCurrent().Name.Split('\')[1])`'").FullName</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>Parameter</maml:name>
-          <maml:Description>
-            <maml:para>Name (or an array of names) of parameter[s] to include in the script.</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
-          <dev:type>
-            <maml:name>String[]</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Path</maml:name>
           <maml:Description>
             <maml:para>The path of the directory to save the new script in.</maml:para>
@@ -1114,7 +1090,7 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>Name</maml:name>
         <maml:Description>
           <maml:para>The name of the new function to create. It is recommended to use ApprovedVerb-Noun for names.</maml:para>
@@ -1126,7 +1102,7 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>Verb</maml:name>
         <maml:Description>
           <maml:para>The verb to use for the function name.</maml:para>
@@ -1138,7 +1114,7 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>Noun</maml:name>
         <maml:Description>
           <maml:para>The noun to use for the function name.</maml:para>
@@ -1197,18 +1173,6 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>(Get-CimInstance -ClassName Win32_UserAccount -Filter "Name = `'$([System.Security.Principal.WindowsIdentity]::GetCurrent().Name.Split('\')[1])`'").FullName</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>Parameter</maml:name>
-        <maml:Description>
-          <maml:para>Name (or an array of names) of parameter[s] to include in the script.</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
-        <dev:type>
-          <maml:name>String[]</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Path</maml:name>

@@ -14,15 +14,15 @@ Create a new advanced function from a template.
 
 ### Named
 ```
-New-ScriptFromTemplate -Name <String> [-Synopsis <String>] [-Description <String>] [-Alias <String>]
- [-Author <String>] [-Parameter <String[]>] [-Path <String>] [-SkipValidation]
+New-ScriptFromTemplate [-Name] <String> [-Synopsis <String>] [-Description <String>] [-Alias <String>]
+ [-Author <String>] [-Path <String>] [-SkipValidation]
  [<CommonParameters>]
 ```
 
 ### VerbNoun
 ```
-New-ScriptFromTemplate -Verb <String> -Noun <String> [-Synopsis <String>] [-Description <String>]
- [-Alias <String>] [-Author <String>] [-Parameter <String[]>] [-Path <String>] [-SkipValidation]
+New-ScriptFromTemplate [-Verb] <String> [-Noun] <String> [-Synopsis <String>] [-Description <String>]
+ [-Alias <String>] [-Author <String>] [-Path <String>] [-SkipValidation]
  [<CommonParameters>]
 ```
 
@@ -55,7 +55,7 @@ Parameter Sets: Named
 Aliases:
 
 Required: True
-Position: Named
+Position: 1
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -70,7 +70,7 @@ Parameter Sets: VerbNoun
 Aliases:
 
 Required: True
-Position: Named
+Position: 1
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -85,7 +85,7 @@ Parameter Sets: VerbNoun
 Aliases:
 
 Required: True
-Position: Named
+Position: 2
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -148,21 +148,6 @@ Aliases:
 Required: False
 Position: Named
 Default value: (Get-CimInstance -ClassName Win32_UserAccount -Filter "Name = `'$([System.Security.Principal.WindowsIdentity]::GetCurrent().Name.Split('\')[1])`'").FullName
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Parameter
-Name (or an array of names) of parameter\[s\] to include in the script.
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
