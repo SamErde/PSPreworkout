@@ -2,9 +2,9 @@
 <helpItems schema="maml" xmlns="http://msh">
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
-      <command:name>Edit-WingetSettings</command:name>
+      <command:name>Edit-WingetSettingsFile</command:name>
       <command:verb>Edit</command:verb>
-      <command:noun>WingetSettings</command:noun>
+      <command:noun>WingetSettingsFile</command:noun>
       <maml:description>
         <maml:para>Edit the WinGet settings file.</maml:para>
       </maml:description>
@@ -14,7 +14,7 @@
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
-        <maml:name>Edit-WingetSettings</maml:name>
+        <maml:name>Edit-WingetSettingsFile</maml:name>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters />
@@ -28,7 +28,7 @@
     <command:examples>
       <command:example>
         <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
-        <dev:code>Edit-WinGetSettings</dev:code>
+        <dev:code>Edit-WinGetSettingsFile</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
@@ -1358,6 +1358,73 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
         <dev:code>Set-EnvironmentVariable -Name 'FavoriteDrink' -Value 'Coffee' -Target 'User'</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Show-LoadedAssembly</command:name>
+      <command:verb>Show</command:verb>
+      <command:noun>LoadedAssembly</command:noun>
+      <maml:description>
+        <maml:para>Show all assemblies loaded in PowerShell.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Show all assemblies loaded in PowerShell.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Show-LoadedAssembly</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>GridView</maml:name>
+          <maml:Description>
+            <maml:para>Show the results in a grid view.</maml:para>
+          </maml:Description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>GridView</maml:name>
+        <maml:Description>
+          <maml:para>Show the results in a grid view.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes />
+    <command:returnValues />
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
+        <dev:code>Show-LoadedAssembly</dev:code>
+        <dev:remarks>
+          <maml:para>Shows a simple list of all loaded assemblies.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 2 --------------------------</maml:title>
+        <dev:code>Show-LoadedAssembly -GridView</dev:code>
+        <dev:remarks>
+          <maml:para>Shows a list of all loaded assemblies in a grid view.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>

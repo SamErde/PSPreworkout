@@ -64,9 +64,10 @@
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
     FunctionsToExport = @(
-        'Edit-WinGetSettings',
+        'Edit-WinGetSettingsFile',
         'Get-EnvironmentVariable',
         'Get-LoadedAssembly',
+        'Show-LoadedAssembly',
         'Get-TypeAccelerator',
         'Initialize-PSEnvironmentConfiguration',
         'Install-OhMyPosh',

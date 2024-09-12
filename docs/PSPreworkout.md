@@ -1,6 +1,6 @@
 ---
 Module Name: PSPreworkout
-Module Guid: 378339de-a0df-4d44-873b-4fd32c388e06 378339de-a0df-4d44-873b-4fd32c388e06
+Module Guid: 378339de-a0df-4d44-873b-4fd32c388e06
 Download Help Link: NA
 Help Version: 1.1.0
 Locale: en-US
@@ -11,7 +11,7 @@ Locale: en-US
 A special mix of tools to help jump start your PowerShell session!
 
 ## PSPreworkout Cmdlets
-### [Edit-WingetSettings](Edit-WingetSettings.md)
+### [Edit-WingetSettingsFile](Edit-WingetSettingsFile.md)
 Edit the WinGet settings file.
 
 ### [Get-EnvironmentVariable](Get-EnvironmentVariable.md)
@@ -46,6 +46,9 @@ Set the font for your consoles.
 
 ### [Set-EnvironmentVariable](Set-EnvironmentVariable.md)
 Set environment variables.
+
+### [Show-LoadedAssembly](Show-LoadedAssembly.md)
+Show all assemblies loaded in PowerShell.
 
 ### [Test-IsElevated](Test-IsElevated.md)
 Check if you are running an elevated shell with administrator or root privileges.
