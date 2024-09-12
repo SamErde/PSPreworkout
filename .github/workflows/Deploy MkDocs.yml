@@ -8,7 +8,6 @@ on:
       - 'docs/**'
       - '.github/workflows/Deploy MkDocs.yml'
       - './mkdocs.yml'
-  workflow_dispatch:
 
 jobs:
   build:
