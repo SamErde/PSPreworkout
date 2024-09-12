@@ -37,6 +37,11 @@ based help for the new function automatically.
 New-ScriptFromTemplate -Name "Get-Demo" -Synopsis "Get a demo." -Description "This function gets a demo." -Alias "Get-Sample"
 ```
 
+### EXAMPLE 2
+```
+New-ScriptFromTemplate -Verb Get -Noun Something
+```
+
 ## PARAMETERS
 
 ### -Name
