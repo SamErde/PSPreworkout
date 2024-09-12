@@ -34,7 +34,7 @@ based help for the new function automatically.
 
 ### EXAMPLE 1
 ```
-New-Function -Name "Get-Demo" -Synopsis "Get a demo." -Description "This function gets a demo." -Alias "Get-Sample"
+New-ScriptFromTemplate -Name "Get-Demo" -Synopsis "Get a demo." -Description "This function gets a demo." -Alias "Get-Sample"
 ```
 
 ## PARAMETERS
