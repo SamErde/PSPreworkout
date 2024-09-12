@@ -120,10 +120,63 @@ function Initialize-PSEnvironmentConfiguration {
     }
 
     process {
-        # Configure git user settings
+        #region Configure Git
         if ($PSBoundParameters.ContainsKey('Name')) { git config --global user.name $Name }
         if ($PSBoundParameters.ContainsKey('Email')) { git config --global user.email $Email }
+        #endregion Configure Git
 
+
+        #region Default Settings, All Versions
+        $PSDefaultParameterValues = @{
+            'ConvertTo-Csv:NoTypeInformation' = $True
+            'ConvertTo-Xml:NoTypeInformation' = $True
+            'Export-Csv:NoTypeInformation'    = $True
+            'Format-[WT]*:Autosize'           = $True
+            'Get-Help:ShowWindow'             = $False
+            '*:Encoding'                      = 'utf8'
+            'Out-Default:OutVariable'         = 'LastOutput'
+        }
+
+        $OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
+
+        $PSReadLineOptions = @{
+            HistoryNoDuplicates           = $true
+            HistorySearchCursorMovesToEnd = $true
+        }
+        Set-PSReadLineOption @PSReadLineOptions
+
+        # Do not write to history file if command was less than 4 characters. Borrowed from Sean Wheeler.
+        $global:__DefaultHistoryHandler = (Get-PSReadLineOption).AddToHistoryHandler
+        Set-PSReadLineOption -AddToHistoryHandler {
+            param([string]$Line)
+            $DefaultResult = $global:__defaultHistoryHandler.Invoke($Line)
+            if ($DefaultResult -eq 'MemoryAndFile') {
+                if ($Line.Length -gt 3 -and $Line[0] -ne ' ' -and $Line[-1] -ne ';') {
+                    return 'MemoryAndFile'
+                } else {
+                    return 'MemoryOnly'
+                }
+            }
+            return $DefaultResult
+        }
+        #endregion Default Settings, All Versions
+
+
+        #region Version-Specific Settings
+        if ($PSVersionTable.PSVersion -lt '6.0') {
+            Set-PSReadLineOption -PredictionViewStyle Inline -PredictionSource History
+        } else {
+            Set-PSReadLineOption -PredictionViewStyle ListView -PredictionSource HistoryAndPlugin
+
+            if ($IsLinux -or $IsMacOS) {
+                Install-Module Microsoft.PowerShell.UnixTabCompletion
+                Install-PSUnixTabCompletion
+            }
+        }
+        #endregion Version-Specific Settings
+
+
+        #region Font
         # Set the font for all registered consoles (Windows only)
         if ($PSBoundParameters.ContainsKey('ConsoleFont') -or $PSBoundParameters.ContainsKey('Font')) {
             if ($IsLinux -or $IsMacOS) {
@@ -134,7 +187,10 @@ function Initialize-PSEnvironmentConfiguration {
                 Set-ItemProperty -Path (($_.Name).Replace('HKEY_CURRENT_USER', 'HKCU:')) -Name 'FaceName' -Value $ConsoleFont
             }
         }
+        #endregion Font
 
+
+        #region Install Things
         # Install PowerShell modules
         if ($Modules -and -not $SkipModules.IsPresent) {
             foreach ($module in $Modules) {
@@ -158,10 +214,10 @@ function Initialize-PSEnvironmentConfiguration {
                 }
             }
         }
+        #endregion Install Things
     } # end process block
 
     end {
-
     }
 }
 
