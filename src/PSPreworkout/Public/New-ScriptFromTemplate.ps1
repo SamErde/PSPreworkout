@@ -20,6 +20,12 @@ function New-ScriptFromTemplate {
         .PARAMETER Alias
         Optionally define an alias for the new function.
 
+        .PARAMETER Author
+        Name of the author of the script.
+
+        .PARAMETER Parameter
+        Name (or an array of names) of parameter[s] to include in the script.
+
         .PARAMETER Path
         The path of the directory to save the new script in.
 
@@ -27,10 +33,10 @@ function New-ScriptFromTemplate {
         Optionally skip validation of the script name. This will not check for use of approved verbs or restricted characters.
 
         .EXAMPLE
-        New-ScriptFromTemplate -Name "Get-Demo" -Synopsis "Get a demo." -Description "This function gets a demo." -Alias "Get-Sample"
+        New-ScriptFromTemplate -Name 'Get-Demo' -Synopsis 'Get a demo.' -Description 'This function gets a demo.' -Alias 'Get-Sample' -Parameter 'SerialNumber'
 
         .EXAMPLE
-        New-ScriptFromTemplate -Verb Get -Noun Something
+        New-ScriptFromTemplate -Verb Get -Noun Something -Author 'Sam Erde' -Parameter @('Name','Age')
 
     #>
 
@@ -54,11 +60,6 @@ function New-ScriptFromTemplate {
         [string]
         $Noun,
 
-        # Optionally skip name validation checks.
-        [Parameter()]
-        [switch]
-        $SkipValidation,
-
         # Synopsis of the new function.
         [Parameter()]
         [string]
@@ -74,10 +75,25 @@ function New-ScriptFromTemplate {
         [string]
         $Alias,
 
+        # Name of the author of the script
+        [Parameter()]
+        [string]
+        $Author,
+
+        # Parameter name(s) to include
+        [Parameter()]
+        [string[]]
+        $Parameter,
+
         # Path of the directory to save the new function in.
         [Parameter()]
         [string]
-        $Path
+        $Path,
+
+        # Optionally skip name validation checks.
+        [Parameter()]
+        [switch]
+        $SkipValidation
     )
 
     if ($PSBoundParameters.ContainsKey('Verb') -and -not $SkipValidation -and $Verb -notin (Get-Verb).Verb) {
@@ -123,7 +139,7 @@ function New-Function {
         __EXAMPLE__
 
         .NOTES
-        Author: Sam Erde
+        Author: __AUTHOR__
         Version: 0.0.1
         Modified: __DATE__
     #>
