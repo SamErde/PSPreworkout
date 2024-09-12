@@ -179,33 +179,9 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-LoadedAssembly</maml:name>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>GridView</maml:name>
-          <maml:Description>
-            <maml:para>Show the results in a grid view.</maml:para>
-          </maml:Description>
-          <dev:type>
-            <maml:name>SwitchParameter</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
-    <command:parameters>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>GridView</maml:name>
-        <maml:Description>
-          <maml:para>Show the results in a grid view.</maml:para>
-        </maml:Description>
-        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-        <dev:type>
-          <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
-      </command:parameter>
-    </command:parameters>
+    <command:parameters />
     <command:inputTypes />
     <command:returnValues />
     <maml:alertSet>
@@ -219,13 +195,6 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
         <dev:code>Get-LoadedAssembly</dev:code>
         <dev:remarks>
           <maml:para>Returns a list of all loaded assemblies.</maml:para>
-        </dev:remarks>
-      </command:example>
-      <command:example>
-        <maml:title>-------------------------- EXAMPLE 2 --------------------------</maml:title>
-        <dev:code>Get-LoadedAssembly -GridView</dev:code>
-        <dev:remarks>
-          <maml:para>Shows a list of all loaded assemblies in a grid view.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
