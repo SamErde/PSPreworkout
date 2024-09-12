@@ -23,9 +23,6 @@ function New-ScriptFromTemplate {
         .PARAMETER Author
         Name of the author of the script. Attempts to default to the 'FullName' property of the currently logged in user.
 
-        .PARAMETER Parameter
-        Name (or an array of names) of parameter[s] to include in the script.
-
         .PARAMETER Path
         The path of the directory to save the new script in.
 
@@ -42,51 +39,60 @@ function New-ScriptFromTemplate {
 
     [CmdletBinding()]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'OK')]
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '', Justification = 'Making it pretty.')]
+    #[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '', Justification = 'Making it pretty.')]
     [Alias('New-Script')]
     param (
         # The name of the new function.
-        [Parameter(Mandatory, ParameterSetName = 'Named')]
+        [Parameter(Mandatory, ParameterSetName = 'Named', Position = 0)]
+        [ValidateNotNullorEmpty()]
         [string]
         $Name,
 
         # The verb to use for the function name.
-        [Parameter(Mandatory, ParameterSetName = 'VerbNoun')]
+        [Parameter(Mandatory, ParameterSetName = 'VerbNoun', Position = 0)]
+        [ValidateNotNullorEmpty()]
         [string]
         $Verb,
 
         # The noun to use for the function name.
-        [Parameter(Mandatory, ParameterSetName = 'VerbNoun')]
+        [Parameter(Mandatory, ParameterSetName = 'VerbNoun', Position = 1)]
+        [ValidateNotNullorEmpty()]
         [string]
         $Noun,
 
         # Synopsis of the new function.
         [Parameter()]
+        [ValidateNotNullorEmpty()]
         [string]
         $Synopsis,
 
         # Description of the new function.
         [Parameter()]
+        [ValidateNotNullorEmpty()]
         [string]
         $Description,
 
         # Optional alias for the new function.
         [Parameter()]
+        [ValidateNotNullorEmpty()]
         [string]
         $Alias,
 
         # Name of the author of the script
         [Parameter()]
+        [ValidateNotNullorEmpty()]
         [string]
         $Author = (Get-CimInstance -ClassName Win32_UserAccount -Filter "Name = `'$([System.Security.Principal.WindowsIdentity]::GetCurrent().Name.Split('\')[1])`'").FullName,
 
         # Parameter name(s) to include
-        [Parameter()]
-        [string[]]
-        $Parameter,
+        #[Parameter()]
+        #[ValidateNotNullorEmpty()]
+        #[string[]]
+        #$Parameter,
 
         # Path of the directory to save the new function in.
         [Parameter()]
+        [ValidateScript({ Test-Path -Path $_ -PathType Container })]
         [string]
         $Path,
 
@@ -103,7 +109,6 @@ function New-ScriptFromTemplate {
 
     if ($PSBoundParameters.ContainsKey('Verb') -and $PSBoundParameters.ContainsKey('Noun')) {
         $Name = "$Verb-$Noun"
-        Write-Host "Name: $Name."
     }
 
     if ($PSBoundParameters.ContainsKey('Name') -and -not $SkipValidation -and
@@ -128,12 +133,6 @@ function New-Function {
 
         .DESCRIPTION
         __DESCRIPTION__
-
-        .PARAMETER Parameter1
-        __PARAMETER1__
-
-        .PARAMETER Parameter2
-        __PARAMETER2__
 
         .EXAMPLE
         __EXAMPLE__
@@ -170,6 +169,7 @@ function New-Function {
     $FunctionBody = $FunctionBody -Replace '__SYNOPSIS__', $Synopsis
     $FunctionBody = $FunctionBody -Replace '__DESCRIPTION__', $Description
     $FunctionBody = $FunctionBody -Replace '__DATE__', (Get-Date -Format 'yyyy-MM-dd')
+    $FunctionBody = $FunctionBody -Replace '__AUTHOR__', $Author
     # Set an alias for the new function if one is given in parameters.
     if ($PSBoundParameters.ContainsKey('Alias')) {
         $FunctionBody = $FunctionBody -Replace '__ALIAS__', "[Alias(`'$Alias`')]"
