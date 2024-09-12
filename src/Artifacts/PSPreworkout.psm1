@@ -7,27 +7,22 @@
 Export-ModuleMember -Alias *
 
 
-function Edit-WingetSettings {
+function Edit-WingetSettingsFile {
     <#
 .EXTERNALHELP PSPreworkout-help.xml
 #>
     [CmdletBinding()]
-    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', 'Edit-WingetSettings', Justification = 'The settings are plural.')]
     param (
     )
 
-    begin {
-    }
-
-    process {
+    if (Test-Path -PathType Container -Path "$env:LOCALAPPDATA\Packages\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe\LocalState") {
         if (Get-Command code -ErrorAction SilentlyContinue) {
-            code (Get-WinGetSettings | Select-Object -ExpandProperty userSettingsFile)
+            code "$env:LOCALAPPDATA\Packages\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe\LocalState\settings.json"
         } else {
-            notepad (Get-WinGetSettings | Select-Object -ExpandProperty userSettingsFile)
+            notepad "$env:LOCALAPPDATA\Packages\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe\LocalState\settings.json"
         }
-    }
-
-    end {
+    } else {
+        Write-Information -MessageData 'WinGet is not installed.' -InformationAction Continue
     }
 }
 
