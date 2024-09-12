@@ -6,7 +6,7 @@
     RootModule        = 'PSPreworkout.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '1.1.2'
+    ModuleVersion     = '1.2.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -67,7 +67,7 @@
         'Edit-WinGetSettingsFile',
         'Get-EnvironmentVariable',
         'Get-LoadedAssembly',
-        'Show-LoadedAssembly',
+        'Get-PowerShellPortable',
         'Get-TypeAccelerator',
         'Initialize-PSEnvironmentConfiguration',
         'Install-OhMyPosh',
@@ -77,6 +77,7 @@
         'New-ScriptFromTemplate',
         'Set-ConsoleFont',
         'Set-EnvironmentVariable',
+        'Show-LoadedAssembly',
         'Test-IsElevated',
         'Update-AllTheThings'
     )

@@ -93,6 +93,80 @@ function Get-LoadedAssembly {
 
 
 
+function Get-PowerShellPortable {
+    <#
+.EXTERNALHELP PSPreworkout-help.xml
+#>
+
+    [CmdletBinding()]
+    [Alias('Get-PSPortable')]
+    param (
+        # Path to download and extract PowerShell to
+        [Parameter()]
+        [string]
+        $Path,
+
+        # Extract the file after downloading
+        [Parameter()]
+        [switch]
+        $Extract
+    )
+
+    # Get the zip and tar.gz PowerShell download links for Windows, macOS, and Linux.
+    $ApiUrl = 'https://api.github.com/repos/PowerShell/PowerShell/releases/tags/v7.4.5'
+    $Response = Invoke-RestMethod -Uri $ApiUrl -Headers @{ 'User-Agent' = 'PowerShellScript' }
+    $Assets = $Response.assets
+    $DownloadLinks = $Assets | Where-Object { $_.browser_download_url -match '\.zip$|\.tar\.gz$' } | Select-Object -ExpandProperty browser_download_url
+
+    # Determine the platform and architecture
+    $Architecture = [System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture
+
+    # Set the pattern for the ZIP file based on the OS and architecture
+    $OS = if ( [System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform([System.Runtime.InteropServices.OSPlatform]::Windows) ) {
+        'win'
+    } elseif ( [System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform([System.Runtime.InteropServices.OSPlatform]::Linux) ) {
+        'linux'
+    } elseif ( [System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform([System.Runtime.InteropServices.OSPlatform]::OSX) ) {
+        'osx'
+    } else {
+        throw "Operating system unknown: $($PSVersionTable.OS)."
+        return
+    }
+
+    $FilePattern = "$OS-$Architecture"
+    $DownloadUrl = $DownloadLinks | Where-Object { $_ -match $FilePattern }
+    $FileName = ($DownloadUrl -split '/')[-1]
+
+    if (-not $PSBoundParameters.ContainsKey('Path')) {
+        $Path = [System.IO.Path]::Combine($HOME, 'Downloads')
+    }
+    $OutFilePath = [System.IO.Path]::Combine($Path, $FileName)
+
+    try {
+        Invoke-WebRequest -Uri $DownloadUrl -OutFile $OutFilePath
+        Write-Output "PowerShell has been downloaded to $OutFilePath."
+    } catch {
+        Write-Error "Failed to download $DownloadUrl to $Path."
+        $_
+        return
+    }
+
+    if ($PSBoundParameters.ContainsKey('Extract')) {
+        try {
+            Expand-Archive -Path $OutFilePath -Force
+            $FolderSegments = $OutFilePath.Split('.')
+            $Folder = $FolderSegments[0..($FolderSegments.Length - 2)] -join '.'
+            Write-Information -MessageData "PowerShell has been extracted to $Folder" -InformationAction Continue
+            Write-Information -MessageData "Run '$Folder\pwsh.exe' to launch the latest version of PowerShell without installing it!" -InformationAction Continue
+        } catch {
+            Write-Error "Failed to expand the archive $OutFilePath."
+            $_
+        }
+    }
+} # end function Get-PowerShellPortable
+
+
+
 function Get-TypeAccelerator {
     <#
 .EXTERNALHELP PSPreworkout-help.xml
@@ -154,6 +228,7 @@ function Initialize-PSEnvironmentConfiguration {
 
     [CmdletBinding()]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'Agument completers are weird.')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidGlobalVars', '', Justification = 'PSReadLine Handler')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]
@@ -223,10 +298,63 @@ function Initialize-PSEnvironmentConfiguration {
     }
 
     process {
-        # Configure git user settings
+        #region Configure Git
         if ($PSBoundParameters.ContainsKey('Name')) { git config --global user.name $Name }
         if ($PSBoundParameters.ContainsKey('Email')) { git config --global user.email $Email }
+        #endregion Configure Git
 
+
+        #region Default Settings, All Versions
+        $PSDefaultParameterValues = @{
+            'ConvertTo-Csv:NoTypeInformation' = $True
+            'ConvertTo-Xml:NoTypeInformation' = $True
+            'Export-Csv:NoTypeInformation'    = $True
+            'Format-[WT]*:Autosize'           = $True
+            'Get-Help:ShowWindow'             = $False
+            '*:Encoding'                      = 'utf8'
+            'Out-Default:OutVariable'         = 'LastOutput'
+        }
+
+        $OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
+
+        $PSReadLineOptions = @{
+            HistoryNoDuplicates           = $true
+            HistorySearchCursorMovesToEnd = $true
+        }
+        Set-PSReadLineOption @PSReadLineOptions
+
+        # Do not write to history file if command was less than 4 characters. Borrowed from Sean Wheeler.
+        $global:__DefaultHistoryHandler = (Get-PSReadLineOption).AddToHistoryHandler
+        Set-PSReadLineOption -AddToHistoryHandler {
+            param([string]$Line)
+            $DefaultResult = $global:__defaultHistoryHandler.Invoke($Line)
+            if ($DefaultResult -eq 'MemoryAndFile') {
+                if ($Line.Length -gt 3 -and $Line[0] -ne ' ' -and $Line[-1] -ne ';') {
+                    return 'MemoryAndFile'
+                } else {
+                    return 'MemoryOnly'
+                }
+            }
+            return $DefaultResult
+        }
+        #endregion Default Settings, All Versions
+
+
+        #region Version-Specific Settings
+        if ($PSVersionTable.PSVersion -lt '6.0') {
+            Set-PSReadLineOption -PredictionViewStyle Inline -PredictionSource History
+        } else {
+            Set-PSReadLineOption -PredictionViewStyle ListView -PredictionSource HistoryAndPlugin
+
+            if ($IsLinux -or $IsMacOS) {
+                Install-Module Microsoft.PowerShell.UnixTabCompletion
+                Install-PSUnixTabCompletion
+            }
+        }
+        #endregion Version-Specific Settings
+
+
+        #region Font
         # Set the font for all registered consoles (Windows only)
         if ($PSBoundParameters.ContainsKey('ConsoleFont') -or $PSBoundParameters.ContainsKey('Font')) {
             if ($IsLinux -or $IsMacOS) {
@@ -237,7 +365,10 @@ function Initialize-PSEnvironmentConfiguration {
                 Set-ItemProperty -Path (($_.Name).Replace('HKEY_CURRENT_USER', 'HKCU:')) -Name 'FaceName' -Value $ConsoleFont
             }
         }
+        #endregion Font
 
+
+        #region Install Things
         # Install PowerShell modules
         if ($Modules -and -not $SkipModules.IsPresent) {
             foreach ($module in $Modules) {
@@ -261,10 +392,10 @@ function Initialize-PSEnvironmentConfiguration {
                 }
             }
         }
+        #endregion Install Things
     } # end process block
 
     end {
-
     }
 }
 
