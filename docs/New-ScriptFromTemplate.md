@@ -14,14 +14,15 @@ Create a new advanced function from a template.
 
 ### Named
 ```
-New-ScriptFromTemplate -Name <String> [-SkipValidation] [-Synopsis <String>] [-Description <String>]
- [-Alias <String>] [-Path <String>] [<CommonParameters>]
+New-ScriptFromTemplate -Name <String> [-Synopsis <String>] [-Description <String>] [-Alias <String>]
+ [-Author <String>] [-Parameter <String[]>] [-Path <String>] [-SkipValidation]
+ [<CommonParameters>]
 ```
 
 ### VerbNoun
 ```
-New-ScriptFromTemplate -Verb <String> -Noun <String> [-SkipValidation] [-Synopsis <String>]
- [-Description <String>] [-Alias <String>] [-Path <String>]
+New-ScriptFromTemplate -Verb <String> -Noun <String> [-Synopsis <String>] [-Description <String>]
+ [-Alias <String>] [-Author <String>] [-Parameter <String[]>] [-Path <String>] [-SkipValidation]
  [<CommonParameters>]
 ```
 
@@ -34,12 +35,12 @@ based help for the new function automatically.
 
 ### EXAMPLE 1
 ```
-New-ScriptFromTemplate -Name "Get-Demo" -Synopsis "Get a demo." -Description "This function gets a demo." -Alias "Get-Sample"
+New-ScriptFromTemplate -Name 'Get-Demo' -Synopsis 'Get a demo.' -Description 'This function gets a demo.' -Alias 'Get-Sample' -Parameter 'SerialNumber'
 ```
 
 ### EXAMPLE 2
 ```
-New-ScriptFromTemplate -Verb Get -Noun Something
+New-ScriptFromTemplate -Verb Get -Noun Something -Author 'Sam Erde' -Parameter @('Name','Age')
 ```
 
 ## PARAMETERS
@@ -90,22 +91,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -SkipValidation
-Optionally skip validation of the script name.
-This will not check for use of approved verbs or restricted characters.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -Synopsis
 A synopsis of the new function.
 
@@ -151,6 +136,37 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Author
+Name of the author of the script.
+Attempts to default to the 'FullName' property of the currently logged in user.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: (Get-CimInstance -ClassName Win32_UserAccount -Filter "Name = `'$([System.Security.Principal.WindowsIdentity]::GetCurrent().Name.Split('\')[1])`'").FullName
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Parameter
+Name (or an array of names) of parameter\[s\] to include in the script.
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -Path
 The path of the directory to save the new script in.
 
@@ -162,6 +178,22 @@ Aliases:
 Required: False
 Position: Named
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SkipValidation
+Optionally skip validation of the script name.
+This will not check for use of approved verbs or restricted characters.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
