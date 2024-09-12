@@ -21,7 +21,7 @@ function New-ScriptFromTemplate {
         Optionally define an alias for the new function.
 
         .PARAMETER Author
-        Name of the author of the script.
+        Name of the author of the script. Attempts to default to the 'FullName' property of the currently logged in user.
 
         .PARAMETER Parameter
         Name (or an array of names) of parameter[s] to include in the script.
@@ -78,7 +78,7 @@ function New-ScriptFromTemplate {
         # Name of the author of the script
         [Parameter()]
         [string]
-        $Author,
+        $Author = (Get-CimInstance -ClassName Win32_UserAccount -Filter "Name = `'$([System.Security.Principal.WindowsIdentity]::GetCurrent().Name.Split('\')[1])`'").FullName,
 
         # Parameter name(s) to include
         [Parameter()]
