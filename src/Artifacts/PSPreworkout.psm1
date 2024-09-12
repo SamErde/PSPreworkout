@@ -580,7 +580,7 @@ function New-ScriptFromTemplate {
     [void]$FunctionBuilder.Append($FunctionBody)
     $FunctionBuilder.ToString() | Out-File -FilePath $ScriptPath -Encoding utf8 -Force
 
-} # end function New-Function
+} # end function New-ScriptFromTemplate
 
 
 
