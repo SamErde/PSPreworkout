@@ -77,8 +77,13 @@ Set the font for your consoles.
 ### [Set-EnvironmentVariable](./docs/Set-EnvironmentVariable.md)
 Set environment variables.
 
+### [Show-LoadedAssembly](./docs/Show-LoadedAssembly.md)
+Show all assemblies loaded in PowerShell.
+
 ### [Test-IsElevated](./docs/Test-IsElevated.md)
 Check if you are running an elevated shell with administrator or root privileges.
 
 ### [Update-AllTheThings](./docs/Update-AllTheThings.md)
 Update all the things!
+
+
