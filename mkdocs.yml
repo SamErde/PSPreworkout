@@ -87,7 +87,8 @@ nav:
       - Set-ConsoleFont" "Set-ConsoleFont.md"
   - Develop:
       - Get-TypeAccelerator: "Get-TypeAccelerator.md"
-      - Get-LoadedAssembly: "Show-LoadedAssembly.md"
+      - Get-LoadedAssembly: "Get-LoadedAssembly.md"
+      - Show-LoadedAssembly: "Show-LoadedAssembly.md"
       - New-ScriptFromTemplate: "New-ScriptFromTemplate.md"
   - Daily Functions:
       - Get-EnvironmentVariable: "Get-EnvironmentVariable.md"
