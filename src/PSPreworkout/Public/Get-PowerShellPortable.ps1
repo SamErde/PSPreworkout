@@ -41,18 +41,17 @@ function Get-PowerShellPortable {
     $Architecture = [System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture
 
     # Set the pattern for the ZIP file based on the OS and architecture
-    $OS = if ( [System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform([System.Runtime.InteropServices.OSPlatform]::Windows) ) {
-        'win'
+    $FilePattern = if ( [System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform([System.Runtime.InteropServices.OSPlatform]::Windows) ) {
+        "win-$Architecture.zip"
     } elseif ( [System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform([System.Runtime.InteropServices.OSPlatform]::Linux) ) {
-        'linux'
+        "linux-$Architecture.tar.gz"
     } elseif ( [System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform([System.Runtime.InteropServices.OSPlatform]::OSX) ) {
-        'osx'
+        "osx-$Architecture.tar.gz"
     } else {
         throw "Operating system unknown: $($PSVersionTable.OS)."
         return
     }
 
-    $FilePattern = "$OS-$Architecture"
     $DownloadUrl = $DownloadLinks | Where-Object { $_ -match $FilePattern }
     $FileName = ($DownloadUrl -split '/')[-1]
 
@@ -72,7 +71,8 @@ function Get-PowerShellPortable {
 
     if ($PSBoundParameters.ContainsKey('Extract')) {
         try {
-            Expand-Archive -Path $OutFilePath -Force
+            # Expand the zip file into a folder that matches the zip filename without the zip extenstion
+            Expand-Archive -Path $OutFilePath -DestinationPath $([System.IO.Path]::GetFileNameWithoutExtension($OutFilePath)) -Force
             $FolderSegments = $OutFilePath.Split('.')
             $Folder = $FolderSegments[0..($FolderSegments.Length - 2)] -join '.'
             Write-Information -MessageData "PowerShell has been extracted to $Folder" -InformationAction Continue
