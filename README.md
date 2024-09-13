@@ -51,7 +51,7 @@ Retrieves the value of an environment variable.
 Get all assemblies loaded in PowerShell.
 
 ### [Get-PowerShellPortable](./docs/Get-PowerShellPortable.md)
-Download a portable version of PowerShell 7x to run anywhere on demand.
+Download a portable version of PowerShell to run anywhere on demand.
 
 ### [Get-TypeAccelerator](./docs/Get-TypeAccelerator.md)
 Get available type accelerators.
