@@ -206,7 +206,7 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
       <command:verb>Get</command:verb>
       <command:noun>PowerShellPortable</command:noun>
       <maml:description>
-        <maml:para>Download a portable version of PowerShell 7x to run anywhere on demand.</maml:para>
+        <maml:para>Download a portable version of PowerShell to run anywhere on demand.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
@@ -218,7 +218,7 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>Path</maml:name>
           <maml:Description>
-            <maml:para>Path of the directory to download the PowerShell zip or tar.gz file into.</maml:para>
+            <maml:para>The path (directory) to download the PowerShell zip or tar.gz file into. Do not include a filename for the download.</maml:para>
           </maml:Description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -244,7 +244,7 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>Path</maml:name>
         <maml:Description>
-          <maml:para>Path of the directory to download the PowerShell zip or tar.gz file into.</maml:para>
+          <maml:para>The path (directory) to download the PowerShell zip or tar.gz file into. Do not include a filename for the download.</maml:para>
         </maml:Description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -276,9 +276,9 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
     <command:examples>
       <command:example>
         <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
-        <dev:code>Get-PowerShellPortable -Path .\ -Extract</dev:code>
+        <dev:code>Get-PowerShellPortable -Path $HOME -Extract</dev:code>
         <dev:remarks>
-          <maml:para></maml:para>
+          <maml:para>Download the latest ZIP/TAR of PowerShell to your $HOME folder. It will be extracted into a folder that matches the filename of the compressed archive.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>

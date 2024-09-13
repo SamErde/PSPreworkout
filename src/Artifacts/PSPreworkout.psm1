@@ -122,23 +122,22 @@ function Get-PowerShellPortable {
     $Architecture = [System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture
 
     # Set the pattern for the ZIP file based on the OS and architecture
-    $OS = if ( [System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform([System.Runtime.InteropServices.OSPlatform]::Windows) ) {
-        'win'
+    $FilePattern = if ( [System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform([System.Runtime.InteropServices.OSPlatform]::Windows) ) {
+        "win-$Architecture.zip"
     } elseif ( [System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform([System.Runtime.InteropServices.OSPlatform]::Linux) ) {
-        'linux'
+        "linux-$Architecture.tar.gz"
     } elseif ( [System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform([System.Runtime.InteropServices.OSPlatform]::OSX) ) {
-        'osx'
+        "osx-$Architecture.tar.gz"
     } else {
         throw "Operating system unknown: $($PSVersionTable.OS)."
         return
     }
 
-    $FilePattern = "$OS-$Architecture"
     $DownloadUrl = $DownloadLinks | Where-Object { $_ -match $FilePattern }
     $FileName = ($DownloadUrl -split '/')[-1]
 
     if (-not $PSBoundParameters.ContainsKey('Path')) {
-        $Path = [System.IO.Path]::Combine($HOME, 'Downloads')
+        $Path = [System.IO.Path]::Combine($HOME)
     }
     $OutFilePath = [System.IO.Path]::Combine($Path, $FileName)
 
@@ -152,17 +151,40 @@ function Get-PowerShellPortable {
     }
 
     if ($PSBoundParameters.ContainsKey('Extract')) {
-        try {
-            Expand-Archive -Path $OutFilePath -Force
-            $FolderSegments = $OutFilePath.Split('.')
-            $Folder = $FolderSegments[0..($FolderSegments.Length - 2)] -join '.'
-            Write-Information -MessageData "PowerShell has been extracted to $Folder" -InformationAction Continue
-            Write-Information -MessageData "Run '$Folder\pwsh.exe' to launch the latest version of PowerShell without installing it!" -InformationAction Continue
-        } catch {
-            Write-Error "Failed to expand the archive $OutFilePath."
-            $_
+
+        if ($IsLinux) {
+            # Decompress the .gz file
+            $GZipFile = $OutFilePath
+            $TarFile = $GZipFile -replace '\.gz$', ''
+            [System.IO.Compression.GzipStream]::new(
+                [System.IO.FileStream]::new($GZipFile, [System.IO.FileMode]::Open),
+                [System.IO.Compression.CompressionMode]::Decompress
+            ).CopyTo(
+                [System.IO.FileStream]::new($TarFile, [System.IO.FileMode]::Create)
+            )
+            # Use tar command to extract the .tar file
+            $PwshDirectory = "$([System.IO.Path]::GetFileNameWithoutExtension($OutFilePath).Replace('.tar',''))"
+            New-Item -Name $PwshDirectory -Path $HOME -ItemType Directory
+            tar -xf $tarFile -C "./$PwshDirectory"
         }
-    }
+
+        if (-not $IsLinux -and -not $IsMacOS) {
+            # Windows
+            try {
+                # Expand the zip file into a folder that matches the zip filename without the zip extenstion
+                Expand-Archive -Path $OutFilePath -DestinationPath $([System.IO.Path]::GetFileNameWithoutExtension($OutFilePath)) -Force
+                $FolderSegments = $OutFilePath.Split('.')
+                $Folder = $FolderSegments[0..($FolderSegments.Length - 2)] -join '.'
+                Write-Information -MessageData "PowerShell has been extracted to $Folder" -InformationAction Continue
+                Write-Information -MessageData "Run '$Folder\pwsh.exe' to launch the latest version of PowerShell without installing it!" -InformationAction Continue
+            } catch {
+                Write-Error "Failed to expand the archive $OutFilePath."
+                $_
+            }
+        }
+
+    } # end if Extract
+
 } # end function Get-PowerShellPortable
 
 

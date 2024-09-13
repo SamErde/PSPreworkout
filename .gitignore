@@ -1,8 +1,8 @@
 # Project Files #
 Archive
 Artifacts
-#cov.xml
-#coverage.xml
+cov.xml
+coverage.xml
 Ignore
 # OS Generated Files #
 .DS_Store

@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-PowerShellPortable
 
 ## SYNOPSIS
-Download a portable version of PowerShell 7x to run anywhere on demand.
+Download a portable version of PowerShell to run anywhere on demand.
 
 ## SYNTAX
 
@@ -23,13 +23,17 @@ This function helps you download a zipped version of PowerShell 7.x that can be 
 
 ### EXAMPLE 1
 ```
-Get-PowerShellPortable -Path .\ -Extract
+Get-PowerShellPortable -Path $HOME -Extract
 ```
+
+Download the latest ZIP/TAR of PowerShell to your $HOME folder.
+It will be extracted into a folder that matches the filename of the compressed archive.
 
 ## PARAMETERS
 
 ### -Path
-Path of the directory to download the PowerShell zip or tar.gz file into.
+The path (directory) to download the PowerShell zip or tar.gz file into.
+Do not include a filename for the download.
 
 ```yaml
 Type: String

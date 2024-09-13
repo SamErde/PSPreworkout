@@ -2,7 +2,7 @@
 Module Name: PSPreworkout
 Module Guid: 378339de-a0df-4d44-873b-4fd32c388e06
 Download Help Link: NA
-Help Version: 1.2.0
+Help Version: 1.2.1
 Locale: en-US
 ---
 
@@ -21,7 +21,7 @@ Retrieves the value of an environment variable.
 Get all assemblies loaded in PowerShell.
 
 ### [Get-PowerShellPortable](Get-PowerShellPortable.md)
-Download a portable version of PowerShell 7x to run anywhere on demand.
+Download a portable version of PowerShell to run anywhere on demand.
 
 ### [Get-TypeAccelerator](Get-TypeAccelerator.md)
 Get available type accelerators.
