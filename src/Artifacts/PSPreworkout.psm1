@@ -112,6 +112,7 @@ function Get-PowerShellPortable {
         $Extract
     )
 
+    #region Determine Download Uri
     # Get the zip and tar.gz PowerShell download links for Windows, macOS, and Linux.
     $ApiUrl = 'https://api.github.com/repos/PowerShell/PowerShell/releases/tags/v7.4.5'
     $Response = Invoke-RestMethod -Uri $ApiUrl -Headers @{ 'User-Agent' = 'PowerShellScript' }
@@ -140,7 +141,15 @@ function Get-PowerShellPortable {
         $Path = [System.IO.Path]::Combine($HOME)
     }
     $OutFilePath = [System.IO.Path]::Combine($Path, $FileName)
+    $PwshDirectory = "$([System.IO.Path]::GetFileNameWithoutExtension($OutFilePath) -replace [Regex]'\.zip$|\.tar.gz$|\.gz$|\.tar$', '')"
+    try {
+        New-Item -Name $PwshDirectory -Path $Path -ItemType Directory
+    } catch {
+        Write-Warning "Unable to create the directory $PwshDirectory in $Path."
+    }
+    #endregion Determine Download Uri
 
+    #region Download PowerShell
     try {
         Invoke-WebRequest -Uri $DownloadUrl -OutFile $OutFilePath
         Write-Output "PowerShell has been downloaded to $OutFilePath."
@@ -149,7 +158,9 @@ function Get-PowerShellPortable {
         $_
         return
     }
+    #endregion Download PowerShell
 
+    #region Extract PowerShell
     if ($PSBoundParameters.ContainsKey('Extract')) {
 
         if ($IsLinux) {
@@ -163,8 +174,21 @@ function Get-PowerShellPortable {
                 [System.IO.FileStream]::new($TarFile, [System.IO.FileMode]::Create)
             )
             # Use tar command to extract the .tar file
-            $PwshDirectory = "$([System.IO.Path]::GetFileNameWithoutExtension($OutFilePath).Replace('.tar',''))"
-            New-Item -Name $PwshDirectory -Path $HOME -ItemType Directory
+            tar -xf $tarFile -C "./$PwshDirectory"
+        }
+
+        if ($IsMacOS) {
+            # You're next...but maybe the Linux code also works here?
+            # Decompress the .gz file
+            $GZipFile = $OutFilePath
+            $TarFile = $GZipFile -replace '\.gz$', ''
+            [System.IO.Compression.GzipStream]::new(
+                [System.IO.FileStream]::new($GZipFile, [System.IO.FileMode]::Open),
+                [System.IO.Compression.CompressionMode]::Decompress
+            ).CopyTo(
+                [System.IO.FileStream]::new($TarFile, [System.IO.FileMode]::Create)
+            )
+            # Use tar command to extract the .tar file
             tar -xf $tarFile -C "./$PwshDirectory"
         }
 
@@ -172,11 +196,13 @@ function Get-PowerShellPortable {
             # Windows
             try {
                 # Expand the zip file into a folder that matches the zip filename without the zip extenstion
-                Expand-Archive -Path $OutFilePath -DestinationPath $([System.IO.Path]::GetFileNameWithoutExtension($OutFilePath)) -Force
-                $FolderSegments = $OutFilePath.Split('.')
-                $Folder = $FolderSegments[0..($FolderSegments.Length - 2)] -join '.'
-                Write-Information -MessageData "PowerShell has been extracted to $Folder" -InformationAction Continue
-                Write-Information -MessageData "Run '$Folder\pwsh.exe' to launch the latest version of PowerShell without installing it!" -InformationAction Continue
+                if (Test-Path -PathType Container -Path (Join-Path -Path $Path -ChildPath $PwshDirectory)) {
+                    Expand-Archive -Path $OutFilePath -DestinationPath (Join-Path -Path $Path -ChildPath $PwshDirectory) -Force
+                    Write-Information -MessageData "PowerShell has been extracted to $Path" -InformationAction Continue
+                    Write-Information -MessageData "Run '$Path\pwsh.exe' to launch the latest version of PowerShell without installing it!" -InformationAction Continue
+                } else {
+                    Write-Warning -Message "The target folder $Path\$Pwshdirectory does not exist." -WarningAction Stop
+                }
             } catch {
                 Write-Error "Failed to expand the archive $OutFilePath."
                 $_
@@ -184,6 +210,7 @@ function Get-PowerShellPortable {
         }
 
     } # end if Extract
+    #endregion Extract PowerShell
 
 } # end function Get-PowerShellPortable
 
