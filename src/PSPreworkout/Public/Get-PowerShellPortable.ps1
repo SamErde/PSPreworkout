@@ -58,7 +58,7 @@ function Get-PowerShellPortable {
     $FileName = ($DownloadUrl -split '/')[-1]
 
     if (-not $PSBoundParameters.ContainsKey('Path')) {
-        $Path = [System.IO.Path]::Combine($HOME, 'Downloads')
+        $Path = [System.IO.Path]::Combine($HOME)
     }
     $OutFilePath = [System.IO.Path]::Combine($Path, $FileName)
 
@@ -84,7 +84,9 @@ function Get-PowerShellPortable {
                 [System.IO.FileStream]::new($TarFile, [System.IO.FileMode]::Create)
             )
             # Use tar command to extract the .tar file
-            tar -xf $tarFile -C /path/to/extract
+            $PwshDirectory = "$([System.IO.Path]::GetFileNameWithoutExtension($OutFilePath).Replace('.tar',''))"
+            New-Item -Name $PwshDirectory -Path $HOME -ItemType Directory
+            tar -xf $tarFile -C "./$PwshDirectory"
         }
 
         if (-not $IsLinux -and -not $IsMacOS) {
