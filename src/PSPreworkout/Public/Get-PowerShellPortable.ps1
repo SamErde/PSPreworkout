@@ -1,19 +1,21 @@
 function Get-PowerShellPortable {
     <#
         .SYNOPSIS
-        Download a portable version of PowerShell 7x to run anywhere on demand.
+        Download a portable version of PowerShell to run anywhere on demand.
 
         .DESCRIPTION
         This function helps you download a zipped version of PowerShell 7.x that can be run anywhere without needing to install it.
 
         .PARAMETER Path
-        Path of the directory to download the PowerShell zip or tar.gz file into.
+        The path (directory) to download the PowerShell zip or tar.gz file into. Do not include a filename for the download.
 
         .PARAMETER Extract
         Extract the downloaded file.
 
         .EXAMPLE
-        Get-PowerShellPortable -Path .\ -Extract
+        Get-PowerShellPortable -Path $HOME -Extract
+
+        Download the latest ZIP/TAR of PowerShell to your $HOME folder. It will be extracted into a folder that matches the filename of the compressed archive.
 
     #>
 
@@ -70,16 +72,36 @@ function Get-PowerShellPortable {
     }
 
     if ($PSBoundParameters.ContainsKey('Extract')) {
-        try {
-            # Expand the zip file into a folder that matches the zip filename without the zip extenstion
-            Expand-Archive -Path $OutFilePath -DestinationPath $([System.IO.Path]::GetFileNameWithoutExtension($OutFilePath)) -Force
-            $FolderSegments = $OutFilePath.Split('.')
-            $Folder = $FolderSegments[0..($FolderSegments.Length - 2)] -join '.'
-            Write-Information -MessageData "PowerShell has been extracted to $Folder" -InformationAction Continue
-            Write-Information -MessageData "Run '$Folder\pwsh.exe' to launch the latest version of PowerShell without installing it!" -InformationAction Continue
-        } catch {
-            Write-Error "Failed to expand the archive $OutFilePath."
-            $_
+
+        if ($IsLinux) {
+            # Decompress the .gz file
+            $GZipFile = $OutFilePath
+            $TarFile = $GZipFile -replace '\.gz$', ''
+            [System.IO.Compression.GzipStream]::new(
+                [System.IO.FileStream]::new($GZipFile, [System.IO.FileMode]::Open),
+                [System.IO.Compression.CompressionMode]::Decompress
+            ).CopyTo(
+                [System.IO.FileStream]::new($TarFile, [System.IO.FileMode]::Create)
+            )
+            # Use tar command to extract the .tar file
+            tar -xf $tarFile -C /path/to/extract
         }
-    }
+
+        if (-not $IsLinux -and -not $IsMacOS) {
+            # Windows
+            try {
+                # Expand the zip file into a folder that matches the zip filename without the zip extenstion
+                Expand-Archive -Path $OutFilePath -DestinationPath $([System.IO.Path]::GetFileNameWithoutExtension($OutFilePath)) -Force
+                $FolderSegments = $OutFilePath.Split('.')
+                $Folder = $FolderSegments[0..($FolderSegments.Length - 2)] -join '.'
+                Write-Information -MessageData "PowerShell has been extracted to $Folder" -InformationAction Continue
+                Write-Information -MessageData "Run '$Folder\pwsh.exe' to launch the latest version of PowerShell without installing it!" -InformationAction Continue
+            } catch {
+                Write-Error "Failed to expand the archive $OutFilePath."
+                $_
+            }
+        }
+
+    } # end if Extract
+
 } # end function Get-PowerShellPortable
