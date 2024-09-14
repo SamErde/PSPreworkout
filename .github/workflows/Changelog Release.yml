@@ -1,4 +1,4 @@
-name: Release
+name: Release from Changelog and Tags
 on:
   push:
     tags: ['*']
@@ -15,4 +15,4 @@ jobs:
       - name: Create GitHub release
         uses: docker://antonyurchenko/git-release:latest
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
