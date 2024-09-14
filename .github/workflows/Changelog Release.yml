@@ -2,6 +2,7 @@ name: Release
 on:
   push:
     tags: ['*']
+  workflow_dispatch:
 permissions:
   contents: write
 jobs:
