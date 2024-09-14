@@ -41,6 +41,10 @@ Get-Command -Module PSPreworkout
 Please feel free to use the issues or a PR to report bugs, suggest improvements, or add new ideas to the module!
 
 ## PSPreworkout Cmdlets
+
+<Details>
+<Summary>Full list of PSPreworkout cmdlets:</Summary>
+
 ### [Edit-WingetSettingsFile](Edit-WingetSettingsFile.md)
 Edit the WinGet settings file.
 
@@ -88,5 +92,4 @@ Check if you are running an elevated shell with administrator or root privileges
 
 ### [Update-AllTheThings](Update-AllTheThings.md)
 Update all the things!
-
-
+</Details>
