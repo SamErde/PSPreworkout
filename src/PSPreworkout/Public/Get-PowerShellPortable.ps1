@@ -110,7 +110,7 @@ function Get-PowerShellPortable {
                 [System.IO.FileStream]::new($TarFile, [System.IO.FileMode]::Create)
             )
             # Use tar command to extract the .tar file
-            tar -xf $tarFile -C "./$PwshDirectory"
+            tar -xzvf $GzipFile -C "./$PwshDirectory"
         }
 
         if (-not $IsLinux -and -not $IsMacOS) {
