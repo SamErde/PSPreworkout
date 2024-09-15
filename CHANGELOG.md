@@ -14,6 +14,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 &nbsp;
 &nbsp;
 
+## [1.2.4] - 2024-09-13
+
+### Fixed
+- Fix extraction of PowerShell .tar.gz file on macOS
+- Fix/improve references to location of the extracted PowerShell files
+&nbsp;
+&nbsp;
+
 ## [1.2.2] - 2024-09-13
 
 ### Added
@@ -72,6 +80,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 _Initial release._
 
 [Unreleased]: https://github.com/SamErde/PSPreworkout/compare/v1.2.2...HEAD
+[1.2.4]: https://github.com/SamErde/PSPreworkout/tag/v1.2.4
 [1.2.3]: https://github.com/SamErde/PSPreworkout/tag/v1.2.3
 [1.2.2]: https://github.com/SamErde/PSPreworkout/tag/v1.2.2
 [1.1.2]: https://github.com/SamErde/PSPreworkout/tag/v1.1.2
