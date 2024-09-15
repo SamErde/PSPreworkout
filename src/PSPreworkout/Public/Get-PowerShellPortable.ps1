@@ -60,7 +60,11 @@ function Get-PowerShellPortable {
 
     if (-not $PSBoundParameters.ContainsKey('Path')) {
         $Path = [System.IO.Path]::Combine($HOME)
+    } else {
+        # Resolves an issue with ~ not resolving properly in the script during the file extraction steps.
+        $Path = Resolve-Path $Path
     }
+
     $OutFilePath = [System.IO.Path]::Combine($Path, $FileName)
     $PwshDirectory = "$([System.IO.Path]::GetFileNameWithoutExtension($OutFilePath) -replace [Regex]'\.zip$|\.tar.gz$|\.gz$|\.tar$', '')"
     try {
@@ -68,6 +72,7 @@ function Get-PowerShellPortable {
     } catch {
         Write-Warning "Unable to create the directory $PwshDirectory in $Path."
     }
+    $PwshPath = Join-Path -Path $Path -ChildPath $PwshDirectory
     #endregion Determine Download Uri
 
     #region Download PowerShell
@@ -95,7 +100,8 @@ function Get-PowerShellPortable {
                 [System.IO.FileStream]::new($TarFile, [System.IO.FileMode]::Create)
             )
             # Use tar command to extract the .tar file
-            tar -xf $tarFile -C "./$PwshDirectory"
+            tar -xf $tarFile -C $PwshPath
+            Write-Output "PowerShell has been extracted to $PwshPath."
         }
 
         if ($IsMacOS) {
@@ -110,7 +116,8 @@ function Get-PowerShellPortable {
                 [System.IO.FileStream]::new($TarFile, [System.IO.FileMode]::Create)
             )
             # Use tar command to extract the .tar file
-            tar -xzvf $GzipFile -C "./$PwshDirectory"
+            tar -xzf $GzipFile -C $PwshPath
+            Write-Output "PowerShell has been extracted to $PwshPath."
         }
 
         if (-not $IsLinux -and -not $IsMacOS) {
@@ -119,8 +126,8 @@ function Get-PowerShellPortable {
                 # Expand the zip file into a folder that matches the zip filename without the zip extenstion
                 if (Test-Path -PathType Container -Path (Join-Path -Path $Path -ChildPath $PwshDirectory)) {
                     Expand-Archive -Path $OutFilePath -DestinationPath (Join-Path -Path $Path -ChildPath $PwshDirectory) -Force
-                    Write-Information -MessageData "PowerShell has been extracted to $Path" -InformationAction Continue
-                    Write-Information -MessageData "Run '$Path\pwsh.exe' to launch the latest version of PowerShell without installing it!" -InformationAction Continue
+                    Write-Information -MessageData "PowerShell has been extracted to $PwshPath" -InformationAction Continue
+                    Write-Information -MessageData "Run '$PwshPath\pwsh.exe' to launch the latest version of PowerShell without installing it!" -InformationAction Continue
                 } else {
                     Write-Warning -Message "The target folder $Path\$Pwshdirectory does not exist." -WarningAction Stop
                 }
