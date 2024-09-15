@@ -1,7 +1,7 @@
 param (
     # Type of version level update
     [Parameter(Position = 0)]
-    [ValidateSet('Major', 'Minor', 'Build')]
+    [ValidateSet('Major', 'Minor', 'Patch')]
     [string]
     $VersionLevel,
 
@@ -32,16 +32,20 @@ $Content0 = Get-Content -Path $ScriptInfo
 $Content1 = Get-Content -Path $Path1
 $Content2 = Get-Content -Path $Path2
 
+# Find the current version number in file Content2.
+$SemVerPattern = 'v(\d+)\.(\d+)\.(\d+)'
+$SemVerMatch = [regex]::Match($Content2, $SemVerPattern)
+# Remove the 'v' and incrememnt the manjor, minor, or build # if specified by function parameters.
+$CurrentVersion = [version]$(($semVerMatch.Value).Replace('v', ''))
+
 if ($CustomVersion) {
     # Manually set a custom new version number.
     $NewVersion = "v$($CustomVersion.Replace('v',''))"
 } else {
-    # Find the current version number in file Content2.
-    $SemVerPattern = 'v(\d+)\.(\d+)\.(\d+)'
-    $SemVerMatch = [regex]::Match($Content2, $SemVerPattern)
+    $NewVersion = $CurrentVersion
+}
 
-    # Remove the 'v' and incrememnt the manjor, minor, or build # if specified by function parameters.
-    $CurrentVersion = [version]$($semVerMatch.Value).Replace('v', '')
+if ($Major -or $Minor -or $Patch) {
     if ($VersionLevel -eq 'Major') {
         $NewVersion = [version]::new($CurrentVersion.Major + 1, 0, 0)
         $NewVersion = "v$($NewVersion)"
@@ -50,8 +54,8 @@ if ($CustomVersion) {
         $NewVersion = [version]::new($CurrentVersion.Major, $CurrentVersion.Minor + 1, 0)
         $NewVersion = "v$($NewVersion)"
     }
-    if ($Versionlevel -eq 'Build') {
-        $NewVersion = [version]::new($CurrentVersion.Major, $CurrentVersion.Minor, $CurrentVersion.Build + 1)
+    if ($Versionlevel -eq 'Patch') {
+        $NewVersion = [version]::new($CurrentVersion.Major, $CurrentVersion.Minor, $CurrentVersion.Patch + 1)
         $NewVersion = "v$($NewVersion)"
     }
 }
@@ -60,7 +64,7 @@ if ($CustomVersion) {
 $ScriptInfoVersion = $Content0 | Select-String -Pattern '.VERSION ((\d+).(\d+).(\d+))'
 if ($NewVersion -ne $ScriptInfoVersion) {
     # Align the version to the contents of the script if they are different.
-    $Content0 = $Content0.Replace($ScriptInfoVersion, ".VERSION $($NewVersion.Replace('v',''))")
+    $Content0 = $Content0.Replace($ScriptInfoVersion, ".VERSION $($NewVersion.ToString())")
 }
 
 # Set the new version number in the contents of the script.
