@@ -44,6 +44,7 @@ Please feel free to use the issues or a PR to report bugs, suggest improvements,
 <Details>
 <Summary>⤵️ Full List:</Summary>
 
+## PSPreworkout Cmdlets
 ### [Edit-WingetSettingsFile](Edit-WingetSettingsFile.md)
 Edit the WinGet settings file.
 
@@ -91,4 +92,8 @@ Check if you are running an elevated shell with administrator or root privileges
 
 ### [Update-AllTheThings](Update-AllTheThings.md)
 Update all the things!
+
+
+
 </Details>
+
