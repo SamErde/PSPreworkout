@@ -2,7 +2,7 @@
 Module Name: PSPreworkout
 Module Guid: 378339de-a0df-4d44-873b-4fd32c388e06
 Download Help Link: NA
-Help Version: 1.2.4
+Help Version: 1.2.5
 Locale: en-US
 ---
 
@@ -36,7 +36,7 @@ Install Oh My Posh and add it to your profile.
 Install the Windows PowerShell ISE if you removed it after installing VS Code.
 
 ### [Install-WinGet](Install-WinGet.md)
-Install Winget
+Install Winget (beta)
 
 ### [New-Credential](New-Credential.md)
 Create a new secure credential.

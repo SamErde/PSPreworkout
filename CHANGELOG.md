@@ -11,6 +11,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - Add `Get-VSCodePortable`
 - Add `Remove-OldModule`
+
+&nbsp;
+&nbsp;
+
+## [1.2.5] - 2024-09-16
+
+### Changed
+- Set ~/Downloads as the default download location for all OSes
+
+### Fixed
+- Fix some minor errors in path processing
+
 &nbsp;
 &nbsp;
 
@@ -80,6 +92,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 _Initial release._
 
 [Unreleased]: https://github.com/SamErde/PSPreworkout/compare/v1.2.2...HEAD
+[1.2.5]: https://github.com/SamErde/PSPreworkout/tag/v1.2.5
 [1.2.4]: https://github.com/SamErde/PSPreworkout/tag/v1.2.4
 [1.2.3]: https://github.com/SamErde/PSPreworkout/tag/v1.2.3
 [1.2.2]: https://github.com/SamErde/PSPreworkout/tag/v1.2.2
