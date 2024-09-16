@@ -42,6 +42,8 @@ function Get-PowerShellPortable {
 
     # Determine the platform and architecture
     $Architecture = [System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture
+    # OSArchitecture isn't present in older versions of .NET Framework, so use the environment variable as a fallback for Windows.
+    if (-not $Architecture) { $Architecture = $([System.Environment]::GetEnvironmentVariable('PROCESSOR_ARCHITECTURE')).Replace('AMD64', 'X64') }
 
     # Set the pattern for the ZIP file based on the OS and architecture
     $FilePattern = if ( [System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform([System.Runtime.InteropServices.OSPlatform]::Windows) ) {
@@ -59,7 +61,7 @@ function Get-PowerShellPortable {
     $FileName = ($DownloadUrl -split '/')[-1]
 
     if (-not $PSBoundParameters.ContainsKey('Path')) {
-        $Path = [System.IO.Path]::Combine($HOME)
+        $Path = [System.IO.Path]::Combine($HOME, 'Downloads')
     } else {
         # Resolves an issue with ~ not resolving properly in the script during the file extraction steps.
         $Path = Resolve-Path $Path
@@ -67,10 +69,12 @@ function Get-PowerShellPortable {
 
     $OutFilePath = [System.IO.Path]::Combine($Path, $FileName)
     $PwshDirectory = "$([System.IO.Path]::GetFileNameWithoutExtension($OutFilePath) -replace [Regex]'\.zip$|\.tar.gz$|\.gz$|\.tar$', '')"
-    try {
-        New-Item -Name $PwshDirectory -Path $Path -ItemType Directory
-    } catch {
-        Write-Warning "Unable to create the directory $PwshDirectory in $Path."
+    if (-not (Test-Path (Join-Path -Path $Path -ChildPath $PwshDirectory))) {
+        try {
+            New-Item -Name $PwshDirectory -Path $Path -ItemType Directory
+        } catch {
+            Write-Warning "Unable to create the directory $PwshDirectory in $Path."
+        }
     }
     $PwshPath = Join-Path -Path $Path -ChildPath $PwshDirectory
     #endregion Determine Download Uri
@@ -86,11 +90,13 @@ function Get-PowerShellPortable {
     }
     #endregion Download PowerShell
 
+    Unblock-File -Path $OutFilePath
+
     #region Extract PowerShell
     if ($PSBoundParameters.ContainsKey('Extract')) {
 
         if ($IsLinux) {
-            # Decompress the .gz file
+            # Decompress the GZip file
             $GZipFile = $OutFilePath
             $TarFile = $GZipFile -replace '\.gz$', ''
             [System.IO.Compression.GzipStream]::new(
@@ -105,8 +111,7 @@ function Get-PowerShellPortable {
         }
 
         if ($IsMacOS) {
-            # You're next...but maybe the Linux code also works here?
-            # Decompress the .gz file
+            # Decompress the tar and GZip file
             $GZipFile = $OutFilePath
             $TarFile = $GZipFile -replace '\.gz$', ''
             [System.IO.Compression.GzipStream]::new(
