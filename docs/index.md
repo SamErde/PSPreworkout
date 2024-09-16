@@ -70,7 +70,7 @@ Install Oh My Posh and add it to your profile.
 Install the Windows PowerShell ISE if you removed it after installing VS Code.
 
 ### [Install-WinGet](Install-WinGet.md)
-Install Winget
+Install Winget (beta)
 
 ### [New-Credential](New-Credential.md)
 Create a new secure credential.
