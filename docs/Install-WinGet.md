@@ -8,7 +8,7 @@ schema: 2.0.0
 # Install-WinGet
 
 ## SYNOPSIS
-Install Winget
+Install Winget (beta)
 
 ## SYNTAX
 

@@ -1,7 +1,7 @@
 function Install-WinGet {
     <#
     .SYNOPSIS
-    Install Winget
+    Install Winget (beta)
 
     .DESCRIPTION
     Install WinGet on Windows Sandbox (or on builds of Windows 10 prior to build 1709 that did not ship with it preinstalled).
@@ -76,9 +76,9 @@ function Install-WinGet {
             Write-Output "WinGet package dependencies were downloaded in $([math]::Ceiling(((Get-Date) - $StartTime).TotalSeconds)) seconds."
         } else {
             Write-Verbose 'Installing packages...'
-            Add-AppxPackage $DesktopAppInstallerPackage
-            Add-AppxPackage $VCLibsPackage
             Add-AppxPackage $XamlPackage
+            Add-AppxPackage $VCLibsPackage
+            Add-AppxPackage $DesktopAppInstallerPackage
             Write-Output "WinGet $(winget -v) is installed."
         }
 
