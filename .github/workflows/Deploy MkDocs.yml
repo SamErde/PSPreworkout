@@ -1,4 +1,4 @@
-name: Deploy MkDocs to GitHub Pages
+name: 📖 Deploy MkDocs to GitHub Pages
 
 on:
   push:
@@ -14,25 +14,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: ✅ Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: 🐍 Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.x'  # specify the Python version
 
-      - name: Install dependencies
+      - name: ➕ Install Dependencies
         run: |
           python -m pip install --upgrade pip
           pip install mkdocs mkdocs-material
 
-      - name: Build and deploy
+      - name: 👷‍♂️ Build & Deploy MkDocs
         run: |
           mkdocs build
           mkdocs gh-deploy --force
 
-      - name: Update Index and Readme Documentation
+      - name: 📖 Update Index & Readme
         shell: pwsh
         run: |
           $IndexTop = Get-Content -Path ./docs/index.md -TotalCount 46
@@ -46,7 +46,7 @@ jobs:
           # Copy-Item ./docs/index.md ./README.md
 
         # git-auto-commit-action only runs on Linux-based platforms.
-      - name: Commit Changes to Repo
+      - name: 💾 Commit Changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: 'Copy MkDocs index to README'
