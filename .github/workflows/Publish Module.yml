@@ -1,0 +1,19 @@
+name: Publish PowerShell Module
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+
+    - name: Publish to PowerShell Gallery
+      run: |
+        Install-Module -Name PowerShellGet -Force -AllowClobber
+        Publish-Module -Path ./src/PSPreworkout -NuGetApiKey ${{ secrets.POWERSHELLGALLERY_KEY }}
+      env:
+        PS_GALLERY_KEY: ${{ secrets.POWERSHELLGALLERY_KEY }}
