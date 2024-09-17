@@ -13,6 +13,6 @@ jobs:
 
     - name: Publish to PowerShell Gallery
       run: |
-        Publish-Module -Path 'src/PSPreworkout' -NuGetApiKey ${{ secrets.POWERSHELLGALLERY_KEY }}
+        Publish-Module -Path '.\src\PSPreworkout' -NuGetApiKey ${{ secrets.POWERSHELLGALLERY_KEY }}
       env:
         PS_GALLERY_KEY: ${{ secrets.POWERSHELLGALLERY_KEY }}
