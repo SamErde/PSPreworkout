@@ -16,3 +16,8 @@ jobs:
         uses: docker://antonyurchenko/git-release:latest
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+# Test and enable:
+      # - name: Publish PowerShell Module
+      #    shell: pwsh
+      #    run: |
+      #    Publish-Module -Path ./src/PSPreworkout -PSGalleryApiKey ${{ secrets.POWERSHELLGALLERY_KEY }}
