@@ -1,4 +1,6 @@
-name: Release from Changelog and Tags
+name: Publish Release from Changelog and Tags
+# When pushing a new commit that is tagged with a version (eg: v1.2.5), check CHANGELOG.md for a header that
+# matches this tag and publish a new GitHub release with it, then publish the module to the PowerShell Gallery.
 on:
   push:
     tags: ['*']
@@ -7,17 +9,24 @@ permissions:
   contents: write
 jobs:
   release:
-    name: Release
+    name: Release and Publish
     runs-on: ubuntu-latest
     steps:
+
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Create GitHub release
+
+      - name: Create GitHub Release
+        # Creates a new release from a changelog section that matches a commit tag (eg: v1.2.5)
         uses: docker://antonyurchenko/git-release:latest
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-# Test and enable:
-      # - name: Publish PowerShell Module
-      #    shell: pwsh
-      #    run: |
-      #    Publish-Module -Path ./src/PSPreworkout -PSGalleryApiKey ${{ secrets.POWERSHELLGALLERY_KEY }}
+
+      - name: Publish PowerShell Module
+        env:
+          PS_GALLERY_KEY: ${{ secrets.POWERSHELLGALLERY_KEY }}
+        shell: pwsh
+        run: |
+          echo ${env:PATH}
+          $PSVersionTable
+          Publish-Module -Path '.\src\PSPreworkout' -NuGetApiKey ${{ secrets.POWERSHELLGALLERY_KEY }}
