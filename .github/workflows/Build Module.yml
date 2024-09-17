@@ -27,10 +27,10 @@ jobs:
     steps:
     - name: ✅ Checkout Repository
       uses: actions/checkout@v4
-    - name: Display the path
+    - name: 📁 Display the Path
       shell: pwsh
       run: echo ${env:PATH}
-    - name: 🔢 Version Display
+    - name: 🔢 Display the Version
       shell: pwsh
       run: $PSVersionTable
     # uncomment below to explore what modules/variables/env variables are available in the build image
