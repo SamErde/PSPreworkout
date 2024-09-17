@@ -1,11 +1,13 @@
 # Drafts the next modulefast release notes every commit
+
+# TO DO: It would be cool to update this to add draft notes to the 'Unreleased' section of the changelog instead, since I am basing my releases on the changelog and tags (see Changelog Release.yml).
 name: Release Drafter
 
 # Controls when the workflow will run
 on:
-  push:
-    branches:
-      - main
+  #push:
+  #  branches:
+  #    - main
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 permissions:
@@ -24,10 +26,10 @@ jobs:
       # otherwise, read permission is required at least
       pull-requests: write
     runs-on: ubuntu-latest
-    steps:
+    # steps:
       # Drafts your next Release notes as Pull Requests are merged into "master"
-      - uses: release-drafter/release-drafter@v6
-        with:
-          disable-autolabeler: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #- uses: release-drafter/release-drafter@v6
+      #  with:
+      #    disable-autolabeler: true
+      #  env:
+      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
