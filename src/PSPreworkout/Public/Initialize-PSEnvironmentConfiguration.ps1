@@ -47,6 +47,9 @@ function Initialize-PSEnvironmentConfiguration {
           Create dot-sourced profile
           Create interactive picker for packages and modules (separate functions)
           Bootstrap Out-GridView or Out-ConsoleGridView
+          Create a function to set the default terminal in Windows:
+            HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Terminal\Settings
+            DefaultTerminal (string) = C:\Program Files\WindowsApps\Microsoft.WindowsTerminal_8wekyb3d8bbwe\WindowsTerminal.exe
     #>
 
     [CmdletBinding()]
