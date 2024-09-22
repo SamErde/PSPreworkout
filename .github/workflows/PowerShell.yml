@@ -5,16 +5,15 @@
 name: PSScriptAnalyzer
 
 on:
-  workflow_dispatch: 
   push:
-    branches: [ $default-branch, $protected-branches ]
+    branches: main
   pull_request:
-    branches: [ $default-branch ]
+    branches: main
   schedule:
     - cron: $cron-weekly
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
