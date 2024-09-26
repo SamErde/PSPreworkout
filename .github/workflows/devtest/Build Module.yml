@@ -13,17 +13,16 @@ on:
       - 'docs/**'
       - 'src/Drafts/**'
   push:
-    #paths:
-    #  - 'src/**'
-    #  - '.github/workflows/Build Module.yml'
-    paths-ignore:
-      - '**.md'
-      - 'docs/**'
-      - 'src/Drafts/**'
+    paths:
+      - 'src/**'
+      - '.github/workflows/Build Module.yml'
+    #paths-ignore:
+    #  - '**.md'
+    #  - 'docs/**'
 jobs:
   test:
     name: 🧪 Run Tests
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     strategy:
       fail-fast: false
     steps:
@@ -57,9 +56,3 @@ jobs:
         name: zip-archive
         path: .\src\Archive
         if-no-files-found: warn
-
-        # git-auto-commit-action only runs on Linux-based platforms.
-    - name: 💾 Commit Changes
-      uses: stefanzweifel/git-auto-commit-action@v5
-      with:
-        commit_message: 'Commit Build'
