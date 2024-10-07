@@ -127,6 +127,16 @@ Add-BuildTask ValidateRequirements {
     Write-Build Green '      ...Verification Complete!'
 } #ValidateRequirements
 
+# Updates the array for FunctionsToExport in the module manifest
+# Added per <https://github.com/techthoughts2/Catesta/issues/97>
+Add-BuildTask UpdateFunctionsToExport -Before TestModuleManifest {
+    Write-Build White '      Running module manifest update FuctionsToExport...'
+    $publicFunctionPath = Join-Path -Path $script:ModuleSourcePath -ChildPath 'Public'
+    $publicFunctions = Get-ChildItem -Path $publicFunctionPath -Filter '*.ps1' -Recurse
+    Update-ModuleManifest -Path $script:ModuleManifestFile -FunctionsToExport $publicFunctions.BaseName
+    Write-Build Green '      ...Module Manifest Update FunctionsToExport Complete!'
+} #UpdateFunctionsToExport
+
 # Synopsis: Import the current module manifest file for processing
 Add-BuildTask TestModuleManifest -Before ImportModuleManifest {
     Write-Build White '      Running module manifest tests...'
