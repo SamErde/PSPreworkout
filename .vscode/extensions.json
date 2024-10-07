@@ -6,6 +6,7 @@
         "EditorConfig.EditorConfig",
         "streetsidesoftware.code-spell-checker",
         "ryanluker.vscode-coverage-gutters",
-        "DavidAnson.vscode-markdownlint"
+        "DavidAnson.vscode-markdownlint",
+        "samerde.pspreworkout-powershell-extensions-pack"
     ]
 }
