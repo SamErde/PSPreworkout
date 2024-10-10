@@ -84,7 +84,7 @@ function Initialize-PSEnvironmentConfiguration {
             })]
         [string]$Font,
 
-        # Packages to install
+        # WinGet packages to install
         [Parameter()]
         [string[]]
         $Packages = @('Microsoft.PowerShell', 'Microsoft.WindowsTerminal', 'git.git', 'JanDeDobbeleer.OhMyPosh'),
@@ -94,10 +94,10 @@ function Initialize-PSEnvironmentConfiguration {
         [switch]
         $SkipPackages,
 
-        # Choose from a list of packages to install
-        [Parameter()]
-        [switch]
-        $PickPackages,
+        # Choose from a list of packages to install (draft)
+        # [Parameter()]
+        # [switch]
+        # $PickPackages,
 
         # PowerShell modules to install
         [Parameter()]
@@ -107,12 +107,12 @@ function Initialize-PSEnvironmentConfiguration {
         # Do not install any modules
         [Parameter()]
         [switch]
-        $SkipModules,
+        $SkipModules
 
-        # Choose from a list of PowerShell modules to install
-        [Parameter()]
-        [switch]
-        $PickModules
+        # Choose from a list of PowerShell modules to install (draft)
+        # [Parameter()]
+        # [switch]
+        # $PickModules
     )
 
     begin {
@@ -129,9 +129,9 @@ function Initialize-PSEnvironmentConfiguration {
 
         #region Default Settings, All Versions
         $PSDefaultParameterValues = @{
-            'ConvertTo-Csv:NoTypeInformation' = $True
+            'ConvertTo-Csv:NoTypeInformation' = $True # Does not exist in pwsh
             'ConvertTo-Xml:NoTypeInformation' = $True
-            'Export-Csv:NoTypeInformation'    = $True
+            'Export-Csv:NoTypeInformation'    = $True # Does not exist in pwsh
             'Format-[WT]*:Autosize'           = $True
             'Get-Help:ShowWindow'             = $False
             '*:Encoding'                      = 'utf8'
