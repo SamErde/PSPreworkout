@@ -61,13 +61,13 @@ PowerShellVersion = '5.1'
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = 'Edit-WinGetSettingsFile', 'Get-EnvironmentVariable',
+FunctionsToExport = @('Edit-WinGetSettingsFile', 'Get-EnvironmentVariable',
 'Get-LoadedAssembly', 'Get-PowerShellPortable', 'Get-TypeAccelerator',
 'Initialize-PSEnvironmentConfiguration', 'Install-OhMyPosh',
 'Install-PowerShellISE', 'Install-WinGet', 'New-Credential',
 'New-ScriptFromTemplate', 'Set-ConsoleFont', 'Set-EnvironmentVariable',
 'Show-LoadedAssembly', 'Test-IsElevated', 'Update-AllTheThings',
-'Edit-PSReadLineHistoryFile', 'Show-WithoutEmptyProperty', 'Out-JsonFile'
+'Edit-PSReadLineHistoryFile', 'Show-WithoutEmptyProperty', 'Out-JsonFile')
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
