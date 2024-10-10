@@ -43,6 +43,7 @@ function Initialize-PSEnvironmentConfiguration {
 
     .NOTES
         To Do
+          Add status/verbose output of changes being made
           Create basic starter profile if none exist
           Create dot-sourced profile
           Create interactive picker for packages and modules (separate functions)
@@ -87,7 +88,7 @@ function Initialize-PSEnvironmentConfiguration {
         # WinGet packages to install
         [Parameter()]
         [string[]]
-        $Packages = @('Microsoft.PowerShell', 'Microsoft.WindowsTerminal', 'git.git', 'JanDeDobbeleer.OhMyPosh'),
+        $Packages = @('Microsoft.WindowsTerminal', 'git.git', 'JanDeDobbeleer.OhMyPosh'),
 
         # Do not install any packages
         [Parameter()]
@@ -125,7 +126,6 @@ function Initialize-PSEnvironmentConfiguration {
         if ($PSBoundParameters.ContainsKey('Name')) { git config --global user.name $Name }
         if ($PSBoundParameters.ContainsKey('Email')) { git config --global user.email $Email }
         #endregion Configure Git
-
 
         #region Default Settings, All Versions
         $PSDefaultParameterValues = @{
@@ -197,7 +197,7 @@ function Initialize-PSEnvironmentConfiguration {
             foreach ($module in $Modules) {
                 try {
                     Write-Verbose "Installing module: $module"
-                    Install-Module -Name $module -Scope CurrentUser -AcceptLicense -Force
+                    Install-Module -Name $module -Scope CurrentUser -AcceptLicense
                 } catch {
                     $_
                 }
