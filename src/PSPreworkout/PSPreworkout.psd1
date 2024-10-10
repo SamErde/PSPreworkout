@@ -75,7 +75,7 @@ FunctionsToExport = 'Edit-WinGetSettingsFile', 'Get-EnvironmentVariable',
                'Install-PowerShellISE', 'Install-WinGet', 'New-Credential',
                'New-ScriptFromTemplate', 'Set-ConsoleFont',
                'Set-EnvironmentVariable', 'Show-LoadedAssembly', 'Test-IsElevated',
-               'Update-AllTheThings',  'Edit-PSReadLineHistoryFile'
+               'Update-AllTheThings',  'Edit-PSReadLineHistoryFile', 'Show-WithoutEmptyProperty'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
