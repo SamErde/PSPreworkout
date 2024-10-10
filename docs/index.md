@@ -45,6 +45,9 @@ Please feel free to use the issues or a PR to report bugs, suggest improvements,
 <Summary>⤵️ Full List:</Summary>
 
 ## PSPreworkout Cmdlets
+### [Edit-PSReadLineHistoryFile](Edit-PSReadLineHistoryFile.md)
+Edit the PSReadLine History File
+
 ### [Edit-WingetSettingsFile](Edit-WingetSettingsFile.md)
 Edit the WinGet settings file.
 
@@ -78,6 +81,9 @@ Create a new secure credential.
 ### [New-ScriptFromTemplate](New-ScriptFromTemplate.md)
 Create a new advanced function from a template.
 
+### [Out-JsonFile](Out-JsonFile.md)
+Convert an object to JSON and write to a file.
+
 ### [Set-ConsoleFont](Set-ConsoleFont.md)
 Set the font for your consoles.
 
@@ -86,6 +92,9 @@ Set environment variables.
 
 ### [Show-LoadedAssembly](Show-LoadedAssembly.md)
 Show all assemblies loaded in PowerShell.
+
+### [Show-WithoutEmptyProperty](Show-WithoutEmptyProperty.md)
+Show an object without its empty properties.
 
 ### [Test-IsElevated](Test-IsElevated.md)
 Check if you are running an elevated shell with administrator or root privileges.
