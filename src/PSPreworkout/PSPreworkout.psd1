@@ -69,13 +69,13 @@ PowerShellVersion = '5.1'
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = 'Edit-WinGetSettingsFile', 'Get-EnvironmentVariable', 
-               'Get-LoadedAssembly', 'Get-PowerShellPortable', 'Get-TypeAccelerator', 
-               'Initialize-PSEnvironmentConfiguration', 'Install-OhMyPosh', 
-               'Install-PowerShellISE', 'Install-WinGet', 'New-Credential', 
-               'New-ScriptFromTemplate', 'Set-ConsoleFont', 
-               'Set-EnvironmentVariable', 'Show-LoadedAssembly', 'Test-IsElevated', 
-               'Update-AllTheThings'
+FunctionsToExport = 'Edit-WinGetSettingsFile', 'Get-EnvironmentVariable',
+               'Get-LoadedAssembly', 'Get-PowerShellPortable', 'Get-TypeAccelerator',
+               'Initialize-PSEnvironmentConfiguration', 'Install-OhMyPosh',
+               'Install-PowerShellISE', 'Install-WinGet', 'New-Credential',
+               'New-ScriptFromTemplate', 'Set-ConsoleFont',
+               'Set-EnvironmentVariable', 'Show-LoadedAssembly', 'Test-IsElevated',
+               'Update-AllTheThings',  'Edit-PSReadLineHistoryFile'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
@@ -84,7 +84,7 @@ CmdletsToExport = @()
 # VariablesToExport = @()
 
 # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
-AliasesToExport = 'Init-PSEnvConfig', 'isadmin', 'isroot', 'gev', 'sev', 'uatt', 'New-Script'
+AliasesToExport = 'Init-PSEnvConfig', 'isadmin', 'isroot', 'gev', 'sev', 'uatt', 'New-Script', 'Edit-HistoryFile'
 
 # DSC resources to export from this module
 # DscResourcesToExport = @()
@@ -135,4 +135,3 @@ PrivateData = @{
 # DefaultCommandPrefix = ''
 
 }
-
