@@ -14,8 +14,8 @@ Initialize configuration your PowerShell environment and git.
 
 ```
 Initialize-PSEnvironmentConfiguration [[-Name] <String>] [[-Email] <String>] [[-CentralProfile] <String>]
- [[-Font] <String>] [[-Packages] <String[]>] [-SkipPackages] [-PickPackages] [[-Modules] <String[]>]
- [-SkipModules] [-PickModules] [<CommonParameters>]
+ [[-Font] <String>] [[-Packages] <String[]>] [-SkipPackages] [[-Modules] <String[]>] [-SkipModules]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -102,28 +102,13 @@ Aliases:
 
 Required: False
 Position: 5
-Default value: @('Microsoft.PowerShell', 'Microsoft.WindowsTerminal', 'git.git', 'JanDeDobbeleer.OhMyPosh')
+Default value: @('Microsoft.WindowsTerminal', 'git.git', 'JanDeDobbeleer.OhMyPosh')
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -SkipPackages
 Option to skip installation of default packages.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -PickPackages
-Choose which packages you want to install.
 
 ```yaml
 Type: SwitchParameter
@@ -167,21 +152,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -PickModules
-Choose which modules you want to install.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### CommonParameters
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -Verbose, -WarningAction, -WarningVariable, and -ProgressAction. 
 For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
@@ -192,6 +162,7 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 
 ## NOTES
 To Do
+  Add status/verbose output of changes being made
   Create basic starter profile if none exist
   Create dot-sourced profile
   Create interactive picker for packages and modules (separate functions)
