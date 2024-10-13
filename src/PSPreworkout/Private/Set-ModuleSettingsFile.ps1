@@ -13,7 +13,18 @@ function Set-ModuleSettingsFile {
         FavoriteColors = @('Blue','Green')
         Animal = 'Llama'
     }
-    Set-ModuleSettingsFile -Settings $SettingsObject
+    Set-ModuleSettingsFile -Settings $SettingsObject -Verbose
+    
+    VERBOSE: Settings written to '/Users/patuser/.config/PSPreworkout/settings.json'.
+    VERBOSE: {
+      "Name": "Pat User",
+      "Animal": "Llama",
+      "FavoriteColors": [
+        "Blue",
+        "Green"
+      ],
+      "Email": "pat.user@example.com"
+    }
 
     .NOTES
     Author: Sam Erde
