@@ -1,26 +1,26 @@
 function Get-PowerShellPortable {
     <#
-        .SYNOPSIS
-        Download a portable version of PowerShell to run anywhere on demand.
+    .SYNOPSIS
+    Download a portable version of PowerShell to run anywhere on demand.
 
-        .DESCRIPTION
-        This function helps you download a zipped version of PowerShell 7.x that can be run anywhere without needing to install it.
+    .DESCRIPTION
+    This function helps you download a zipped version of PowerShell 7.x that can be run anywhere without needing to install it.
 
-        .PARAMETER Path
-        The path (directory) to download the PowerShell zip or tar.gz file into. Do not include a filename for the download.
+    .PARAMETER Path
+    The path (directory) to download the PowerShell zip or tar.gz file into. Do not include a filename for the download.
 
-        .PARAMETER Extract
-        Extract the downloaded file.
+    .PARAMETER Extract
+    Extract the downloaded file.
 
-        .EXAMPLE
-        Get-PowerShellPortable -Path $HOME -Extract
+    .EXAMPLE
+    Get-PowerShellPortable -Path $HOME -Extract
 
-        Download the latest ZIP/TAR of PowerShell to your $HOME folder. It will be extracted into a folder that matches the filename of the compressed archive.
+    Download the latest ZIP/TAR of PowerShell to your $HOME folder. It will be extracted into a folder that matches the filename of the compressed archive.
 
-        .NOTES
-        Author: Sam Erde
-        Version: 0.1.0
-        Modified: 2024/10/12
+    .NOTES
+    Author: Sam Erde
+    Version: 0.1.0
+    Modified: 2024/10/12
     #>
 
     [CmdletBinding()]

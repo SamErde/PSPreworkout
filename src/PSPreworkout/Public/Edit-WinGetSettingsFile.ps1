@@ -13,6 +13,7 @@ function Edit-WingetSettingsFile {
     Author: Sam Erde
     Version: 0.0.2
     Modified: 2024/10/12
+
     #>
     [CmdletBinding()]
     param (

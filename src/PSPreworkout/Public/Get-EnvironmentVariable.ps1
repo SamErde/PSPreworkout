@@ -1,37 +1,42 @@
 function Get-EnvironmentVariable {
     <#
-        .SYNOPSIS
-            Retrieves the value of an environment variable.
+    .SYNOPSIS
+    Retrieves the value of an environment variable.
 
-        .DESCRIPTION
-            The Get-EnvironmentVariable function retrieves the value of the specified environment variable
-            or displays all environment variables.
+    .DESCRIPTION
+    The Get-EnvironmentVariable function retrieves the value of the specified environment variable
+    or displays all environment variables.
 
-        .PARAMETER Name
-            The name of the environment variable to retrieve.
+    .PARAMETER Name
+    The name of the environment variable to retrieve.
 
-        .EXAMPLE
-            Get-EnvironmentVariable -Name "PATH"
-            Retrieves the value of the "PATH" environment variable.
+    .EXAMPLE
+    Get-EnvironmentVariable -Name "PATH"
+    Retrieves the value of the "PATH" environment variable.
 
-        .NOTES
-            Variable names are case-sensitive on Linux and macOS, but not on Windows.
+    .NOTES
+    Author: Sam Erde
+    Version: 0.0.2
+    Modified: 2024/10/12
 
-            Why is 'Target' used by .NET instead of the familiar 'Scope' parameter name? @IISResetMe (Mathias R. Jessen) explains:
-            "Scope" would imply some sort of integrated hierarchy of env variables - that's not really the case.
-            Target=Process translates to kernel32!GetEnvironmentVariable (which then in turn reads the PEB from
-            the calling process), whereas Target={User,Machine} causes a registry lookup against environment
-            data in either HKCU or HKLM.
+    Variable names are case-sensitive on Linux and macOS, but not on Windows.
 
-            The relevant sources for the User and Machine targets are in the registry at:
-            - HKEY_CURRENT_USER\Environment
-            - HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment
+    Why is 'Target' used by .NET instead of the familiar 'Scope' parameter name? @IISResetMe (Mathias R. Jessen) explains:
+    "Scope" would imply some sort of integrated hierarchy of env variables - that's not really the case.
+    Target=Process translates to kernel32!GetEnvironmentVariable (which then in turn reads the PEB from
+    the calling process), whereas Target={User,Machine} causes a registry lookup against environment
+    data in either HKCU or HKLM.
 
-            See more at <https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_environment_variables>.
+    The relevant sources for the User and Machine targets are in the registry at:
+    - HKEY_CURRENT_USER\Environment
+    - HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment
+
+    See more at <https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_environment_variables>.
+
     #>
     [Alias('gev')]
     [CmdletBinding()]
-    [OutputType([string])]
+    [OutputType('System.String')]
     param (
         # The name of the environment variable to retrieve. If not specified, all environment variables are returned.
         [Parameter(Position = 0)]

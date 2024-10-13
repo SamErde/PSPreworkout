@@ -1,22 +1,22 @@
 function Edit-PSReadLineHistoryFile {
     <#
-        .SYNOPSIS
-        Edit the PSReadLine History File
+    .SYNOPSIS
+    Edit the PSReadLine History File
 
-        .DESCRIPTION
-        Use this function to edit the PSReadLine history file. This may be useful if you want to reset some of your autocomplete suggestions orremove commands that did not work.
+    .DESCRIPTION
+    Use this function to edit the PSReadLine history file. This may be useful if you want to reset some of your autocomplete suggestions orremove commands that did not work.
 
-        .EXAMPLE
-        Edit-PSReadLineHistoryFile
+    .EXAMPLE
+    Edit-PSReadLineHistoryFile
 
-        .NOTES
-        Author: Sam Erde
-        Version: 0.0.1
-        Modified: 2024-10-10
+    .NOTES
+    Author: Sam Erde
+    Version: 0.0.1
+    Modified: 2024-10-10
 
-        Idea: History search with a TUI? This may already be done by the PowerShell Run module.
+    Idea: History search with a TUI? This may already be done by the PowerShell Run module.
+
     #>
-
     [CmdletBinding()]
     [Alias('Edit-HistoryFile')]
     param (

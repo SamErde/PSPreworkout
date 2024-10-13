@@ -14,13 +14,15 @@ function Get-LoadedAssembly {
     .NOTES
     To Do: Add -Name parameter to get a specific one.
 
+    Author: Sam Erde
+    Version: 0.0.2
+    Modified: 2024/10/12
     #>
     [CmdletBinding()]
+    [OutputType('System.Array')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'But this is better.')]
-    # [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '', Justification = 'There is a lot of them.')]
     [Alias('Get-Assembly')]
     param ()
 
     [System.AppDomain]::CurrentDomain.GetAssemblies() | Where-Object -FilterScript { $_.Location } | Sort-Object -Property FullName
-
 }

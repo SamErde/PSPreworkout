@@ -42,12 +42,16 @@ function Initialize-PSEnvironmentConfiguration {
     Initialize-PSEnvironmentConfiguration -Name 'Sam Erde' -Email 'sam@example.local' -ConsoleFont 'FiraCode Nerd Font'
 
     .NOTES
-        To Do
-          Add status/verbose output of changes being made
-          Create basic starter profile if none exist
-          Create dot-sourced profile
-          Create interactive picker for packages and modules (separate functions)
-          Bootstrap Out-GridView or Out-ConsoleGridView
+    Author: Sam Erde
+    Version: 0.0.2
+    Modified: 2024/10/12
+
+    To Do
+        Add status/verbose output of changes being made
+        Create basic starter profile if none exist
+        Create dot-sourced profile
+        Create interactive picker for packages and modules (separate functions)
+        Bootstrap Out-GridView or Out-ConsoleGridView
     #>
 
     [CmdletBinding()]
