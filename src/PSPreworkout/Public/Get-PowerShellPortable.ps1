@@ -17,6 +17,10 @@ function Get-PowerShellPortable {
 
         Download the latest ZIP/TAR of PowerShell to your $HOME folder. It will be extracted into a folder that matches the filename of the compressed archive.
 
+        .NOTES
+        Author: Sam Erde
+        Version: 0.1.0
+        Modified: 2024/10/12
     #>
 
     [CmdletBinding()]
@@ -35,10 +39,11 @@ function Get-PowerShellPortable {
 
     #region Determine Download Uri
     # Get the zip and tar.gz PowerShell download links for Windows, macOS, and Linux.
-    $ApiUrl = 'https://api.github.com/repos/PowerShell/PowerShell/releases/tags/v7.4.5'
-    $Response = Invoke-RestMethod -Uri $ApiUrl -Headers @{ 'User-Agent' = 'PowerShellScript' }
-    $Assets = $Response.assets
-    $DownloadLinks = $Assets | Where-Object { $_.browser_download_url -match '\.zip$|\.tar\.gz$' } | Select-Object -ExpandProperty browser_download_url
+    #$ApiUrl = 'https://api.github.com/repos/PowerShell/PowerShell/releases/tags/v7.4.5'
+    #$Response = Invoke-RestMethod -Uri $ApiUrl -Headers @{ 'User-Agent' = 'PowerShellScript' }
+    #$Assets = $Response.assets
+    #$DownloadLinks = $Assets | Where-Object { $_.browser_download_url -match '\.zip$|\.tar\.gz$' } | Select-Object -ExpandProperty browser_download_url
+    $DownloadLinks = (Invoke-RestMethod -Uri 'https://api.github.com/repos/PowerShell/PowerShell/releases/latest').assets.browser_download_url
 
     # Determine the platform and architecture
     $Architecture = [System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture
