@@ -38,7 +38,12 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 
 ## OUTPUTS
 
+### System.Array
 ## NOTES
 To Do: Add -Name parameter to get a specific one.
+
+Author: Sam Erde
+Version: 0.0.2
+Modified: 2024/10/12
 
 ## RELATED LINKS

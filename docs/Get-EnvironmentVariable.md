@@ -89,6 +89,10 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 
 ### System.String
 ## NOTES
+Author: Sam Erde
+Version: 0.0.2
+Modified: 2024/10/12
+
 Variable names are case-sensitive on Linux and macOS, but not on Windows.
 
 Why is 'Target' used by .NET instead of the familiar 'Scope' parameter name?

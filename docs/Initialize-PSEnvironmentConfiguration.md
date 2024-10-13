@@ -161,11 +161,15 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## OUTPUTS
 
 ## NOTES
+Author: Sam Erde
+Version: 0.0.2
+Modified: 2024/10/12
+
 To Do
-  Add status/verbose output of changes being made
-  Create basic starter profile if none exist
-  Create dot-sourced profile
-  Create interactive picker for packages and modules (separate functions)
-  Bootstrap Out-GridView or Out-ConsoleGridView
+    Add status/verbose output of changes being made
+    Create basic starter profile if none exist
+    Create dot-sourced profile
+    Create interactive picker for packages and modules (separate functions)
+    Bootstrap Out-GridView or Out-ConsoleGridView
 
 ## RELATED LINKS
