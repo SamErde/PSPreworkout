@@ -67,6 +67,7 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 
 ## OUTPUTS
 
+### System.Array
 ## NOTES
 Thanks to Jeff Hicks (@JDHITSolutions) for helpful suggestions and improvements on this output!
 
