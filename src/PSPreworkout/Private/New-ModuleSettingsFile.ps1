@@ -16,7 +16,7 @@ function New-ModuleSettingsFile {
     Modified: 2024-10-12
     #>
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess)]
     param (
 
     )

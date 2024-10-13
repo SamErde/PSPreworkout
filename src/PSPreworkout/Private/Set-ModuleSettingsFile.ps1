@@ -21,7 +21,7 @@ function Set-ModuleSettingsFile {
     Modified: 2024-10-13
     #>
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess)]
 
     param (
         # A hash table containing the settings for the module
@@ -54,7 +54,7 @@ function Set-ModuleSettingsFile {
     } # end process block
 
     end {
-        Write-Verbose -Message "Settings written to `'$($SettingsFile.Path)`'."
+        Write-Verbose -Message "Settings written to `'$($SettingsFile.Path)`' for the `'$ModuleName`' module."
         Write-Verbose -Message $SettingsJson
     } # end end block
 
