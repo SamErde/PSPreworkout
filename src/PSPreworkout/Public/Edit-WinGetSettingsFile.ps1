@@ -10,19 +10,44 @@ function Edit-WingetSettingsFile {
     Edit-WinGetSettingsFile
 
     .NOTES
-    This is just an idea that may or may not prove to be useful.
+    Author: Sam Erde
+    Version: 0.0.2
+    Modified: 2024/10/12
     #>
     [CmdletBinding()]
     param (
+        # Specify the path to the editor that you would like to use.
+        [Parameter()]
+        [ValidateScript({
+                if ( -not (Test-Path -Path $_ ) ) {
+                    throw 'The file does not exist.'
+                }
+                return $true
+            })]
+        [System.IO.FileInfo]
+        $EditorPath
     )
 
-    if (Test-Path -PathType Container -Path "$env:LOCALAPPDATA\Packages\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe\LocalState") {
-        if (Get-Command code -ErrorAction SilentlyContinue) {
-            code "$env:LOCALAPPDATA\Packages\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe\LocalState\settings.json"
-        } else {
-            notepad "$env:LOCALAPPDATA\Packages\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe\LocalState\settings.json"
+    begin {
+        $WinGetSettingsFile = "$env:LOCALAPPDATA\Packages\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe\LocalState\settings.json"
+        if (-not (Test-Path -PathType Leaf -Path $WinGetSettingsFile)) {
+            # Exit the function if the WinGet settings file does not exist.
+            Write-Information -MessageData 'WinGet is not installed.' -InformationAction Continue
+            return
         }
-    } else {
-        Write-Information -MessageData 'WinGet is not installed.' -InformationAction Continue
+    } # end begin block
+
+    process {
+        if ($PSBoundParameters.ContainsKey($EditorPath)) {
+            Start-Process $EditorPath $WinGetSettingsFile
+        } elseif ( (Get-Command code -ErrorAction SilentlyContinue) ) {
+            code $WinGetSettingsFile
+        } else {
+            Start-Process notepad $WinGetSettingsFile
+        }
+    } # end process block
+
+    end {
+        # end
     }
-}
+} # end function Edit-WinGetSettingsFile
