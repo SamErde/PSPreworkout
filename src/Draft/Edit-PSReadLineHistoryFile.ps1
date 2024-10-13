@@ -51,7 +51,8 @@ setLanguage(uri, 'powershell');
         Set-Content -Path $TempScript -Value $VSCodeScript
 
         # Run the VS Code script with Node.js
-        Start-Process node -ArgumentList "$TempScript `"$filePath`""
+        Start-Process node -ArgumentList "'$TempScript' '$filePath'"
+        #Start-Process node -ArgumentList "$TempScript `"$filePath`""
     } # end process block
 
     end {
