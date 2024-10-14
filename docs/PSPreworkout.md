@@ -2,7 +2,7 @@
 Module Name: PSPreworkout
 Module Guid: 378339de-a0df-4d44-873b-4fd32c388e06
 Download Help Link: NA
-Help Version: 1.3.1
+Help Version: 1.4.0
 Locale: en-US
 ---
 
@@ -31,6 +31,9 @@ Get available type accelerators.
 
 ### [Initialize-PSEnvironmentConfiguration](Initialize-PSEnvironmentConfiguration.md)
 Initialize configuration your PowerShell environment and git.
+
+### [Install-CommandNotFoundUtility](Install-CommandNotFoundUtility.md)
+Install and setup the WinGetCommandNotFound utility from Microsoft PowerToys.
 
 ### [Install-OhMyPosh](Install-OhMyPosh.md)
 Install Oh My Posh and add it to your profile.
