@@ -64,7 +64,7 @@ setLanguage(uri, 'powershell');
     } # end process block
 
     end {
-        Remove-Item -Path $TempScriptFile -Confirm:$false
+        #Remove-Item -Path $TempScriptFile -Confirm:$false
     } # end end block
 
 } # end function Edit-PSreadLineHistoryFile
