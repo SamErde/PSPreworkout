@@ -7,12 +7,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 &nbsp;
 &nbsp;
 
-## [Unreleased]
+## [1.4.0] - 2024-10-14
 
 ### Added
 
-- Add `Get-VSCodePortable`
-- Add `Remove-OldModule`
+- Add `Install-CommandNotFoundUtility`
+- Add preferred `EditorPath` parameter to `Edit-WinGetSettingsFile`
+
+### Fixed
+
+- Fix download links for `Get-PowerShellPortable`
+- Optimize `Get-PowerShellPortable` version check and download
 
 &nbsp;
 &nbsp;
