@@ -30,7 +30,7 @@ function Edit-PSReadLineHistoryFile {
     process {
         if ((Get-Command code)) {
             # Open the file in Visual Studio Code if code found
-            code --reuse-window $HistoryFilePath
+            code $HistoryFilePath
 
             <#
             if ((Get-Command node -ErrorAction SilentlyContinue)) {
