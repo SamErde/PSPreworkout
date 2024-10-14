@@ -1,10 +1,8 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
-
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-&nbsp;
 &nbsp;
 
 ## [1.4.0] - 2024-10-14
@@ -20,6 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Optimize `Get-PowerShellPortable` version check and download
 
 &nbsp;
+Full changelog: [v1.3.1...v1.4.0](https://github.com/SamErde/PSPreworkout/compare/v1.3.1...v1.4.0)
 &nbsp;
 
 ## [1.3.1] - 2024-10-10
@@ -134,6 +133,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 _Initial release._
 
 [Unreleased]: https://github.com/SamErde/PSPreworkout/compare/v1.2.2...HEAD
+[1.4.0]: https://github.com/SamErde/PSPreworkout/tag/v1.4.0
 [1.3.1]: https://github.com/SamErde/PSPreworkout/tag/v1.3.1
 [1.2.5]: https://github.com/SamErde/PSPreworkout/tag/v1.2.5
 [1.2.4]: https://github.com/SamErde/PSPreworkout/tag/v1.2.4
