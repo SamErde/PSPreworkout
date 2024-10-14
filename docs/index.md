@@ -66,6 +66,9 @@ Get available type accelerators.
 ### [Initialize-PSEnvironmentConfiguration](Initialize-PSEnvironmentConfiguration.md)
 Initialize configuration your PowerShell environment and git.
 
+### [Install-CommandNotFoundUtility](Install-CommandNotFoundUtility.md)
+Install and setup the WinGetCommandNotFound utility from Microsoft PowerToys.
+
 ### [Install-OhMyPosh](Install-OhMyPosh.md)
 Install Oh My Posh and add it to your profile.
 
