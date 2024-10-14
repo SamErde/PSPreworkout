@@ -1,5 +1,3 @@
-#!/usr/bin/env pwsh
-
 function Update-AllTheThings {
     <#
     .SYNOPSIS
