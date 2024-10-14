@@ -14,7 +14,7 @@ authors:
 repository-code: "https://github.com/SamErde/PSPreworkout"
 url: "https://day3bits.com/PSPreworkout"
 repository-artifact: "https://www.powershellgallery.com/packages/PSPreworkout"
-abstract: A mix of tools to help jump start your PowerShell session!
+abstract: A special mix of tools to help jump start your PowerShell session!
 keywords:
     - PowerShell
     - Windows
