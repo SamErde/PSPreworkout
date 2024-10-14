@@ -32,6 +32,7 @@ function Edit-PSReadLineHistoryFile {
             # Open the file in Visual Studio Code if code found
             code --reuse-window $HistoryFilePath
 
+            <#
             if ((Get-Command node -ErrorAction SilentlyContinue)) {
                 # Use the Visual Studio Code API to set the open file's language (this portion rendered by AI).
                 $VSCodeScript = @'
@@ -54,6 +55,7 @@ setLanguage(uri, 'powershell');
                 Set-Content -Path $TempScriptFile -Value $VSCodeScript -Force
                 node $TempScriptFile "`'$HistoryFilePath`'"
             }
+#> # End scriptblock to set the file language to 'PowerShell'
 
         } else {
             # Open the text file with the default file handler if VS Code is not found.
