@@ -1,32 +1,81 @@
-function Show-WithoutEmptyProperty {
+﻿function Show-WithoutEmptyProperty {
     <#
     .SYNOPSIS
     Show an object without its empty properties.
 
     .DESCRIPTION
-    Show the properties of an object with all of its empty properties filtered out.
+    This function shows the properties of an object with all of its empty properties filtered out.
 
     .PARAMETER Object
-    The object to view properties of.
+    The object to show.
 
     .EXAMPLE
-    Show-WithoutEmptyProperty
+    Show-WithoutEmptyProperty -Object $Object
 
+    .EXAMPLE
+    [PSCustomObject]$Desk = @{
+        Model = 'PSDesk'
+        Height = $null
+        Width = $null
+        Colors = @('Black', 'Gray')
+        Adjustable = $true
+    }
+    $Object = New-Object -TypeName PSObject -Property $Desk
+    Show-WithoutEmptyProperty -Object $Object
+
+    This example creates an object from a hash table and then shows that object's properties that have values.
+
+    .EXAMPLE
+    Show-WithoutEmptyProperty -Object (Get-Item $HOME)
+
+    This example gets the home folder object while invoking the function.
+
+    .EXAMPLE
+    $Object | Show-WithoutEmptyProperty
+
+    This example shows how an object can be piped to the function.
+
+    .EXAMPLE
+    Get-ChildItem $HOME | Select-Object -First 1 | Show-WithoutEmptyProperty
+
+    This example gets the home folder object and pipes it to the Show-WithoutEmptyProperty function.
+
+    .NOTES
+    I am grateful to Jeffrey Hicks for guiding me towards an understanding of how to complete this function and for
+    providing even nicer code than I started with. I encourage you to reach out to him for PowerShell training and
+    subscribe to his newsletter! 🙏
+
+        https://jdhitsolutions.github.io/
+        https://www.linkedin.com/in/jefferyhicks/
+        https://twitter.com/JeffHicks
     #>
     [CmdletBinding()]
-    [OutputType('OrderedDictionary')]
+    [OutputType('PSCustomObject')]
     param (
         # The object to show without empty properties
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, ValueFromPipeline, Position = 0)]
         [Object]
         $Object
     )
 
-    $PropertiesWithValues = [Ordered]@{}
-    foreach ($property in $Object.PSObject.Properties) {
-        if ($property.Value) {
-            $PropertiesWithValues[$property.Name] = $property.Value
+    begin {
+
+    }
+
+    process {
+        $Object.PSObject.properties | Where-Object {
+            $_.Value
+        } | ForEach-Object -Begin {
+            $JDHIT = [ordered]@{}
+            [void]$JDHIT # Suppress code analyzer errors during build.
+        } -Process {
+            $JDHIT.Add($_.name, $_.Value)
+        } -End {
+            New-Object -TypeName PSObject -Property $JDHIT
         }
     }
-    $PropertiesWithValues
+
+    end {
+
+    }
 }
