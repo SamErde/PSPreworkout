@@ -38,6 +38,7 @@ function Out-JsonFile {
 
         # Full path and filename to save the JSON to.
         [Parameter(Position = 1)]
+        [ValidatePattern('\.json$')]
         [string]
         $FilePath
     )
@@ -45,11 +46,6 @@ function Out-JsonFile {
     begin {
         # Validate the file path and extension.
         if ($FilePath) {
-            # Ensure the $FilePath provided includes a .json extension.
-            if ([System.IO.Path]::GetExtension($FilePath) -ne '.json') {
-                $FilePath = "${FilePath}.json"
-            }
-
             # Ensure that a working directory is included in filepath.
             if ([string]::IsNullOrEmpty([System.IO.Path]::GetDirectoryName($FilePath))) {
                 $FilePath = Join-Path -Path (Get-Location -PSProvider FileSystem).Path -ChildPath $FilePath
