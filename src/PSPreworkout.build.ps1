@@ -461,7 +461,7 @@ Add-BuildTask Build {
         $null = $scriptContent.AppendLine('')
         $null = $scriptContent.AppendLine('')
     }
-    $scriptContent.ToString() | Out-File -FilePath $script:BuildModuleRootFile -Encoding utf8 -Force
+    $scriptContent.ToString() | Out-File -FilePath $script:BuildModuleRootFile -Encoding:utf8 -Force
     Write-Build Gray '        ...Module creation complete.'
 
     Write-Build Gray '        Cleaning up leftover artifacts...'
