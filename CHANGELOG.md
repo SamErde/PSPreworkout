@@ -5,6 +5,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 &nbsp;
 
+## [1.4.2] - 2024-10-15
+
+### Changed
+
+- Refactor `Show-WithoutEmptyProperty` and test with more examples
+- Enhance `Out-JsonFile` with better validation and provider handling
+
+&nbsp;
+Full changelog: [v1.4.1...v1.4.2](https://github.com/SamErde/PSPreworkout/compare/v1.4.1...v1.4.2)
+&nbsp;
+
 ## [1.4.1] - 2024-10-14
 
 ### Fixed
@@ -144,6 +155,7 @@ Full changelog: [v1.3.1...v1.4.0](https://github.com/SamErde/PSPreworkout/compar
 _Initial release._
 
 [Unreleased]: https://github.com/SamErde/PSPreworkout/compare/v1.2.2...HEAD
+[1.4.2]: https://github.com/SamErde/PSPreworkout/tag/v1.4.2
 [1.4.1]: https://github.com/SamErde/PSPreworkout/tag/v1.4.1
 [1.4.0]: https://github.com/SamErde/PSPreworkout/tag/v1.4.0
 [1.3.1]: https://github.com/SamErde/PSPreworkout/tag/v1.3.1
