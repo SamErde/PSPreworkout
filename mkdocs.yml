@@ -40,8 +40,8 @@ docs_dir: "docs"
 # extra_templates:
 # extra:
 
-plugins:
-  - social
+#plugins:
+#  - social
 
 theme:
   name: material
