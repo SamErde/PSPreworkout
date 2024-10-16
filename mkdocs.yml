@@ -40,8 +40,15 @@ docs_dir: "docs"
 # extra_templates:
 # extra:
 
+plugins:
+  - social
+
 theme:
   name: material
+  highlightjs: true
+  hljs_languages:
+    - yaml
+    - powershell
   palette:
     # Palette toggle for automatic mode
     - media: "(prefers-color-scheme)"
@@ -69,6 +76,13 @@ theme:
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.path
+    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.tracking
+    - navigation.sections
+    - navigation.top
+    - toc.follow
+    - toc.integrate
   # favicon:
   # icon:
   #   repo:
