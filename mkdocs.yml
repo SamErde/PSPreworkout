@@ -11,7 +11,7 @@
 site_name: "PSPreworkout PowerShell Module"
 site_url: "https://day3bits.com/PSPreworkout"
 repo_url: "https://github.com/SamErde/PSPreworkout"
-repo_name: "PSPreworkout"
+repo_name: "SamErde/PSPreworkout"
 # edit_uri: edit/main/docs/
 # edit_uri_template:
 site_description: "PowerShell Preworkout: a mix of tools to help jump start your PowerShell session!" # meta tag to the generated HTML heade
