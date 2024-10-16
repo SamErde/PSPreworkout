@@ -28,7 +28,7 @@ Show-WithoutEmptyProperty -Object $Object
 
 ### EXAMPLE 2
 ```
-[PSCustomObject]$Desk = @{
+$Desk = [PSCustomObject]@{
     Model = 'PSDesk'
     Height = $null
     Width = $null

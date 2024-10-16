@@ -13,7 +13,7 @@
     Show-WithoutEmptyProperty -Object $Object
 
     .EXAMPLE
-    [PSCustomObject]$Desk = @{
+    $Desk = [PSCustomObject]@{
         Model = 'PSDesk'
         Height = $null
         Width = $null
@@ -63,7 +63,7 @@
     }
 
     process {
-        $Object.PSObject.properties | Where-Object {
+        $Object.PSObject.Properties | Where-Object {
             $_.Value
         } | ForEach-Object -Begin {
             $JDHIT = [ordered]@{}
