@@ -1,16 +1,21 @@
 name: Create External Help
 
 on:
-  workflow_run:
-    types:
-      - completed
-    jobs:
-      - 💾 Commit Changes
+  pull_request:
+  push:
 
 jobs:
   package_help:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
+      - name: ✅ Checkout Repository
+        uses: actions/checkout@v4
+      - name: 📁 Display the Path
+        shell: pwsh
+        run: echo ${env:PATH}
+      - name: 🔢 Display the Version
+        shell: pwsh
+        run: $PSVersionTable
       - name: 📖 Create and Package External PowerShell Help
         shell: pwsh
         run: |
