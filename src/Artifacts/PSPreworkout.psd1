@@ -157,7 +157,7 @@
     } # End of PrivateData hashtable
 
     # HelpInfo URI of this module
-    HelpInfoURI          = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/en-US/'
+    HelpInfoURI          = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/'
 
     # Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
     # DefaultCommandPrefix = ''
