@@ -1,0 +1,30 @@
+name: 📖 Create External Help
+
+on:
+  workflow_run:
+    workflow_run:
+      workflows: ["📦 Build PSPreworkout Module"]
+      types:
+        - completed
+
+jobs:
+  package_help:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: 📖 Create and Package External PowerShell Help
+        shell: pwsh
+        run: |
+          Copy-Item "$PSScriptRoot\Artifacts\en-US\PSPreworkout-help.xml" "$PSScriptRoot\Help\en-US"
+          $params = @{
+              CabFilesFolder  = "$PSScriptRoot\Help\en-US"
+              LandingPagePath = "$PSScriptRoot\..\docs\PSPreworkout.md"
+              OutputFolder    = "$PSScriptRoot\Help\en-US"
+          }
+          New-ExternalHelpCab @params
+
+        # git-auto-commit-action only runs on Linux-based platforms.
+      - name: 💾 Commit Changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'Create and package external help.'
