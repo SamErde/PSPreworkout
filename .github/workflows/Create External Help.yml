@@ -11,11 +11,11 @@ jobs:
       - name: 📖 Create and Package External PowerShell Help
         shell: pwsh
         run: |
-          Copy-Item "$PSScriptRoot\Artifacts\en-US\PSPreworkout-help.xml" "$PSScriptRoot\Help\en-US"
+          Copy-Item ".\src\Artifacts\en-US\PSPreworkout-help.xml" ".\src\Help\en-US"
           $params = @{
-              CabFilesFolder  = "$PSScriptRoot\Help\en-US"
-              LandingPagePath = "$PSScriptRoot\..\docs\PSPreworkout.md"
-              OutputFolder    = "$PSScriptRoot\Help\en-US"
+              CabFilesFolder  = ".\src\Help\en-US"
+              LandingPagePath = ".\docs\PSPreworkout.md"
+              OutputFolder    = ".\src\Help\en-US"
           }
           New-ExternalHelpCab @params
 
