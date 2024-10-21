@@ -1,8 +1,6 @@
 # Project Files #
 Archive
 Artifacts
-!*.cab
-!*.zip
 cov.xml
 coverage.xml
 Ignore
@@ -71,7 +69,7 @@ Temporary Items
 
 ### PowerShell ###
 # Exclude packaged modules
-*.zip
+# *.zip
 
 # Exclude .NET assemblies from source
 *.dll
@@ -112,7 +110,7 @@ ehthumbs_vista.db
 $RECYCLE.BIN/
 
 # Windows Installer files
-*.cab
+# *.cab
 *.msi
 *.msix
 *.msm
