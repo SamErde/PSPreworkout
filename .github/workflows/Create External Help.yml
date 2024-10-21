@@ -19,6 +19,7 @@ jobs:
       - name: 📖 Create and Package External PowerShell Help
         shell: pwsh
         run: |
+          Import-Module -Name PlatyPS -Scope CurrentUser -Force
           Copy-Item ".\src\Artifacts\en-US\PSPreworkout-help.xml" ".\src\Help\en-US"
           $params = @{
               CabFilesFolder  = ".\src\Help\en-US"
