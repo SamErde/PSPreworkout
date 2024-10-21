@@ -57,6 +57,16 @@ jobs:
         name: zip-archive
         path: .\src\Archive
         if-no-files-found: warn
+    - name: 🧑‍🎓 Create External Help
+      shell: pwsh
+      run: |
+          Copy-Item ".\src\Artifacts\en-US\PSPreworkout-help.xml" ".\src\Help\en-US"
+          $params = @{
+              CabFilesFolder  = ".\src\Help\en-US"
+              LandingPagePath = ".\docs\PSPreworkout.md"
+              OutputFolder    = ".\src\Help\en-US"
+          }
+          New-ExternalHelpCab @params
 
         # git-auto-commit-action only runs on Linux-based platforms.
     - name: 💾 Commit Changes
