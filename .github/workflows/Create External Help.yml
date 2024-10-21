@@ -3,7 +3,7 @@ name: 📖 Create External Help
 on:
   workflow_run:
     workflow_run:
-      workflows: ["📦 Build PSPreworkout Module"]
+      workflows: ["Build Module.yml"]
       types:
         - completed
 
