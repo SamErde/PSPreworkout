@@ -3,11 +3,11 @@ name: Create External Help
 on:
   pull_request:
   push:
-  workflow_run:
-    workflow_run:
-      workflows: ["Build PSPreworkout Module"]
-      types:
-        - completed
+  #workflow_run:
+  #  workflow_run:
+  #    workflows: ["Build PSPreworkout Module"]
+  #    types:
+  #      - completed
 
 jobs:
   package_help:
