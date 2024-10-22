@@ -45,7 +45,7 @@ function Get-EnvironmentVariable {
         # The target of the environment variable to retrieve. Defaults to User. (Process, User, or Machine)
         [Parameter(Position = 1)]
         [System.EnvironmentVariableTarget]
-        $Target = [System.EnvironmentVariableTarget]::User,
+        $Target = [System.EnvironmentVariableTarget]::Process,
 
         # Switch to show environment variables in all target scopes.
         [Parameter()]
