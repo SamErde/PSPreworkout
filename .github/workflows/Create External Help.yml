@@ -3,6 +3,7 @@ name: 📚 Create External Help
 on:
   pull_request:
   push:
+  workflow_dispatch:
 
 jobs:
   package_help:
