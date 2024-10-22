@@ -112,5 +112,6 @@ nav:
       - Set-EnvironmentVariable: "Set-EnvironmentVariable.md"
       - Test-IsElevated: "Test-IsElevated.md"
       - Update-AllTheThings: "Update-AllTheThings.md"
-      - Out-JsonFile: "Out-JsonFile"
+      - Out-JsonFile: "Out-JsonFile.md"
+      - Show-WithoutEmptyProperty: "Show-WithoutEmptyProperty.md"
       - Get-PowerShellPortable: "Get-PowerShellPortable.md"
