@@ -59,7 +59,7 @@ Accepted values: Process, User, Machine
 
 Required: False
 Position: 2
-Default value: User
+Default value: Process
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

@@ -140,7 +140,7 @@
             <maml:name>EnvironmentVariableTarget</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>User</dev:defaultValue>
+          <dev:defaultValue>Process</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>All</maml:name>
@@ -178,7 +178,7 @@
           <maml:name>EnvironmentVariableTarget</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>User</dev:defaultValue>
+        <dev:defaultValue>Process</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>All</maml:name>
