@@ -15,7 +15,7 @@ function Edit-WingetSettingsFile {
     Modified: 2024/10/12
 
     #>
-    [CmdletBinding()]
+    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
     param (
         # Specify the path to the editor that you would like to use.
         [Parameter()]

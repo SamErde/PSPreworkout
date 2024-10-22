@@ -21,7 +21,7 @@ function Get-VSCodePortable {
         Modified: 2024-09-11
     #>
 
-    [CmdletBinding()]
+    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
     [Alias('Get-Code')]
     param (
 

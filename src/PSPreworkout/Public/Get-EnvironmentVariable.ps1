@@ -35,7 +35,7 @@ function Get-EnvironmentVariable {
 
     #>
     [Alias('gev')]
-    [CmdletBinding()]
+    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
     [OutputType('System.String')]
     param (
         # The name of the environment variable to retrieve. If not specified, all environment variables are returned.

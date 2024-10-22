@@ -18,7 +18,7 @@ function Get-LoadedAssembly {
     Version: 0.0.2
     Modified: 2024/10/12
     #>
-    [CmdletBinding()]
+    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
     [OutputType('System.Array')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'But this is better.')]
     [Alias('Get-Assembly')]

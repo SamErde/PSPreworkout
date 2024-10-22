@@ -49,7 +49,7 @@
         https://www.linkedin.com/in/jefferyhicks/
         https://twitter.com/JeffHicks
     #>
-    [CmdletBinding()]
+    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
     [OutputType('PSCustomObject')]
     param (
         # The object to show without empty properties

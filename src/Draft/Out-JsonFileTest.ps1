@@ -1,5 +1,5 @@
 function Test {
-    [CmdletBinding()]
+    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
     param (
 
         # Full path and filename to save the JSON to.

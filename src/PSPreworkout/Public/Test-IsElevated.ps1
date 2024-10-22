@@ -12,7 +12,7 @@ function Test-IsElevated {
     .OUTPUTS
     Boolean
     #>
-    [CmdletBinding()]
+    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
     [Alias('isadmin', 'isroot')]
     param ()
 

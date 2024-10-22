@@ -20,7 +20,7 @@ function Set-EnvironmentVariable {
 
     #>
     [Alias('sev')]
-    [CmdletBinding()]
+    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'OK')]
     param (
         # The name of the environment variable to set.

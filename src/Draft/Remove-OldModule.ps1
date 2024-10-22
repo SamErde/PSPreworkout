@@ -1,5 +1,5 @@
 function Remove-OldModule {
-    [CmdletBinding()]
+    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
     param (
 
     )

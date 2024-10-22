@@ -16,7 +16,7 @@ function Edit-PSReadLineHistoryFile {
         Modified: 2024-10-10
     #>
 
-    [CmdletBinding()]
+    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
     [Alias('Edit-HistoryFile')]
     param (
 

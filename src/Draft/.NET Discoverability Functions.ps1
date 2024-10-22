@@ -57,7 +57,7 @@ function Get-Type {
             .FUNCTIONALITY
             Computers
     #>
-    [cmdletbinding()]
+    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
     param(
         [string]$Module = '*',
         [string]$Assembly = '*',
@@ -172,7 +172,7 @@ function Get-Constructor {
             Date Created: 28 Jan 2013
             Version 1.0
     #>
-    [cmdletbinding()]
+    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
     Param (
         [parameter(ValueFromPipeline = $True)]
         [Type]$Type,
