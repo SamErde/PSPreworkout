@@ -16,8 +16,8 @@ function Get-EnvironmentVariable {
 
     .NOTES
     Author: Sam Erde
-    Version: 0.0.2
-    Modified: 2024/10/12
+    Version: 0.1.0
+    Modified: 2024/10/22
 
     Variable names are case-sensitive on Linux and macOS, but not on Windows.
 
@@ -39,8 +39,13 @@ function Get-EnvironmentVariable {
     [OutputType('System.String')]
     param (
         # The name of the environment variable to retrieve. If not specified, all environment variables are returned.
-        [Parameter(Position = 0)]
+        [Parameter(Position = 0, ParameterSetName = 'LookupByName')]
         [string]$Name,
+
+        # A regex pattern to search variable names by
+        [Parameter(Position = 0, ParameterSetName = 'LookupByRegexPattern')]
+        [string]
+        $Pattern,
 
         # The target of the environment variable to retrieve. Defaults to User. (Process, User, or Machine)
         [Parameter(Position = 1)]
@@ -48,31 +53,37 @@ function Get-EnvironmentVariable {
         $Target = [System.EnvironmentVariableTarget]::Process,
 
         # Switch to show environment variables in all target scopes.
-        [Parameter()]
+        [Parameter(ParameterSetName = 'ListAll')]
         [switch]
         $All
     )
 
     # If a variable name was specified, get that environment variable from the default target or specified target.
-    if ( $PSBoundParameters.Keys.Contains('Name') ) {
+    if ( $PSBoundParameters.ContainsKey('Name') ) {
         [Environment]::GetEnvironmentVariable($Name, $Target)
-    } elseif (-not $PSBoundParameters.Keys.Contains('All') ) {
-        [Environment]::GetEnvironmentVariables()
     }
 
-    # If only the target is specified, get all environment variables from that target.
-    if ( $PSBoundParameters.Keys.Contains('Target') -and -not $PSBoundParameters.ContainsKey('Name') ) {
-        [System.Environment]::GetEnvironmentVariables([System.EnvironmentVariableTarget]::$Target)
+    if ( $PSBoundParameters.ContainsKey('Pattern') ) {
+        [Environment]::GetEnvironmentVariables($Target).GetEnumerator() | Where-Object { $_.Key -match $pattern }
     }
 
-    # Get all environment variables from all targets.
-    # To Do: Get the specified variable name from all targets if a name and -All are specified.
-    if ($All) {
-        Write-Output 'Process Environment Variables:'
-        [Environment]::GetEnvironmentVariables([System.EnvironmentVariableTarget]::Process)
-        Write-Output 'User Environment Variables:'
-        [Environment]::GetEnvironmentVariables([System.EnvironmentVariableTarget]::User)
-        Write-Output 'Machine Environment Variables:'
-        [Environment]::GetEnvironmentVariables([System.EnvironmentVariableTarget]::Machine)
-    }
+} if ($PSBoundParameters.ContainsKey('All') -and -not $PSBoundParameters.ContainsKey('Pattern') ) {
+    [Environment]::GetEnvironmentVariables()
+}
+
+# If only the target is specified, get all environment variables from that target.
+if ( $PSBoundParameters.ContainsKey('Target') -and -not $PSBoundParameters.ContainsKey('Name') ) {
+    [System.Environment]::GetEnvironmentVariables([System.EnvironmentVariableTarget]::$Target)
+}
+
+# Get all environment variables from all targets.
+# To Do: Get the specified variable name from all targets if a name and -All are specified.
+if ($All) {
+    Write-Output 'Process Environment Variables:'
+    [Environment]::GetEnvironmentVariables([System.EnvironmentVariableTarget]::Process)
+    Write-Output 'User Environment Variables:'
+    [Environment]::GetEnvironmentVariables([System.EnvironmentVariableTarget]::User)
+    Write-Output 'Machine Environment Variables:'
+    [Environment]::GetEnvironmentVariables([System.EnvironmentVariableTarget]::Machine)
+}
 }
