@@ -5,6 +5,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 &nbsp;
 
+## [1.4.4] - 2024-10-22
+
+### Changes
+
+- Add external help.
+
+&nbsp;
+
 ## [1.4.3] - 2024-10-16
 
 ### Fixed
@@ -165,6 +173,7 @@ Full changelog: [v1.3.1...v1.4.0](https://github.com/SamErde/PSPreworkout/compar
 _Initial release._
 
 [Unreleased]: https://github.com/SamErde/PSPreworkout/compare/v1.2.2...HEAD
+[1.4.4]: https://github.com/SamErde/PSPreworkout/tag/v1.4.4
 [1.4.3]: https://github.com/SamErde/PSPreworkout/tag/v1.4.3
 [1.4.2]: https://github.com/SamErde/PSPreworkout/tag/v1.4.2
 [1.4.1]: https://github.com/SamErde/PSPreworkout/tag/v1.4.1
