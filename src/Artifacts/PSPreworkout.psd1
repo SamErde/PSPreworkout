@@ -61,7 +61,7 @@
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
     CmdletsToExport      = @()
-    
+
     # Variables to export from this module
     VariablesToExport    = @()
 
@@ -82,7 +82,7 @@
     )
 
     # List of all files packaged with this module
-    # FileList = @()
+    FileList             = @()
 
     # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
     PrivateData          = @{
@@ -113,8 +113,5 @@
 
     # HelpInfo URI of this module
     HelpInfoURI          = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/'
-
-    # Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
-    # DefaultCommandPrefix = ''
 
 }
