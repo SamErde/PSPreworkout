@@ -23,7 +23,7 @@ function Get-TypeAccelerator {
     Thanks to Jeff Hicks (@JDHITSolutions) for helpful suggestions and improvements on this output!
 
     #>
-    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
+    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout')]
     [OutputType('System.Array')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'Fighting with VS Code autoformatting.')]
     param (

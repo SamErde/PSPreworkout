@@ -32,7 +32,7 @@ function Install-OhMyPosh {
     .EXAMPLE
         Install-OhMyPosh
 #>
-    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
+    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingInvokeExpression', '', Justification = 'Invoke-Expression is used for online OMP installer.')]
     param (
         [Parameter()]

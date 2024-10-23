@@ -20,7 +20,7 @@ function Show-LoadedAssembly {
     Shows a list of all loaded assemblies in a grid view.
 
     #>
-    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
+    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'But this is better.')]
     # [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '', Justification = 'There is a lot of them.')]
     [Alias('Show-LoadedAssemblies')]

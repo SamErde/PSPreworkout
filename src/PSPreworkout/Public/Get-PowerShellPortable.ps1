@@ -23,7 +23,7 @@ function Get-PowerShellPortable {
     Modified: 2024/10/12
     #>
 
-    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
+    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout')]
     [Alias('Get-PSPortable')]
     param (
         # Path to download and extract PowerShell to

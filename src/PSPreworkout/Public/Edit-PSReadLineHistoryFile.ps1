@@ -17,7 +17,7 @@ function Edit-PSReadLineHistoryFile {
         Idea: History search with a TUI? This may already be done by the PowerShell Run module.
     #>
 
-    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
+    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout')]
     [Alias('Edit-HistoryFile')]
     param (
 

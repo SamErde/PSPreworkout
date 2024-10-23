@@ -18,7 +18,7 @@ function Install-CommandNotFoundUtility {
         May not work with PowerShell installed from MSIX or the Microsoft Store: <https://github.com/microsoft/PowerToys/issues/30818>
     #>
 
-    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
+    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout')]
 
     param (
 
