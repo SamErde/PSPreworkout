@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [1.4.6] - 2024-10-22
 
-### Changes
+### Added
 
 - Add updatable and online [external] help.
 
