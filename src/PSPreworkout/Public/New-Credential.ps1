@@ -9,7 +9,7 @@ function New-Credential {
     .EXAMPLE
     $Credential = New-Credential
     #>
-    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout')]
+    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/New-Credential')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'OK')]
     param ()
     Write-Output 'Create a Credential'

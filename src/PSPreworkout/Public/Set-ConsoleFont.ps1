@@ -14,7 +14,7 @@ function Set-ConsoleFont {
     .EXAMPLE
     Set-ConsoleFont -Font 'FiraCode Nerd Font'
 #>
-    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout')]
+    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Set-ConsoleFont')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'Agument completers are weird.')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '')]

@@ -1,4 +1,4 @@
-﻿function Show-WithoutEmptyProperty {
+function Show-WithoutEmptyProperty {
     <#
     .SYNOPSIS
     Show an object without its empty properties.
@@ -49,7 +49,7 @@
         https://www.linkedin.com/in/jefferyhicks/
         https://twitter.com/JeffHicks
     #>
-    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout')]
+    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Show-WithoutEmptyProperty')]
     [OutputType('PSCustomObject')]
     param (
         # The object to show without empty properties

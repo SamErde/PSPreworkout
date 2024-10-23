@@ -27,7 +27,10 @@ function Update-AllTheThings {
     Updates all of the things it can!
     #>
 
-    [CmdletBinding(SupportsShouldProcess)]
+    [CmdletBinding(
+        SupportsShouldProcess,
+        HelpUri = 'https://day3bits.com/PSPreworkout/Update-AllTheThings'
+    )]
     [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', 'Update-AllTheThings', Justification = 'This is what we do.')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '', Justification = 'Interactive Use')]
     [Alias('uatt')]
