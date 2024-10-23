@@ -1,4 +1,4 @@
-function Show-WithoutEmptyProperty {
+﻿function Show-WithoutEmptyProperty {
     <#
     .SYNOPSIS
     Show an object without its empty properties.

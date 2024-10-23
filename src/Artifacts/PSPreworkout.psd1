@@ -4,7 +4,7 @@
     RootModule           = 'PSPreworkout.psm1'
 
     # Version number of this module.
-    ModuleVersion        = '1.4.6'
+    ModuleVersion        = '1.4.7'
 
     # Supported PSEditions = @('Desktop', 'Core')
     CompatiblePSEditions = @('Core', 'Desktop')
@@ -82,7 +82,7 @@
         PSData = @{
 
             # Tags applied to this module. These help with module discovery in online galleries.
-            Tags         = 'PowerShell', 'Utility', 'Tools', 'Windows', 'Linux', 'macOS'
+            Tags         = 'PowerShell', 'Utilities', 'Tools', 'Windows', 'Linux', 'macOS'
 
             # A URL to the license for this module.
             LicenseUri   = 'https://github.com/SamErde/PSPreworkout/blob/main/LICENSE'
@@ -94,7 +94,7 @@
             IconUri      = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/media/PSPreworkout-Animated-Logo-170.png'
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'Added external help that is updatable and available online.'
+            ReleaseNotes = 'Add function-specific URLs for online help.'
 
             # Prerelease string of this module
             # Prerelease = ''
