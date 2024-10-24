@@ -5,6 +5,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 &nbsp;
 
+## [1.4.8] - 2024-10-24
+
+### Fixed
+
+- Fixed Windows/Linux detection in `Update-AllTheThings`.
+
+&nbsp;
+
 ## [1.4.7] - 2024-10-23
 
 ### Changed
@@ -181,6 +189,7 @@ Full changelog: [v1.3.1...v1.4.0](https://github.com/SamErde/PSPreworkout/compar
 _Initial release._
 
 [Unreleased]: https://github.com/SamErde/PSPreworkout/compare/v1.2.2...HEAD
+[1.4.8]: https://github.com/SamErde/PSPreworkout/tag/v1.4.8
 [1.4.7]: https://github.com/SamErde/PSPreworkout/tag/v1.4.7
 [1.4.6]: https://github.com/SamErde/PSPreworkout/tag/v1.4.6
 [1.4.3]: https://github.com/SamErde/PSPreworkout/tag/v1.4.3
