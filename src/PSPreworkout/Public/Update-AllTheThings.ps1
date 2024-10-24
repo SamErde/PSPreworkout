@@ -198,7 +198,7 @@ function Update-AllTheThings {
 
         #region UpdateWinget
         # >>> Create a section to check OS and client/server OS at the top of the script <<< #
-        if ($IsWindows -or ($PSVersionTable.PSVersion -ge [version]'5.1')) {
+        if ($IsWindows -or ($PSVersionTable.PSVersion -le [version]'5.1')) {
 
             if ((Get-CimInstance -ClassName CIM_OperatingSystem).Caption -match 'Server') {
                 # If on Windows Server, prompt to continue before automatically updating packages.
