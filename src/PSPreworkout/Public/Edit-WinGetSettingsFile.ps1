@@ -11,40 +11,33 @@ function Edit-WingetSettingsFile {
 
     .NOTES
     Author: Sam Erde
-    Version: 0.0.2
+    Version: 0.1.0
     Modified: 2024/10/12
 
     #>
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Edit-WinGetSettingsFile')]
     param (
-        # Specify the path to the editor that you would like to use.
-        [Parameter()]
-        [ValidateScript({
-                if ( -not (Test-Path -Path $_ ) ) {
-                    throw 'The file does not exist.'
-                }
-                return $true
-            })]
-        [System.IO.FileInfo]
-        $EditorPath
+        # To Do: Add parameters to choose an editor
     )
 
     begin {
         $WinGetSettingsFile = "$env:LOCALAPPDATA\Packages\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe\LocalState\settings.json"
         if (-not (Test-Path -PathType Leaf -Path $WinGetSettingsFile)) {
-            # Exit the function if the WinGet settings file does not exist.
-            Write-Information -MessageData 'WinGet is not installed.' -InformationAction Continue
-            return
+            Write-Information -MessageData 'No WinGet configuration file found. Creating a new one.' -InformationAction Continue
         }
     } # end begin block
 
     process {
-        if ($PSBoundParameters.ContainsKey($EditorPath)) {
-            Start-Process $EditorPath $WinGetSettingsFile
-        } elseif ( (Get-Command code -ErrorAction SilentlyContinue) ) {
+        if ( (Get-Command code -ErrorAction SilentlyContinue) ) {
             code $WinGetSettingsFile
+        } elseif ( (Get-Command notepad -ErrorAction SilentlyContinue) ) {
+            notepad $WinGetSettingsFile
+        } elseif ((Get-AppxPackage -Name 'Microsoft.WindowsNotepad' -ErrorAction SilentlyContinue)) {
+            Start-Process "shell:AppsFolder\$(Get-StartApps -Name 'Notepad' | Select-Object -ExpandProperty AppId)" $WinGetSettingsFile
+        } elseif (Get-Command 'powershell_ise.exe' -ErrorAction SilentlyContinue) {
+            powershell_ise $WinGetSettingsFile
         } else {
-            Start-Process notepad $WinGetSettingsFile
+            Write-Warning -Message 'No editors were found. You might want to install Visual Studio Code, Notepad, or Notepad++.'
         }
     } # end process block
 
