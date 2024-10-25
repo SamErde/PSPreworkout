@@ -256,6 +256,10 @@ function Update-AllTheThings {
                 sudo apt update
                 sudo apt upgrade
             }
+            if (Get-Command apt -ErrorAction SilentlyContinue) {
+                Write-Host '[5] Updating dnf packages.'
+                sudo apt dnf
+            }
         } else {
             Write-Verbose '[5] Not Linux. Skipping section.'
         }
