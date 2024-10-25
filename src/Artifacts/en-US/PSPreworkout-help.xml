@@ -52,39 +52,14 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Edit-WingetSettingsFile</maml:name>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
-          <maml:name>EditorPath</maml:name>
-          <maml:Description>
-            <maml:para>Specify the path to the editor that you would like to use.</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">FileInfo</command:parameterValue>
-          <dev:type>
-            <maml:name>FileInfo</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
-    <command:parameters>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
-        <maml:name>EditorPath</maml:name>
-        <maml:Description>
-          <maml:para>Specify the path to the editor that you would like to use.</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">FileInfo</command:parameterValue>
-        <dev:type>
-          <maml:name>FileInfo</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-    </command:parameters>
+    <command:parameters />
     <command:inputTypes />
     <command:returnValues />
     <maml:alertSet>
       <maml:alert>
-        <maml:para>Author: Sam Erde Version: 0.0.2 Modified: 2024/10/12</maml:para>
+        <maml:para>Author: Sam Erde Version: 0.1.0 Modified: 2024/10/12</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>

@@ -4,7 +4,7 @@
     RootModule           = 'PSPreworkout.psm1'
 
     # Version number of this module.
-    ModuleVersion        = '1.4.8'
+    ModuleVersion        = '1.4.9'
 
     # Supported PSEditions = @('Desktop', 'Core')
     CompatiblePSEditions = @('Core', 'Desktop')
@@ -94,7 +94,7 @@
             IconUri      = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/media/PSPreworkout-Animated-Logo-170.png'
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'Fix Windows/Linux detection in Update-AllTheThings.'
+            ReleaseNotes = 'Fix Windows/Linux detection in Update-AllTheThings. Fix bug in Edit-WinGetSettingsFile. Add DNF support in Linux.'
 
             # Prerelease string of this module
             # Prerelease = ''
