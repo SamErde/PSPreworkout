@@ -73,7 +73,7 @@ function Update-AllTheThings {
 /_  __/ /  ___   /_  __/ /  (_)__  ___ ____
  / / / _ \/ -_)   / / / _ \/ / _ \/ _ `(_-<
 /_/ /_//_/\__/   /_/ /_//_/_/_//_/\_, /___/
-                                 /___/ v0.5.8
+                                 /___/ v0.5.9
 
 "@
         Write-Host $Banner
@@ -256,9 +256,9 @@ function Update-AllTheThings {
                 sudo apt update
                 sudo apt upgrade
             }
-            if (Get-Command apt -ErrorAction SilentlyContinue) {
+            if (Get-Command dnf -ErrorAction SilentlyContinue) {
                 Write-Host '[5] Updating dnf packages.'
-                sudo apt dnf
+                sudo update
             }
         } else {
             Write-Verbose '[5] Not Linux. Skipping section.'
