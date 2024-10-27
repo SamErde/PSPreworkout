@@ -103,7 +103,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>Target</maml:name>
           <maml:Description>
-            <maml:para>The target of the environment variable to retrieve. Defaults to User. (Process, User, or Machine)</maml:para>
+            <maml:para>The target (Process, Machine, User) to pull environment variables from. The default is process.</maml:para>
           </maml:Description>
           <command:parameterValueGroup>
             <command:parameterValue required="false" command:variableLength="false">Process</command:parameterValue>
@@ -115,12 +115,32 @@
             <maml:name>EnvironmentVariableTarget</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>User</dev:defaultValue>
+          <dev:defaultValue>Process</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Get-EnvironmentVariable</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+          <maml:name>Target</maml:name>
+          <maml:Description>
+            <maml:para>The target (Process, Machine, User) to pull environment variables from. The default is process.</maml:para>
+          </maml:Description>
+          <command:parameterValueGroup>
+            <command:parameterValue required="false" command:variableLength="false">Process</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">User</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">Machine</command:parameterValue>
+          </command:parameterValueGroup>
+          <command:parameterValue required="true" variableLength="false">EnvironmentVariableTarget</command:parameterValue>
+          <dev:type>
+            <maml:name>EnvironmentVariableTarget</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>Process</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>All</maml:name>
           <maml:Description>
-            <maml:para>Switch to show environment variables in all target scopes.</maml:para>
+            <maml:para>Optionally get all environment variables from all targets. Process ID and process name will be included for process environment variables.</maml:para>
           </maml:Description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -146,19 +166,19 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>Target</maml:name>
         <maml:Description>
-          <maml:para>The target of the environment variable to retrieve. Defaults to User. (Process, User, or Machine)</maml:para>
+          <maml:para>The target (Process, Machine, User) to pull environment variables from. The default is process.</maml:para>
         </maml:Description>
         <command:parameterValue required="true" variableLength="false">EnvironmentVariableTarget</command:parameterValue>
         <dev:type>
           <maml:name>EnvironmentVariableTarget</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>User</dev:defaultValue>
+        <dev:defaultValue>Process</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>All</maml:name>
         <maml:Description>
-          <maml:para>Switch to show environment variables in all target scopes.</maml:para>
+          <maml:para>Optionally get all environment variables from all targets. Process ID and process name will be included for process environment variables.</maml:para>
         </maml:Description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -172,7 +192,7 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.String</maml:name>
+          <maml:name>PSObject</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -181,7 +201,9 @@
     </command:returnValues>
     <maml:alertSet>
       <maml:alert>
-        <maml:para>Author: Sam Erde Version: 0.0.2 Modified: 2024/10/12</maml:para>
+        <maml:para>Author: Sam Erde Version: 0.1.0 Modified: 2024/10/26</maml:para>
+        <maml:para>To Do: Get the specified variable name from all targets if a name and -All are specified.</maml:para>
+        <maml:para>---</maml:para>
         <maml:para>Variable names are case-sensitive on Linux and macOS, but not on Windows.</maml:para>
         <maml:para>Why is 'Target' used by .NET instead of the familiar 'Scope' parameter name? @IISResetMe (Mathias R. Jessen) explains: "Scope" would imply some sort of integrated hierarchy of env variables - that's not really the case. Target=Process translates to kernel32!GetEnvironmentVariable (which then in turn reads the PEB from the calling process), whereas Target={User,Machine} causes a registry lookup against environment data in either HKCU or HKLM.</maml:para>
         <maml:para>The relevant sources for the User and Machine targets are in the registry at: - HKEY_CURRENT_USER\Environment</maml:para>
@@ -193,8 +215,16 @@
     <command:examples>
       <command:example>
         <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
-        <dev:code>Get-EnvironmentVariable -Name "PATH"
-Retrieves the value of the "PATH" environment variable.</dev:code>
+        <dev:code>Get-EnvironmentVariable -Name 'UserName'
+Retrieves the value of the "UserName" environment variable from the process target.</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 2 --------------------------</maml:title>
+        <dev:code>Get-EnvironmentVariable -Name 'Path' -Target 'Machine'
+Retrieves the value of the PATH environment variable from the machine target.</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
