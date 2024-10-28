@@ -116,8 +116,6 @@
             <maml:uri />
           </dev:type>
           <dev:defaultValue>Process</dev:defaultValue>
-<<<<<<< HEAD
-=======
         </command:parameter>
       </command:syntaxItem>
       <command:syntaxItem>
@@ -138,7 +136,6 @@
             <maml:uri />
           </dev:type>
           <dev:defaultValue>Process</dev:defaultValue>
->>>>>>> origin/main
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>All</maml:name>
