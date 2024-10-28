@@ -12,7 +12,7 @@ function Edit-PSReadLineHistoryFile {
 .EXTERNALHELP PSPreworkout-help.xml
 #>
 
-    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
+    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Edit-PSReadLineHistoryFile')]
     [Alias('Edit-HistoryFile')]
     param (
 
@@ -70,36 +70,29 @@ function Edit-WingetSettingsFile {
     <#
 .EXTERNALHELP PSPreworkout-help.xml
 #>
-    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
+    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Edit-WinGetSettingsFile')]
     param (
-        # Specify the path to the editor that you would like to use.
-        [Parameter()]
-        [ValidateScript({
-                if ( -not (Test-Path -Path $_ ) ) {
-                    throw 'The file does not exist.'
-                }
-                return $true
-            })]
-        [System.IO.FileInfo]
-        $EditorPath
+        # To Do: Add parameters to choose an editor
     )
 
     begin {
         $WinGetSettingsFile = "$env:LOCALAPPDATA\Packages\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe\LocalState\settings.json"
         if (-not (Test-Path -PathType Leaf -Path $WinGetSettingsFile)) {
-            # Exit the function if the WinGet settings file does not exist.
-            Write-Information -MessageData 'WinGet is not installed.' -InformationAction Continue
-            return
+            Write-Information -MessageData 'No WinGet configuration file found. Creating a new one.' -InformationAction Continue
         }
     } # end begin block
 
     process {
-        if ($PSBoundParameters.ContainsKey($EditorPath)) {
-            Start-Process $EditorPath $WinGetSettingsFile
-        } elseif ( (Get-Command code -ErrorAction SilentlyContinue) ) {
+        if ( (Get-Command code -ErrorAction SilentlyContinue) ) {
             code $WinGetSettingsFile
+        } elseif ( (Get-Command notepad -ErrorAction SilentlyContinue) ) {
+            notepad $WinGetSettingsFile
+        } elseif ((Get-AppxPackage -Name 'Microsoft.WindowsNotepad' -ErrorAction SilentlyContinue)) {
+            Start-Process "shell:AppsFolder\$(Get-StartApps -Name 'Notepad' | Select-Object -ExpandProperty AppId)" $WinGetSettingsFile
+        } elseif (Get-Command 'powershell_ise.exe' -ErrorAction SilentlyContinue) {
+            powershell_ise $WinGetSettingsFile
         } else {
-            Start-Process notepad $WinGetSettingsFile
+            Write-Warning -Message 'No editors were found. You might want to install Visual Studio Code, Notepad, or Notepad++.'
         }
     } # end process block
 
@@ -115,46 +108,53 @@ function Get-EnvironmentVariable {
 .EXTERNALHELP PSPreworkout-help.xml
 #>
     [Alias('gev')]
-    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
-    [OutputType('System.String')]
+    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Get-EnvironmentVariable')]
+    [OutputType('PSObject')]
     param (
         # The name of the environment variable to retrieve. If not specified, all environment variables are returned.
-        [Parameter(Position = 0)]
+        [Parameter(Position = 0, ParameterSetName = 'Named')]
         [string]$Name,
 
-        # The target of the environment variable to retrieve. Defaults to User. (Process, User, or Machine)
+        # The target of the environment variable to retrieve. Defaults to Process. (Process, User, or Machine)
         [Parameter(Position = 1)]
         [System.EnvironmentVariableTarget]
         $Target = [System.EnvironmentVariableTarget]::Process,
 
         # Switch to show environment variables in all target scopes.
-        [Parameter()]
+        [Parameter(ParameterSetName = 'All')]
         [switch]
         $All
     )
 
     # If a variable name was specified, get that environment variable from the default target or specified target.
-    if ( $PSBoundParameters.Keys.Contains('Name') ) {
+    if ( $PSBoundParameters.ContainsKey('Name') ) {
         [Environment]::GetEnvironmentVariable($Name, $Target)
-    } elseif (-not $PSBoundParameters.Keys.Contains('All') ) {
-        [Environment]::GetEnvironmentVariables()
     }
 
     # If only the target is specified, get all environment variables from that target.
-    if ( $PSBoundParameters.Keys.Contains('Target') -and -not $PSBoundParameters.ContainsKey('Name') ) {
+    if ( $PSBoundParameters.ContainsKey('Target') -and -not $PSBoundParameters.ContainsKey('Name') ) {
         [System.Environment]::GetEnvironmentVariables([System.EnvironmentVariableTarget]::$Target)
     }
 
     # Get all environment variables from all targets.
-    # To Do: Get the specified variable name from all targets if a name and -All are specified.
     if ($All) {
-        Write-Output 'Process Environment Variables:'
-        [Environment]::GetEnvironmentVariables([System.EnvironmentVariableTarget]::Process)
-        Write-Output 'User Environment Variables:'
-        [Environment]::GetEnvironmentVariables([System.EnvironmentVariableTarget]::User)
-        Write-Output 'Machine Environment Variables:'
-        [Environment]::GetEnvironmentVariables([System.EnvironmentVariableTarget]::Machine)
+        [System.Collections.Generic.List[PSObject]]$AllEnvironmentVariables = @()
+
+        foreach ($target in @('Process', 'User', 'Machine')) {
+            foreach ($ev in ([Environment]::GetEnvironmentVariables([System.EnvironmentVariableTarget]::$target)).GetEnumerator()) {
+                $EnvironmentVariable = [ordered]@{
+                    Name        = $ev.Name
+                    Value       = $ev.Value
+                    Target      = $target
+                    PID         = if ($target -eq 'Process') { $PID } else { $null }
+                    ProcessName = if ($target -eq 'Process') { (Get-Process -Id $PID).Name } else { $null }
+                }
+                $item = New-Object -TypeName psobject -Property $EnvironmentVariable
+                $AllEnvironmentVariables.Add($item)
+            }
+        }
     }
+    $AllEnvironmentVariables
 }
 
 
@@ -163,7 +163,7 @@ function Get-LoadedAssembly {
     <#
 .EXTERNALHELP PSPreworkout-help.xml
 #>
-    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
+    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Get-LoadedAssembly')]
     [OutputType('System.Array')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'But this is better.')]
     [Alias('Get-Assembly')]
@@ -179,7 +179,7 @@ function Get-PowerShellPortable {
 .EXTERNALHELP PSPreworkout-help.xml
 #>
 
-    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
+    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Get-PowerShellPortable')]
     [Alias('Get-PSPortable')]
     param (
         # Path to download and extract PowerShell to
@@ -314,7 +314,7 @@ function Get-TypeAccelerator {
     <#
 .EXTERNALHELP PSPreworkout-help.xml
 #>
-    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
+    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Get-TypeAccelerator')]
     [OutputType('System.Array')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'Fighting with VS Code autoformatting.')]
     param (
@@ -369,7 +369,7 @@ function Initialize-PSEnvironmentConfiguration {
 .EXTERNALHELP PSPreworkout-help.xml
 #>
 
-    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
+    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Initialize-PSEnvironmentConfiguration')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'Agument completers are weird.')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidGlobalVars', '', Justification = 'PSReadLine Handler')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
@@ -563,7 +563,7 @@ function Install-CommandNotFoundUtility {
 .EXTERNALHELP PSPreworkout-help.xml
 #>
 
-    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
+    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Install-CommandNotFoundUtility')]
 
     param (
 
@@ -602,7 +602,7 @@ function Install-OhMyPosh {
     <#
 .EXTERNALHELP PSPreworkout-help.xml
 #>
-    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
+    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Install-OhMyPosh')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingInvokeExpression', '', Justification = 'Invoke-Expression is used for online OMP installer.')]
     param (
         [Parameter()]
@@ -711,7 +711,7 @@ function Install-PowerShellISE {
 .EXTERNALHELP PSPreworkout-help.xml
 #>
 
-    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
+    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Install-PowerShellISE')]
     param ()
 
     if ((Get-WindowsCapability -Name 'Microsoft.Windows.PowerShell.ISE~~~~0.0.1.0' -Online).State -eq 'Installed') {
@@ -740,7 +740,7 @@ function Install-WinGet {
 .EXTERNALHELP PSPreworkout-help.xml
 #>
 
-    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
+    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Install-WinGet')]
     param (
 
         # Path to download the packages to (directory must already exist)
@@ -813,7 +813,7 @@ function New-Credential {
     <#
 .EXTERNALHELP PSPreworkout-help.xml
 #>
-    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
+    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/New-Credential')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'OK')]
     param ()
     Write-Output 'Create a Credential'
@@ -876,7 +876,7 @@ function Out-JsonFile {
     <#
 .EXTERNALHELP PSPreworkout-help.xml
 #>
-    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
+    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Out-JsonFile')]
     param (
         # Object to convert to JSON and save it to a file.
         [Parameter(Mandatory, ValueFromPipeline, Position = 0)]
@@ -943,7 +943,7 @@ function Set-ConsoleFont {
     <#
 .EXTERNALHELP PSPreworkout-help.xml
 #>
-    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
+    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Set-ConsoleFont')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'Agument completers are weird.')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '')]
@@ -996,7 +996,7 @@ function Set-EnvironmentVariable {
 .EXTERNALHELP PSPreworkout-help.xml
 #>
     [Alias('sev')]
-    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
+    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Set-EnvironmentVariable')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'OK')]
     param (
         # The name of the environment variable to set.
@@ -1033,7 +1033,7 @@ function Show-LoadedAssembly {
     <#
 .EXTERNALHELP PSPreworkout-help.xml
 #>
-    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
+    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Show-LoadedAssembly')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'But this is better.')]
     # [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '', Justification = 'There is a lot of them.')]
     [Alias('Show-LoadedAssemblies')]
@@ -1078,7 +1078,7 @@ function Show-WithoutEmptyProperty {
     <#
 .EXTERNALHELP PSPreworkout-help.xml
 #>
-    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
+    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Show-WithoutEmptyProperty')]
     [OutputType('PSCustomObject')]
     param (
         # The object to show without empty properties
@@ -1115,7 +1115,7 @@ function Test-IsElevated {
     <#
 .EXTERNALHELP PSPreworkout-help.xml
 #>
-    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
+    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Test-IsElevated')]
     [Alias('isadmin', 'isroot')]
     param ()
 
@@ -1135,7 +1135,10 @@ function Update-AllTheThings {
 .EXTERNALHELP PSPreworkout-help.xml
 #>
 
-    [CmdletBinding(SupportsShouldProcess)]
+    [CmdletBinding(
+        SupportsShouldProcess,
+        HelpUri = 'https://day3bits.com/PSPreworkout/Update-AllTheThings'
+    )]
     [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', 'Update-AllTheThings', Justification = 'This is what we do.')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '', Justification = 'Interactive Use')]
     [Alias('uatt')]
@@ -1178,7 +1181,7 @@ function Update-AllTheThings {
 /_  __/ /  ___   /_  __/ /  (_)__  ___ ____
  / / / _ \/ -_)   / / / _ \/ / _ \/ _ `(_-<
 /_/ /_//_/\__/   /_/ /_//_/_/_//_/\_, /___/
-                                 /___/ v0.5.8
+                                 /___/ v0.5.9
 
 "@
         Write-Host $Banner
@@ -1303,7 +1306,7 @@ function Update-AllTheThings {
 
         #region UpdateWinget
         # >>> Create a section to check OS and client/server OS at the top of the script <<< #
-        if ($IsWindows -or ($PSVersionTable.PSVersion -ge [version]'5.1')) {
+        if ($IsWindows -or ($PSVersionTable.PSVersion -le [version]'5.1')) {
 
             if ((Get-CimInstance -ClassName CIM_OperatingSystem).Caption -match 'Server') {
                 # If on Windows Server, prompt to continue before automatically updating packages.
@@ -1360,6 +1363,10 @@ function Update-AllTheThings {
                 Write-Host '[5] Updating apt packages.'
                 sudo apt update
                 sudo apt upgrade
+            }
+            if (Get-Command dnf -ErrorAction SilentlyContinue) {
+                Write-Host '[5] Updating dnf packages.'
+                sudo update
             }
         } else {
             Write-Verbose '[5] Not Linux. Skipping section.'

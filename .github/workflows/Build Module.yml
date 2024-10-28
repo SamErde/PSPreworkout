@@ -14,13 +14,14 @@ on:
       - 'docs/**'
       - 'src/Drafts/**'
   push:
-    #paths:
-    #  - 'src/**'
-    #  - '.github/workflows/Build Module.yml'
-    paths-ignore:
-      - '**.md'
-      - 'docs/**'
-      - 'src/Drafts/**'
+    paths:
+      - 'src/PSPreworkout/**'
+    #paths-ignore:
+    #  - '**.md'
+    #  - 'docs/**'
+    #  - 'src/Drafts/**'
+  workflow_dispatch:
+
 jobs:
   test:
     name: 🧪 Run Tests
@@ -37,9 +38,9 @@ jobs:
       shell: pwsh
       run: $PSVersionTable
     # uncomment below to explore what modules/variables/env variables are available in the build image
-    # - name: Modules and Variables Display
-    #   shell: pwsh
-    #   run: Get-Module -ListAvailable; (Get-Variable).GetEnumerator() | Sort-Object Name | Out-String; (Get-ChildItem env:*).GetEnumerator() | Sort-Object Name | Out-String
+    - name: 📦 Modules and Variables Display
+      shell: pwsh
+      run: Get-Module -ListAvailable; (Get-Variable).GetEnumerator() | Sort-Object Name | Out-String; (Get-ChildItem env:*).GetEnumerator() | Sort-Object Name | Out-String
     - name: 🥾 Bootstrap
       shell: pwsh
       run: ./actions_bootstrap.ps1

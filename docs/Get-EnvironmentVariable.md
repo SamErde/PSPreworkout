@@ -12,8 +12,15 @@ Retrieves the value of an environment variable.
 
 ## SYNTAX
 
+### Named
 ```
-Get-EnvironmentVariable [[-Name] <String>] [[-Target] <EnvironmentVariableTarget>] [-All]
+Get-EnvironmentVariable [[-Name] <String>] [[-Target] <EnvironmentVariableTarget>]
+ [<CommonParameters>]
+```
+
+### All
+```
+Get-EnvironmentVariable [[-Target] <EnvironmentVariableTarget>] [-All]
  [<CommonParameters>]
 ```
 
@@ -25,8 +32,14 @@ or displays all environment variables.
 
 ### EXAMPLE 1
 ```
-Get-EnvironmentVariable -Name "PATH"
-Retrieves the value of the "PATH" environment variable.
+Get-EnvironmentVariable -Name 'UserName'
+Retrieves the value of the "UserName" environment variable from the process target.
+```
+
+### EXAMPLE 2
+```
+Get-EnvironmentVariable -Name 'Path' -Target 'Machine'
+Retrieves the value of the PATH environment variable from the machine target.
 ```
 
 ## PARAMETERS
@@ -36,7 +49,7 @@ The name of the environment variable to retrieve.
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: Named
 Aliases:
 
 Required: False
@@ -47,9 +60,8 @@ Accept wildcard characters: False
 ```
 
 ### -Target
-The target of the environment variable to retrieve.
-Defaults to User.
-(Process, User, or Machine)
+The target (Process, Machine, User) to pull environment variables from.
+The default is process.
 
 ```yaml
 Type: EnvironmentVariableTarget
@@ -65,11 +77,12 @@ Accept wildcard characters: False
 ```
 
 ### -All
-Switch to show environment variables in all target scopes.
+Optionally get all environment variables from all targets.
+Process ID and process name will be included for process environment variables.
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: (All)
+Parameter Sets: All
 Aliases:
 
 Required: False
@@ -87,11 +100,15 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 
 ## OUTPUTS
 
-### System.String
+### PSObject
 ## NOTES
 Author: Sam Erde
-Version: 0.0.2
-Modified: 2024/10/12
+Version: 0.1.0
+Modified: 2024/10/26
+
+To Do: Get the specified variable name from all targets if a name and -All are specified.
+
+---
 
 Variable names are case-sensitive on Linux and macOS, but not on Windows.
 
