@@ -4,10 +4,11 @@ on:
   push:
     branches:
       - main  # The branch you want to deploy from
-    #paths:  # Only deploy MkDocs when the contents of the docs folder change or when this workflow changes.
-      #- 'docs/**'
-      #- '.github/workflows/Deploy MkDocs.yml'
-      #- './mkdocs.yml'
+    paths:  # Only deploy MkDocs when the contents of the docs folder change or when this workflow changes.
+      - 'docs/**'
+      - '.github/workflows/Deploy MkDocs.yml'
+      - './mkdocs.yml'
+    workflow_dispatch:
 
 jobs:
   build:
@@ -32,6 +33,7 @@ jobs:
           mkdocs build
           mkdocs gh-deploy --force
 
+      # Combine markdown files to create the MkDocs index and the repository readme
       - name: 📖 Update Index & Readme
         shell: pwsh
         run: |

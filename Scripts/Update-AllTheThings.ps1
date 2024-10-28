@@ -23,7 +23,7 @@ function Test-IsElevated {
     .OUTPUTS
     Boolean
     #>
-    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
+    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout')]
     [Alias('isadmin', 'isroot')]
     param ()
 
@@ -107,7 +107,7 @@ function Update-AllTheThings {
 /_  __/ /  ___   /_  __/ /  (_)__  ___ ____
  / / / _ \/ -_)   / / / _ \/ / _ \/ _ `(_-<
 /_/ /_//_/\__/   /_/ /_//_/_/_//_/\_, /___/
-                                 /___/ 0.5.8
+                                 /___/ 0.5.9
 
 "@
         Write-Host $Banner
@@ -232,7 +232,7 @@ function Update-AllTheThings {
 
         #region UpdateWinget
         # >>> Create a section to check OS and client/server OS at the top of the script <<< #
-        if ($IsWindows -or ($PSVersionTable.PSVersion -ge [version]'5.1')) {
+        if ($IsWindows -or ($PSVersionTable.PSVersion -le [version]'5.1')) {
 
             if ((Get-CimInstance -ClassName CIM_OperatingSystem).Caption -match 'Server') {
                 # If on Windows Server, prompt to continue before automatically updating packages.
@@ -289,6 +289,10 @@ function Update-AllTheThings {
                 Write-Host '[5] Updating apt packages.'
                 sudo apt update
                 sudo apt upgrade
+            }
+            if (Get-Command dnf -ErrorAction SilentlyContinue) {
+                Write-Host '[5] Updating dnf packages.'
+                sudo update
             }
         } else {
             Write-Verbose '[5] Not Linux. Skipping section.'

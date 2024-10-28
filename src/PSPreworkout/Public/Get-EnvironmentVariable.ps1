@@ -10,14 +10,26 @@ function Get-EnvironmentVariable {
     .PARAMETER Name
     The name of the environment variable to retrieve.
 
+    .PARAMETER Target
+    The target (Process, Machine, User) to pull environment variables from. The default is process.
+
+    .PARAMETER All
+    Optionally get all environment variables from all targets. Process ID and process name will be included for process environment variables.
+
     .EXAMPLE
-    Get-EnvironmentVariable -Name "PATH"
-    Retrieves the value of the "PATH" environment variable.
+    Get-EnvironmentVariable -Name 'UserName'
+    Retrieves the value of the "UserName" environment variable from the process target.
+
+    .EXAMPLE
+    Get-EnvironmentVariable -Name 'Path' -Target 'Machine'
+    Retrieves the value of the PATH environment variable from the machine target.
 
     .NOTES
     Author: Sam Erde
     Version: 0.1.0
-    Modified: 2024/10/22
+    Modified: 2024/10/27
+
+    To Do: Get the specified variable name from all targets if a name and -All are specified.
 
     Variable names are case-sensitive on Linux and macOS, but not on Windows.
 
@@ -35,8 +47,8 @@ function Get-EnvironmentVariable {
 
     #>
     [Alias('gev')]
-    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
-    [OutputType('System.String')]
+    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Get-EnvironmentVariable')]
+    [OutputType('PSObject')]
     param (
         # The name of the environment variable to retrieve. If not specified, all environment variables are returned.
         [Parameter(Position = 0, ParameterSetName = 'LookupByName')]
@@ -47,9 +59,9 @@ function Get-EnvironmentVariable {
         [string]
         $Pattern,
 
-        # The target of the environment variable to retrieve. Defaults to User. (Process, User, or Machine)
-        [Parameter(Position = 1)]
-        [System.EnvironmentVariableTarget]
+        # The target of the environment variable to retrieve. Defaults to Process. (Process, User, or Machine)
+        [Parameter(Position = 1, ParameterSetName = 'LookupByName', 'LookupByRegexPattern', 'LookupByTarget')]
+        [System.EnvironmentVariableTarget[]]
         $Target = [System.EnvironmentVariableTarget]::Process,
 
         # Switch to show environment variables in all target scopes.
@@ -58,32 +70,40 @@ function Get-EnvironmentVariable {
         $All
     )
 
-    # If a variable name was specified, get that environment variable from the default target or specified target.
-    if ( $PSBoundParameters.ContainsKey('Name') ) {
-        [Environment]::GetEnvironmentVariable($Name, $Target)
+    begin {
+        if ($PSBoundParameters.ContainsKey('All')) {
+            $Targets = @('Process', 'User', 'Machine')
+        }
+
+        [System.Collections.Generic.List[PSObject]]$EnvironmentVariables = @()
     }
 
-    if ( $PSBoundParameters.ContainsKey('Pattern') ) {
-        [Environment]::GetEnvironmentVariables($Target).GetEnumerator() | Where-Object { $_.Key -match $pattern }
+    process {
+        # If a variable name was specified, get that environment variable from the default target or specified target.
+        if ( $PSBoundParameters.ContainsKey('Name') ) {
+            [Environment]::GetEnvironmentVariable($Name, $Target)
+        } elseif ( $PSBoundParameters.ContainsKey('Pattern') ) {
+            # need foreach if multiple targets specified
+            [Environment]::GetEnvironmentVariables($Target).GetEnumerator() | Where-Object { $_.Key -match $pattern }
+        } else {
+            # If only the target is specified, get all environment variables from that target (or targets).
+            foreach ($target in $Targets) {
+                foreach ($ev in ([Environment]::GetEnvironmentVariables([System.EnvironmentVariableTarget]::$target)).GetEnumerator()) {
+                    $ThisEnvironmentVariable = [ordered]@{
+                        Name        = $ev.Name
+                        Value       = $ev.Value
+                        Target      = $target
+                        PID         = if ($target -eq 'Process') { $PID } else { $null }
+                        ProcessName = if ($target -eq 'Process') { (Get-Process -Id $PID).Name } else { $null }
+                    }
+                    $item = New-Object -TypeName psobject -Property $ThisEnvironmentVariable
+                    $EnvironmentVariables.Add($item)
+                }
+            }
+        }
     }
 
-} if ($PSBoundParameters.ContainsKey('All') -and -not $PSBoundParameters.ContainsKey('Pattern') ) {
-    [Environment]::GetEnvironmentVariables()
-}
-
-# If only the target is specified, get all environment variables from that target.
-if ( $PSBoundParameters.ContainsKey('Target') -and -not $PSBoundParameters.ContainsKey('Name') ) {
-    [System.Environment]::GetEnvironmentVariables([System.EnvironmentVariableTarget]::$Target)
-}
-
-# Get all environment variables from all targets.
-# To Do: Get the specified variable name from all targets if a name and -All are specified.
-if ($All) {
-    Write-Output 'Process Environment Variables:'
-    [Environment]::GetEnvironmentVariables([System.EnvironmentVariableTarget]::Process)
-    Write-Output 'User Environment Variables:'
-    [Environment]::GetEnvironmentVariables([System.EnvironmentVariableTarget]::User)
-    Write-Output 'Machine Environment Variables:'
-    [Environment]::GetEnvironmentVariables([System.EnvironmentVariableTarget]::Machine)
-}
+    end {
+        $EnvironmentVariables
+    }
 }

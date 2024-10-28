@@ -27,7 +27,7 @@ function Out-JsonFile {
         Version: 0.2.0
         Modified: 2024/10/15
     #>
-    [CmdletBinding(HelpUri = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/')]
+    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Out-JsonFile')]
     param (
         # Object to convert to JSON and save it to a file.
         [Parameter(Mandatory, ValueFromPipeline, Position = 0)]

@@ -5,6 +5,46 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 &nbsp;
 
+## [1.4.9] - 2024-10-25
+
+### Fixed
+
+- Fix [#22](https://github.com/SamErde/PSPreworkout/issues/22) in `Edit-WinGetSettingsFile` by temporarily removing the **EditorPath** parameter. It will be back! (@SamErde, @JDHITSolutions)
+
+### Added
+
+- Add basic support for DNF on Linux to `Update-AllTheThings`. (@x1101)
+
+&nbsp;
+&nbsp;
+
+## [1.4.8] - 2024-10-24
+
+### Fixed
+
+- Fix [#26](https://github.com/SamErde/PSPreworkout/issues/26) Windows/Linux detection in `Update-AllTheThings`. (@x1101)
+
+&nbsp;
+&nbsp;
+
+## [1.4.7] - 2024-10-23
+
+### Changed
+
+- Fix HelpUri to open help pages to each specific function when `-Online` help is requested.
+
+&nbsp;
+&nbsp;
+
+## [1.4.6] - 2024-10-22
+
+### Added
+
+- Add updatable and online [external] help.
+
+&nbsp;
+&nbsp;
+
 ## [1.4.3] - 2024-10-16
 
 ### Fixed
@@ -13,6 +53,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 &nbsp;
 Full changelog: [v1.4.2...v1.4.3](https://github.com/SamErde/PSPreworkout/compare/v1.4.2...v1.4.3)
+&nbsp;
 &nbsp;
 
 ## [1.4.2] - 2024-10-15
@@ -25,6 +66,7 @@ Full changelog: [v1.4.2...v1.4.3](https://github.com/SamErde/PSPreworkout/compar
 &nbsp;
 Full changelog: [v1.4.1...v1.4.2](https://github.com/SamErde/PSPreworkout/compare/v1.4.1...v1.4.2)
 &nbsp;
+&nbsp;
 
 ## [1.4.1] - 2024-10-14
 
@@ -35,6 +77,7 @@ Full changelog: [v1.4.1...v1.4.2](https://github.com/SamErde/PSPreworkout/compar
 
 &nbsp;
 Full changelog: [v1.4.0...v1.4.1](https://github.com/SamErde/PSPreworkout/compare/v1.4.0...v1.4.1)
+&nbsp;
 &nbsp;
 
 ## [1.4.0] - 2024-10-14
@@ -51,6 +94,7 @@ Full changelog: [v1.4.0...v1.4.1](https://github.com/SamErde/PSPreworkout/compar
 
 &nbsp;
 Full changelog: [v1.3.1...v1.4.0](https://github.com/SamErde/PSPreworkout/compare/v1.3.1...v1.4.0)
+&nbsp;
 &nbsp;
 
 ## [1.3.1] - 2024-10-10
@@ -77,9 +121,11 @@ Full changelog: [v1.3.1...v1.4.0](https://github.com/SamErde/PSPreworkout/compar
 ## [1.2.5] - 2024-09-16
 
 ### Changed
+
 - Set ~/Downloads as the default download location for all OSes
 
 ### Fixed
+
 - Fix some minor errors in path processing
 
 &nbsp;
@@ -88,8 +134,9 @@ Full changelog: [v1.3.1...v1.4.0](https://github.com/SamErde/PSPreworkout/compar
 ## [1.2.4] - 2024-09-13
 
 ### Fixed
+
 - Fix extraction of PowerShell .tar.gz file on macOS
-- Fix/improve references to location of the extracted PowerShell files
+- Fix references to location of the extracted PowerShell files
 
 &nbsp;
 &nbsp;
@@ -105,7 +152,6 @@ Full changelog: [v1.3.1...v1.4.0](https://github.com/SamErde/PSPreworkout/compar
 &nbsp;
 &nbsp;
 
-
 ## [1.1.2] - 2024-09-12
 
 ### Changed
@@ -115,7 +161,6 @@ Full changelog: [v1.3.1...v1.4.0](https://github.com/SamErde/PSPreworkout/compar
 
 &nbsp;
 &nbsp;
-
 
 ## [1.1.0] - 2024-09-11
 
@@ -135,7 +180,6 @@ Full changelog: [v1.3.1...v1.4.0](https://github.com/SamErde/PSPreworkout/compar
 &nbsp;
 &nbsp;
 
-
 ## [0.4.1] - 2024-09-09
 
 ### Changed
@@ -144,7 +188,6 @@ Full changelog: [v1.3.1...v1.4.0](https://github.com/SamErde/PSPreworkout/compar
 
 &nbsp;
 &nbsp;
-
 
 ## [0.3.2] - 2024-09-06
 
@@ -164,7 +207,10 @@ Full changelog: [v1.3.1...v1.4.0](https://github.com/SamErde/PSPreworkout/compar
 
 _Initial release._
 
-[Unreleased]: https://github.com/SamErde/PSPreworkout/compare/v1.2.2...HEAD
+[1.4.9]: https://github.com/SamErde/PSPreworkout/tag/v1.4.9
+[1.4.8]: https://github.com/SamErde/PSPreworkout/tag/v1.4.8
+[1.4.7]: https://github.com/SamErde/PSPreworkout/tag/v1.4.7
+[1.4.6]: https://github.com/SamErde/PSPreworkout/tag/v1.4.6
 [1.4.3]: https://github.com/SamErde/PSPreworkout/tag/v1.4.3
 [1.4.2]: https://github.com/SamErde/PSPreworkout/tag/v1.4.2
 [1.4.1]: https://github.com/SamErde/PSPreworkout/tag/v1.4.1
@@ -172,7 +218,6 @@ _Initial release._
 [1.3.1]: https://github.com/SamErde/PSPreworkout/tag/v1.3.1
 [1.2.5]: https://github.com/SamErde/PSPreworkout/tag/v1.2.5
 [1.2.4]: https://github.com/SamErde/PSPreworkout/tag/v1.2.4
-[1.2.3]: https://github.com/SamErde/PSPreworkout/tag/v1.2.3
 [1.2.2]: https://github.com/SamErde/PSPreworkout/tag/v1.2.2
 [1.1.2]: https://github.com/SamErde/PSPreworkout/tag/v1.1.2
 [1.1.0]: https://github.com/SamErde/PSPreworkout/tag/v1.1.0

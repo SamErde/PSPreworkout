@@ -8,8 +8,8 @@ A special mix of tools to help jump start your PowerShell session!
 
 <!-- badges-start -->
 [![GitHub stars](https://img.shields.io/github/stars/samerde/PSPreworkout?cacheSeconds=3600)](https://github.com/samerde/PSPreworkout/stargazers/)
-![PowerShell Gallery Version](https://img.shields.io/powershellgallery/v/PSPreworkout?include_prereleases)
-![PowerShell Gallery Downloads](https://img.shields.io/powershellgallery/dt/PSPreworkout)
+[![PowerShell Gallery Version](https://img.shields.io/powershellgallery/v/PSPreworkout?include_prereleases)](https://powershellgallery.com/packages/PSPreworkout)
+[![PowerShell Gallery Downloads](https://img.shields.io/powershellgallery/dt/PSPreworkout)](https://powershellgallery.com/packages/PSPreworkout)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![GitHub contributors](https://img.shields.io/github/contributors/samerde/PSPreworkout.svg)](https://github.com/samerde/PSPreworkout/graphs/contributors/)
 
