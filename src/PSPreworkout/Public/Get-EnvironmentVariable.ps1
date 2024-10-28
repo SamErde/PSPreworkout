@@ -57,8 +57,8 @@ function Get-EnvironmentVariable {
         [string]$Name,
 
         # The target of the environment variable to retrieve. Defaults to Process. (Process, User, or Machine)
-        [Parameter(Position = 1)]
-        [System.EnvironmentVariableTarget]
+        [Parameter(Position = 1, ParameterSetName = 'Named', 'Targeted')]
+        [System.EnvironmentVariableTarget[]]
         $Target = [System.EnvironmentVariableTarget]::Process,
 
         # Switch to show environment variables in all target scopes.
@@ -70,15 +70,8 @@ function Get-EnvironmentVariable {
     # If a variable name was specified, get that environment variable from the default target or specified target.
     if ( $PSBoundParameters.ContainsKey('Name') ) {
         [Environment]::GetEnvironmentVariable($Name, $Target)
-    }
-
-    # If only the target is specified, get all environment variables from that target.
-    if ( $PSBoundParameters.ContainsKey('Target') -and -not $PSBoundParameters.ContainsKey('Name') ) {
-        [System.Environment]::GetEnvironmentVariables([System.EnvironmentVariableTarget]::$Target)
-    }
-
-    # Get all environment variables from all targets.
-    if ($All) {
+    } else {
+        # If only the target is specified, get all environment variables from that target (or targets).
         [System.Collections.Generic.List[PSObject]]$AllEnvironmentVariables = @()
 
         foreach ($target in @('Process', 'User', 'Machine')) {
