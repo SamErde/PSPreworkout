@@ -13,7 +13,7 @@ Get available type accelerators.
 ## SYNTAX
 
 ```
-Get-TypeAccelerator [[-Name] <String>] [-GridView] [<CommonParameters>]
+Get-TypeAccelerator [[-Name] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -26,6 +26,13 @@ These can be useful when trying to find or remember the different type accellera
 ```
 Get-TypeAccelerator -Name ADSI
 ```
+
+### EXAMPLE 2
+```
+Get-TypeAccelerator -Name ps*
+```
+
+Get all type accelerators that begin with the string "ps".
 
 ## PARAMETERS
 
@@ -44,21 +51,6 @@ Accept pipeline input: False
 Accept wildcard characters: True
 ```
 
-### -GridView
-Show the output in a grid view.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### CommonParameters
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -Verbose, -WarningAction, -WarningVariable, and -ProgressAction. 
 For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
@@ -70,9 +62,12 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ### System.Array
 ## NOTES
 Author: Sam Erde
-Version: 0.0.2
-Modified: 2024/10/12
+Version: 0.0.3
+Modified: 2024/10/29
 
 Thanks to Jeff Hicks (@JDHITSolutions) for helpful suggestions and improvements on this output!
+
+Change Log: Removed the grid view option to allow user flexibility in how they want to output the results.
+To Do: Add a way to filter/search the 'type' property.
 
 ## RELATED LINKS
