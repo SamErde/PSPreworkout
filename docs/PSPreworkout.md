@@ -51,7 +51,7 @@ Create a new secure credential.
 Create a new advanced function from a template.
 
 ### [Out-JsonFile](Out-JsonFile.md)
-Convert an object to JSON and write to a file.
+Convert an object to JSON and write it to a file.
 
 ### [Set-ConsoleFont](Set-ConsoleFont.md)
 Set the font for your consoles.

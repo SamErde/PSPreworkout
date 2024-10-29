@@ -8,7 +8,7 @@ schema: 2.0.0
 # Out-JsonFile
 
 ## SYNOPSIS
-Convert an object to JSON and write to a file.
+Convert an object to JSON and write it to a file.
 
 ## SYNTAX
 
@@ -48,8 +48,7 @@ Writes $TestObject as JSON to TestObject.json in the current working directory o
 ## PARAMETERS
 
 ### -Object
-Object to convert to JSON and save it to a file.
-Check for empty objects here or in the function body?
+The object to convert to JSON.
 \[ValidateScript({ if (-not \[string\]::IsNullOrWhiteSpace($_) -and -not \[string\]::IsNullOrEmpty($_)) { $true } })\]
 
 ```yaml
@@ -66,6 +65,7 @@ Accept wildcard characters: False
 
 ### -FilePath
 Full path and filename to save the JSON to.
+\[ValidatePattern('\.json$')\] # Do not require a JSON extension.
 
 ```yaml
 Type: String
@@ -89,7 +89,7 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 
 ## NOTES
 Author: Sam Erde
-Version: 0.2.0
-Modified: 2024/10/15
+Version: 0.2.1
+Modified: 2024/10/29
 
 ## RELATED LINKS
