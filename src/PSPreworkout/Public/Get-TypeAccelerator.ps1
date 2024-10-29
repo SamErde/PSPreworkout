@@ -25,6 +25,7 @@ function Get-TypeAccelerator {
     Thanks to Jeff Hicks (@JDHITSolutions) for helpful suggestions and improvements on this output!
 
     Change Log: Removed the grid view option to allow user flexibility in how they want to output the results.
+    To Do: Add a way to filter/search the 'type' property.
 
     #>
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Get-TypeAccelerator')]
