@@ -92,7 +92,11 @@ function Get-EnvironmentVariable {
     begin {
         [System.Collections.Generic.List[PSObject]]$EnvironmentVariables = @()
 
-        if ($PSBoundParameters.ContainsKey('All')) {
+        if ($All.IsPresent -or $PSBoundParameters.Count -eq 0) {
+            $All = $true
+        }
+
+        if ($All) {
             $Target = @('Process', 'User', 'Machine')
         }
     } # end begin block
