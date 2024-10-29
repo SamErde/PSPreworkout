@@ -389,17 +389,6 @@ Retrieves the value of the PATH environment variable from the machine target.</d
           </dev:type>
           <dev:defaultValue>*</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>GridView</maml:name>
-          <maml:Description>
-            <maml:para>Show the output in a grid view.</maml:para>
-          </maml:Description>
-          <dev:type>
-            <maml:name>SwitchParameter</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -415,18 +404,6 @@ Retrieves the value of the PATH environment variable from the machine target.</d
         </dev:type>
         <dev:defaultValue>*</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>GridView</maml:name>
-        <maml:Description>
-          <maml:para>Show the output in a grid view.</maml:para>
-        </maml:Description>
-        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-        <dev:type>
-          <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
-      </command:parameter>
     </command:parameters>
     <command:inputTypes />
     <command:returnValues>
@@ -441,8 +418,9 @@ Retrieves the value of the PATH environment variable from the machine target.</d
     </command:returnValues>
     <maml:alertSet>
       <maml:alert>
-        <maml:para>Author: Sam Erde Version: 0.0.2 Modified: 2024/10/12</maml:para>
+        <maml:para>Author: Sam Erde Version: 0.0.3 Modified: 2024/10/29</maml:para>
         <maml:para>Thanks to Jeff Hicks (@JDHITSolutions) for helpful suggestions and improvements on this output!</maml:para>
+        <maml:para>Change Log: Removed the grid view option to allow user flexibility in how they want to output the results.</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -451,6 +429,13 @@ Retrieves the value of the PATH environment variable from the machine target.</d
         <dev:code>Get-TypeAccelerator -Name ADSI</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 2 --------------------------</maml:title>
+        <dev:code>Get-TypeAccelerator -Name ps*</dev:code>
+        <dev:remarks>
+          <maml:para>Get all type accelerators that begin with the string "ps".</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>

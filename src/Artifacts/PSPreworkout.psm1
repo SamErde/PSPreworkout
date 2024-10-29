@@ -323,12 +323,7 @@ function Get-TypeAccelerator {
         [Parameter(Position = 0, HelpMessage = 'The name of the type accelerator, such as "ADSI."')]
         [SupportsWildcards()]
         [string]
-        $Name = '*',
-
-        # Show a grid view of the loaded assemblies
-        [Parameter()]
-        [switch]
-        $GridView
+        $Name = '*'
     )
 
     $TypeAccelerators = ([PSObject].Assembly.GetType('System.Management.Automation.TypeAccelerators')::Get).GetEnumerator() |
@@ -342,23 +337,6 @@ function Get-TypeAccelerator {
                     Type       = $_.Value.FullName
                 }
             }
-
-    if ($PSBoundParameters.ContainsKey('GridView')) {
-
-        if ((Get-Command -Name Out-ConsoleGridView -ErrorAction SilentlyContinue) -and ($PSVersionTable.PSEdition -eq 'Core')) {
-
-            $TypeAccelerators | Out-ConsoleGridView -OutputMode Multiple
-
-        } elseif ((Get-Command -Name Out-GridView -ErrorAction SilentlyContinue) -and ($PSVersionTable.PSEdition -eq 'Desktop')) {
-
-            $TypeAccelerators | Out-GridView -OutputMode Multiple
-
-        } else {
-            Write-Output 'The Out-GridView and Out-ConsoleGridView cmdlets were not found. Please install the Microsoft.PowerShell.ConsoleGuiTools module or re-install the PowerShell ISE if using Windows PowerShell 5.1.'
-            $TypeAccelerators | Format-Table -AutoSize
-        }
-    }
-
     $TypeAccelerators
 }
 
