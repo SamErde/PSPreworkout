@@ -1379,7 +1379,7 @@ Retrieves the value of the PATH environment variable from the machine target.</d
       <command:verb>Out</command:verb>
       <command:noun>JsonFile</command:noun>
       <maml:description>
-        <maml:para>Convert an object to JSON and write to a file.</maml:para>
+        <maml:para>Convert an object to JSON and write it to a file.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
@@ -1391,7 +1391,7 @@ Retrieves the value of the PATH environment variable from the machine target.</d
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
           <maml:name>Object</maml:name>
           <maml:Description>
-            <maml:para>Object to convert to JSON and save it to a file. Check for empty objects here or in the function body? [ValidateScript({ if (-not [string]::IsNullOrWhiteSpace($ ) -and -not [string]::IsNullOrEmpty($ )) { $true } })]</maml:para>
+            <maml:para>The object to convert to JSON. [ValidateScript({ if (-not [string]::IsNullOrWhiteSpace($ ) -and -not [string]::IsNullOrEmpty($ )) { $true } })]</maml:para>
           </maml:Description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -1403,7 +1403,7 @@ Retrieves the value of the PATH environment variable from the machine target.</d
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>FilePath</maml:name>
           <maml:Description>
-            <maml:para>Full path and filename to save the JSON to.</maml:para>
+            <maml:para>Full path and filename to save the JSON to. [ValidatePattern('\.json$')] # Do not require a JSON extension.</maml:para>
           </maml:Description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1418,7 +1418,7 @@ Retrieves the value of the PATH environment variable from the machine target.</d
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
         <maml:name>Object</maml:name>
         <maml:Description>
-          <maml:para>Object to convert to JSON and save it to a file. Check for empty objects here or in the function body? [ValidateScript({ if (-not [string]::IsNullOrWhiteSpace($ ) -and -not [string]::IsNullOrEmpty($ )) { $true } })]</maml:para>
+          <maml:para>The object to convert to JSON. [ValidateScript({ if (-not [string]::IsNullOrWhiteSpace($ ) -and -not [string]::IsNullOrEmpty($ )) { $true } })]</maml:para>
         </maml:Description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -1430,7 +1430,7 @@ Retrieves the value of the PATH environment variable from the machine target.</d
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>FilePath</maml:name>
         <maml:Description>
-          <maml:para>Full path and filename to save the JSON to.</maml:para>
+          <maml:para>Full path and filename to save the JSON to. [ValidatePattern('\.json$')] # Do not require a JSON extension.</maml:para>
         </maml:Description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1444,7 +1444,7 @@ Retrieves the value of the PATH environment variable from the machine target.</d
     <command:returnValues />
     <maml:alertSet>
       <maml:alert>
-        <maml:para>Author: Sam Erde Version: 0.2.0 Modified: 2024/10/15</maml:para>
+        <maml:para>Author: Sam Erde Version: 0.2.1 Modified: 2024/10/29</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
