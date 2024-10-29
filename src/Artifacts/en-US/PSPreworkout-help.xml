@@ -420,7 +420,7 @@ Retrieves the value of the PATH environment variable from the machine target.</d
       <maml:alert>
         <maml:para>Author: Sam Erde Version: 0.0.3 Modified: 2024/10/29</maml:para>
         <maml:para>Thanks to Jeff Hicks (@JDHITSolutions) for helpful suggestions and improvements on this output!</maml:para>
-        <maml:para>Change Log: Removed the grid view option to allow user flexibility in how they want to output the results.</maml:para>
+        <maml:para>Change Log: Removed the grid view option to allow user flexibility in how they want to output the results. To Do: Add a way to filter/search the 'type' property.</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
