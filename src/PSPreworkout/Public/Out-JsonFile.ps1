@@ -1,7 +1,7 @@
 function Out-JsonFile {
     <#
     .SYNOPSIS
-        Convert an object to JSON and write to a file.
+        Convert an object to JSON and write it to a file.
 
     .DESCRIPTION
         This function converts an object to JSON and writes the output to the specified file. By default, it saves the
@@ -24,21 +24,21 @@ function Out-JsonFile {
 
     .NOTES
         Author: Sam Erde
-        Version: 0.2.0
-        Modified: 2024/10/15
+        Version: 0.2.1
+        Modified: 2024/10/29
     #>
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Out-JsonFile')]
     param (
-        # Object to convert to JSON and save it to a file.
+        # The object to convert to JSON.
         [Parameter(Mandatory, ValueFromPipeline, Position = 0)]
-        # Check for empty objects here or in the function body?
         # [ValidateScript({ if (-not [string]::IsNullOrWhiteSpace($_) -and -not [string]::IsNullOrEmpty($_)) { $true } })]
         [Object]
         $Object,
 
         # Full path and filename to save the JSON to.
         [Parameter(Position = 1)]
-        [ValidatePattern('\.json$')]
+        [ValidateNotNullOrEmpty()]
+        # [ValidatePattern('\.json$')] # Do not require a JSON extension.
         [ValidateScript({
                 if ((Split-Path -Path $_).Length -gt 0) {
                     if (Test-Path -Path (Split-Path -Path $_) -PathType Container) {
