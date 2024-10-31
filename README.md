@@ -38,7 +38,7 @@ Get-Command -Module PSPreworkout
 
 ## Contributing
 
-Please feel free to use the issues or a PR to report bugs, suggest improvements, or add new ideas to the module!
+Please feel free submit an issue or a PR to report bugs, suggest improvements, or add new ideas to the module!
 
 ## PSPreworkout Cmdlets
 <Details>
