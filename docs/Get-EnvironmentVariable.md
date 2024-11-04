@@ -12,21 +12,13 @@ Retrieves the value of an environment variable.
 
 ## SYNTAX
 
-### Named
 ```
-Get-EnvironmentVariable [[-Name] <String>] [[-Target] <EnvironmentVariableTarget>]
- [<CommonParameters>]
-```
-
-### All
-```
-Get-EnvironmentVariable [[-Target] <EnvironmentVariableTarget>] [-All]
+Get-EnvironmentVariable [[-Name] <String>] [-Pattern <String>] [-Target <EnvironmentVariableTarget[]>] [-All]
  [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-The Get-EnvironmentVariable function retrieves the value of the specified environment variable
-or displays all environment variables.
+The Get-EnvironmentVariable function retrieves the value of the specified environment variable or displays all environment variables.
 
 ## EXAMPLES
 
@@ -42,6 +34,26 @@ Get-EnvironmentVariable -Name 'Path' -Target 'Machine'
 Retrieves the value of the PATH environment variable from the machine target.
 ```
 
+### EXAMPLE 3
+```
+Get-EnvironmentVariable -Pattern '^u'
+Get environment variables with names that begin with the letter "u" in any target.
+```
+
+### EXAMPLE 4
+```
+Get-EnvironmentVariable -Pattern 'git' | Format-Table Name,Target,PID,ProcessName,Value
+```
+
+Get all process environment variables that match the pattern "git" and return the results as a table.
+
+### EXAMPLE 5
+```
+Get-EnvironmentVariable -Pattern 'path' -Target Machine,Process,User | Format-Table Name,Target,PID,ProcessName,Value
+```
+
+Return all environment variables that match the pattern "path" from all targets and format the results as a table.
+
 ## PARAMETERS
 
 ### -Name
@@ -49,7 +61,7 @@ The name of the environment variable to retrieve.
 
 ```yaml
 Type: String
-Parameter Sets: Named
+Parameter Sets: (All)
 Aliases:
 
 Required: False
@@ -59,19 +71,35 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Pattern
+A regex pattern to match environment variable names against.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -Target
 The target (Process, Machine, User) to pull environment variables from.
 The default is process.
+Multiple targets may be specified.
 
 ```yaml
-Type: EnvironmentVariableTarget
+Type: EnvironmentVariableTarget[]
 Parameter Sets: (All)
 Aliases:
 Accepted values: Process, User, Machine
 
 Required: False
-Position: 2
-Default value: Process
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -82,7 +110,7 @@ Process ID and process name will be included for process environment variables.
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: All
+Parameter Sets: (All)
 Aliases:
 
 Required: False
@@ -104,11 +132,12 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## NOTES
 Author: Sam Erde
 Version: 0.1.0
-Modified: 2024/10/26
+Modified: 2024/10/8
 
-To Do: Get the specified variable name from all targets if a name and -All are specified.
+To Do: Return environment variables if -Target is used without either -Name or -Pattern.
 
----
+
+About Environment Variables:
 
 Variable names are case-sensitive on Linux and macOS, but not on Windows.
 
