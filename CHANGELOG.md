@@ -5,6 +5,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 &nbsp;
 
+## [1.5.0] - 2024-11-04
+
+This release is focused on enhancements that make the existing functions more usable and flexible. The main changes are refactoring Get-EnvironmentVariable and Out-JsonFile.
+
+### Changed
+
+- Improve `Get-EnvironmentVariable`. Return rich objects to pipeline and test more usage scenarios.
+- Remove requirement for ".json" extension in `Out-JsonFile`.
+- Accept input from pipeline in `Out-JsonFile`.
+- Ensure file is created in file system provider with `Out-JsonFile`.
+- Remove **GridView** parameters from `Get-TypeAccelerator` to give user control of output and display.
+
+&nbsp;
+&nbsp;
+
 ## [1.4.9] - 2024-10-25
 
 ### Fixed

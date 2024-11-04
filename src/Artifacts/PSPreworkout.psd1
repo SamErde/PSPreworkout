@@ -95,10 +95,12 @@
 
             # ReleaseNotes of this module
             ReleaseNotes = 'What''s New:
-Fix Windows/Linux detection in Update-AllTheThings.
-Fix bug in Edit-WinGetSettingsFile.
-Add DNF support in Linux.
-Refactor Get-EnvironmentVariable.'
+Improve Get-EnvironmentVariable. Return rich objects to pipeline and test more usage scenarios.
+Remove requirement for .json extension in Out-JsonFile.
+Accept input from pipeline in Out-JsonFile.
+Ensure file is created in file system provider with Out-JsonFile.
+Remove GridView parameters from Get-TypeAccelerator to give user control of output and display.
+'
 
             # Prerelease string of this module
             # Prerelease = ''
