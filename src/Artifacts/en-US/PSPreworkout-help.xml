@@ -100,27 +100,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
-          <maml:name>Target</maml:name>
-          <maml:Description>
-            <maml:para>The target (Process, Machine, User) to pull environment variables from. The default is process. Multiple targets may be specified.</maml:para>
-          </maml:Description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">Process</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">User</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Machine</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">EnvironmentVariableTarget[]</command:parameterValue>
-          <dev:type>
-            <maml:name>EnvironmentVariableTarget[]</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>@([System.EnvironmentVariableTarget]::Process)</dev:defaultValue>
-        </command:parameter>
-      </command:syntaxItem>
-      <command:syntaxItem>
-        <maml:name>Get-EnvironmentVariable</maml:name>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Pattern</maml:name>
           <maml:Description>
             <maml:para>A regex pattern to match environment variable names against.</maml:para>
@@ -132,7 +112,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Target</maml:name>
           <maml:Description>
             <maml:para>The target (Process, Machine, User) to pull environment variables from. The default is process. Multiple targets may be specified.</maml:para>
@@ -147,27 +127,7 @@
             <maml:name>EnvironmentVariableTarget[]</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>@([System.EnvironmentVariableTarget]::Process)</dev:defaultValue>
-        </command:parameter>
-      </command:syntaxItem>
-      <command:syntaxItem>
-        <maml:name>Get-EnvironmentVariable</maml:name>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
-          <maml:name>Target</maml:name>
-          <maml:Description>
-            <maml:para>The target (Process, Machine, User) to pull environment variables from. The default is process. Multiple targets may be specified.</maml:para>
-          </maml:Description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">Process</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">User</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Machine</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">EnvironmentVariableTarget[]</command:parameterValue>
-          <dev:type>
-            <maml:name>EnvironmentVariableTarget[]</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>@([System.EnvironmentVariableTarget]::Process)</dev:defaultValue>
+          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>All</maml:name>
@@ -195,7 +155,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Pattern</maml:name>
         <maml:Description>
           <maml:para>A regex pattern to match environment variable names against.</maml:para>
@@ -207,7 +167,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Target</maml:name>
         <maml:Description>
           <maml:para>The target (Process, Machine, User) to pull environment variables from. The default is process. Multiple targets may be specified.</maml:para>
@@ -217,7 +177,7 @@
           <maml:name>EnvironmentVariableTarget[]</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>@([System.EnvironmentVariableTarget]::Process)</dev:defaultValue>
+        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>All</maml:name>

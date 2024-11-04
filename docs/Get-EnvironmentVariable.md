@@ -12,21 +12,8 @@ Retrieves the value of an environment variable.
 
 ## SYNTAX
 
-### LookupByName
 ```
-Get-EnvironmentVariable [[-Name] <String>] [[-Target] <EnvironmentVariableTarget[]>]
- [<CommonParameters>]
-```
-
-### LookupByRegexPattern
-```
-Get-EnvironmentVariable [[-Pattern] <String>] [[-Target] <EnvironmentVariableTarget[]>]
- [<CommonParameters>]
-```
-
-### ListAll
-```
-Get-EnvironmentVariable [[-Target] <EnvironmentVariableTarget[]>] [-All]
+Get-EnvironmentVariable [[-Name] <String>] [-Pattern <String>] [-Target <EnvironmentVariableTarget[]>] [-All]
  [<CommonParameters>]
 ```
 
@@ -74,7 +61,7 @@ The name of the environment variable to retrieve.
 
 ```yaml
 Type: String
-Parameter Sets: LookupByName
+Parameter Sets: (All)
 Aliases:
 
 Required: False
@@ -89,11 +76,11 @@ A regex pattern to match environment variable names against.
 
 ```yaml
 Type: String
-Parameter Sets: LookupByRegexPattern
+Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 1
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -111,8 +98,8 @@ Aliases:
 Accepted values: Process, User, Machine
 
 Required: False
-Position: 2
-Default value: @([System.EnvironmentVariableTarget]::Process)
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -123,7 +110,7 @@ Process ID and process name will be included for process environment variables.
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: ListAll
+Parameter Sets: (All)
 Aliases:
 
 Required: False
