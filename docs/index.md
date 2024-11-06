@@ -40,6 +40,10 @@ Get-Command -Module PSPreworkout
 
 Please feel free submit an issue or a PR to report bugs, suggest improvements, or add new ideas to the module!
 
+## Presentations
+
+- [PSPreworkout Module Walkthrough](https://www.youtube.com/watch?v=cW5vRJaF_gk) at the PowerShell Usergroup Inn-Salzach - Thanks to the Inn-Salzach PowerShell User Group for inviting me to share my first public presentation!
+
 ## PSPreworkout Cmdlets
 <Details>
 <Summary>⤵️ Full List:</Summary>
@@ -108,4 +112,3 @@ Update all the things!
 
 
 </Details>
-
