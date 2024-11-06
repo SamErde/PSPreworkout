@@ -37,7 +37,8 @@ jobs:
       - name: 📖 Update Index & Readme
         shell: pwsh
         run: |
-          $IndexTop = Get-Content -Path ./docs/index.md -TotalCount 46
+          [int16]$LineNumber = (Select-String -Path '.\docs\index.md' -Pattern 'Summary' -List).LineNumber + 1
+          $IndexTop = Get-Content -Path ./docs/index.md -TotalCount $LineNumber
           $ModuleContent = Get-Content -Path ./docs/PSPreworkout.md | Select-Object -Skip 12
           $FooterContent = "`n</Details>`n"
           $CombinedContent = $IndexTop + $ModuleContent + $FooterContent
