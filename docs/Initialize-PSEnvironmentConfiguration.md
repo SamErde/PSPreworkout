@@ -13,8 +13,8 @@ Initialize configuration your PowerShell environment and git.
 ## SYNTAX
 
 ```
-Initialize-PSEnvironmentConfiguration [[-Name] <String>] [[-Email] <String>] [[-CentralProfile] <String>]
- [[-Font] <String>] [[-Packages] <String[]>] [-SkipPackages] [[-Modules] <String[]>] [-SkipModules]
+Initialize-PSEnvironmentConfiguration [[-Name] <String>] [[-Email] <String>] [[-Font] <String>]
+ [[-Packages] <String[]>] [-SkipPackages] [[-Modules] <String[]>] [-SkipModules]
  [<CommonParameters>]
 ```
 
@@ -62,21 +62,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -CentralProfile
-The file path to your central PowerShell profile.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 3
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -Font
 The font to use for your consoles (PowerShell, Windows PowerShell, git bash, etc.)
 
@@ -86,7 +71,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 4
+Position: 3
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -101,7 +86,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 5
+Position: 4
 Default value: @('Microsoft.WindowsTerminal', 'git.git', 'JanDeDobbeleer.OhMyPosh')
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -131,8 +116,8 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 6
-Default value: @('CompletionPredictor', 'Microsoft.PowerShell.ConsoleGuiTools', 'Microsoft.PowerShell.PSResourceGet', 'posh-git', 'PowerShellForGitHub', 'Terminal-Icons')
+Position: 5
+Default value: @('CompletionPredictor', 'Microsoft.PowerShell.ConsoleGuiTools', 'Microsoft.PowerShell.PSResourceGet', 'posh-git', 'PowerShellForGitHub', 'Terminal-Icons', 'PSReadLine', 'PowerShellGet')
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -162,14 +147,14 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 
 ## NOTES
 Author: Sam Erde
-Version: 0.0.2
-Modified: 2024/10/12
+Version: 0.0.3
+Modified: 2024/11/08
 
 To Do
     Add status/verbose output of changes being made
     Create basic starter profile if none exist
     Create dot-sourced profile
     Create interactive picker for packages and modules (separate functions)
-    Bootstrap Out-GridView or Out-ConsoleGridView
+    Bootstrap Out-GridView or Out-ConsoleGridView for the interactive picker
 
 ## RELATED LINKS

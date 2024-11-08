@@ -508,18 +508,6 @@ Get environment variables with names that begin with the letter "u" in any targe
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
-          <maml:name>CentralProfile</maml:name>
-          <maml:Description>
-            <maml:para>The file path to your central PowerShell profile.</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
           <maml:name>Font</maml:name>
           <maml:Description>
             <maml:para>The font to use for your consoles (PowerShell, Windows PowerShell, git bash, etc.)</maml:para>
@@ -531,7 +519,7 @@ Get environment variables with names that begin with the letter "u" in any targe
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
           <maml:name>Packages</maml:name>
           <maml:Description>
             <maml:para>Packages to install with winget.</maml:para>
@@ -543,7 +531,7 @@ Get environment variables with names that begin with the letter "u" in any targe
           </dev:type>
           <dev:defaultValue>@('Microsoft.WindowsTerminal', 'git.git', 'JanDeDobbeleer.OhMyPosh')</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="6" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
           <maml:name>Modules</maml:name>
           <maml:Description>
             <maml:para>PowerShell modules to install.</maml:para>
@@ -553,7 +541,7 @@ Get environment variables with names that begin with the letter "u" in any targe
             <maml:name>String[]</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>@('CompletionPredictor', 'Microsoft.PowerShell.ConsoleGuiTools', 'Microsoft.PowerShell.PSResourceGet', 'posh-git', 'PowerShellForGitHub', 'Terminal-Icons')</dev:defaultValue>
+          <dev:defaultValue>@('CompletionPredictor', 'Microsoft.PowerShell.ConsoleGuiTools', 'Microsoft.PowerShell.PSResourceGet', 'posh-git', 'PowerShellForGitHub', 'Terminal-Icons', 'PSReadLine', 'PowerShellGet')</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>SkipPackages</maml:name>
@@ -605,18 +593,6 @@ Get environment variables with names that begin with the letter "u" in any targe
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
-        <maml:name>CentralProfile</maml:name>
-        <maml:Description>
-          <maml:para>The file path to your central PowerShell profile.</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
         <maml:name>Font</maml:name>
         <maml:Description>
           <maml:para>The font to use for your consoles (PowerShell, Windows PowerShell, git bash, etc.)</maml:para>
@@ -628,7 +604,7 @@ Get environment variables with names that begin with the letter "u" in any targe
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
         <maml:name>Packages</maml:name>
         <maml:Description>
           <maml:para>Packages to install with winget.</maml:para>
@@ -652,7 +628,7 @@ Get environment variables with names that begin with the letter "u" in any targe
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="6" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
         <maml:name>Modules</maml:name>
         <maml:Description>
           <maml:para>PowerShell modules to install.</maml:para>
@@ -662,7 +638,7 @@ Get environment variables with names that begin with the letter "u" in any targe
           <maml:name>String[]</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>@('CompletionPredictor', 'Microsoft.PowerShell.ConsoleGuiTools', 'Microsoft.PowerShell.PSResourceGet', 'posh-git', 'PowerShellForGitHub', 'Terminal-Icons')</dev:defaultValue>
+        <dev:defaultValue>@('CompletionPredictor', 'Microsoft.PowerShell.ConsoleGuiTools', 'Microsoft.PowerShell.PSResourceGet', 'posh-git', 'PowerShellForGitHub', 'Terminal-Icons', 'PSReadLine', 'PowerShellGet')</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>SkipModules</maml:name>
@@ -681,8 +657,8 @@ Get environment variables with names that begin with the letter "u" in any targe
     <command:returnValues />
     <maml:alertSet>
       <maml:alert>
-        <maml:para>Author: Sam Erde Version: 0.0.2 Modified: 2024/10/12</maml:para>
-        <maml:para>To Do     Add status/verbose output of changes being made     Create basic starter profile if none exist     Create dot-sourced profile     Create interactive picker for packages and modules (separate functions)     Bootstrap Out-GridView or Out-ConsoleGridView</maml:para>
+        <maml:para>Author: Sam Erde Version: 0.0.3 Modified: 2024/11/08</maml:para>
+        <maml:para>To Do     Add status/verbose output of changes being made     Create basic starter profile if none exist     Create dot-sourced profile     Create interactive picker for packages and modules (separate functions)     Bootstrap Out-GridView or Out-ConsoleGridView for the interactive picker</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>

@@ -453,11 +453,11 @@ function Initialize-PSEnvironmentConfiguration {
         [string]
         $Email,
 
-        # Path to your central profile, if you use this feature
-        [Parameter()]
-        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -IsValid })]
-        [string]
-        $CentralProfile,
+        # Path to your central profile, if you use this feature (draft)
+        # [Parameter()]
+        # [ValidateScript({ Test-Path -Path $_ -PathType Leaf -IsValid })]
+        # [string]
+        # $CentralProfile,
 
         # The font that you want to use for consoles
         [Parameter()]
@@ -484,10 +484,10 @@ function Initialize-PSEnvironmentConfiguration {
         # [switch]
         # $PickPackages,
 
-        # PowerShell modules to install
+        # PowerShell modules to install or force updates on
         [Parameter()]
         [string[]]
-        $Modules = @('CompletionPredictor', 'Microsoft.PowerShell.ConsoleGuiTools', 'Microsoft.PowerShell.PSResourceGet', 'posh-git', 'PowerShellForGitHub', 'Terminal-Icons'),
+        $Modules = @('CompletionPredictor', 'Microsoft.PowerShell.ConsoleGuiTools', 'Microsoft.PowerShell.PSResourceGet', 'posh-git', 'PowerShellForGitHub', 'Terminal-Icons', 'PSReadLine', 'PowerShellGet'),
 
         # Do not install any modules
         [Parameter()]
@@ -503,6 +503,7 @@ function Initialize-PSEnvironmentConfiguration {
     begin {
         # Suppress PSScriptAnalyzer Errors
         $commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameter | Out-Null
+
     }
 
     process {
@@ -511,17 +512,37 @@ function Initialize-PSEnvironmentConfiguration {
         if ($PSBoundParameters.ContainsKey('Email')) { git config --global user.email $Email }
         #endregion Configure Git
 
+
+        #region Install PowerShell modules
+        Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+        if ($Modules -and -not $SkipModules.IsPresent) {
+            foreach ($module in $Modules) {
+                Remove-Module -Name $module -Force -ErrorAction SilentlyContinue
+                try {
+                    Write-Verbose "Installing module: $module"
+                    Install-Module -Name $module -Scope CurrentUser -AcceptLicense -Repository PSGallery -AllowClobber -Force
+                } catch {
+                    $_
+                }
+                Import-Module -Name $module
+            }
+        }
+        # Update Pester and ignore the publisher warning
+        Install-Module -Name Pester -Repository PSGallery -SkipPublisherCheck -AllowClobber -Force
+        #endregion Install PowerShell modules
+
+
         #region Default Settings, All Versions
         $PSDefaultParameterValues = @{
             'ConvertTo-Csv:NoTypeInformation' = $True # Does not exist in pwsh
             'ConvertTo-Xml:NoTypeInformation' = $True
             'Export-Csv:NoTypeInformation'    = $True # Does not exist in pwsh
             'Format-[WT]*:Autosize'           = $True
-            'Get-Help:ShowWindow'             = $False
             '*:Encoding'                      = 'utf8'
             'Out-Default:OutVariable'         = 'LastOutput'
         }
 
+        # Set input and output encoding both to UTF8 (already default in pwsh)
         $OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
 
         $PSReadLineOptions = @{
@@ -575,35 +596,23 @@ function Initialize-PSEnvironmentConfiguration {
         #endregion Font
 
 
-        #region Install Things
-        # Install PowerShell modules
-        if ($Modules -and -not $SkipModules.IsPresent) {
-            foreach ($module in $Modules) {
-                try {
-                    Write-Verbose "Installing module: $module"
-                    Install-Module -Name $module -Scope CurrentUser -AcceptLicense
-                } catch {
-                    $_
-                }
-            }
-        }
-
+        #region Install Packages
         # Install packages
         if ($Packages -and -not $SkipPackages.IsPresent) {
             foreach ($package in $Packages) {
                 try {
                     Write-Verbose "Installing package: $package."
-                    winget install --id $package --accept-source-agreements --accept-package-agreements --scope user
+                    winget install --id $package --accept-source-agreements --accept-package-agreements --source winget --scope user --silent
                 } catch {
                     $_
                 }
             }
         }
-        #endregion Install Things
+        #endregion Install Packages
     } # end process block
 
     end {
-    }
+    } # end end block
 }
 
 # Register the argument completer for Set-ConsoleFont.
