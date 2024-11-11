@@ -52,6 +52,8 @@ function Initialize-PSEnvironmentConfiguration {
         Create dot-sourced profile
         Create interactive picker for packages and modules (separate functions)
         Bootstrap Out-GridView or Out-ConsoleGridView for the interactive picker
+        Do not install already installed packages
+        Do not install ConsoleGuiTools in Windows PowerShell
     #>
 
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Initialize-PSEnvironmentConfiguration')]
@@ -138,9 +140,14 @@ function Initialize-PSEnvironmentConfiguration {
         if ($Modules -and -not $SkipModules.IsPresent) {
             foreach ($module in $Modules) {
                 Remove-Module -Name $module -Force -ErrorAction SilentlyContinue
+                $ModuleSplat = @{
+                    Name       = $module
+                    Scope      = 'CurrentUser'
+                    Repository = 'PSGallery'
+                }
                 try {
                     Write-Verbose "Installing module: $module"
-                    Install-Module -Name $module -Scope CurrentUser -AcceptLicense -Repository PSGallery -AllowClobber -Force
+                    Install-Module @ModuleSplat -AllowClobber -Force
                 } catch {
                     $_
                 }
