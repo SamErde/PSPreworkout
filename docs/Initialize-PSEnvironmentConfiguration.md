@@ -156,5 +156,7 @@ To Do
     Create dot-sourced profile
     Create interactive picker for packages and modules (separate functions)
     Bootstrap Out-GridView or Out-ConsoleGridView for the interactive picker
+    Do not install already installed packages
+    Do not install ConsoleGuiTools in Windows PowerShell
 
 ## RELATED LINKS

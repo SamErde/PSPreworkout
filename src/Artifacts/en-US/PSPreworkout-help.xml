@@ -658,7 +658,7 @@ Get environment variables with names that begin with the letter "u" in any targe
     <maml:alertSet>
       <maml:alert>
         <maml:para>Author: Sam Erde Version: 0.0.3 Modified: 2024/11/08</maml:para>
-        <maml:para>To Do     Add status/verbose output of changes being made     Create basic starter profile if none exist     Create dot-sourced profile     Create interactive picker for packages and modules (separate functions)     Bootstrap Out-GridView or Out-ConsoleGridView for the interactive picker</maml:para>
+        <maml:para>To Do     Add status/verbose output of changes being made     Create basic starter profile if none exist     Create dot-sourced profile     Create interactive picker for packages and modules (separate functions)     Bootstrap Out-GridView or Out-ConsoleGridView for the interactive picker     Do not install already installed packages     Do not install ConsoleGuiTools in Windows PowerShell</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>

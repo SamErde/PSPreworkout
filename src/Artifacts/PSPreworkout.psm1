@@ -518,9 +518,14 @@ function Initialize-PSEnvironmentConfiguration {
         if ($Modules -and -not $SkipModules.IsPresent) {
             foreach ($module in $Modules) {
                 Remove-Module -Name $module -Force -ErrorAction SilentlyContinue
+                $ModuleSplat = @{
+                    Name       = $module
+                    Scope      = 'CurrentUser'
+                    Repository = 'PSGallery'
+                }
                 try {
                     Write-Verbose "Installing module: $module"
-                    Install-Module -Name $module -Scope CurrentUser -AcceptLicense -Repository PSGallery -AllowClobber -Force
+                    Install-Module @ModuleSplat -AllowClobber -Force
                 } catch {
                     $_
                 }
