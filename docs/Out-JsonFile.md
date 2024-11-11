@@ -13,7 +13,7 @@ Convert an object to JSON and write it to a file.
 ## SYNTAX
 
 ```
-Out-JsonFile [-Object] <Object> [[-FilePath] <String>]
+Out-JsonFile [-Object] <Object> [-Depth <Int16>] [[-FilePath] <String>]
  [<CommonParameters>]
 ```
 
@@ -60,6 +60,21 @@ Required: True
 Position: 1
 Default value: None
 Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -Depth
+Depth to serialize the object into JSON
+
+```yaml
+Type: Int16
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: 2
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 

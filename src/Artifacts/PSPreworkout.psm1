@@ -963,6 +963,11 @@ function Out-JsonFile {
         [Object]
         $Object,
 
+        # Depth to serialize the object into JSON
+        [Parameter()]
+        [Int16]
+        $Depth = 2,
+
         # Full path and filename to save the JSON to.
         [Parameter(Position = 1)]
         [ValidateNotNullOrEmpty()]
@@ -1008,7 +1013,7 @@ function Out-JsonFile {
     } # end begin block
 
     process {
-        $Object | ConvertTo-Json | Out-File -FilePath $OutFile -Force
+        $Object | ConvertTo-Json -Depth $Depth | Out-File -FilePath $OutFile -Force
     } # end process block
 
     end {
