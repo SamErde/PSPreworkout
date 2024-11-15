@@ -4,7 +4,7 @@
     RootModule           = 'PSPreworkout.psm1'
 
     # Version number of this module.
-    ModuleVersion        = '1.5.0'
+    ModuleVersion        = '1.6.0'
 
     # Supported PSEditions = @('Desktop', 'Core')
     CompatiblePSEditions = @('Core', 'Desktop')
@@ -44,6 +44,7 @@
         'New-ScriptFromTemplate',
         'Out-JsonFile',
         'Set-ConsoleFont',
+        'Set-DefaultTerminal',
         'Set-EnvironmentVariable',
         'Show-LoadedAssembly',
         'Show-WithoutEmptyProperty',
@@ -82,25 +83,19 @@
         PSData = @{
 
             # Tags applied to this module. These help with module discovery in online galleries.
-            Tags         = 'PowerShell', 'Utilities', 'Tools', 'Windows', 'Linux', 'macOS'
+            Tags       = 'PowerShell', 'Utilities', 'Tools', 'Windows', 'Linux', 'macOS'
 
             # A URL to the license for this module.
-            LicenseUri   = 'https://github.com/SamErde/PSPreworkout/blob/main/LICENSE'
+            LicenseUri = 'https://github.com/SamErde/PSPreworkout/blob/main/LICENSE'
 
             # A URL to the main website for this project.
-            ProjectUri   = 'https://github.com/SamErde/PSPreworkout'
+            ProjectUri = 'https://github.com/SamErde/PSPreworkout'
 
             # A URL to an icon representing this module.
-            IconUri      = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/media/PSPreworkout-Animated-Logo-170.png'
+            IconUri    = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/media/PSPreworkout-Animated-Logo-170.png'
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'What''s New:
-Improve Get-EnvironmentVariable. Return rich objects to pipeline and test more usage scenarios.
-Remove requirement for .json extension in Out-JsonFile.
-Accept input from pipeline in Out-JsonFile.
-Ensure file is created in file system provider with Out-JsonFile.
-Remove GridView parameters from Get-TypeAccelerator to give user control of output and display.
-'
+            # ReleaseNotes = ''
 
             # Prerelease string of this module
             # Prerelease = ''
