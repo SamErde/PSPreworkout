@@ -42,13 +42,13 @@ function Set-DefaultTerminal {
                 New-ItemProperty -Path 'HKCU:\Console\%%Startup' -Name 'DelegationTerminal' -Value '{E12CFF52-A866-4C77-9A90-F570A7AA2C6B}' -Force | Out-Null
             }
             default {
-                Write-Information -Message 'No terminal application was specified.' -InformationAction Continue
+                Write-Information -MessageData 'No terminal application was specified.' -InformationAction Continue
             }
         }
     } # end process block
 
     end {
-        Write-Information -Message "Default terminal set to: ${Name}." -InformationAction Continue
+        Write-Information -MessageData "Default terminal set to: ${Name}." -InformationAction Continue
     } # end end block
 
 } # end function Set-DefaultTerminal
