@@ -614,6 +614,18 @@ function Initialize-PSEnvironmentConfiguration {
             }
         }
         #endregion Install Packages
+
+        #region Windows Terminal
+        $KeyPath = 'HKCU:\Console\%%Startup'
+        if (-not (Test-Path -Path $keyPath)) {
+            New-Item -Path $KeyPath | Out-Null
+        } else {
+            Write-Verbose -Message "Key already exists: $KeyPath"
+        }
+        # Set Windows Terminal as the default terminal application for Windows.
+        New-ItemProperty -Path 'HKCU:\Console\%%Startup' -Name 'DelegationConsole' -Value '{2EACA947-7F5F-4CFA-BA87-8F7FBEEFBE69}' -Force | Out-Null
+        New-ItemProperty -Path 'HKCU:\Console\%%Startup' -Name 'DelegationTerminal' -Value '{E12CFF52-A866-4C77-9A90-F570A7AA2C6B}' -Force | Out-Null
+        #endregion Windows Terminal
     } # end process block
 
     end {
@@ -963,6 +975,11 @@ function Out-JsonFile {
         [Object]
         $Object,
 
+        # Depth to serialize the object into JSON. Default is 2.
+        [Parameter()]
+        [Int32]
+        $Depth = 2,
+
         # Full path and filename to save the JSON to.
         [Parameter(Position = 1)]
         [ValidateNotNullOrEmpty()]
@@ -1008,7 +1025,7 @@ function Out-JsonFile {
     } # end begin block
 
     process {
-        $Object | ConvertTo-Json | Out-File -FilePath $OutFile -Force
+        $Object | ConvertTo-Json -Depth $Depth | Out-File -FilePath $OutFile -Force
     } # end process block
 
     end {
