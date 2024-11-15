@@ -1418,11 +1418,11 @@ Get environment variables with names that begin with the letter "u" in any targe
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Depth</maml:name>
           <maml:Description>
-            <maml:para>Depth to serialize the object into JSON</maml:para>
+            <maml:para>Depth to serialize the object into JSON. Default is 2.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Int16</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>Int16</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>2</dev:defaultValue>
@@ -1445,11 +1445,11 @@ Get environment variables with names that begin with the letter "u" in any targe
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Depth</maml:name>
         <maml:Description>
-          <maml:para>Depth to serialize the object into JSON</maml:para>
+          <maml:para>Depth to serialize the object into JSON. Default is 2.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int16</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>Int16</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>2</dev:defaultValue>
