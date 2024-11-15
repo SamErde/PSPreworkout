@@ -5,6 +5,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 &nbsp;
 
+## [1.6.0] - 2024-11-15
+
+This release is focused on enhancements that make the existing functions more usable and flexible.
+
+### Changed
+
+- Add **Depth** parameter to `Out-JsonFile` to specify how deeply to serialize objects as JSON.
+- Set WinGet as the default terminal and console application in `Initialize-PSEnvironmentConfiguration`.
+
+### Added
+
+- Add `Set-DefaultTerminal` function for Windows.
+
+&nbsp;
+&nbsp;
+
 ## [1.5.0] - 2024-11-04
 
 This release is focused on enhancements that make the existing functions more usable and flexible. The main changes are refactoring Get-EnvironmentVariable and Out-JsonFile.
@@ -222,6 +238,8 @@ Full changelog: [v1.3.1...v1.4.0](https://github.com/SamErde/PSPreworkout/compar
 
 _Initial release._
 
+[1.6.0]: https://github.com/SamErde/PSPreworkout/tag/v1.6.0
+[1.5.0]: https://github.com/SamErde/PSPreworkout/tag/v1.5.0
 [1.4.9]: https://github.com/SamErde/PSPreworkout/tag/v1.4.9
 [1.4.8]: https://github.com/SamErde/PSPreworkout/tag/v1.4.8
 [1.4.7]: https://github.com/SamErde/PSPreworkout/tag/v1.4.7
