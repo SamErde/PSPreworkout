@@ -18,7 +18,7 @@ function Set-DefaultTerminal {
         Modified: 2024-11-15
     #>
 
-    [CmdletBinding(SupportsShouldProcess = $false)]
+    [CmdletBinding(SupportsShouldProcess)]
     param (
         # The name of the application to use as the default terminal in Windows.
         [Parameter(Mandatory = $false)]
@@ -41,13 +41,13 @@ function Set-DefaultTerminal {
                 New-ItemProperty -Path 'HKCU:\Console\%%Startup' -Name 'DelegationTerminal' -Value '{E12CFF52-A866-4C77-9A90-F570A7AA2C6B}' -Force | Out-Null
             }
             default {
-                Write-Information -Message 'No terminal application was specified.'
+                Write-Information -Message 'No terminal application was specified.' -InformationAction Continue
             }
         }
     } # end process block
 
     end {
-        Write-Information -Message "Default terminal set to: ${Name}."
+        Write-Information -Message "Default terminal set to: ${Name}." -InformationAction Continue
     } # end end block
 
 } # end function Set-DefaultTerminal
