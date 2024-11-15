@@ -94,6 +94,9 @@ Convert an object to JSON and write it to a file.
 ### [Set-ConsoleFont](Set-ConsoleFont.md)
 Set the font for your consoles.
 
+### [Set-DefaultTerminal](Set-DefaultTerminal.md)
+Configure the default terminal for Windows
+
 ### [Set-EnvironmentVariable](Set-EnvironmentVariable.md)
 Set environment variables.
 
