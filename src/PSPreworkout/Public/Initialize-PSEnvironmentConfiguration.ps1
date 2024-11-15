@@ -244,10 +244,15 @@ function Initialize-PSEnvironmentConfiguration {
         } else {
             Write-Verbose -Message "Key already exists: $KeyPath"
         }
-        # Set Windows Terminal as the default terminal application for Windows.
-        New-ItemProperty -Path 'HKCU:\Console\%%Startup' -Name 'DelegationConsole' -Value '{2EACA947-7F5F-4CFA-BA87-8F7FBEEFBE69}' -Force | Out-Null
-        New-ItemProperty -Path 'HKCU:\Console\%%Startup' -Name 'DelegationTerminal' -Value '{E12CFF52-A866-4C77-9A90-F570A7AA2C6B}' -Force | Out-Null
+
+        # Set Windows Terminal as the default terminal application if it is installed on this system.
+        if (Test-Path -Path "$env:LOCALAPPDATA\Microsoft\WindowsApps\Microsoft.WindowsTerminal_8wekyb3d8bbwe\wt.exe" -PathType Leaf) {
+            # Set Windows Terminal as the default terminal application for Windows.
+            New-ItemProperty -Path 'HKCU:\Console\%%Startup' -Name 'DelegationConsole' -Value '{2EACA947-7F5F-4CFA-BA87-8F7FBEEFBE69}' -Force | Out-Null
+            New-ItemProperty -Path 'HKCU:\Console\%%Startup' -Name 'DelegationTerminal' -Value '{E12CFF52-A866-4C77-9A90-F570A7AA2C6B}' -Force | Out-Null
+        }
         #endregion Windows Terminal
+
     } # end process block
 
     end {
