@@ -19,6 +19,7 @@ function Set-DefaultTerminal {
     #>
 
     [CmdletBinding(SupportsShouldProcess)]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'OK')]
     param (
         # The name of the application to use as the default terminal in Windows.
         [Parameter(Mandatory = $false)]
