@@ -42,14 +42,21 @@ function Initialize-PSEnvironmentConfiguration {
     Initialize-PSEnvironmentConfiguration -Name 'Sam Erde' -Email 'sam@example.local' -ConsoleFont 'FiraCode Nerd Font'
 
     .NOTES
-        To Do
-          Create basic starter profile if none exist
-          Create dot-sourced profile
-          Create interactive picker for packages and modules (separate functions)
-          Bootstrap Out-GridView or Out-ConsoleGridView
+    Author: Sam Erde
+    Version: 0.0.3
+    Modified: 2024/11/08
+
+    To Do
+        Add status/verbose output of changes being made
+        Create basic starter profile if none exist
+        Create dot-sourced profile
+        Create interactive picker for packages and modules (separate functions)
+        Bootstrap Out-GridView or Out-ConsoleGridView for the interactive picker
+        Do not install already installed packages
+        Do not install ConsoleGuiTools in Windows PowerShell
     #>
 
-    [CmdletBinding()]
+    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Initialize-PSEnvironmentConfiguration')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'Agument completers are weird.')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidGlobalVars', '', Justification = 'PSReadLine Handler')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
@@ -68,11 +75,11 @@ function Initialize-PSEnvironmentConfiguration {
         [string]
         $Email,
 
-        # Path to your central profile, if you use this feature
-        [Parameter()]
-        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -IsValid })]
-        [string]
-        $CentralProfile,
+        # Path to your central profile, if you use this feature (draft)
+        # [Parameter()]
+        # [ValidateScript({ Test-Path -Path $_ -PathType Leaf -IsValid })]
+        # [string]
+        # $CentralProfile,
 
         # The font that you want to use for consoles
         [Parameter()]
@@ -84,40 +91,41 @@ function Initialize-PSEnvironmentConfiguration {
             })]
         [string]$Font,
 
-        # Packages to install
+        # WinGet packages to install
         [Parameter()]
         [string[]]
-        $Packages = @('Microsoft.PowerShell', 'Microsoft.WindowsTerminal', 'git.git', 'JanDeDobbeleer.OhMyPosh'),
+        $Packages = @('Microsoft.WindowsTerminal', 'git.git', 'JanDeDobbeleer.OhMyPosh'),
 
         # Do not install any packages
         [Parameter()]
         [switch]
         $SkipPackages,
 
-        # Choose from a list of packages to install
-        [Parameter()]
-        [switch]
-        $PickPackages,
+        # Choose from a list of packages to install (draft)
+        # [Parameter()]
+        # [switch]
+        # $PickPackages,
 
-        # PowerShell modules to install
+        # PowerShell modules to install or force updates on
         [Parameter()]
         [string[]]
-        $Modules = @('CompletionPredictor', 'Microsoft.PowerShell.ConsoleGuiTools', 'Microsoft.PowerShell.PSResourceGet', 'posh-git', 'PowerShellForGitHub', 'Terminal-Icons'),
+        $Modules = @('CompletionPredictor', 'Microsoft.PowerShell.ConsoleGuiTools', 'Microsoft.PowerShell.PSResourceGet', 'posh-git', 'PowerShellForGitHub', 'Terminal-Icons', 'PSReadLine', 'PowerShellGet'),
 
         # Do not install any modules
         [Parameter()]
         [switch]
-        $SkipModules,
+        $SkipModules
 
-        # Choose from a list of PowerShell modules to install
-        [Parameter()]
-        [switch]
-        $PickModules
+        # Choose from a list of PowerShell modules to install (draft)
+        # [Parameter()]
+        # [switch]
+        # $PickModules
     )
 
     begin {
         # Suppress PSScriptAnalyzer Errors
         $commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameter | Out-Null
+
     }
 
     process {
@@ -127,17 +135,41 @@ function Initialize-PSEnvironmentConfiguration {
         #endregion Configure Git
 
 
+        #region Install PowerShell modules
+        Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+        if ($Modules -and -not $SkipModules.IsPresent) {
+            foreach ($module in $Modules) {
+                Remove-Module -Name $module -Force -ErrorAction SilentlyContinue
+                $ModuleSplat = @{
+                    Name       = $module
+                    Scope      = 'CurrentUser'
+                    Repository = 'PSGallery'
+                }
+                try {
+                    Write-Verbose "Installing module: $module"
+                    Install-Module @ModuleSplat -AllowClobber -Force
+                } catch {
+                    $_
+                }
+                Import-Module -Name $module
+            }
+        }
+        # Update Pester and ignore the publisher warning
+        Install-Module -Name Pester -Repository PSGallery -SkipPublisherCheck -AllowClobber -Force
+        #endregion Install PowerShell modules
+
+
         #region Default Settings, All Versions
         $PSDefaultParameterValues = @{
-            'ConvertTo-Csv:NoTypeInformation' = $True
+            'ConvertTo-Csv:NoTypeInformation' = $True # Does not exist in pwsh
             'ConvertTo-Xml:NoTypeInformation' = $True
-            'Export-Csv:NoTypeInformation'    = $True
+            'Export-Csv:NoTypeInformation'    = $True # Does not exist in pwsh
             'Format-[WT]*:Autosize'           = $True
-            'Get-Help:ShowWindow'             = $False
             '*:Encoding'                      = 'utf8'
             'Out-Default:OutVariable'         = 'LastOutput'
         }
 
+        # Set input and output encoding both to UTF8 (already default in pwsh)
         $OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
 
         $PSReadLineOptions = @{
@@ -191,35 +223,35 @@ function Initialize-PSEnvironmentConfiguration {
         #endregion Font
 
 
-        #region Install Things
-        # Install PowerShell modules
-        if ($Modules -and -not $SkipModules.IsPresent) {
-            foreach ($module in $Modules) {
-                try {
-                    Write-Verbose "Installing module: $module"
-                    Install-Module -Name $module -Scope CurrentUser -AcceptLicense -Force
-                } catch {
-                    $_
-                }
-            }
-        }
-
+        #region Install Packages
         # Install packages
         if ($Packages -and -not $SkipPackages.IsPresent) {
             foreach ($package in $Packages) {
                 try {
                     Write-Verbose "Installing package: $package."
-                    winget install --id $package --accept-source-agreements --accept-package-agreements --scope user
+                    winget install --id $package --accept-source-agreements --accept-package-agreements --source winget --scope user --silent
                 } catch {
                     $_
                 }
             }
         }
         #endregion Install Things
+
+        #region Windows Terminal
+        $KeyPath = 'HKCU:\Console\%%Startup'
+        if (-not (Test-Path -Path $keyPath)) {
+            New-Item -Path $KeyPath | Out-Null
+        } else {
+            Write-Verbose -Message "Key already exists: $KeyPath"
+        }
+        # Set Windows Terminal as the default terminal application for Windows.
+        New-ItemProperty -Path 'HKCU:\Console\%%Startup' -Name 'DelegationConsole' -Value '{2EACA947-7F5F-4CFA-BA87-8F7FBEEFBE69}' -Force | Out-Null
+        New-ItemProperty -Path 'HKCU:\Console\%%Startup' -Name 'DelegationTerminal' -Value '{E12CFF52-A866-4C77-9A90-F570A7AA2C6B}' -Force | Out-Null
+        #endregion Windows Terminal
     } # end process block
 
     end {
-    }
+    } # end end block
 }
 
 # Register the argument completer for Set-ConsoleFont.
