@@ -1,5 +1,5 @@
 function Remove-OldModule {
-    [CmdletBinding()]
+    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout')]
     param (
 
     )

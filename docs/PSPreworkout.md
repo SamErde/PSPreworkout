@@ -2,7 +2,7 @@
 Module Name: PSPreworkout
 Module Guid: 378339de-a0df-4d44-873b-4fd32c388e06
 Download Help Link: NA
-Help Version: 1.2.5
+Help Version: 1.5.0
 Locale: en-US
 ---
 
@@ -11,6 +11,9 @@ Locale: en-US
 A special mix of tools to help jump start your PowerShell session!
 
 ## PSPreworkout Cmdlets
+### [Edit-PSReadLineHistoryFile](Edit-PSReadLineHistoryFile.md)
+Edit the PSReadLine History File
+
 ### [Edit-WingetSettingsFile](Edit-WingetSettingsFile.md)
 Edit the WinGet settings file.
 
@@ -29,6 +32,9 @@ Get available type accelerators.
 ### [Initialize-PSEnvironmentConfiguration](Initialize-PSEnvironmentConfiguration.md)
 Initialize configuration your PowerShell environment and git.
 
+### [Install-CommandNotFoundUtility](Install-CommandNotFoundUtility.md)
+Install and setup the WinGetCommandNotFound utility from Microsoft PowerToys.
+
 ### [Install-OhMyPosh](Install-OhMyPosh.md)
 Install Oh My Posh and add it to your profile.
 
@@ -44,6 +50,9 @@ Create a new secure credential.
 ### [New-ScriptFromTemplate](New-ScriptFromTemplate.md)
 Create a new advanced function from a template.
 
+### [Out-JsonFile](Out-JsonFile.md)
+Convert an object to JSON and write it to a file.
+
 ### [Set-ConsoleFont](Set-ConsoleFont.md)
 Set the font for your consoles.
 
@@ -52,6 +61,9 @@ Set environment variables.
 
 ### [Show-LoadedAssembly](Show-LoadedAssembly.md)
 Show all assemblies loaded in PowerShell.
+
+### [Show-WithoutEmptyProperty](Show-WithoutEmptyProperty.md)
+Show an object without its empty properties.
 
 ### [Test-IsElevated](Test-IsElevated.md)
 Check if you are running an elevated shell with administrator or root privileges.

@@ -13,9 +13,9 @@ Initialize configuration your PowerShell environment and git.
 ## SYNTAX
 
 ```
-Initialize-PSEnvironmentConfiguration [[-Name] <String>] [[-Email] <String>] [[-CentralProfile] <String>]
- [[-Font] <String>] [[-Packages] <String[]>] [-SkipPackages] [-PickPackages] [[-Modules] <String[]>]
- [-SkipModules] [-PickModules] [<CommonParameters>]
+Initialize-PSEnvironmentConfiguration [[-Name] <String>] [[-Email] <String>] [[-Font] <String>]
+ [[-Packages] <String[]>] [-SkipPackages] [[-Modules] <String[]>] [-SkipModules]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -62,21 +62,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -CentralProfile
-The file path to your central PowerShell profile.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 3
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -Font
 The font to use for your consoles (PowerShell, Windows PowerShell, git bash, etc.)
 
@@ -86,7 +71,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 4
+Position: 3
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -101,29 +86,14 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 5
-Default value: @('Microsoft.PowerShell', 'Microsoft.WindowsTerminal', 'git.git', 'JanDeDobbeleer.OhMyPosh')
+Position: 4
+Default value: @('Microsoft.WindowsTerminal', 'git.git', 'JanDeDobbeleer.OhMyPosh')
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -SkipPackages
 Option to skip installation of default packages.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -PickPackages
-Choose which packages you want to install.
 
 ```yaml
 Type: SwitchParameter
@@ -146,29 +116,14 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 6
-Default value: @('CompletionPredictor', 'Microsoft.PowerShell.ConsoleGuiTools', 'Microsoft.PowerShell.PSResourceGet', 'posh-git', 'PowerShellForGitHub', 'Terminal-Icons')
+Position: 5
+Default value: @('CompletionPredictor', 'Microsoft.PowerShell.ConsoleGuiTools', 'Microsoft.PowerShell.PSResourceGet', 'posh-git', 'PowerShellForGitHub', 'Terminal-Icons', 'PSReadLine', 'PowerShellGet')
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -SkipModules
 Option to skip installation of default modules.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -PickModules
-Choose which modules you want to install.
 
 ```yaml
 Type: SwitchParameter
@@ -191,10 +146,17 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## OUTPUTS
 
 ## NOTES
+Author: Sam Erde
+Version: 0.0.3
+Modified: 2024/11/08
+
 To Do
-  Create basic starter profile if none exist
-  Create dot-sourced profile
-  Create interactive picker for packages and modules (separate functions)
-  Bootstrap Out-GridView or Out-ConsoleGridView
+    Add status/verbose output of changes being made
+    Create basic starter profile if none exist
+    Create dot-sourced profile
+    Create interactive picker for packages and modules (separate functions)
+    Bootstrap Out-GridView or Out-ConsoleGridView for the interactive picker
+    Do not install already installed packages
+    Do not install ConsoleGuiTools in Windows PowerShell
 
 ## RELATED LINKS

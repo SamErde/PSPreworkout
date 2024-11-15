@@ -13,21 +13,46 @@ Retrieves the value of an environment variable.
 ## SYNTAX
 
 ```
-Get-EnvironmentVariable [[-Name] <String>] [[-Target] <EnvironmentVariableTarget>] [-All]
+Get-EnvironmentVariable [[-Name] <String>] [-Pattern <String>] [-Target <EnvironmentVariableTarget[]>] [-All]
  [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-The Get-EnvironmentVariable function retrieves the value of the specified environment variable
-or displays all environment variables.
+The Get-EnvironmentVariable function retrieves the value of the specified environment variable or displays all environment variables.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Get-EnvironmentVariable -Name "PATH"
-Retrieves the value of the "PATH" environment variable.
+Get-EnvironmentVariable -Name 'UserName'
+Retrieves the value of the "UserName" environment variable from the process target.
 ```
+
+### EXAMPLE 2
+```
+Get-EnvironmentVariable -Name 'Path' -Target 'Machine'
+Retrieves the value of the PATH environment variable from the machine target.
+```
+
+### EXAMPLE 3
+```
+Get-EnvironmentVariable -Pattern '^u'
+Get environment variables with names that begin with the letter "u" in any target.
+```
+
+### EXAMPLE 4
+```
+Get-EnvironmentVariable -Pattern 'git' | Format-Table Name,Target,PID,ProcessName,Value
+```
+
+Get all process environment variables that match the pattern "git" and return the results as a table.
+
+### EXAMPLE 5
+```
+Get-EnvironmentVariable -Pattern 'path' -Target Machine,Process,User | Format-Table Name,Target,PID,ProcessName,Value
+```
+
+Return all environment variables that match the pattern "path" from all targets and format the results as a table.
 
 ## PARAMETERS
 
@@ -46,26 +71,42 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Target
-The target of the environment variable to retrieve.
-Defaults to User.
-(Process, User, or Machine)
+### -Pattern
+A regex pattern to match environment variable names against.
 
 ```yaml
-Type: EnvironmentVariableTarget
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Target
+The target (Process, Machine, User) to pull environment variables from.
+The default is process.
+Multiple targets may be specified.
+
+```yaml
+Type: EnvironmentVariableTarget[]
 Parameter Sets: (All)
 Aliases:
 Accepted values: Process, User, Machine
 
 Required: False
-Position: 2
-Default value: User
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -All
-Switch to show environment variables in all target scopes.
+Optionally get all environment variables from all targets.
+Process ID and process name will be included for process environment variables.
 
 ```yaml
 Type: SwitchParameter
@@ -87,8 +128,17 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 
 ## OUTPUTS
 
-### System.String
+### PSObject
 ## NOTES
+Author: Sam Erde
+Version: 0.1.0
+Modified: 2024/10/8
+
+To Do: Return environment variables if -Target is used without either -Name or -Pattern.
+
+
+About Environment Variables:
+
 Variable names are case-sensitive on Linux and macOS, but not on Windows.
 
 Why is 'Target' used by .NET instead of the familiar 'Scope' parameter name?

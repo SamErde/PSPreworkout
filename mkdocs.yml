@@ -11,7 +11,7 @@
 site_name: "PSPreworkout PowerShell Module"
 site_url: "https://day3bits.com/PSPreworkout"
 repo_url: "https://github.com/SamErde/PSPreworkout"
-repo_name: "PSPreworkout"
+repo_name: "SamErde/PSPreworkout"
 # edit_uri: edit/main/docs/
 # edit_uri_template:
 site_description: "PowerShell Preworkout: a mix of tools to help jump start your PowerShell session!" # meta tag to the generated HTML heade
@@ -40,8 +40,15 @@ docs_dir: "docs"
 # extra_templates:
 # extra:
 
+#plugins:
+#  - social
+
 theme:
   name: material
+  highlightjs: true
+  hljs_languages:
+    - yaml
+    - powershell
   palette:
     # Palette toggle for automatic mode
     - media: "(prefers-color-scheme)"
@@ -69,6 +76,13 @@ theme:
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.path
+    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.tracking
+    - navigation.sections
+    - navigation.top
+    - toc.follow
+    - toc.integrate
   # favicon:
   # icon:
   #   repo:
@@ -80,20 +94,24 @@ nav:
   - Home: "index.md"
   - Customize:
       - Initialize-PSEnvironmentConfiguration: "Initialize-PSEnvironmentConfiguration.md"
-      - Edit-WinGetSettingsFile: "Edit-WinGetSettingsFile.md"
+      - Install-CommandNotFoundUtility: "Install-CommandNotFoundUtility"
+      - Set-ConsoleFont: "Set-ConsoleFont.md"
       - Install-OhMyPosh: "Install-OhMyPosh.md"
       - Install-PowerShellISE: "Install-PowerShellISE.md"
       - Install-WinGet: "Install-WinGet.md"
-      - Set-ConsoleFont" "Set-ConsoleFont.md"
+      - Edit-WinGetSettingsFile: "Edit-WinGetSettingsFile.md"
+      - Edit-PSReadLineHistoryFile: "Edit-PSReadLineHistoryFile.md"
   - Develop:
+      - New-ScriptFromTemplate: "New-ScriptFromTemplate.md"
       - Get-TypeAccelerator: "Get-TypeAccelerator.md"
       - Get-LoadedAssembly: "Get-LoadedAssembly.md"
       - Show-LoadedAssembly: "Show-LoadedAssembly.md"
-      - New-ScriptFromTemplate: "New-ScriptFromTemplate.md"
   - Daily Functions:
+      - New-Credential: "New-Credential.md"
       - Get-EnvironmentVariable: "Get-EnvironmentVariable.md"
       - Set-EnvironmentVariable: "Set-EnvironmentVariable.md"
-      - New-Credential: "New-Credential.md"
       - Test-IsElevated: "Test-IsElevated.md"
       - Update-AllTheThings: "Update-AllTheThings.md"
+      - Out-JsonFile: "Out-JsonFile.md"
+      - Show-WithoutEmptyProperty: "Show-WithoutEmptyProperty.md"
       - Get-PowerShellPortable: "Get-PowerShellPortable.md"

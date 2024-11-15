@@ -5,23 +5,27 @@
 # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions
 # https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-powershell
 # https://github.com/actions/upload-artifact#where-does-the-upload-go
-name: 📦 Build PSPreworkout Module
+
+name: 👷 Build PSPreworkout Module
 on:
   pull_request:
     paths-ignore:
       - '**.md'
       - 'docs/**'
+      - 'src/Drafts/**'
   push:
     paths:
-      - 'src/**'
-      - '.github/workflows/Build Module.yml'
+      - 'src/PSPreworkout/**'
     #paths-ignore:
     #  - '**.md'
     #  - 'docs/**'
+    #  - 'src/Drafts/**'
+  workflow_dispatch:
+
 jobs:
   test:
     name: 🧪 Run Tests
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
     steps:
@@ -34,9 +38,9 @@ jobs:
       shell: pwsh
       run: $PSVersionTable
     # uncomment below to explore what modules/variables/env variables are available in the build image
-    # - name: Modules and Variables Display
-    #   shell: pwsh
-    #   run: Get-Module -ListAvailable; (Get-Variable).GetEnumerator() | Sort-Object Name | Out-String; (Get-ChildItem env:*).GetEnumerator() | Sort-Object Name | Out-String
+    - name: 📦 Modules and Variables Display
+      shell: pwsh
+      run: Get-Module -ListAvailable; (Get-Variable).GetEnumerator() | Sort-Object Name | Out-String; (Get-ChildItem env:*).GetEnumerator() | Sort-Object Name | Out-String
     - name: 🥾 Bootstrap
       shell: pwsh
       run: ./actions_bootstrap.ps1
@@ -55,3 +59,8 @@ jobs:
         name: zip-archive
         path: .\src\Archive
         if-no-files-found: warn
+        # git-auto-commit-action only runs on Linux-based platforms.
+    - name: 💾 Commit Changes
+      uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        commit_message: 'Commit Build'

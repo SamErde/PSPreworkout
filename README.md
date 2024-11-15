@@ -8,8 +8,8 @@ A special mix of tools to help jump start your PowerShell session!
 
 <!-- badges-start -->
 [![GitHub stars](https://img.shields.io/github/stars/samerde/PSPreworkout?cacheSeconds=3600)](https://github.com/samerde/PSPreworkout/stargazers/)
-![PowerShell Gallery Version](https://img.shields.io/powershellgallery/v/PSPreworkout?include_prereleases)
-![PowerShell Gallery Downloads](https://img.shields.io/powershellgallery/dt/PSPreworkout)
+[![PowerShell Gallery Version](https://img.shields.io/powershellgallery/v/PSPreworkout?include_prereleases)](https://powershellgallery.com/packages/PSPreworkout)
+[![PowerShell Gallery Downloads](https://img.shields.io/powershellgallery/dt/PSPreworkout)](https://powershellgallery.com/packages/PSPreworkout)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![GitHub contributors](https://img.shields.io/github/contributors/samerde/PSPreworkout.svg)](https://github.com/samerde/PSPreworkout/graphs/contributors/)
 
@@ -38,13 +38,20 @@ Get-Command -Module PSPreworkout
 
 ## Contributing
 
-Please feel free to use the issues or a PR to report bugs, suggest improvements, or add new ideas to the module!
+Please feel free submit an issue or a PR to report bugs, suggest improvements, or add new ideas to the module!
+
+## Presentations
+
+- [PSPreworkout Module Walkthrough](https://www.youtube.com/watch?v=cW5vRJaF_gk) at the PowerShell Usergroup Inn-Salzach - Thanks to the Inn-Salzach PowerShell User Group for inviting me to share my first public presentation!
 
 ## PSPreworkout Cmdlets
 <Details>
 <Summary>⤵️ Full List:</Summary>
 
 ## PSPreworkout Cmdlets
+### [Edit-PSReadLineHistoryFile](./docs/Edit-PSReadLineHistoryFile.md)
+Edit the PSReadLine History File
+
 ### [Edit-WingetSettingsFile](./docs/Edit-WingetSettingsFile.md)
 Edit the WinGet settings file.
 
@@ -63,6 +70,9 @@ Get available type accelerators.
 ### [Initialize-PSEnvironmentConfiguration](./docs/Initialize-PSEnvironmentConfiguration.md)
 Initialize configuration your PowerShell environment and git.
 
+### [Install-CommandNotFoundUtility](./docs/Install-CommandNotFoundUtility.md)
+Install and setup the WinGetCommandNotFound utility from Microsoft PowerToys.
+
 ### [Install-OhMyPosh](./docs/Install-OhMyPosh.md)
 Install Oh My Posh and add it to your profile.
 
@@ -78,6 +88,9 @@ Create a new secure credential.
 ### [New-ScriptFromTemplate](./docs/New-ScriptFromTemplate.md)
 Create a new advanced function from a template.
 
+### [Out-JsonFile](./docs/Out-JsonFile.md)
+Convert an object to JSON and write it to a file.
+
 ### [Set-ConsoleFont](./docs/Set-ConsoleFont.md)
 Set the font for your consoles.
 
@@ -86,6 +99,9 @@ Set environment variables.
 
 ### [Show-LoadedAssembly](./docs/Show-LoadedAssembly.md)
 Show all assemblies loaded in PowerShell.
+
+### [Show-WithoutEmptyProperty](./docs/Show-WithoutEmptyProperty.md)
+Show an object without its empty properties.
 
 ### [Test-IsElevated](./docs/Test-IsElevated.md)
 Check if you are running an elevated shell with administrator or root privileges.

@@ -235,7 +235,7 @@ function Initialize-PSEnvironmentConfiguration {
                 }
             }
         }
-        #endregion Install Things
+        #endregion Install Packages
 
         #region Windows Terminal
         $KeyPath = 'HKCU:\Console\%%Startup'
@@ -252,6 +252,7 @@ function Initialize-PSEnvironmentConfiguration {
             New-ItemProperty -Path 'HKCU:\Console\%%Startup' -Name 'DelegationTerminal' -Value '{E12CFF52-A866-4C77-9A90-F570A7AA2C6B}' -Force | Out-Null
         }
         #endregion Windows Terminal
+
     } # end process block
 
     end {

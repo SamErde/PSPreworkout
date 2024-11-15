@@ -1,25 +1,29 @@
 function Get-PowerShellPortable {
     <#
-        .SYNOPSIS
-        Download a portable version of PowerShell to run anywhere on demand.
+    .SYNOPSIS
+    Download a portable version of PowerShell to run anywhere on demand.
 
-        .DESCRIPTION
-        This function helps you download a zipped version of PowerShell 7.x that can be run anywhere without needing to install it.
+    .DESCRIPTION
+    This function helps you download a zipped version of PowerShell 7.x that can be run anywhere without needing to install it.
 
-        .PARAMETER Path
-        The path (directory) to download the PowerShell zip or tar.gz file into. Do not include a filename for the download.
+    .PARAMETER Path
+    The path (directory) to download the PowerShell zip or tar.gz file into. Do not include a filename for the download.
 
-        .PARAMETER Extract
-        Extract the downloaded file.
+    .PARAMETER Extract
+    Extract the downloaded file.
 
-        .EXAMPLE
-        Get-PowerShellPortable -Path $HOME -Extract
+    .EXAMPLE
+    Get-PowerShellPortable -Path $HOME -Extract
 
-        Download the latest ZIP/TAR of PowerShell to your $HOME folder. It will be extracted into a folder that matches the filename of the compressed archive.
+    Download the latest ZIP/TAR of PowerShell to your $HOME folder. It will be extracted into a folder that matches the filename of the compressed archive.
 
+    .NOTES
+    Author: Sam Erde
+    Version: 0.1.0
+    Modified: 2024/10/12
     #>
 
-    [CmdletBinding()]
+    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Get-PowerShellPortable')]
     [Alias('Get-PSPortable')]
     param (
         # Path to download and extract PowerShell to
@@ -35,10 +39,11 @@ function Get-PowerShellPortable {
 
     #region Determine Download Uri
     # Get the zip and tar.gz PowerShell download links for Windows, macOS, and Linux.
-    $ApiUrl = 'https://api.github.com/repos/PowerShell/PowerShell/releases/tags/v7.4.5'
-    $Response = Invoke-RestMethod -Uri $ApiUrl -Headers @{ 'User-Agent' = 'PowerShellScript' }
-    $Assets = $Response.assets
-    $DownloadLinks = $Assets | Where-Object { $_.browser_download_url -match '\.zip$|\.tar\.gz$' } | Select-Object -ExpandProperty browser_download_url
+    #$ApiUrl = 'https://api.github.com/repos/PowerShell/PowerShell/releases/tags/v7.4.5'
+    #$Response = Invoke-RestMethod -Uri $ApiUrl -Headers @{ 'User-Agent' = 'PowerShellScript' }
+    #$Assets = $Response.assets
+    #$DownloadLinks = $Assets | Where-Object { $_.browser_download_url -match '\.zip$|\.tar\.gz$' } | Select-Object -ExpandProperty browser_download_url
+    $DownloadLinks = (Invoke-RestMethod -Uri 'https://api.github.com/repos/PowerShell/PowerShell/releases/latest').assets.browser_download_url
 
     # Determine the platform and architecture
     $Architecture = [System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture

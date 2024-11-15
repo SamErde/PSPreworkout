@@ -127,6 +127,9 @@ Add-BuildTask ValidateRequirements {
     Write-Build Green '      ...Verification Complete!'
 } #ValidateRequirements
 
+# Updates the array for FunctionsToExport in the module manifest
+# <https://github.com/techthoughts2/Catesta/issues/97>
+
 # Synopsis: Import the current module manifest file for processing
 Add-BuildTask TestModuleManifest -Before ImportModuleManifest {
     Write-Build White '      Running module manifest tests...'
@@ -458,7 +461,7 @@ Add-BuildTask Build {
         $null = $scriptContent.AppendLine('')
         $null = $scriptContent.AppendLine('')
     }
-    $scriptContent.ToString() | Out-File -FilePath $script:BuildModuleRootFile -Encoding utf8 -Force
+    $scriptContent.ToString() | Out-File -FilePath $script:BuildModuleRootFile -Encoding:utf8 -Force
     Write-Build Gray '        ...Module creation complete.'
 
     Write-Build Gray '        Cleaning up leftover artifacts...'

@@ -30,7 +30,7 @@ function Install-WinGet {
     - Create the target folder if it does not already exist
 #>
 
-    [CmdletBinding()]
+    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Install-WinGet')]
     param (
 
         # Path to download the packages to (directory must already exist)
