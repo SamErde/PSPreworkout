@@ -35,9 +35,9 @@ function Out-JsonFile {
         [Object]
         $Object,
 
-        # Depth to serialize the object into JSON
+        # Depth to serialize the object into JSON. Default is 2.
         [Parameter()]
-        [Int16]
+        [Int32]
         $Depth = 2,
 
         # Full path and filename to save the JSON to.
