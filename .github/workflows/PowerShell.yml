@@ -5,11 +5,7 @@
 name: 👮‍♂️ PSScriptAnalyzer
 
 on:
-  push:
   pull_request:
-    branches:
-      - main
-      - prerelease
 
 permissions:
   contents: read
