@@ -6,7 +6,16 @@
     "@cspell/dict-csharp/cspell-ext.json"
   ],
   "words": ["RSAT"],
-  "ignoreWords": ["sarif", "psscriptanalyzer", "POWERSHELLGALLERY", "stefanzweifel", "pozil","antonyurchenko"],
+  "ignoreWords": [
+    "sarif",
+    "psscriptanalyzer",
+    "POWERSHELLGALLERY",
+    "stefanzweifel",
+    "pozil",
+    "antonyurchenko",
+    "Salzach",
+    "Usergroup"
+  ],
   "flagWords": [],
   "patterns": [
     {

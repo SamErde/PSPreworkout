@@ -12,3 +12,7 @@ Ignore
 !.vscode/launch.json
 !.vscode/extensions.json
 !.vscode/*.code-snippets
+
+### OS ###
+Thumbs.db
+.DS_Store
