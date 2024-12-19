@@ -508,18 +508,6 @@ Get environment variables with names that begin with the letter "u" in any targe
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
-          <maml:name>CentralProfile</maml:name>
-          <maml:Description>
-            <maml:para>The file path to your central PowerShell profile.</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
           <maml:name>Font</maml:name>
           <maml:Description>
             <maml:para>The font to use for your consoles (PowerShell, Windows PowerShell, git bash, etc.)</maml:para>
@@ -531,7 +519,7 @@ Get environment variables with names that begin with the letter "u" in any targe
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
           <maml:name>Packages</maml:name>
           <maml:Description>
             <maml:para>Packages to install with winget.</maml:para>
@@ -543,7 +531,7 @@ Get environment variables with names that begin with the letter "u" in any targe
           </dev:type>
           <dev:defaultValue>@('Microsoft.WindowsTerminal', 'git.git', 'JanDeDobbeleer.OhMyPosh')</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="6" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
           <maml:name>Modules</maml:name>
           <maml:Description>
             <maml:para>PowerShell modules to install.</maml:para>
@@ -553,7 +541,7 @@ Get environment variables with names that begin with the letter "u" in any targe
             <maml:name>String[]</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>@('CompletionPredictor', 'Microsoft.PowerShell.ConsoleGuiTools', 'Microsoft.PowerShell.PSResourceGet', 'posh-git', 'PowerShellForGitHub', 'Terminal-Icons')</dev:defaultValue>
+          <dev:defaultValue>@('CompletionPredictor', 'Microsoft.PowerShell.ConsoleGuiTools', 'Microsoft.PowerShell.PSResourceGet', 'posh-git', 'PowerShellForGitHub', 'Terminal-Icons', 'PSReadLine', 'PowerShellGet')</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>SkipPackages</maml:name>
@@ -605,18 +593,6 @@ Get environment variables with names that begin with the letter "u" in any targe
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
-        <maml:name>CentralProfile</maml:name>
-        <maml:Description>
-          <maml:para>The file path to your central PowerShell profile.</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
         <maml:name>Font</maml:name>
         <maml:Description>
           <maml:para>The font to use for your consoles (PowerShell, Windows PowerShell, git bash, etc.)</maml:para>
@@ -628,7 +604,7 @@ Get environment variables with names that begin with the letter "u" in any targe
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
         <maml:name>Packages</maml:name>
         <maml:Description>
           <maml:para>Packages to install with winget.</maml:para>
@@ -652,7 +628,7 @@ Get environment variables with names that begin with the letter "u" in any targe
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="6" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
         <maml:name>Modules</maml:name>
         <maml:Description>
           <maml:para>PowerShell modules to install.</maml:para>
@@ -662,7 +638,7 @@ Get environment variables with names that begin with the letter "u" in any targe
           <maml:name>String[]</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>@('CompletionPredictor', 'Microsoft.PowerShell.ConsoleGuiTools', 'Microsoft.PowerShell.PSResourceGet', 'posh-git', 'PowerShellForGitHub', 'Terminal-Icons')</dev:defaultValue>
+        <dev:defaultValue>@('CompletionPredictor', 'Microsoft.PowerShell.ConsoleGuiTools', 'Microsoft.PowerShell.PSResourceGet', 'posh-git', 'PowerShellForGitHub', 'Terminal-Icons', 'PSReadLine', 'PowerShellGet')</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>SkipModules</maml:name>
@@ -681,8 +657,8 @@ Get environment variables with names that begin with the letter "u" in any targe
     <command:returnValues />
     <maml:alertSet>
       <maml:alert>
-        <maml:para>Author: Sam Erde Version: 0.0.2 Modified: 2024/10/12</maml:para>
-        <maml:para>To Do     Add status/verbose output of changes being made     Create basic starter profile if none exist     Create dot-sourced profile     Create interactive picker for packages and modules (separate functions)     Bootstrap Out-GridView or Out-ConsoleGridView</maml:para>
+        <maml:para>Author: Sam Erde Version: 0.0.3 Modified: 2024/11/08</maml:para>
+        <maml:para>To Do     Add status/verbose output of changes being made     Create basic starter profile if none exist     Create dot-sourced profile     Create interactive picker for packages and modules (separate functions)     Bootstrap Out-GridView or Out-ConsoleGridView for the interactive picker     Do not install already installed packages     Do not install ConsoleGuiTools in Windows PowerShell</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -1439,6 +1415,18 @@ Get environment variables with names that begin with the letter "u" in any targe
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Depth</maml:name>
+          <maml:Description>
+            <maml:para>Depth to serialize the object into JSON. Default is 2.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>2</dev:defaultValue>
+        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -1453,6 +1441,18 @@ Get environment variables with names that begin with the letter "u" in any targe
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Depth</maml:name>
+        <maml:Description>
+          <maml:para>Depth to serialize the object into JSON. Default is 2.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>2</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>FilePath</maml:name>
@@ -1553,6 +1553,113 @@ Get environment variables with names that begin with the letter "u" in any targe
       <command:example>
         <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
         <dev:code>Set-ConsoleFont -Font 'FiraCode Nerd Font'</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Set-DefaultTerminal</command:name>
+      <command:verb>Set</command:verb>
+      <command:noun>DefaultTerminal</command:noun>
+      <maml:description>
+        <maml:para>Configure the default terminal for Windows</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>This function sets that default terminal in Windows to your choice of Windows PowerShell, PowerShell, Command Prompt, or Windows Terminal (default).</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Set-DefaultTerminal</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+          <maml:name>Name</maml:name>
+          <maml:Description>
+            <maml:para>The name of the application to use as the default terminal in Windows.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>WindowsTerminal</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
+          <maml:name>WhatIf</maml:name>
+          <maml:Description>
+            <maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
+          </maml:Description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
+          <maml:name>Confirm</maml:name>
+          <maml:Description>
+            <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
+          </maml:Description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>Name</maml:name>
+        <maml:Description>
+          <maml:para>The name of the application to use as the default terminal in Windows.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>WindowsTerminal</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
+        <maml:name>WhatIf</maml:name>
+        <maml:Description>
+          <maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
+        <maml:name>Confirm</maml:name>
+        <maml:Description>
+          <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes />
+    <command:returnValues />
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para>Author: Sam Erde Version: 0.0.1 Modified: 2024-11-15</maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
+        <dev:code>Set-DefaultTerminal -Name 'WindowsTerminal'</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>

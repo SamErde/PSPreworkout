@@ -2,7 +2,7 @@
 Module Name: PSPreworkout
 Module Guid: 378339de-a0df-4d44-873b-4fd32c388e06
 Download Help Link: NA
-Help Version: 1.5.0
+Help Version: 1.6.0
 Locale: en-US
 ---
 
@@ -55,6 +55,9 @@ Convert an object to JSON and write it to a file.
 
 ### [Set-ConsoleFont](Set-ConsoleFont.md)
 Set the font for your consoles.
+
+### [Set-DefaultTerminal](Set-DefaultTerminal.md)
+Configure the default terminal for Windows
 
 ### [Set-EnvironmentVariable](Set-EnvironmentVariable.md)
 Set environment variables.

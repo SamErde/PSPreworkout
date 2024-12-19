@@ -453,11 +453,11 @@ function Initialize-PSEnvironmentConfiguration {
         [string]
         $Email,
 
-        # Path to your central profile, if you use this feature
-        [Parameter()]
-        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -IsValid })]
-        [string]
-        $CentralProfile,
+        # Path to your central profile, if you use this feature (draft)
+        # [Parameter()]
+        # [ValidateScript({ Test-Path -Path $_ -PathType Leaf -IsValid })]
+        # [string]
+        # $CentralProfile,
 
         # The font that you want to use for consoles
         [Parameter()]
@@ -484,10 +484,10 @@ function Initialize-PSEnvironmentConfiguration {
         # [switch]
         # $PickPackages,
 
-        # PowerShell modules to install
+        # PowerShell modules to install or force updates on
         [Parameter()]
         [string[]]
-        $Modules = @('CompletionPredictor', 'Microsoft.PowerShell.ConsoleGuiTools', 'Microsoft.PowerShell.PSResourceGet', 'posh-git', 'PowerShellForGitHub', 'Terminal-Icons'),
+        $Modules = @('CompletionPredictor', 'Microsoft.PowerShell.ConsoleGuiTools', 'Microsoft.PowerShell.PSResourceGet', 'posh-git', 'PowerShellForGitHub', 'Terminal-Icons', 'PSReadLine', 'PowerShellGet'),
 
         # Do not install any modules
         [Parameter()]
@@ -503,6 +503,7 @@ function Initialize-PSEnvironmentConfiguration {
     begin {
         # Suppress PSScriptAnalyzer Errors
         $commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameter | Out-Null
+
     }
 
     process {
@@ -511,17 +512,42 @@ function Initialize-PSEnvironmentConfiguration {
         if ($PSBoundParameters.ContainsKey('Email')) { git config --global user.email $Email }
         #endregion Configure Git
 
+
+        #region Install PowerShell modules
+        Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+        if ($Modules -and -not $SkipModules.IsPresent) {
+            foreach ($module in $Modules) {
+                Remove-Module -Name $module -Force -ErrorAction SilentlyContinue
+                $ModuleSplat = @{
+                    Name       = $module
+                    Scope      = 'CurrentUser'
+                    Repository = 'PSGallery'
+                }
+                try {
+                    Write-Verbose "Installing module: $module"
+                    Install-Module @ModuleSplat -AllowClobber -Force
+                } catch {
+                    $_
+                }
+                Import-Module -Name $module
+            }
+        }
+        # Update Pester and ignore the publisher warning
+        Install-Module -Name Pester -Repository PSGallery -SkipPublisherCheck -AllowClobber -Force
+        #endregion Install PowerShell modules
+
+
         #region Default Settings, All Versions
         $PSDefaultParameterValues = @{
             'ConvertTo-Csv:NoTypeInformation' = $True # Does not exist in pwsh
             'ConvertTo-Xml:NoTypeInformation' = $True
             'Export-Csv:NoTypeInformation'    = $True # Does not exist in pwsh
             'Format-[WT]*:Autosize'           = $True
-            'Get-Help:ShowWindow'             = $False
             '*:Encoding'                      = 'utf8'
             'Out-Default:OutVariable'         = 'LastOutput'
         }
 
+        # Set input and output encoding both to UTF8 (already default in pwsh)
         $OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
 
         $PSReadLineOptions = @{
@@ -575,35 +601,40 @@ function Initialize-PSEnvironmentConfiguration {
         #endregion Font
 
 
-        #region Install Things
-        # Install PowerShell modules
-        if ($Modules -and -not $SkipModules.IsPresent) {
-            foreach ($module in $Modules) {
-                try {
-                    Write-Verbose "Installing module: $module"
-                    Install-Module -Name $module -Scope CurrentUser -AcceptLicense
-                } catch {
-                    $_
-                }
-            }
-        }
-
+        #region Install Packages
         # Install packages
         if ($Packages -and -not $SkipPackages.IsPresent) {
             foreach ($package in $Packages) {
                 try {
                     Write-Verbose "Installing package: $package."
-                    winget install --id $package --accept-source-agreements --accept-package-agreements --scope user
+                    winget install --id $package --accept-source-agreements --accept-package-agreements --source winget --scope user --silent
                 } catch {
                     $_
                 }
             }
         }
-        #endregion Install Things
+        #endregion Install Packages
+
+        #region Windows Terminal
+        $KeyPath = 'HKCU:\Console\%%Startup'
+        if (-not (Test-Path -Path $keyPath)) {
+            New-Item -Path $KeyPath | Out-Null
+        } else {
+            Write-Verbose -Message "Key already exists: $KeyPath"
+        }
+
+        # Set Windows Terminal as the default terminal application if it is installed on this system.
+        if (Test-Path -Path "$env:LOCALAPPDATA\Microsoft\WindowsApps\Microsoft.WindowsTerminal_8wekyb3d8bbwe\wt.exe" -PathType Leaf) {
+            # Set Windows Terminal as the default terminal application for Windows.
+            New-ItemProperty -Path 'HKCU:\Console\%%Startup' -Name 'DelegationConsole' -Value '{2EACA947-7F5F-4CFA-BA87-8F7FBEEFBE69}' -Force | Out-Null
+            New-ItemProperty -Path 'HKCU:\Console\%%Startup' -Name 'DelegationTerminal' -Value '{E12CFF52-A866-4C77-9A90-F570A7AA2C6B}' -Force | Out-Null
+        }
+        #endregion Windows Terminal
+
     } # end process block
 
     end {
-    }
+    } # end end block
 }
 
 # Register the argument completer for Set-ConsoleFont.
@@ -949,6 +980,11 @@ function Out-JsonFile {
         [Object]
         $Object,
 
+        # Depth to serialize the object into JSON. Default is 2.
+        [Parameter()]
+        [Int32]
+        $Depth = 2,
+
         # Full path and filename to save the JSON to.
         [Parameter(Position = 1)]
         [ValidateNotNullOrEmpty()]
@@ -994,7 +1030,7 @@ function Out-JsonFile {
     } # end begin block
 
     process {
-        $Object | ConvertTo-Json | Out-File -FilePath $OutFile -Force
+        $Object | ConvertTo-Json -Depth $Depth | Out-File -FilePath $OutFile -Force
     } # end process block
 
     end {
@@ -1053,6 +1089,48 @@ Register-ArgumentCompleter -CommandName Set-ConsoleFont -ParameterName Font -Scr
     # Suppress PSScriptAnalyzer Errors
     $commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameter | Out-Null
 }
+
+
+
+function Set-DefaultTerminal {
+    <#
+.EXTERNALHELP PSPreworkout-help.xml
+#>
+
+    [CmdletBinding(SupportsShouldProcess)]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'OK')]
+    param (
+        # The name of the application to use as the default terminal in Windows.
+        [Parameter(Mandatory = $false)]
+        [string]$Name = 'WindowsTerminal'
+    )
+
+    begin {
+        $KeyPath = 'HKCU:\Console\%%Startup'
+        if (-not (Test-Path -Path $keyPath)) {
+            New-Item -Path $KeyPath | Out-Null
+        } else {
+            Write-Verbose -Message "Key already exists: $KeyPath"
+        }
+    } # end begin block
+
+    process {
+        switch ($Name) {
+            'WindowsTerminal' {
+                New-ItemProperty -Path 'HKCU:\Console\%%Startup' -Name 'DelegationConsole' -Value '{2EACA947-7F5F-4CFA-BA87-8F7FBEEFBE69}' -Force | Out-Null
+                New-ItemProperty -Path 'HKCU:\Console\%%Startup' -Name 'DelegationTerminal' -Value '{E12CFF52-A866-4C77-9A90-F570A7AA2C6B}' -Force | Out-Null
+            }
+            default {
+                Write-Information -MessageData 'No terminal application was specified.' -InformationAction Continue
+            }
+        }
+    } # end process block
+
+    end {
+        Write-Information -MessageData "Default terminal set to: ${Name}." -InformationAction Continue
+    } # end end block
+
+} # end function Set-DefaultTerminal
 
 
 
