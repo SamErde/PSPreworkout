@@ -8,12 +8,12 @@
 
     "ignoreWords": [
         "stefanzweifel",
-        "diffy"
+        "diffy",
+        "sarif",
+        "psscriptanalyzer"
     ],
 
     "flagWords": [
-        "yeet",
-        "rizz"
     ],
 
     "patterns": [
