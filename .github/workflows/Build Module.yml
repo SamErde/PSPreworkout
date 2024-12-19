@@ -9,6 +9,9 @@
 name: 👷 Build PSPreworkout Module
 on:
   pull_request:
+    branches:
+      - main
+      - prerelease
     paths-ignore:
       - '**.md'
       - 'docs/**'
@@ -16,10 +19,10 @@ on:
   push:
     paths:
       - 'src/PSPreworkout/**'
-    #paths-ignore:
-    #  - '**.md'
-    #  - 'docs/**'
-    #  - 'src/Drafts/**'
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - 'src/Drafts/**'
   workflow_dispatch:
 
 jobs:

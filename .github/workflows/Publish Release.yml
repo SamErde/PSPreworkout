@@ -4,9 +4,14 @@ name: 🏷️ Publish from Changelog Tag
 on:
   push:
     tags: ['*']
+    branches:
+      - main
+      - prerelease
   workflow_dispatch:
+
 permissions:
   contents: write
+
 jobs:
   release:
     name: 🚀 Release and Publish
