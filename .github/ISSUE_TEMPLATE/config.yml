@@ -1,8 +1,14 @@
 blank_issues_enabled: true
 contact_links:
-  - name: Questions & Discussions ✍️
+  - name: Questions & Discussions 💬
     url: https://github.com/SamErde/PSPreworkout/discussions
     about: Please use GitHub discussions for any questions.
+  - name: Documentation 📚
+    url: https://day3bits.com/PSPreworkout
+    about: Documentation for the PSPreworkout project.
+  - name: ReadTheDocs 📖 (Alternate/Backup Documentation Site)
+    url: https://pspreworkout.readthedocs.io/en/latest/
+    about: ReadTheDocs for the PSPreworkout project.
 #  - name: Basic FAQs ❓
 #    url: https://github.com/SamErde/PSPreworkout/wiki/FAQs
 #    about: Answers to the Basic Frequently Asked Questions
