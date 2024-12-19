@@ -7,15 +7,16 @@
 # https://github.com/actions/upload-artifact#where-does-the-upload-go
 name: 📦 Build PSPreworkout Module
 on:
-  pull_request:
-    paths-ignore:
-      - '**.md'
-      - 'docs/**'
-      - 'src/Drafts/**'
-  push:
-    paths:
-      - 'src/**'
-      - '.github/workflows/Build Module.yml'
+  workflow_dispatch:
+  #pull_request:
+  #  paths-ignore:
+  #    - '**.md'
+  #    - 'docs/**'
+  #    - 'src/Drafts/**'
+  #push:
+  #  paths:
+  #    - 'src/**'
+  #    - '.github/workflows/Build Module.yml'
     #paths-ignore:
     #  - '**.md'
     #  - 'docs/**'
