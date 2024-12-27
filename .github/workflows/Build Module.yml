@@ -19,7 +19,11 @@ on:
   push:
     paths:
       - 'src/PSPreworkout/**'
-    #paths-ignore: # Cannot use both paths and paths-ignore (don't need both because paths is more specific).
+      # Ignore Paths that begin with an '!'
+      - '!**.md'
+      - '!docs/**'
+      - '!src/Drafts/**'
+    #paths-ignore: # Cannot use both paths and paths-ignore simultaneously.
     #  - '**.md'
     #  - 'docs/**'
     #  - 'src/Drafts/**'
@@ -31,31 +35,40 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
+
     steps:
+
     - name: ✅ Checkout Repository
       uses: actions/checkout@v4
+
     - name: 📁 Display the Path
       shell: pwsh
       run: echo ${env:PATH}
+
     - name: 🔢 Display the Version
       shell: pwsh
       run: $PSVersionTable
-    # uncomment below to explore what modules/variables/env variables are available in the build image
+
+    # Uncomment below to explore what modules/variables/env variables are available in the build image
     - name: 📦 Modules and Variables Display
       shell: pwsh
       run: Get-Module -ListAvailable; (Get-Variable).GetEnumerator() | Sort-Object Name | Out-String; (Get-ChildItem env:*).GetEnumerator() | Sort-Object Name | Out-String
+
     - name: 🥾 Bootstrap
       shell: pwsh
       run: ./actions_bootstrap.ps1
+
     - name: 👷‍♂️ Test and Build
       shell: pwsh
       run: Invoke-Build -File .\src\PSPreworkout.build.ps1
+
     - name: 🧪 Upload Pester Results
       uses: actions/upload-artifact@v4
       with:
         name: pester-results
         path: .\src\Artifacts\testOutput
         if-no-files-found: warn
+
     - name: 📦 Upload Build
       uses: actions/upload-artifact@v4
       with:
@@ -63,6 +76,7 @@ jobs:
         path: .\src\Archive
         if-no-files-found: warn
         # git-auto-commit-action only runs on Linux-based platforms.
+
     - name: 💾 Commit Changes
       uses: stefanzweifel/git-auto-commit-action@v5
       with:
