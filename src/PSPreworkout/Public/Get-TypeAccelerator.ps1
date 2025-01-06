@@ -4,7 +4,8 @@ function Get-TypeAccelerator {
     Get available type accelerators.
 
     .DESCRIPTION
-    Get available type accelerators. These can be useful when trying to find or remember the different type accellerators that are available to use in PowerShell.
+    Get available type accelerators. These can be useful when trying to find or remember the different type accelerators
+    that are available to use in PowerShell.
 
     .PARAMETER Name
     The name of a specific type accelerator to get.
@@ -23,9 +24,6 @@ function Get-TypeAccelerator {
     Modified: 2024/10/29
 
     Thanks to Jeff Hicks (@JDHITSolutions) for helpful suggestions and improvements on this output!
-
-    Change Log: Removed the grid view option to allow user flexibility in how they want to output the results.
-    To Do: Add a way to filter/search the 'type' property.
 
     #>
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Get-TypeAccelerator')]
