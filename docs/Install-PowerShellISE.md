@@ -17,10 +17,10 @@ Install-PowerShellISE [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-This script installs Windows PowerShell ISE if it was previously removed.
-It includes a step that temporarily
-resets the Windows Automatic Update server source in the registry, which may resolve errors that some people
-experience while trying to add Windows Capabilities.
+This script installs Windows PowerShell ISE if it was not installed or previously removed.
+It includes a step that
+temporarily resets the Windows Automatic Update server source in the registry, which may resolve errors that some
+systems experience while trying to add Windows Capabilities.
 
 ## EXAMPLES
 
@@ -41,13 +41,9 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 
 ## NOTES
 Author: Sam Erde
-Version: 0.1.0
+Version: 1.0.0
 Modified: 2025-01-07
 
-To Do:
-    - Add support for Windows Server OS features
-    - Add parameter to make the Windows Update registry change optional
-
-Requires running as admin but adding the \`requires\` tag forces the entire build to validate admin rights.
+To Do: Add parameter to make the Windows Update registry change optional.
 
 ## RELATED LINKS

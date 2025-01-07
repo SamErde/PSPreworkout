@@ -18,7 +18,9 @@ Install-WinGet [[-DownloadPath] <String>] [-DownloadOnly] [-KeepDownload]
 ```
 
 ## DESCRIPTION
-Install WinGet on Windows Sandbox (or on builds of Windows 10 prior to build 1709 that did not ship with it preinstalled).
+Install WinGet on Windows Sandbox (or on builds of Windows 10 prior to build 1709 that did not ship with it
+preinstalled).
+This script exists mostly as an exercise, as there are already many ways to install WinGet.
 
 ## EXAMPLES
 
@@ -90,6 +92,10 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## OUTPUTS
 
 ## NOTES
+Author: Sam Erde
+Version: 0.1.0
+Modified: 2024-10-23
+
 To Do:
 - Check for newer versions of packages on GitHub
 - Error handling

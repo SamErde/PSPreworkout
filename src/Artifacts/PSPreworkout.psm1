@@ -188,7 +188,7 @@ function Get-EnvironmentVariable {
                     PID         = if ($thisTarget -eq 'Process') { $PID } else { $null }
                     ProcessName = if ($thisTarget -eq 'Process') { (Get-Process -Id $PID).Name } else { $null }
                 }
-                $item = New-Object -TypeName psobject -Property $ThisEnvironmentVariable
+                $item = New-Object -TypeName PSObject -Property $ThisEnvironmentVariable
                 $EnvironmentVariables.Add($item)
 
             } elseif ( $PSBoundParameters.ContainsKey('Pattern') ) {
@@ -205,7 +205,7 @@ function Get-EnvironmentVariable {
                         PID         = if ($thisTarget -eq 'Process') { $PID } else { $null }
                         ProcessName = if ($thisTarget -eq 'Process') { (Get-Process -Id $PID).Name } else { $null }
                     }
-                    $item = New-Object -TypeName psobject -Property $ThisEnvironmentVariable
+                    $item = New-Object -TypeName PSObject -Property $ThisEnvironmentVariable
                     $EnvironmentVariables.Add($item)
                 }
 
@@ -220,7 +220,7 @@ function Get-EnvironmentVariable {
                         PID         = if ($thisTarget -eq 'Process') { $PID } else { $null }
                         ProcessName = if ($thisTarget -eq 'Process') { (Get-Process -Id $PID).Name } else { $null }
                     }
-                    $item = New-Object -TypeName psobject -Property $ThisEnvironmentVariable
+                    $item = New-Object -TypeName PSObject -Property $ThisEnvironmentVariable
                     $EnvironmentVariables.Add($item)
                 }
 
@@ -234,7 +234,7 @@ function Get-EnvironmentVariable {
                         PID         = if ($thisTarget -eq 'Process') { $PID } else { $null }
                         ProcessName = if ($thisTarget -eq 'Process') { (Get-Process -Id $PID).Name } else { $null }
                     }
-                    $item = New-Object -TypeName psobject -Property $ThisEnvironmentVariable
+                    $item = New-Object -TypeName PSObject -Property $ThisEnvironmentVariable
                     $EnvironmentVariables.Add($item)
                 }
             }
@@ -801,15 +801,29 @@ function Install-PowerShellISE {
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Install-PowerShellISE')]
     param ()
 
+    # Check if running as admin
+    if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
+        Write-Error 'This script must be run as an administrator.'
+        return
+    }
+
+    $OSCaption = (Get-CimInstance -ClassName Win32_OperatingSystem).Caption
+
+    # Quick check to see if running on Windows.
+    if (-not $OSCaption -match 'Windows') {
+        Write-Error 'This script is only for Windows OS.'
+        return
+    }
+
     # Check if running a Windows client or Windows Server OS
-    if ((Get-CimInstance -ClassName Win32_OperatingSystem).Caption -match 'Windows Server') {
+    if ($OSCaption -match 'Windows Server') {
 
         # Windows Server OS
-        Write-Information 'Support for [re-]installing the Windows PowerShell ISE on Windows Server is not yet fully implemented.' -InformationAction Continue
         if ((Get-WindowsFeature -Name PowerShell-ISE -ErrorAction SilentlyContinue).Installed) {
             Write-Output 'The Windows PowerShell ISE is already installed on this Windows Server.'
         } else {
-            Write-Output 'The Windows PowerShell ISE is not installed on this Windows Server.'
+            Import-Module ServerManager
+            Add-WindowsFeature PowerShell-ISE
         }
 
     } else {
@@ -1054,7 +1068,7 @@ function Set-ConsoleFont {
 .EXTERNALHELP PSPreworkout-help.xml
 #>
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Set-ConsoleFont')]
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'Agument completers are weird.')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'Argument completers are weird.')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]
@@ -1086,7 +1100,7 @@ function Set-ConsoleFont {
 
 # Register the argument completer for Set-ConsoleFont.
 Register-ArgumentCompleter -CommandName Set-ConsoleFont -ParameterName Font -ScriptBlock {
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'Agument completers are weird.')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'Argument completers are weird.')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]
@@ -1403,7 +1417,7 @@ function Update-AllTheThings {
             Write-Progress @ProgressParam1
 
             # Do not update prerelease modules
-            if ($module.Version -match 'alpha|beta|prelease|preview') {
+            if ($module.Version -match 'alpha|beta|prerelease|preview') {
                 Write-Information "`t`tSkipping $($module.Name) because a prerelease version is currently installed." -InformationAction Continue
                 continue
             }
@@ -1559,7 +1573,7 @@ function Update-AllTheThings {
                 choco feature enable -n=allowGlobalConfirmation
                 choco feature disable --name=showNonElevatedWarnings
             } else {
-                Write-Verbose "Run once as an administrator to disable Chocoately's showNonElevatedWarnings." -Verbose
+                Write-Verbose "Run once as an administrator to disable Chocolately's showNonElevatedWarnings." -Verbose
             }
             choco upgrade chocolatey -y --limit-output --accept-license --no-color
             choco upgrade all -y --limit-output --accept-license --no-color
