@@ -57,7 +57,7 @@ function Initialize-PSEnvironmentConfiguration {
     #>
 
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Initialize-PSEnvironmentConfiguration')]
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'Agument completers are weird.')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'Argument completers are weird.')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidGlobalVars', '', Justification = 'PSReadLine Handler')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '')]
@@ -164,7 +164,7 @@ function Initialize-PSEnvironmentConfiguration {
             'ConvertTo-Csv:NoTypeInformation' = $True # Does not exist in pwsh
             'ConvertTo-Xml:NoTypeInformation' = $True
             'Export-Csv:NoTypeInformation'    = $True # Does not exist in pwsh
-            'Format-[WT]*:Autosize'           = $True
+            'Format-[WT]*:AutoSize'           = $True
             '*:Encoding'                      = 'utf8'
             'Out-Default:OutVariable'         = 'LastOutput'
         }
@@ -261,7 +261,7 @@ function Initialize-PSEnvironmentConfiguration {
 
 # Register the argument completer for Set-ConsoleFont.
 Register-ArgumentCompleter -CommandName Set-ConsoleFont -ParameterName Font -ScriptBlock {
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'Agument completers are weird.')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'Argument completers are weird.')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]

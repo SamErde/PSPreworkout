@@ -144,7 +144,7 @@ function Get-EnvironmentVariable {
                     PID         = if ($thisTarget -eq 'Process') { $PID } else { $null }
                     ProcessName = if ($thisTarget -eq 'Process') { (Get-Process -Id $PID).Name } else { $null }
                 }
-                $item = New-Object -TypeName psobject -Property $ThisEnvironmentVariable
+                $item = New-Object -TypeName PSObject -Property $ThisEnvironmentVariable
                 $EnvironmentVariables.Add($item)
 
             } elseif ( $PSBoundParameters.ContainsKey('Pattern') ) {
@@ -161,7 +161,7 @@ function Get-EnvironmentVariable {
                         PID         = if ($thisTarget -eq 'Process') { $PID } else { $null }
                         ProcessName = if ($thisTarget -eq 'Process') { (Get-Process -Id $PID).Name } else { $null }
                     }
-                    $item = New-Object -TypeName psobject -Property $ThisEnvironmentVariable
+                    $item = New-Object -TypeName PSObject -Property $ThisEnvironmentVariable
                     $EnvironmentVariables.Add($item)
                 }
 
@@ -176,7 +176,7 @@ function Get-EnvironmentVariable {
                         PID         = if ($thisTarget -eq 'Process') { $PID } else { $null }
                         ProcessName = if ($thisTarget -eq 'Process') { (Get-Process -Id $PID).Name } else { $null }
                     }
-                    $item = New-Object -TypeName psobject -Property $ThisEnvironmentVariable
+                    $item = New-Object -TypeName PSObject -Property $ThisEnvironmentVariable
                     $EnvironmentVariables.Add($item)
                 }
 
@@ -190,7 +190,7 @@ function Get-EnvironmentVariable {
                         PID         = if ($thisTarget -eq 'Process') { $PID } else { $null }
                         ProcessName = if ($thisTarget -eq 'Process') { (Get-Process -Id $PID).Name } else { $null }
                     }
-                    $item = New-Object -TypeName psobject -Property $ThisEnvironmentVariable
+                    $item = New-Object -TypeName PSObject -Property $ThisEnvironmentVariable
                     $EnvironmentVariables.Add($item)
                 }
             }

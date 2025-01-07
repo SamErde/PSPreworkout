@@ -84,5 +84,8 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## OUTPUTS
 
 ## NOTES
+Author: Sam Erde
+Version: 1.0.0
+Modified: 2024-10-23
 
 ## RELATED LINKS

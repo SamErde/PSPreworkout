@@ -59,7 +59,9 @@ setLanguage(uri, 'powershell');
     } # end process block
 
     end {
-        #Remove-Item -Path $TempScriptFile -Confirm:$false
+        if ($TempScriptFile) {
+            #Remove-Item -Path $TempScriptFile -Confirm:$false -ErrorAction SilentlyContinue | Out-Null
+        }
     } # end end block
 
 } # end function Edit-PSreadLineHistoryFile
@@ -186,7 +188,7 @@ function Get-EnvironmentVariable {
                     PID         = if ($thisTarget -eq 'Process') { $PID } else { $null }
                     ProcessName = if ($thisTarget -eq 'Process') { (Get-Process -Id $PID).Name } else { $null }
                 }
-                $item = New-Object -TypeName psobject -Property $ThisEnvironmentVariable
+                $item = New-Object -TypeName PSObject -Property $ThisEnvironmentVariable
                 $EnvironmentVariables.Add($item)
 
             } elseif ( $PSBoundParameters.ContainsKey('Pattern') ) {
@@ -203,7 +205,7 @@ function Get-EnvironmentVariable {
                         PID         = if ($thisTarget -eq 'Process') { $PID } else { $null }
                         ProcessName = if ($thisTarget -eq 'Process') { (Get-Process -Id $PID).Name } else { $null }
                     }
-                    $item = New-Object -TypeName psobject -Property $ThisEnvironmentVariable
+                    $item = New-Object -TypeName PSObject -Property $ThisEnvironmentVariable
                     $EnvironmentVariables.Add($item)
                 }
 
@@ -218,7 +220,7 @@ function Get-EnvironmentVariable {
                         PID         = if ($thisTarget -eq 'Process') { $PID } else { $null }
                         ProcessName = if ($thisTarget -eq 'Process') { (Get-Process -Id $PID).Name } else { $null }
                     }
-                    $item = New-Object -TypeName psobject -Property $ThisEnvironmentVariable
+                    $item = New-Object -TypeName PSObject -Property $ThisEnvironmentVariable
                     $EnvironmentVariables.Add($item)
                 }
 
@@ -232,7 +234,7 @@ function Get-EnvironmentVariable {
                         PID         = if ($thisTarget -eq 'Process') { $PID } else { $null }
                         ProcessName = if ($thisTarget -eq 'Process') { (Get-Process -Id $PID).Name } else { $null }
                     }
-                    $item = New-Object -TypeName psobject -Property $ThisEnvironmentVariable
+                    $item = New-Object -TypeName PSObject -Property $ThisEnvironmentVariable
                     $EnvironmentVariables.Add($item)
                 }
             }
@@ -281,11 +283,6 @@ function Get-PowerShellPortable {
     )
 
     #region Determine Download Uri
-    # Get the zip and tar.gz PowerShell download links for Windows, macOS, and Linux.
-    #$ApiUrl = 'https://api.github.com/repos/PowerShell/PowerShell/releases/tags/v7.4.5'
-    #$Response = Invoke-RestMethod -Uri $ApiUrl -Headers @{ 'User-Agent' = 'PowerShellScript' }
-    #$Assets = $Response.assets
-    #$DownloadLinks = $Assets | Where-Object { $_.browser_download_url -match '\.zip$|\.tar\.gz$' } | Select-Object -ExpandProperty browser_download_url
     $DownloadLinks = (Invoke-RestMethod -Uri 'https://api.github.com/repos/PowerShell/PowerShell/releases/latest').assets.browser_download_url
 
     # Determine the platform and architecture
@@ -294,7 +291,8 @@ function Get-PowerShellPortable {
     if (-not $Architecture) { $Architecture = $([System.Environment]::GetEnvironmentVariable('PROCESSOR_ARCHITECTURE')).Replace('AMD64', 'X64') }
 
     # Set the pattern for the ZIP file based on the OS and architecture
-    $FilePattern = if ( [System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform([System.Runtime.InteropServices.OSPlatform]::Windows) ) {
+    $FilePattern =
+    if ( [System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform([System.Runtime.InteropServices.OSPlatform]::Windows) ) {
         "win-$Architecture.zip"
     } elseif ( [System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform([System.Runtime.InteropServices.OSPlatform]::Linux) ) {
         "linux-$Architecture.tar.gz"
@@ -376,13 +374,13 @@ function Get-PowerShellPortable {
         if (-not $IsLinux -and -not $IsMacOS) {
             # Windows
             try {
-                # Expand the zip file into a folder that matches the zip filename without the zip extenstion
+                # Expand the zip file into a folder that matches the zip filename without the zip extension
                 if (Test-Path -PathType Container -Path (Join-Path -Path $Path -ChildPath $PwshDirectory)) {
                     Expand-Archive -Path $OutFilePath -DestinationPath (Join-Path -Path $Path -ChildPath $PwshDirectory) -Force
                     Write-Information -MessageData "PowerShell has been extracted to $PwshPath" -InformationAction Continue
                     Write-Information -MessageData "Run '$PwshPath\pwsh.exe' to launch the latest version of PowerShell without installing it!" -InformationAction Continue
                 } else {
-                    Write-Warning -Message "The target folder $Path\$Pwshdirectory does not exist." -WarningAction Stop
+                    Write-Warning -Message "The target folder $Path\$PwshDirectory does not exist." -WarningAction Stop
                 }
             } catch {
                 Write-Error "Failed to expand the archive $OutFilePath."
@@ -435,7 +433,7 @@ function Initialize-PSEnvironmentConfiguration {
 #>
 
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Initialize-PSEnvironmentConfiguration')]
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'Agument completers are weird.')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'Argument completers are weird.')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidGlobalVars', '', Justification = 'PSReadLine Handler')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '')]
@@ -542,7 +540,7 @@ function Initialize-PSEnvironmentConfiguration {
             'ConvertTo-Csv:NoTypeInformation' = $True # Does not exist in pwsh
             'ConvertTo-Xml:NoTypeInformation' = $True
             'Export-Csv:NoTypeInformation'    = $True # Does not exist in pwsh
-            'Format-[WT]*:Autosize'           = $True
+            'Format-[WT]*:AutoSize'           = $True
             '*:Encoding'                      = 'utf8'
             'Out-Default:OutVariable'         = 'LastOutput'
         }
@@ -639,7 +637,7 @@ function Initialize-PSEnvironmentConfiguration {
 
 # Register the argument completer for Set-ConsoleFont.
 Register-ArgumentCompleter -CommandName Set-ConsoleFont -ParameterName Font -ScriptBlock {
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'Agument completers are weird.')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'Argument completers are weird.')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]
@@ -658,36 +656,29 @@ function Install-CommandNotFoundUtility {
     <#
 .EXTERNALHELP PSPreworkout-help.xml
 #>
-
+    #requires -version 7.4
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Install-CommandNotFoundUtility')]
-
     param (
-
     )
 
     begin {
-
     } # end begin block
 
     process {
-        # Can be installed independently of PowerToys now
-        # Start-Process 'winget' -ArgumentList 'install --id Microsoft.PowerToys --source winget' -Wait -NoNewWindow
-
-        # To Do: Check for installed module and module version
-        Install-Module -Name Microsoft.WinGet.CommandNotFound -Scope CurrentUser -Force
-        Import-Module -Name Microsoft.WinGet.CommandNotFound
+        Install-Module -Name Microsoft.WinGet.CommandNotFound -Scope CurrentUser
+        try {
+            Import-Module -Name Microsoft.WinGet.CommandNotFound -ErrorAction SilentlyContinue
+        } catch [System.InvalidOperationException] {
+            Write-Warning -Message "Received the error `"$_`" while importing the 'Microsoft.WinGet.CommandNotFound module. The module may have already been installed and imported in the current session. This can usually be ignored.`n"
+        } # end try/catch block
 
         # To Do: Check if already enabled:
         Enable-ExperimentalFeature -Name 'PSFeedbackProvider'
         Enable-ExperimentalFeature -Name 'PSCommandNotFoundSuggestion'
-
-        # Add to profile:
-        # <https://github.com/microsoft/PowerToys/blob/main/src/settings-ui/Settings.UI/Assets/Settings/Scripts/EnableModule.ps1>
-
     } # end process block
 
     end {
-
+        Write-Information -MessageData "`nThe WinGetCommandNotFound utility has been installed. Be sure to add it to your PowerShell profile with `Import-Module Microsoft.WinGet.CommandNotFound`.`n`nYou may also run <https://github.com/microsoft/PowerToys/blob/main/src/settings-ui/Settings.UI/Assets/Settings/Scripts/EnableModule.ps1> to perform this step automatically.`n" -InformationAction Continue
     } # end end block
 
 } # end function Install-CommandNotFoundUtility
@@ -810,24 +801,54 @@ function Install-PowerShellISE {
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Install-PowerShellISE')]
     param ()
 
-    if ((Get-WindowsCapability -Name 'Microsoft.Windows.PowerShell.ISE~~~~0.0.1.0' -Online).State -eq 'Installed') {
-        Write-Output 'The Windows PowerShell ISE is already installed.'
-    } else {
-        # Resetting the Windows Update source sometimes resolves errors when trying to add Windows capabilities
-        $CurrentWUServer = Get-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU' -Name 'UseWUServer' | Select-Object -ExpandProperty UseWUServer
-        Set-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU' -Name 'UseWUServer' -Value 0
-        Restart-Service wuauserv
+    # Check if running as admin
+    if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
+        Write-Error 'This script must be run as an administrator.'
+        return
+    }
 
-        try {
-            Get-WindowsCapability -Name Microsoft.Windows.PowerShell.ISE~~~~0.0.1.0 -Online | Add-WindowsCapability -Online -Verbose
-        } catch {
-            Write-Error "There was a problem adding the Windows PowerShell ISE: $error"
+    $OSCaption = (Get-CimInstance -ClassName Win32_OperatingSystem).Caption
+
+    # Quick check to see if running on Windows.
+    if (-not $OSCaption -match 'Windows') {
+        Write-Error 'This script is only for Windows OS.'
+        return
+    }
+
+    # Check if running a Windows client or Windows Server OS
+    if ($OSCaption -match 'Windows Server') {
+
+        # Windows Server OS
+        if ((Get-WindowsFeature -Name PowerShell-ISE -ErrorAction SilentlyContinue).Installed) {
+            Write-Output 'The Windows PowerShell ISE is already installed on this Windows Server.'
+        } else {
+            Import-Module ServerManager
+            Add-WindowsFeature PowerShell-ISE
         }
 
-        Set-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU' -Name 'UseWUServer' -Value $CurrentWUServer
-        Restart-Service wuauserv
-    }
-}
+    } else {
+
+        # Windows client OS
+        if ((Get-WindowsCapability -Name 'Microsoft.Windows.PowerShell.ISE~~~~0.0.1.0' -Online).State -eq 'Installed') {
+            Write-Output 'The Windows PowerShell ISE is already installed.'
+        } else {
+            # Resetting the Windows Update source sometimes resolves errors when trying to add Windows capabilities
+            $CurrentWUServer = Get-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU' -Name 'UseWUServer' | Select-Object -ExpandProperty UseWUServer
+            Set-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU' -Name 'UseWUServer' -Value 0
+            Restart-Service wuauserv
+
+            try {
+                Get-WindowsCapability -Name Microsoft.Windows.PowerShell.ISE~~~~0.0.1.0 -Online | Add-WindowsCapability -Online -Verbose
+            } catch {
+                Write-Error "There was a problem adding the Windows PowerShell ISE: $error"
+            }
+
+            Set-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU' -Name 'UseWUServer' -Value $CurrentWUServer
+            Restart-Service wuauserv
+        }
+    } # end OS type check
+
+} # end function Install-PowerShellISE
 
 
 
@@ -911,7 +932,9 @@ function New-Credential {
 #>
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/New-Credential')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'OK')]
+    [OutputType([System.Management.Automation.PSCredential])]
     param ()
+
     Write-Output 'Create a Credential'
     $User = Read-Host -Prompt 'User'
     $Password = Read-Host "Password for user $User" -AsSecureString
@@ -1045,7 +1068,7 @@ function Set-ConsoleFont {
 .EXTERNALHELP PSPreworkout-help.xml
 #>
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Set-ConsoleFont')]
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'Agument completers are weird.')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'Argument completers are weird.')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]
@@ -1077,7 +1100,7 @@ function Set-ConsoleFont {
 
 # Register the argument completer for Set-ConsoleFont.
 Register-ArgumentCompleter -CommandName Set-ConsoleFont -ParameterName Font -ScriptBlock {
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'Agument completers are weird.')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'Argument completers are weird.')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]
@@ -1394,7 +1417,7 @@ function Update-AllTheThings {
             Write-Progress @ProgressParam1
 
             # Do not update prerelease modules
-            if ($module.Version -match 'alpha|beta|prelease|preview') {
+            if ($module.Version -match 'alpha|beta|prerelease|preview') {
                 Write-Information "`t`tSkipping $($module.Name) because a prerelease version is currently installed." -InformationAction Continue
                 continue
             }
@@ -1550,7 +1573,7 @@ function Update-AllTheThings {
                 choco feature enable -n=allowGlobalConfirmation
                 choco feature disable --name=showNonElevatedWarnings
             } else {
-                Write-Verbose "Run once as an administrator to disable Chocoately's showNonElevatedWarnings." -Verbose
+                Write-Verbose "Run once as an administrator to disable Chocolately's showNonElevatedWarnings." -Verbose
             }
             choco upgrade chocolatey -y --limit-output --accept-license --no-color
             choco upgrade all -y --limit-output --accept-license --no-color

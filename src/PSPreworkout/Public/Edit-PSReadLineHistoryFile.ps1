@@ -1,20 +1,21 @@
 function Edit-PSReadLineHistoryFile {
     <#
-        .SYNOPSIS
-        Edit the PSReadLine History File
+    .SYNOPSIS
+    Edit the PSReadLine History File
 
-        .DESCRIPTION
-        Use this function to edit the PSReadLine history file. This may be useful if you want to reset some of your autocomplete suggestions orremove commands that did not work.
+    .DESCRIPTION
+    Use this function to edit the PSReadLine history file. This may be useful if you want to reset some of your
+    autocomplete suggestions or remove commands that did not work.
 
-        .EXAMPLE
-        Edit-PSReadLineHistoryFile
+    .EXAMPLE
+    Edit-PSReadLineHistoryFile
 
-        .NOTES
-        Author: Sam Erde
-        Version: 0.0.1
-        Modified: 2024-10-10
+    .NOTES
+    Author: Sam Erde
+    Version: 0.0.2
+    Modified: 2025-01-06
 
-        Idea: History search with a TUI? This may already be done by the PowerShell Run module.
+    Idea: History search with a TUI? This may already be done by the PowerShell Run module.
     #>
 
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Edit-PSReadLineHistoryFile')]
@@ -64,7 +65,9 @@ setLanguage(uri, 'powershell');
     } # end process block
 
     end {
-        #Remove-Item -Path $TempScriptFile -Confirm:$false
+        if ($TempScriptFile) {
+            #Remove-Item -Path $TempScriptFile -Confirm:$false -ErrorAction SilentlyContinue | Out-Null
+        }
     } # end end block
 
 } # end function Edit-PSreadLineHistoryFile
