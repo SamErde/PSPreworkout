@@ -1,21 +1,21 @@
 function Set-DefaultTerminal {
     <#
-        .SYNOPSIS
-        Configure the default terminal for Windows
+    .SYNOPSIS
+    Configure the default terminal for Windows
 
-        .DESCRIPTION
-        This function sets that default terminal in Windows to your choice of Windows PowerShell, PowerShell, Command Prompt, or Windows Terminal (default).
+    .DESCRIPTION
+    This function sets that default terminal in Windows to your choice of Windows PowerShell, PowerShell, Command Prompt, or Windows Terminal (default).
 
-        .PARAMETER Name
-        The name of the application to use as the default terminal in Windows.
+    .PARAMETER Name
+    The name of the application to use as the default terminal in Windows.
 
-        .EXAMPLE
-        Set-DefaultTerminal -Name 'WindowsTerminal'
+    .EXAMPLE
+    Set-DefaultTerminal -Name 'WindowsTerminal'
 
-        .NOTES
-        Author: Sam Erde
-        Version: 0.0.1
-        Modified: 2024-11-15
+    .NOTES
+    Author: Sam Erde
+    Version: 0.0.1
+    Modified: 2024-11-15
     #>
 
     [CmdletBinding(SupportsShouldProcess)]

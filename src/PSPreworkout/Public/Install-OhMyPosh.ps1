@@ -4,7 +4,7 @@ function Install-OhMyPosh {
     Install Oh My Posh and add it to your profile.
 
     .DESCRIPTION
-    An over-engineered script to install Oh My Posh.
+    An over-engineered script to install Oh My Posh. This script exists as an exercise and is not intended for production use.
 
     .PARAMETER Method
     Specify which tool to install Oh My Posh with.

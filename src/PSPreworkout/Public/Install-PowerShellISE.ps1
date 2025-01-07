@@ -1,22 +1,22 @@
 function Install-PowerShellISE {
     <#
     .SYNOPSIS
-        Install the Windows PowerShell ISE
+    Install the Windows PowerShell ISE
 
     .DESCRIPTION
-        This script installs Windows PowerShell ISE if it was not installed or previously removed. It includes a step
-        that temporarily resets the Windows Automatic Update server source in the registry, which may resolve errors
-        that some systems experience while trying to add Windows Capabilities.
+    This script installs Windows PowerShell ISE if it was not installed or previously removed. It includes a step that
+    temporarily resets the Windows Automatic Update server source in the registry, which may resolve errors that some
+    systems experience while trying to add Windows Capabilities.
 
     .EXAMPLE
-        Install-PowerShellISE
+    Install-PowerShellISE
 
     .NOTES
-        Author: Sam Erde
-        Version: 1.0.0
-        Modified: 2025-01-07
+    Author: Sam Erde
+    Version: 1.0.0
+    Modified: 2025-01-07
 
-        To Do: Add parameter to make the Windows Update registry change optional.
+    To Do: Add parameter to make the Windows Update registry change optional.
     #>
 
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Install-PowerShellISE')]

@@ -11,6 +11,11 @@ function Test-IsElevated {
 
     .OUTPUTS
     Boolean
+
+    .NOTES
+    Author: Sam Erde
+    Version: 1.0.0
+    Modified: 2024-10-23
     #>
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Test-IsElevated')]
     [Alias('isadmin', 'isroot')]
