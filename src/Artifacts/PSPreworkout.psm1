@@ -111,7 +111,7 @@ function Get-EnvironmentVariable {
 #>
     [Alias('gev')]
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Get-EnvironmentVariable')]
-    [OutputType('PSObject')]
+    [OutputType('System.Collections.Generic.List[PSObject]')]
     param (
         # The name of the environment variable to retrieve. If not specified, all environment variables are returned.
         [Parameter(Position = 0)]
@@ -932,7 +932,7 @@ function New-Credential {
 #>
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/New-Credential')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'OK')]
-    [OutputType([System.Management.Automation.PSCredential])]
+    [OutputType('System.Management.Automation.PSCredential')]
     param ()
 
     Write-Output 'Create a Credential'
