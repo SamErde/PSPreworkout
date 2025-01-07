@@ -17,8 +17,7 @@ Install-CommandNotFoundUtility [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-This script installs the Microsoft.WinGet.CommandNotFound module and
-enables the required experimental features in PowerShell 7.
+This script installs the Microsoft.WinGet.CommandNotFound module and enables the required PowerShell features.
 
 ## EXAMPLES
 
@@ -39,9 +38,9 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 
 ## NOTES
 Author: Sam Erde
-Version: 0.0.1
-Modified: 2024-10-14
+Version: 0.1.0
+Modified: 2025-01-07
 
-May not work with PowerShell installed from MSIX or the Microsoft Store: \<https://github.com/microsoft/PowerToys/issues/30818\>
+requires -version 7.4
 
 ## RELATED LINKS

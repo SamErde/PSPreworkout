@@ -38,11 +38,6 @@ function Get-PowerShellPortable {
     )
 
     #region Determine Download Uri
-    # Get the zip and tar.gz PowerShell download links for Windows, macOS, and Linux.
-    #$ApiUrl = 'https://api.github.com/repos/PowerShell/PowerShell/releases/tags/v7.4.5'
-    #$Response = Invoke-RestMethod -Uri $ApiUrl -Headers @{ 'User-Agent' = 'PowerShellScript' }
-    #$Assets = $Response.assets
-    #$DownloadLinks = $Assets | Where-Object { $_.browser_download_url -match '\.zip$|\.tar\.gz$' } | Select-Object -ExpandProperty browser_download_url
     $DownloadLinks = (Invoke-RestMethod -Uri 'https://api.github.com/repos/PowerShell/PowerShell/releases/latest').assets.browser_download_url
 
     # Determine the platform and architecture
@@ -51,7 +46,8 @@ function Get-PowerShellPortable {
     if (-not $Architecture) { $Architecture = $([System.Environment]::GetEnvironmentVariable('PROCESSOR_ARCHITECTURE')).Replace('AMD64', 'X64') }
 
     # Set the pattern for the ZIP file based on the OS and architecture
-    $FilePattern = if ( [System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform([System.Runtime.InteropServices.OSPlatform]::Windows) ) {
+    $FilePattern =
+    if ( [System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform([System.Runtime.InteropServices.OSPlatform]::Windows) ) {
         "win-$Architecture.zip"
     } elseif ( [System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform([System.Runtime.InteropServices.OSPlatform]::Linux) ) {
         "linux-$Architecture.tar.gz"
@@ -133,13 +129,13 @@ function Get-PowerShellPortable {
         if (-not $IsLinux -and -not $IsMacOS) {
             # Windows
             try {
-                # Expand the zip file into a folder that matches the zip filename without the zip extenstion
+                # Expand the zip file into a folder that matches the zip filename without the zip extension
                 if (Test-Path -PathType Container -Path (Join-Path -Path $Path -ChildPath $PwshDirectory)) {
                     Expand-Archive -Path $OutFilePath -DestinationPath (Join-Path -Path $Path -ChildPath $PwshDirectory) -Force
                     Write-Information -MessageData "PowerShell has been extracted to $PwshPath" -InformationAction Continue
                     Write-Information -MessageData "Run '$PwshPath\pwsh.exe' to launch the latest version of PowerShell without installing it!" -InformationAction Continue
                 } else {
-                    Write-Warning -Message "The target folder $Path\$Pwshdirectory does not exist." -WarningAction Stop
+                    Write-Warning -Message "The target folder $Path\$PwshDirectory does not exist." -WarningAction Stop
                 }
             } catch {
                 Write-Error "Failed to expand the archive $OutFilePath."

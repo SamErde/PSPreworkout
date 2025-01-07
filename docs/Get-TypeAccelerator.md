@@ -18,7 +18,8 @@ Get-TypeAccelerator [[-Name] <String>] [<CommonParameters>]
 
 ## DESCRIPTION
 Get available type accelerators.
-These can be useful when trying to find or remember the different type accellerators that are available to use in PowerShell.
+These can be useful when trying to find or remember the different type accelerators
+that are available to use in PowerShell.
 
 ## EXAMPLES
 
@@ -66,8 +67,5 @@ Version: 0.0.3
 Modified: 2024/10/29
 
 Thanks to Jeff Hicks (@JDHITSolutions) for helpful suggestions and improvements on this output!
-
-Change Log: Removed the grid view option to allow user flexibility in how they want to output the results.
-To Do: Add a way to filter/search the 'type' property.
 
 ## RELATED LINKS

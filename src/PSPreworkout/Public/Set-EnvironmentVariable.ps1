@@ -18,6 +18,11 @@ function Set-EnvironmentVariable {
     .EXAMPLE
     Set-EnvironmentVariable -Name 'FavoriteDrink' -Value 'Coffee' -Target 'User'
 
+    .NOTES
+    Author: Sam Erde
+    Version: 1.0.0
+    Modified: 2024-10-23
+
     #>
     [Alias('sev')]
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Set-EnvironmentVariable')]

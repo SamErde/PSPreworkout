@@ -1,42 +1,72 @@
 function Install-PowerShellISE {
     <#
     .SYNOPSIS
-        Install the Windows PowerShell ISE if you removed it after installing VS Code.
+    Install the Windows PowerShell ISE
 
     .DESCRIPTION
-        This script installs the Windows PowerShell ISE if it is not already. It includes a step that resets the Windows
-        Automatic Update server source in the registry temporary, which may resolve errors that some people experience
-        while trying to add Windows Capabilities. This was created because Out-GridView in Windows PowerShell 5.1 does not
-        work without the ISE installed. However, Out-GridView was rewritten and included in PowerShell 7 for Windows.
+    This script installs Windows PowerShell ISE if it was not installed or previously removed. It includes a step that
+    temporarily resets the Windows Automatic Update server source in the registry, which may resolve errors that some
+    systems experience while trying to add Windows Capabilities.
 
     .EXAMPLE
-        Install-PowerShellISE
+    Install-PowerShellISE
 
     .NOTES
-        To Do:
-            - Check for Windows client vs Windows Server OS
-            - Add parameter to make the Windows Update registry change optional
-            - Requires admin but adding that breaks the build
+    Author: Sam Erde
+    Version: 1.0.0
+    Modified: 2025-01-07
+
+    To Do: Add parameter to make the Windows Update registry change optional.
     #>
 
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Install-PowerShellISE')]
     param ()
 
-    if ((Get-WindowsCapability -Name 'Microsoft.Windows.PowerShell.ISE~~~~0.0.1.0' -Online).State -eq 'Installed') {
-        Write-Output 'The Windows PowerShell ISE is already installed.'
-    } else {
-        # Resetting the Windows Update source sometimes resolves errors when trying to add Windows capabilities
-        $CurrentWUServer = Get-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU' -Name 'UseWUServer' | Select-Object -ExpandProperty UseWUServer
-        Set-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU' -Name 'UseWUServer' -Value 0
-        Restart-Service wuauserv
+    # Check if running as admin
+    if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
+        Write-Error 'This script must be run as an administrator.'
+        return
+    }
 
-        try {
-            Get-WindowsCapability -Name Microsoft.Windows.PowerShell.ISE~~~~0.0.1.0 -Online | Add-WindowsCapability -Online -Verbose
-        } catch {
-            Write-Error "There was a problem adding the Windows PowerShell ISE: $error"
+    $OSCaption = (Get-CimInstance -ClassName Win32_OperatingSystem).Caption
+
+    # Quick check to see if running on Windows.
+    if (-not $OSCaption -match 'Windows') {
+        Write-Error 'This script is only for Windows OS.'
+        return
+    }
+
+    # Check if running a Windows client or Windows Server OS
+    if ($OSCaption -match 'Windows Server') {
+
+        # Windows Server OS
+        if ((Get-WindowsFeature -Name PowerShell-ISE -ErrorAction SilentlyContinue).Installed) {
+            Write-Output 'The Windows PowerShell ISE is already installed on this Windows Server.'
+        } else {
+            Import-Module ServerManager
+            Add-WindowsFeature PowerShell-ISE
         }
 
-        Set-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU' -Name 'UseWUServer' -Value $CurrentWUServer
-        Restart-Service wuauserv
-    }
-}
+    } else {
+
+        # Windows client OS
+        if ((Get-WindowsCapability -Name 'Microsoft.Windows.PowerShell.ISE~~~~0.0.1.0' -Online).State -eq 'Installed') {
+            Write-Output 'The Windows PowerShell ISE is already installed.'
+        } else {
+            # Resetting the Windows Update source sometimes resolves errors when trying to add Windows capabilities
+            $CurrentWUServer = Get-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU' -Name 'UseWUServer' | Select-Object -ExpandProperty UseWUServer
+            Set-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU' -Name 'UseWUServer' -Value 0
+            Restart-Service wuauserv
+
+            try {
+                Get-WindowsCapability -Name Microsoft.Windows.PowerShell.ISE~~~~0.0.1.0 -Online | Add-WindowsCapability -Online -Verbose
+            } catch {
+                Write-Error "There was a problem adding the Windows PowerShell ISE: $error"
+            }
+
+            Set-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU' -Name 'UseWUServer' -Value $CurrentWUServer
+            Restart-Service wuauserv
+        }
+    } # end OS type check
+
+} # end function Install-PowerShellISE

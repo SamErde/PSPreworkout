@@ -18,7 +18,8 @@ Edit-PSReadLineHistoryFile [<CommonParameters>]
 
 ## DESCRIPTION
 Use this function to edit the PSReadLine history file.
-This may be useful if you want to reset some of your autocomplete suggestions orremove commands that did not work.
+This may be useful if you want to reset some of your
+autocomplete suggestions or remove commands that did not work.
 
 ## EXAMPLES
 
@@ -39,8 +40,8 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 
 ## NOTES
 Author: Sam Erde
-Version: 0.0.1
-Modified: 2024-10-10
+Version: 0.0.2
+Modified: 2025-01-06
 
 Idea: History search with a TUI?
 This may already be done by the PowerShell Run module.

@@ -1,31 +1,31 @@
 function Out-JsonFile {
     <#
     .SYNOPSIS
-        Convert an object to JSON and write it to a file.
+    Convert an object to JSON and write it to a file.
 
     .DESCRIPTION
-        This function converts an object to JSON and writes the output to the specified file. By default, it saves the
-        file with the name of the object that you provided to the function.
+    This function converts an object to JSON and writes the output to the specified file. By default, it saves the
+    file with the name of the object that you provided to the function.
 
     .EXAMPLE
-        Out-JsonFile -Object $TestObject -FilePath $HOME
+    Out-JsonFile -Object $TestObject -FilePath $HOME
 
-        Writes $TestObject as JSON to "$HOME/TestObject.json".
-
-    .EXAMPLE
-        Out-JsonFile -Object $TestObject -FilePath C:\Temp\report.json
-
-        Writes $TestObject as JSON to C:\Temp\report.json.
+    Writes $TestObject as JSON to "$HOME/TestObject.json".
 
     .EXAMPLE
-        Out-JsonFile -Object $TestObject
+    Out-JsonFile -Object $TestObject -FilePath C:\Temp\report.json
 
-        Writes $TestObject as JSON to TestObject.json in the current working directory of the file system.
+    Writes $TestObject as JSON to C:\Temp\report.json.
+
+    .EXAMPLE
+    Out-JsonFile -Object $TestObject
+
+    Writes $TestObject as JSON to TestObject.json in the current working directory of the file system.
 
     .NOTES
-        Author: Sam Erde
-        Version: 0.2.1
-        Modified: 2024/10/29
+    Author: Sam Erde
+    Version: 0.2.1
+    Modified: 2024/10/29
     #>
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Out-JsonFile')]
     param (

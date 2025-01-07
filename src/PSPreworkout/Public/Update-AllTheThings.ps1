@@ -25,6 +25,11 @@ function Update-AllTheThings {
     Update-AllTheThings
 
     Updates all of the things it can!
+
+    .NOTES
+    Author: Sam Erde
+    Version: 0.5.9
+    Modified: 2024-10-23
     #>
 
     [CmdletBinding(
@@ -143,7 +148,7 @@ function Update-AllTheThings {
             Write-Progress @ProgressParam1
 
             # Do not update prerelease modules
-            if ($module.Version -match 'alpha|beta|prelease|preview') {
+            if ($module.Version -match 'alpha|beta|prerelease|preview') {
                 Write-Information "`t`tSkipping $($module.Name) because a prerelease version is currently installed." -InformationAction Continue
                 continue
             }
@@ -299,7 +304,7 @@ function Update-AllTheThings {
                 choco feature enable -n=allowGlobalConfirmation
                 choco feature disable --name=showNonElevatedWarnings
             } else {
-                Write-Verbose "Run once as an administrator to disable Chocoately's showNonElevatedWarnings." -Verbose
+                Write-Verbose "Run once as an administrator to disable Chocolately's showNonElevatedWarnings." -Verbose
             }
             choco upgrade chocolatey -y --limit-output --accept-license --no-color
             choco upgrade all -y --limit-output --accept-license --no-color

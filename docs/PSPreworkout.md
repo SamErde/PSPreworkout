@@ -39,7 +39,7 @@ Install and setup the WinGetCommandNotFound utility from Microsoft PowerToys.
 Install Oh My Posh and add it to your profile.
 
 ### [Install-PowerShellISE](Install-PowerShellISE.md)
-Install the Windows PowerShell ISE if you removed it after installing VS Code.
+Install the Windows PowerShell ISE
 
 ### [Install-WinGet](Install-WinGet.md)
 Install Winget (beta)

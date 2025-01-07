@@ -1,36 +1,41 @@
 function Install-OhMyPosh {
     <#
     .SYNOPSIS
-        Install Oh My Posh and add it to your profile.
+    Install Oh My Posh and add it to your profile.
 
     .DESCRIPTION
-        An over-engineered script to install Oh My Posh.
+    An over-engineered script to install Oh My Posh. This script exists as an exercise and is not intended for production use.
 
     .PARAMETER Method
-        Specify which tool to install Oh My Posh with.
+    Specify which tool to install Oh My Posh with.
 
-        - chocolatey
-        - direct (default)
-        - scoop
-        - winget
+    - chocolatey
+    - direct (default)
+    - scoop
+    - winget
 
     .PARAMETER WingetSource
-        Specify which source to install from.
+    Specify which source to install from.
 
-         - winget  - Install from winget (default).
-         - msstore - Install from the Microsoft Store.
+        - winget  - Install from winget (default).
+        - msstore - Install from the Microsoft Store.
 
     .PARAMETER InstallNerdFont
-        Use this switch if you want to install a nerd font for full glyph capabilities in your prompt.
+    Use this switch if you want to install a nerd font for full glyph capabilities in your prompt.
 
     .PARAMETER Font
-        Choose a nerd font to install.
+    Choose a nerd font to install.
 
-        - Default - Installs "Meslo" as the default nerd font.
-        - Select  - Lets you choose a nerd font from the list.
+    - Default - Installs "Meslo" as the default nerd font.
+    - Select  - Lets you choose a nerd font from the list.
 
     .EXAMPLE
-        Install-OhMyPosh
+    Install-OhMyPosh
+
+    .NOTES
+    Author: Sam Erde
+    Version: 0.1.0
+    Modified: 2024-10-23
 #>
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Install-OhMyPosh')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingInvokeExpression', '', Justification = 'Invoke-Expression is used for online OMP installer.')]

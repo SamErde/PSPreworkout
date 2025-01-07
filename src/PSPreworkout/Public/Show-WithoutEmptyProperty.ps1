@@ -41,6 +41,11 @@
     This example gets the home folder object and pipes it to the Show-WithoutEmptyProperty function.
 
     .NOTES
+
+    Author: Sam Erde
+    Version: 1.0.0
+    Modified: 2024-10-23
+
     I am grateful to Jeffrey Hicks for guiding me towards an understanding of how to complete this function and for
     providing even nicer code than I started with. I encourage you to reach out to him for PowerShell training and
     subscribe to his newsletter! 🙏

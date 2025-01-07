@@ -10,7 +10,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Use this function to edit the PSReadLine history file. This may be useful if you want to reset some of your autocomplete suggestions orremove commands that did not work.</maml:para>
+      <maml:para>Use this function to edit the PSReadLine history file. This may be useful if you want to reset some of your autocomplete suggestions or remove commands that did not work.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -22,7 +22,7 @@
     <command:returnValues />
     <maml:alertSet>
       <maml:alert>
-        <maml:para>Author: Sam Erde Version: 0.0.1 Modified: 2024-10-10</maml:para>
+        <maml:para>Author: Sam Erde Version: 0.0.2 Modified: 2025-01-06</maml:para>
         <maml:para>Idea: History search with a TUI? This may already be done by the PowerShell Run module.</maml:para>
       </maml:alert>
     </maml:alertSet>
@@ -196,7 +196,7 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>PSObject</maml:name>
+          <maml:name>System.Collections.Generic.List[PSObject]</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -399,7 +399,7 @@ Get environment variables with names that begin with the letter "u" in any targe
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Get available type accelerators. These can be useful when trying to find or remember the different type accellerators that are available to use in PowerShell.</maml:para>
+      <maml:para>Get available type accelerators. These can be useful when trying to find or remember the different type accelerators that are available to use in PowerShell.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -447,7 +447,6 @@ Get environment variables with names that begin with the letter "u" in any targe
       <maml:alert>
         <maml:para>Author: Sam Erde Version: 0.0.3 Modified: 2024/10/29</maml:para>
         <maml:para>Thanks to Jeff Hicks (@JDHITSolutions) for helpful suggestions and improvements on this output!</maml:para>
-        <maml:para>Change Log: Removed the grid view option to allow user flexibility in how they want to output the results. To Do: Add a way to filter/search the 'type' property.</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -682,7 +681,7 @@ Get environment variables with names that begin with the letter "u" in any targe
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>This script installs the Microsoft.WinGet.CommandNotFound module and enables the required experimental features in PowerShell 7.</maml:para>
+      <maml:para>This script installs the Microsoft.WinGet.CommandNotFound module and enables the required PowerShell features.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -694,8 +693,8 @@ Get environment variables with names that begin with the letter "u" in any targe
     <command:returnValues />
     <maml:alertSet>
       <maml:alert>
-        <maml:para>Author: Sam Erde Version: 0.0.1 Modified: 2024-10-14</maml:para>
-        <maml:para>May not work with PowerShell installed from MSIX or the Microsoft Store: &lt;https://github.com/microsoft/PowerToys/issues/30818&gt;</maml:para>
+        <maml:para>Author: Sam Erde Version: 0.1.0 Modified: 2025-01-07</maml:para>
+        <maml:para>requires -version 7.4</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -719,7 +718,7 @@ Get environment variables with names that begin with the letter "u" in any targe
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>An over-engineered script to install Oh My Posh.</maml:para>
+      <maml:para>An over-engineered script to install Oh My Posh. This script exists as an exercise and is not intended for production use.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -728,7 +727,7 @@ Get environment variables with names that begin with the letter "u" in any targe
           <maml:name>WingetSource</maml:name>
           <maml:Description>
             <maml:para>Specify which source to install from.</maml:para>
-            <maml:para> - winget  - Install from winget (default).  - msstore - Install from the Microsoft Store.</maml:para>
+            <maml:para>    - winget  - Install from winget (default).     - msstore - Install from the Microsoft Store.</maml:para>
           </maml:Description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -785,7 +784,7 @@ Get environment variables with names that begin with the letter "u" in any targe
         <maml:name>WingetSource</maml:name>
         <maml:Description>
           <maml:para>Specify which source to install from.</maml:para>
-          <maml:para> - winget  - Install from winget (default).  - msstore - Install from the Microsoft Store.</maml:para>
+          <maml:para>    - winget  - Install from winget (default).     - msstore - Install from the Microsoft Store.</maml:para>
         </maml:Description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -841,7 +840,7 @@ Get environment variables with names that begin with the letter "u" in any targe
     <command:returnValues />
     <maml:alertSet>
       <maml:alert>
-        <maml:para></maml:para>
+        <maml:para>Author: Sam Erde Version: 0.1.0 Modified: 2024-10-23</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -861,11 +860,11 @@ Get environment variables with names that begin with the letter "u" in any targe
       <command:verb>Install</command:verb>
       <command:noun>PowerShellISE</command:noun>
       <maml:description>
-        <maml:para>Install the Windows PowerShell ISE if you removed it after installing VS Code.</maml:para>
+        <maml:para>Install the Windows PowerShell ISE</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>This script installs the Windows PowerShell ISE if it is not already. It includes a step that resets the Windows Automatic Update server source in the registry temporary, which may resolve errors that some people experience while trying to add Windows Capabilities. This was created because Out-GridView in Windows PowerShell 5.1 does not work without the ISE installed. However, Out-GridView was rewritten and included in PowerShell 7 for Windows.</maml:para>
+      <maml:para>This script installs Windows PowerShell ISE if it was not installed or previously removed. It includes a step that temporarily resets the Windows Automatic Update server source in the registry, which may resolve errors that some systems experience while trying to add Windows Capabilities.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -877,7 +876,8 @@ Get environment variables with names that begin with the letter "u" in any targe
     <command:returnValues />
     <maml:alertSet>
       <maml:alert>
-        <maml:para>To Do:     - Check for Windows client vs Windows Server OS     - Add parameter to make the Windows Update registry change optional     - Requires admin but adding that breaks the build</maml:para>
+        <maml:para>Author: Sam Erde Version: 1.0.0 Modified: 2025-01-07</maml:para>
+        <maml:para>To Do: Add parameter to make the Windows Update registry change optional.</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -901,7 +901,7 @@ Get environment variables with names that begin with the letter "u" in any targe
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Install WinGet on Windows Sandbox (or on builds of Windows 10 prior to build 1709 that did not ship with it preinstalled).</maml:para>
+      <maml:para>Install WinGet on Windows Sandbox (or on builds of Windows 10 prior to build 1709 that did not ship with it preinstalled). This script exists mostly as an exercise, as there are already many ways to install WinGet.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -984,6 +984,7 @@ Get environment variables with names that begin with the letter "u" in any targe
     <command:returnValues />
     <maml:alertSet>
       <maml:alert>
+        <maml:para>Author: Sam Erde Version: 0.1.0 Modified: 2024-10-23</maml:para>
         <maml:para>To Do: - Check for newer versions of packages on GitHub</maml:para>
         <maml:para>- Error handling</maml:para>
         <maml:para>- Create the target folder if it does not already exist</maml:para>
@@ -1026,7 +1027,16 @@ Get environment variables with names that begin with the letter "u" in any targe
     </command:syntax>
     <command:parameters />
     <command:inputTypes />
-    <command:returnValues />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Management.Automation.PSCredential</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
     <maml:alertSet>
       <maml:alert>
         <maml:para></maml:para>
@@ -1767,7 +1777,7 @@ Get environment variables with names that begin with the letter "u" in any targe
     <command:returnValues />
     <maml:alertSet>
       <maml:alert>
-        <maml:para></maml:para>
+        <maml:para>Author: Sam Erde Version: 1.0.0 Modified: 2024-10-23</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -1904,6 +1914,7 @@ Get environment variables with names that begin with the letter "u" in any targe
     </command:returnValues>
     <maml:alertSet>
       <maml:alert>
+        <maml:para>Author: Sam Erde Version: 1.0.0 Modified: 2024-10-23</maml:para>
         <maml:para>I am grateful to Jeffrey Hicks for guiding me towards an understanding of how to complete this function and for providing even nicer code than I started with. I encourage you to reach out to him for PowerShell training and subscribe to his newsletter! 🙏</maml:para>
         <maml:para>    https://jdhitsolutions.github.io/     https://www.linkedin.com/in/jefferyhicks/     https://twitter.com/JeffHicks</maml:para>
       </maml:alert>
@@ -1986,7 +1997,7 @@ Show-WithoutEmptyProperty -Object $Object</dev:code>
     </command:returnValues>
     <maml:alertSet>
       <maml:alert>
-        <maml:para></maml:para>
+        <maml:para>Author: Sam Erde Version: 1.0.0 Modified: 2024-10-23</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -2184,7 +2195,7 @@ Show-WithoutEmptyProperty -Object $Object</dev:code>
     <command:returnValues />
     <maml:alertSet>
       <maml:alert>
-        <maml:para></maml:para>
+        <maml:para>Author: Sam Erde Version: 0.5.9 Modified: 2024-10-23</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
