@@ -196,7 +196,7 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>PSObject</maml:name>
+          <maml:name>System.Collections.Generic.List[PSObject]</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>

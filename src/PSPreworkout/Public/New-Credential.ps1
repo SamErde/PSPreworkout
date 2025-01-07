@@ -11,7 +11,7 @@ function New-Credential {
     #>
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/New-Credential')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'OK')]
-    [OutputType([System.Management.Automation.PSCredential])]
+    [OutputType('System.Management.Automation.PSCredential')]
     param ()
 
     Write-Output 'Create a Credential'
