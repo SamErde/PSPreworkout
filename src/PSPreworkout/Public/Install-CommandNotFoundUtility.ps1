@@ -1,18 +1,18 @@
 function Install-CommandNotFoundUtility {
     <#
-        .SYNOPSIS
-        Install and setup the WinGetCommandNotFound utility from Microsoft PowerToys.
+    .SYNOPSIS
+    Install and setup the WinGetCommandNotFound utility from Microsoft PowerToys.
 
-        .DESCRIPTION
-        This script installs the Microsoft.WinGet.CommandNotFound module and enables the required PowerShell features.
+    .DESCRIPTION
+    This script installs the Microsoft.WinGet.CommandNotFound module and enables the required PowerShell features.
 
-        .EXAMPLE
-        Install-CommandNotFoundUtility
+    .EXAMPLE
+    Install-CommandNotFoundUtility
 
-        .NOTES
-        Author: Sam Erde
-        Version: 0.1.0
-        Modified: 2025-01-07
+    .NOTES
+    Author: Sam Erde
+    Version: 0.1.0
+    Modified: 2025-01-07
     #>
     #requires -version 7.4
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Install-CommandNotFoundUtility')]
