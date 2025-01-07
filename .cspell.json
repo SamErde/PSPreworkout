@@ -5,7 +5,7 @@
     "@cspell/dict-powershell/cspell-ext.json",
     "@cspell/dict-csharp/cspell-ext.json"
   ],
-  "words": ["RSAT"],
+  "words": ["MSIX", "RSAT"],
   "ignoreWords": [
     "sarif",
     "psscriptanalyzer",
@@ -14,7 +14,10 @@
     "pozil",
     "antonyurchenko",
     "Salzach",
-    "Usergroup"
+    "Usergroup",
+    "Fira",
+    "mailaddress",
+    "wuauserv"
   ],
   "flagWords": [],
   "patterns": [
