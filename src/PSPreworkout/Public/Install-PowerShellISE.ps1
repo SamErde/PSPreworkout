@@ -4,37 +4,47 @@ function Install-PowerShellISE {
         Install the Windows PowerShell ISE
 
     .DESCRIPTION
-        This script installs Windows PowerShell ISE if it was previously removed. It includes a step that temporarily
-        resets the Windows Automatic Update server source in the registry, which may resolve errors that some people
-        experience while trying to add Windows Capabilities.
+        This script installs Windows PowerShell ISE if it was not installed or previously removed. It includes a step
+        that temporarily resets the Windows Automatic Update server source in the registry, which may resolve errors
+        that some systems experience while trying to add Windows Capabilities.
 
     .EXAMPLE
         Install-PowerShellISE
 
     .NOTES
         Author: Sam Erde
-        Version: 0.1.0
+        Version: 1.0.0
         Modified: 2025-01-07
 
-        To Do:
-            - Add support for Windows Server OS features
-            - Add parameter to make the Windows Update registry change optional
-
-        Requires running as admin but adding the `requires` tag forces the entire build to validate admin rights.
+        To Do: Add parameter to make the Windows Update registry change optional.
     #>
 
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Install-PowerShellISE')]
     param ()
 
+    # Check if running as admin
+    if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
+        Write-Error 'This script must be run as an administrator.'
+        return
+    }
+
+    $OSCaption = (Get-CimInstance -ClassName Win32_OperatingSystem).Caption
+
+    # Quick check to see if running on Windows.
+    if (-not $OSCaption -match 'Windows') {
+        Write-Error 'This script is only for Windows OS.'
+        return
+    }
+
     # Check if running a Windows client or Windows Server OS
-    if ((Get-CimInstance -ClassName Win32_OperatingSystem).Caption -match 'Windows Server') {
+    if ($OSCaption -match 'Windows Server') {
 
         # Windows Server OS
-        Write-Information 'Support for [re-]installing the Windows PowerShell ISE on Windows Server is not yet fully implemented.' -InformationAction Continue
         if ((Get-WindowsFeature -Name PowerShell-ISE -ErrorAction SilentlyContinue).Installed) {
             Write-Output 'The Windows PowerShell ISE is already installed on this Windows Server.'
         } else {
-            Write-Output 'The Windows PowerShell ISE is not installed on this Windows Server.'
+            Import-Module ServerManager
+            Add-WindowsFeature PowerShell-ISE
         }
 
     } else {
