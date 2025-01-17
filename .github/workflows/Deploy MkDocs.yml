@@ -54,5 +54,3 @@ jobs:
         with:
           commit_message: 'Copy MkDocs index to README'
           file_pattern: 'docs/index.md README.md'
-        env:
-          GITHUB_TOKEN: ${{ secrets.MkDocs }}
