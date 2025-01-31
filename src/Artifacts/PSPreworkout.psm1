@@ -949,26 +949,95 @@ function New-ScriptFromTemplate {
 .EXTERNALHELP PSPreworkout-help.xml
 #>
 
-    [CmdletBinding()]
-    __ALIAS__
+    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/New-ScriptFromTemplate')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'OK')]
+    #[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '', Justification = 'Making it pretty.')]
+    [Alias('New-Script')]
     param (
+        # The name of the new function.
+        [Parameter(Mandatory, ParameterSetName = 'Named', Position = 0)]
+        [ValidateNotNullOrEmpty()]
+        [string]
+        $Name,
 
+        # The verb to use for the function name.
+        [Parameter(Mandatory, ParameterSetName = 'VerbNoun', Position = 0)]
+        [ValidateNotNullOrEmpty()]
+        [string]
+        $Verb,
+
+        # The noun to use for the function name.
+        [Parameter(Mandatory, ParameterSetName = 'VerbNoun', Position = 1)]
+        [ValidateNotNullOrEmpty()]
+        [string]
+        $Noun,
+
+        # Synopsis of the new function.
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
+        [string]
+        $Synopsis,
+
+        # Description of the new function.
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
+        [string]
+        $Description,
+
+        # Optional alias for the new function.
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
+        [string]
+        $Alias,
+
+        # Name of the author of the script
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
+        [string]
+        $Author = (Get-CimInstance -ClassName Win32_UserAccount -Filter "Name = `'$([System.Security.Principal.WindowsIdentity]::GetCurrent().Name.Split('\')[1])`'").FullName,
+
+        # Parameter name(s) to include
+        #[Parameter()]
+        #[ValidateNotNullOrEmpty()]
+        #[string[]]
+        #$Parameter,
+
+        # Path of the directory to save the new function in.
+        [Parameter()]
+        [ValidateScript({ Test-Path -Path $_ -PathType Container })]
+        [string]
+        $Path,
+
+        # Optionally skip name validation checks.
+        [Parameter()]
+        [switch]
+        $SkipValidation
     )
 
-    begin {
+    if ($PSBoundParameters.ContainsKey('Verb') -and -not $SkipValidation -and $Verb -notin (Get-Verb).Verb) {
+        Write-Warning "`"$Verb`" is not an approved verb. Please run `"Get-Verb`" to see a list of approved verbs."
+        break
+    }
 
-    } # end begin block
+    if ($PSBoundParameters.ContainsKey('Verb') -and $PSBoundParameters.ContainsKey('Noun')) {
+        $Name = "$Verb-$Noun"
+    }
 
-    process {
+    if ($PSBoundParameters.ContainsKey('Name') -and -not $SkipValidation -and
+        $Name -match '\w-\w' -and $Name.Split('-')[0] -notin (Get-Verb).Verb ) {
+        Write-Warning "It looks like you are not using an approved verb: `"$($Name.Split('-')[0]).`" Please run `"Get-Verb`" to see a list of approved verbs."
+    }
 
-    } # end process block
+    # Set the script path and filename. Use current directory if no path specified.
+    if (Test-Path -Path $Path -PathType Container) {
+        $ScriptPath = [System.IO.Path]::Combine($Path, "$Name.ps1")
+    } else {
+        $ScriptPath = ".\$Name.ps1"
+    }
 
-    end {
-
-    } # end end block
-
-} # end function New-Function
-'@
+    # Create the function builder string builder and function body string.
+    $FunctionBuilder = [System.Text.StringBuilder]::New()
+    $FunctionBody = (Get-Content -Path "$PSScriptRoot\ScriptTemplate.txt" -Raw)
 
     # Replace template placeholders with strings from parameter inputs.
     $FunctionBody = $FunctionBody -Replace 'New-Function', $Name
