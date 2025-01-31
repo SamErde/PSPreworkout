@@ -44,49 +44,49 @@ function New-ScriptFromTemplate {
     param (
         # The name of the new function.
         [Parameter(Mandatory, ParameterSetName = 'Named', Position = 0)]
-        [ValidateNotNullorEmpty()]
+        [ValidateNotNullOrEmpty()]
         [string]
         $Name,
 
         # The verb to use for the function name.
         [Parameter(Mandatory, ParameterSetName = 'VerbNoun', Position = 0)]
-        [ValidateNotNullorEmpty()]
+        [ValidateNotNullOrEmpty()]
         [string]
         $Verb,
 
         # The noun to use for the function name.
         [Parameter(Mandatory, ParameterSetName = 'VerbNoun', Position = 1)]
-        [ValidateNotNullorEmpty()]
+        [ValidateNotNullOrEmpty()]
         [string]
         $Noun,
 
         # Synopsis of the new function.
         [Parameter()]
-        [ValidateNotNullorEmpty()]
+        [ValidateNotNullOrEmpty()]
         [string]
         $Synopsis,
 
         # Description of the new function.
         [Parameter()]
-        [ValidateNotNullorEmpty()]
+        [ValidateNotNullOrEmpty()]
         [string]
         $Description,
 
         # Optional alias for the new function.
         [Parameter()]
-        [ValidateNotNullorEmpty()]
+        [ValidateNotNullOrEmpty()]
         [string]
         $Alias,
 
         # Name of the author of the script
         [Parameter()]
-        [ValidateNotNullorEmpty()]
+        [ValidateNotNullOrEmpty()]
         [string]
         $Author = (Get-CimInstance -ClassName Win32_UserAccount -Filter "Name = `'$([System.Security.Principal.WindowsIdentity]::GetCurrent().Name.Split('\')[1])`'").FullName,
 
         # Parameter name(s) to include
         #[Parameter()]
-        #[ValidateNotNullorEmpty()]
+        #[ValidateNotNullOrEmpty()]
         #[string[]]
         #$Parameter,
 
@@ -125,44 +125,7 @@ function New-ScriptFromTemplate {
 
     # Create the function builder string builder and function body string.
     $FunctionBuilder = [System.Text.StringBuilder]::New()
-    $FunctionBody = @'
-function New-Function {
-    <#
-        .SYNOPSIS
-        __SYNOPSIS__
-
-        .DESCRIPTION
-        __DESCRIPTION__
-
-        .EXAMPLE
-        __EXAMPLE__
-
-        .NOTES
-        Author: __AUTHOR__
-        Version: 0.0.1
-        Modified: __DATE__
-    #>
-
-    [CmdletBinding()]
-    __ALIAS__
-    param (
-
-    )
-
-    begin {
-
-    } # end begin block
-
-    process {
-
-    } # end process block
-
-    end {
-
-    } # end end block
-
-} # end function New-Function
-'@
+    $FunctionBody = (Get-Content -Path "$PSScriptRoot\ScriptTemplate.txt" -Raw)
 
     # Replace template placeholders with strings from parameter inputs.
     $FunctionBody = $FunctionBody -Replace 'New-Function', $Name
