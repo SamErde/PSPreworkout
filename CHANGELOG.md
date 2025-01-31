@@ -5,6 +5,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 &nbsp;
 
+## [1.7.0] - 2025-01-31
+
+### Changed
+
+- Move inline script template from `New-ScriptFromTemplate` to separate `ScriptTemplate.txt` file.
+- Add `ScriptTemplate.txt` to module manifest.
+- Repository workflow and project scaffolding improvements.
+- Enable first basic integration test (more to come).
+
+**Full Changelog**: <https://github.com/SamErde/PSPreworkout/compare/v1.6.0...v1.7.0>
+
+&nbsp;
+
 ## [1.6.0] - 2024-11-15
 
 This release is focused on enhancements that make the existing functions more usable and flexible.
