@@ -19,7 +19,7 @@ python:
   install:
     - requirements: docs/requirements.txt
 
-# # Build PDF & ePub
+# Build PDF & ePub
 formats: all
 #   - epub
 #   - pdf

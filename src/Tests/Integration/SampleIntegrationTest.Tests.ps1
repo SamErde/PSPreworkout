@@ -1,4 +1,3 @@
-<#
 BeforeAll {
     Set-Location -Path $PSScriptRoot
     $ModuleName = 'PSPreworkout'
@@ -15,4 +14,5 @@ Describe 'Integration Tests' -Tag Integration {
         } #it
     }
 }
-#>
+
+Remove-Module $ModuleName -Force
