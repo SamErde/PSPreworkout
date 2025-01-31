@@ -7,7 +7,6 @@ BeforeAll {
     Import-Module $PathToManifest -Force
 }
 
-<# RE-ENABLE AFTER REFACTORING 'NEW-SCRIPTFROMTEMPLATE'
 Describe 'Integration Tests' -Tag Integration {
     Context 'First Integration Tests' {
         It 'should pass the first integration test' {
@@ -17,4 +16,3 @@ Describe 'Integration Tests' -Tag Integration {
 }
 
 Remove-Module $ModuleName -Force
-#>
