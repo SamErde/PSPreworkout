@@ -1,9 +1,9 @@
 # Project Files #
-Archive
+Archive/
 Artifacts/
 cov.xml
 coverage.xml
-Ignore
+Ignore/
 
 # Negative Include
 !/Artifacts/en-US/
