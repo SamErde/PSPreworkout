@@ -2,11 +2,11 @@
 
 ## Issue
 
-Issue #, if available:
+`[Issue #, if available:]`
 
 ## Description
 
-Description of changes:
+`[Description of changes:]`
 
 ## License
 
