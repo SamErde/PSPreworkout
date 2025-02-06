@@ -1,9 +1,12 @@
+<!-- markdownlint-disable MD024 -->
 # Changelog
 
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-&nbsp;
+## [Unreleased]
+<!-- Show the history of all changes since the last release. -->
+[*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/latest...HEAD)
 
 ## [1.7.1] - 2025-01-31
 
@@ -14,9 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Repository workflow and project scaffolding improvements.
 - Enable first basic integration test (more to come).
 
-*Full Changelog**: <https://github.com/SamErde/PSPreworkout/compare/v1.6.0...v1.7.1>
-
-&nbsp;
+[*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v1.6.0...v1.7.1)
 
 ## [1.6.0] - 2024-11-15
 
@@ -31,8 +32,7 @@ This release is focused on enhancements that make the existing functions more us
 
 - Add `Set-DefaultTerminal` function for Windows.
 
-&nbsp;
-&nbsp;
+[*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v1.6.0...v1.5.0)
 
 ## [1.5.0] - 2024-11-04
 
@@ -46,8 +46,7 @@ This release is focused on enhancements that make the existing functions more us
 - Ensure file is created in file system provider with `Out-JsonFile`.
 - Remove **GridView** parameters from `Get-TypeAccelerator` to give user control of output and display.
 
-&nbsp;
-&nbsp;
+[*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v1.5.0...v1.4.9)
 
 ## [1.4.9] - 2024-10-25
 
@@ -59,8 +58,7 @@ This release is focused on enhancements that make the existing functions more us
 
 - Add basic support for DNF on Linux to `Update-AllTheThings`. (@x1101)
 
-&nbsp;
-&nbsp;
+[*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v1.4.9...v1.4.8)
 
 ## [1.4.8] - 2024-10-24
 
@@ -68,8 +66,7 @@ This release is focused on enhancements that make the existing functions more us
 
 - Fix [#26](https://github.com/SamErde/PSPreworkout/issues/26) Windows/Linux detection in `Update-AllTheThings`. (@x1101)
 
-&nbsp;
-&nbsp;
+[*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v1.4.8...v1.4.7)
 
 ## [1.4.7] - 2024-10-23
 
@@ -77,8 +74,7 @@ This release is focused on enhancements that make the existing functions more us
 
 - Fix HelpUri to open help pages to each specific function when `-Online` help is requested.
 
-&nbsp;
-&nbsp;
+[*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v1.4.7...v1.4.6)
 
 ## [1.4.6] - 2024-10-22
 
@@ -86,8 +82,7 @@ This release is focused on enhancements that make the existing functions more us
 
 - Add updatable and online [external] help.
 
-&nbsp;
-&nbsp;
+[*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v1.4.6...v1.4.3)
 
 ## [1.4.3] - 2024-10-16
 
@@ -95,10 +90,7 @@ This release is focused on enhancements that make the existing functions more us
 
 - Fix object creation example for comment-based help in `Show-WithoutEmptyProperty`
 
-&nbsp;
-Full changelog: [v1.4.2...v1.4.3](https://github.com/SamErde/PSPreworkout/compare/v1.4.2...v1.4.3)
-&nbsp;
-&nbsp;
+*Full Changelog*: [v1.4.2...v1.4.3](https://github.com/SamErde/PSPreworkout/compare/v1.4.2...v1.4.3)
 
 ## [1.4.2] - 2024-10-15
 
@@ -107,10 +99,7 @@ Full changelog: [v1.4.2...v1.4.3](https://github.com/SamErde/PSPreworkout/compar
 - Refactor `Show-WithoutEmptyProperty` and test with more examples
 - Enhance `Out-JsonFile` with better validation and provider handling
 
-&nbsp;
-Full changelog: [v1.4.1...v1.4.2](https://github.com/SamErde/PSPreworkout/compare/v1.4.1...v1.4.2)
-&nbsp;
-&nbsp;
+*Full Changelog*: [v1.4.1...v1.4.2](https://github.com/SamErde/PSPreworkout/compare/v1.4.1...v1.4.2)
 
 ## [1.4.1] - 2024-10-14
 
@@ -119,10 +108,7 @@ Full changelog: [v1.4.1...v1.4.2](https://github.com/SamErde/PSPreworkout/compar
 - Fix [#16](https://github.com/SamErde/PSPreworkout/issues/16)
 - Fix [#15](https://github.com/SamErde/PSPreworkout/issues/15)
 
-&nbsp;
-Full changelog: [v1.4.0...v1.4.1](https://github.com/SamErde/PSPreworkout/compare/v1.4.0...v1.4.1)
-&nbsp;
-&nbsp;
+*Full Changelog*: [v1.4.0...v1.4.1](https://github.com/SamErde/PSPreworkout/compare/v1.4.0...v1.4.1)
 
 ## [1.4.0] - 2024-10-14
 
@@ -136,10 +122,7 @@ Full changelog: [v1.4.0...v1.4.1](https://github.com/SamErde/PSPreworkout/compar
 - Fix download links for `Get-PowerShellPortable`
 - Optimize `Get-PowerShellPortable` version check and download
 
-&nbsp;
-Full changelog: [v1.3.1...v1.4.0](https://github.com/SamErde/PSPreworkout/compare/v1.3.1...v1.4.0)
-&nbsp;
-&nbsp;
+*Full Changelog*: [v1.3.1...v1.4.0](https://github.com/SamErde/PSPreworkout/compare/v1.3.1...v1.4.0)
 
 ## [1.3.1] - 2024-10-10
 
@@ -159,8 +142,7 @@ Full changelog: [v1.3.1...v1.4.0](https://github.com/SamErde/PSPreworkout/compar
 
 - Remove user installation of PowerShell, which no longer provides user installation packages after 7.2.6
 
-&nbsp;
-&nbsp;
+[*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v1.3.1...v1.2.5)
 
 ## [1.2.5] - 2024-09-16
 
@@ -172,8 +154,7 @@ Full changelog: [v1.3.1...v1.4.0](https://github.com/SamErde/PSPreworkout/compar
 
 - Fix some minor errors in path processing
 
-&nbsp;
-&nbsp;
+[*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v1.2.5...v1.2.4)
 
 ## [1.2.4] - 2024-09-13
 
@@ -182,8 +163,7 @@ Full changelog: [v1.3.1...v1.4.0](https://github.com/SamErde/PSPreworkout/compar
 - Fix extraction of PowerShell .tar.gz file on macOS
 - Fix references to location of the extracted PowerShell files
 
-&nbsp;
-&nbsp;
+[*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v1.2.4...v1.2.2)
 
 ## [1.2.2] - 2024-09-13
 
@@ -193,8 +173,7 @@ Full changelog: [v1.3.1...v1.4.0](https://github.com/SamErde/PSPreworkout/compar
 - Add some default PowerShell preferences to `Initialize-PSEnvironmentConfiguration`
 - Add PSReadLine preferences and history handler to `Initialize-PSEnvironmentConfiguration`
 
-&nbsp;
-&nbsp;
+[*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v1.2.2...v1.1.2)
 
 ## [1.1.2] - 2024-09-12
 
@@ -203,8 +182,7 @@ Full changelog: [v1.3.1...v1.4.0](https://github.com/SamErde/PSPreworkout/compar
 - Get Author name from the currently logged-in user profile (if Windows) in `New-ScriptFromTemplate`
 - Add parameter validation in `New-ScriptFromTemplate`
 
-&nbsp;
-&nbsp;
+[*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v1.1.2...v1.1.1)
 
 ## [1.1.0] - 2024-09-11
 
@@ -221,8 +199,7 @@ Full changelog: [v1.3.1...v1.4.0](https://github.com/SamErde/PSPreworkout/compar
 - Add `Show-LoadedAssembly`
 - Add `Set-ConsoleFont`
 
-&nbsp;
-&nbsp;
+[*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v0.4.1...v1.1.1)
 
 ## [0.4.1] - 2024-09-09
 
@@ -230,8 +207,7 @@ Full changelog: [v1.3.1...v1.4.0](https://github.com/SamErde/PSPreworkout/compar
 
 - Export aliases when importing module
 
-&nbsp;
-&nbsp;
+[*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v0.3.2...v0.4.1)
 
 ## [0.3.2] - 2024-09-06
 
@@ -246,26 +222,25 @@ Full changelog: [v1.3.1...v1.4.0](https://github.com/SamErde/PSPreworkout/compar
 - Add `Edit-WinGetSettings`
 - Add `Initialize-Configuration`
 
-&nbsp;
-&nbsp;
+*Initial release.*
 
-_Initial release._
-
-[1.6.0]: https://github.com/SamErde/PSPreworkout/tag/v1.6.0
-[1.5.0]: https://github.com/SamErde/PSPreworkout/tag/v1.5.0
-[1.4.9]: https://github.com/SamErde/PSPreworkout/tag/v1.4.9
-[1.4.8]: https://github.com/SamErde/PSPreworkout/tag/v1.4.8
-[1.4.7]: https://github.com/SamErde/PSPreworkout/tag/v1.4.7
-[1.4.6]: https://github.com/SamErde/PSPreworkout/tag/v1.4.6
-[1.4.3]: https://github.com/SamErde/PSPreworkout/tag/v1.4.3
-[1.4.2]: https://github.com/SamErde/PSPreworkout/tag/v1.4.2
-[1.4.1]: https://github.com/SamErde/PSPreworkout/tag/v1.4.1
-[1.4.0]: https://github.com/SamErde/PSPreworkout/tag/v1.4.0
-[1.3.1]: https://github.com/SamErde/PSPreworkout/tag/v1.3.1
-[1.2.5]: https://github.com/SamErde/PSPreworkout/tag/v1.2.5
-[1.2.4]: https://github.com/SamErde/PSPreworkout/tag/v1.2.4
-[1.2.2]: https://github.com/SamErde/PSPreworkout/tag/v1.2.2
-[1.1.2]: https://github.com/SamErde/PSPreworkout/tag/v1.1.2
-[1.1.0]: https://github.com/SamErde/PSPreworkout/tag/v1.1.0
-[0.4.1]: https://github.com/SamErde/PSPreworkout/tag/v0.4.1
+[Unreleased]: https://github.com/SamErde/PSPreworkout/compare/latest...HEAD
 [0.3.2]: https://github.com/SamErde/PSPreworkout/tag/v0.3.2
+[0.4.1]: https://github.com/SamErde/PSPreworkout/tag/v0.4.1
+[1.1.0]: https://github.com/SamErde/PSPreworkout/tag/v1.1.0
+[1.1.2]: https://github.com/SamErde/PSPreworkout/tag/v1.1.2
+[1.2.2]: https://github.com/SamErde/PSPreworkout/tag/v1.2.2
+[1.2.4]: https://github.com/SamErde/PSPreworkout/tag/v1.2.4
+[1.2.5]: https://github.com/SamErde/PSPreworkout/tag/v1.2.5
+[1.3.1]: https://github.com/SamErde/PSPreworkout/tag/v1.3.1
+[1.4.0]: https://github.com/SamErde/PSPreworkout/tag/v1.4.0
+[1.4.1]: https://github.com/SamErde/PSPreworkout/tag/v1.4.1
+[1.4.2]: https://github.com/SamErde/PSPreworkout/tag/v1.4.2
+[1.4.3]: https://github.com/SamErde/PSPreworkout/tag/v1.4.3
+[1.4.6]: https://github.com/SamErde/PSPreworkout/tag/v1.4.6
+[1.4.7]: https://github.com/SamErde/PSPreworkout/tag/v1.4.7
+[1.4.8]: https://github.com/SamErde/PSPreworkout/tag/v1.4.8
+[1.4.9]: https://github.com/SamErde/PSPreworkout/tag/v1.4.9
+[1.5.0]: https://github.com/SamErde/PSPreworkout/tag/v1.5.0
+[1.6.0]: https://github.com/SamErde/PSPreworkout/tag/v1.6.0
+[1.7.1]: https://github.com/SamErde/PSPreworkout/tag/v1.7.1
