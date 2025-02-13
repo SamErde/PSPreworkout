@@ -1,6 +1,7 @@
 <!-- markdownlint-disable first-line-heading -->
 <!-- markdownlint-disable blanks-around-headings -->
 <!-- markdownlint-disable no-inline-html -->
+<!-- markdownlint-disable MD024 -->
 <a name='top'></a><div id='top' />
 # PowerShell Preworkout (PSPreworkout)
 
