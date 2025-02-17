@@ -1,9 +1,12 @@
 # Project Files #
-Archive
-Artifacts
+Archive/
+Artifacts/
+Artifacts/*
 cov.xml
 coverage.xml
-Ignore
+
+# Negative Include
+!/Artifacts/en-US/
 
 ### VisualStudioCode ###
 .vscode/*
