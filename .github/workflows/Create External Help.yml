@@ -12,8 +12,8 @@ jobs:
     # The New-ExternalHelpCab cmdlet uses makecab, which depends on Windows
     runs-on: windows-latest
     steps:
-      - name: ✅ Checkout Repository
-        uses: actions/checkout@v4
+      #- name: ✅ Checkout Repository
+      #  uses: actions/checkout@v4
       - name: 📁 Display the Path
         shell: pwsh
         run: echo ${env:PATH}
@@ -25,7 +25,7 @@ jobs:
         run: |
           Install-Module -Name PlatyPS -Scope CurrentUser -Force
           Import-Module -Name PlatyPS
-          Copy-Item ".\src\Artifacts\en-US\PSPreworkout-help.xml" ".\Help\en-US"
+          # Copy-Item ".\Help\en-US\PSPreworkout-help.xml" ".\Help\en-US"
           $params = @{
               CabFilesFolder  = ".\Help\en-US"
               LandingPagePath = ".\docs\PSPreworkout.md"
