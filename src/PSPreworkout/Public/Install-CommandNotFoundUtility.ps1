@@ -25,8 +25,7 @@ function Install-CommandNotFoundUtility {
     process {
         try {
             Install-Module -Name Microsoft.WinGet.CommandNotFound -Scope CurrentUser -Force
-        }
-        catch {
+        } catch {
             throw $_
         }
         try {

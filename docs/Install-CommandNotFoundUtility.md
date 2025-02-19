@@ -38,8 +38,8 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 
 ## NOTES
 Author: Sam Erde
-Version: 0.1.0
-Modified: 2025-01-07
+Version: 0.1.1
+Modified: 2025-02-08
 
 requires -version 7.4
 
