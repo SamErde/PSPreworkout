@@ -8,6 +8,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 <!-- Show the history of all changes since the last release. -->
 [*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/latest...HEAD)
 
+## [1.7.2] - 2025-02-19
+
+### Fixed
+
+- Add better error handling in `Install-CommandNotFoundUtility`.
+- Fix bug in `Install-CommandNotFoundUtility`.
+
+[*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v1.7.1...v1.7.2)
+
 ## [1.7.1] - 2025-01-31
 
 ### Changed
@@ -244,3 +253,4 @@ This release is focused on enhancements that make the existing functions more us
 [1.5.0]: https://github.com/SamErde/PSPreworkout/tag/v1.5.0
 [1.6.0]: https://github.com/SamErde/PSPreworkout/tag/v1.6.0
 [1.7.1]: https://github.com/SamErde/PSPreworkout/tag/v1.7.1
+[1.7.2]: https://github.com/SamErde/PSPreworkout/tag/v1.7.2
