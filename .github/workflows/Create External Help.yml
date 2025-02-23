@@ -12,8 +12,8 @@ jobs:
     # The New-ExternalHelpCab cmdlet uses makecab, which depends on Windows
     runs-on: windows-latest
     steps:
-      #- name: ✅ Checkout Repository
-      #  uses: actions/checkout@v4
+      - name: ✅ Checkout Repository
+        uses: actions/checkout@v4
       - name: 📁 Display the Path
         shell: pwsh
         run: echo ${env:PATH}
