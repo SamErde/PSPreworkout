@@ -27,7 +27,7 @@ function Get-TypeAccelerator {
 
     #>
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Get-TypeAccelerator')]
-    [OutputType('System.Array')]
+    [OutputType('Object[]')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'Fighting with VS Code autoformatting.')]
     param (
 
