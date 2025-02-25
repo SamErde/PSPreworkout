@@ -2,7 +2,7 @@
 Module Name: PSPreworkout
 Module Guid: 378339de-a0df-4d44-873b-4fd32c388e06
 Download Help Link: NA
-Help Version: 1.7.3
+Help Version: 1.7.4
 Locale: en-US
 ---
 
@@ -73,5 +73,6 @@ Check if you are running an elevated shell with administrator or root privileges
 
 ### [Update-AllTheThings](Update-AllTheThings.md)
 Update all the things!
+
 
 
