@@ -541,14 +541,31 @@ Add-BuildTask Archive {
     $zipFileNameArchive = '{0}_{1}_{2}.{3}.zip' -f $script:ModuleName, $script:ModuleVersion, ([DateTime]::UtcNow.ToString('yyyyMMdd')), ([DateTime]::UtcNow.ToString('hhmmss'))
     $zipFileArchive = Join-Path -Path $archivePath -ChildPath $zipFileNameArchive
 
-    $zipFileNameArtifact = '{0}.zip' -f $script:ModuleName
-    $zipFileArtifact = Join-Path -Path $script:ArtifactsPath -ChildPath $zipFileNameArtifact
 
     if ($PSEdition -eq 'Desktop' -or $IsWindows) {
         Add-Type -AssemblyName 'System.IO.Compression.FileSystem'
     }
     [System.IO.Compression.ZipFile]::CreateFromDirectory($script:ArtifactsPath, $zipFileArchive)
-    Copy-Item -Path $zipFileArchive -Destination $zipFileArtifact -Force
-
     Write-Build Green '        ...Archive Complete!'
+
+
+    Write-Build White '        Creating release artifacts...'
+    $releasePath = Join-Path -Path $BuildRoot -ChildPath 'Release' ; [void]$releasePath
+    $zipFileNameRelease = '{0}.zip' -f $script:ModuleName
+    $zipFileRelease = Join-Path -Path $script:ArtifactsPath -ChildPath $zipFileNameRelease
+
+    #region SDE
+    $ReleaseFolder = Join-Path -Path $PSScriptRoot -ChildPath 'Release'
+    #if (-not (Test-Path -Path $ReleaseFolder)) {
+    #    New-Item -Path (Split-Path $ReleaseFolder -Parent) -ItemType Directory -Name (Split-Path $ReleaseFolder -Leaf) | Out-Null
+    #}
+    #$ReleaseFolder = Resolve-Path $ReleaseFolder | Out-Null
+    $ArtifactsFolder = Resolve-Path (Join-Path -Path $PSScriptRoot -ChildPath 'Artifacts')
+    $ExternalHelpFolder = Get-ChildItem -Directory -Path (Join-Path -Path $PSScriptRoot -ChildPath '..\docs') | Select-Object -ExpandProperty FullName
+
+    Copy-Item -Path $ArtifactsFolder\* -Destination "$ReleaseFolder" -Recurse -Exclude @('ccReport', 'en-US', 'testOutput', 'Release', 'PSPreworkout.zip') -Force
+    Copy-Item -Path $ExternalHelpFolder -Destination $ReleaseFolder -Recurse -Force
+    [System.IO.Compression.ZipFile]::CreateFromDirectory($ReleaseFolder, $zipFileRelease)
+    Write-Build Green '        ...Archive Complete!'
+    #endregion SDE
 } #Archive
