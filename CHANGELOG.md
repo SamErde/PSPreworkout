@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 <!-- Show the history of all changes since the last release. -->
 [*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/latest...HEAD)
 
-## [1.7.3-prerelease.3] - 2025-02-25
+## [1.7.3-prerelease4] - 2025-02-25
 
 Updates to test the modified build and release process.
 
@@ -271,4 +271,4 @@ This release is focused on enhancements that make the existing functions more us
 [1.6.0]: https://github.com/SamErde/PSPreworkout/tag/v1.6.0
 [1.7.1]: https://github.com/SamErde/PSPreworkout/tag/v1.7.1
 [1.7.2]: https://github.com/SamErde/PSPreworkout/tag/v1.7.2
-[1.7.3-prerelease.3]: https://github.com/SamErde/PSPreworkout/tag/v1.7.3-prerelease.3
+[1.7.3-prerelease4]: https://github.com/SamErde/PSPreworkout/tag/v1.7.3-prerelease4
