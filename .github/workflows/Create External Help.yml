@@ -33,7 +33,7 @@ jobs:
               LandingPagePath = ".\docs\PSPreworkout.md"
               OutputFolder    = ".\docs\en-US"  # Actual output folder.
           }
-          New-ExternalHelpCab @params -IncrementHelpVersion
+          New-ExternalHelpCab @params
 
     # Can I add a separate batch of jobs that runs on Ubuntu within this same workflow?
       # git-auto-commit-action only runs on Linux-based platforms.
