@@ -60,7 +60,7 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 
 ## OUTPUTS
 
-### System.Array
+### Object[]
 ## NOTES
 Author: Sam Erde
 Version: 0.0.3
