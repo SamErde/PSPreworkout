@@ -30,8 +30,8 @@ Describe 'Get-TypeAccelerator Tests' -Tag Unit {
         }
 
         It 'Function should filter by exact name' {
-            $result = Get-TypeAccelerator -Name 'ADSI'
-            $result.Name | Should -Contain 'ADSI'
+            $result = Get-TypeAccelerator -Name 'mailaddress'
+            $result.Name | Should -Contain 'mailaddress'
         }
 
         It 'Function should filter by wildcard name' {
