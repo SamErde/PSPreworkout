@@ -8,6 +8,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 <!-- Show the history of all changes since the last release. -->
 [*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/latest...HEAD)
 
+## [1.7.3-rc] - 2025-2-24
+
+A test of the release process. Some new Pester tests are also being built.
+
+## What's Changed
+* Dev general by @SamErde in https://github.com/SamErde/PSPreworkout/pull/61
+* Repository Maintenance by @SamErde in https://github.com/SamErde/PSPreworkout/pull/62
+* Add version 1.7.2 with improved error handling by @SamErde in https://github.com/SamErde/PSPreworkout/pull/63
+
+**Full Changelog**: https://github.com/SamErde/PSPreworkout/compare/v1.7.2...v1.7.3-rc
+
 ## [1.7.2] - 2025-02-19
 
 ### Fixed
@@ -254,3 +265,5 @@ This release is focused on enhancements that make the existing functions more us
 [1.6.0]: https://github.com/SamErde/PSPreworkout/tag/v1.6.0
 [1.7.1]: https://github.com/SamErde/PSPreworkout/tag/v1.7.1
 [1.7.2]: https://github.com/SamErde/PSPreworkout/tag/v1.7.2
+[1.7.3-rc]: https://github.com/SamErde/PSPreworkout/tag/v1.7.3-rc
+
