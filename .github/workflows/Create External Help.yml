@@ -31,7 +31,7 @@ jobs:
           $params = @{
               CabFilesFolder  = ".\src\Artifacts\en-US"     # Source XML folder.
               LandingPagePath = ".\docs\PSPreworkout.md"
-              OutputFolder    = ".\src\PSPreworkout\en-US"  # Actual output folder.
+              OutputFolder    = ".\docs\en-US"  # Actual output folder.
           }
           New-ExternalHelpCab @params -IncrementHelpVersion
 
