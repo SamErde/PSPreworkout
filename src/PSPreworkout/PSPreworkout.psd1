@@ -107,13 +107,13 @@
             ReleaseNotes = 'Added Pester-based unit tests.'
 
             # Prerelease string of this module
-            Prerelease   = 'rc'
+            Prerelease   = 'prerelease-2'
 
         } # End of PSData hashtable
 
     } # End of PrivateData hashtable
 
     # HelpInfo URI of this module
-    HelpInfoURI          = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/src/Help/'
+    HelpInfoURI          = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/docs'
 
 }
