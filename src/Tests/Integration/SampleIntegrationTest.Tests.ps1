@@ -15,4 +15,4 @@ Describe 'Integration Tests' -Tag Integration {
     }
 }
 
-Remove-Module $ModuleName -Force
+Remove-Module 'PSPreworkout' -Force
