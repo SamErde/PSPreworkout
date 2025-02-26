@@ -555,7 +555,7 @@ Add-BuildTask Archive {
     $zipFileRelease = Join-Path -Path $script:ArtifactsPath -ChildPath $zipFileNameRelease
 
     #region SDE
-    $ReleaseFolder = Join-Path -Path $PSScriptRoot -ChildPath 'Release'
+    $ReleaseFolder = Join-Path -Path $PSScriptRoot -ChildPath '..\Release'
     #if (-not (Test-Path -Path $ReleaseFolder)) {
     #    New-Item -Path (Split-Path $ReleaseFolder -Parent) -ItemType Directory -Name (Split-Path $ReleaseFolder -Leaf) | Out-Null
     #}
