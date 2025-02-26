@@ -30,7 +30,7 @@ jobs:
           Import-Module -Name PlatyPS
           Write-Host "$($env:PWD)"
           $params = @{
-              CabFilesFolder  = "..\src\Artifacts\en-US\"     # Source XML folder.
+              CabFilesFolder  = ".\src\Artifacts\en-US"     # Source XML folder.
               LandingPagePath = ".\docs\PSPreworkout.md"
               OutputFolder    = ".\docs\en-US"  # Actual output folder.
           }
