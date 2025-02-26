@@ -28,8 +28,9 @@ jobs:
         run: |
           Install-Module -Name PlatyPS -Scope CurrentUser -Force
           Import-Module -Name PlatyPS
+          Write-Verbose $PWD
           $params = @{
-              CabFilesFolder  = ".\src\Artifacts\en-US"     # Source XML folder.
+              CabFilesFolder  = "..\..\src\Artifacts\en-US\"     # Source XML folder.
               LandingPagePath = ".\docs\PSPreworkout.md"
               OutputFolder    = ".\docs\en-US"  # Actual output folder.
           }
