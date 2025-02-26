@@ -28,9 +28,9 @@ jobs:
         uses: docker://antonyurchenko/git-release:latest
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-        #with:
-        #  args: |
-        #    artifacts\\${{ GitHub.repository }}.zip
+        with:
+          args: |
+            artifacts\\${{ GitHub.repository }}.zip
 
       - name: 🚀 Publish PowerShell Module
         env:
