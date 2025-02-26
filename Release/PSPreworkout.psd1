@@ -67,9 +67,9 @@
 
     # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
     AliasesToExport      = @(
-        'isadmin',
-        'isroot',
-        'uatt',
+        'IsAdmin',
+        'IsRoot',
+        'UaTT',
         'Skip-Choco',
         'Edit-HistoryFile',
         'gev',
@@ -107,7 +107,7 @@
             ReleaseNotes = 'Added Pester-based unit tests.'
 
             # Prerelease string of this module
-            Prerelease   = 'rc2'
+            Prerelease   = 'rc3'
 
         } # End of PSData hashtable
 
