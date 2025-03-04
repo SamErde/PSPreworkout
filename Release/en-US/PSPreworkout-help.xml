@@ -10,7 +10,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Use this function to edit the PSReadLine history file. This may be useful if you want to reset some of your autocomplete suggestions orremove commands that did not work.</maml:para>
+      <maml:para>Use this function to edit the PSReadLine history file. This may be useful if you want to reset some of your autocomplete suggestions or remove commands that did not work.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -22,7 +22,7 @@
     <command:returnValues />
     <maml:alertSet>
       <maml:alert>
-        <maml:para>Author: Sam Erde Version: 0.0.1 Modified: 2024-10-10</maml:para>
+        <maml:para>Author: Sam Erde Version: 0.0.2 Modified: 2025-01-06</maml:para>
         <maml:para>Idea: History search with a TUI? This may already be done by the PowerShell Run module.</maml:para>
       </maml:alert>
     </maml:alertSet>
@@ -52,39 +52,14 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Edit-WingetSettingsFile</maml:name>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
-          <maml:name>EditorPath</maml:name>
-          <maml:Description>
-            <maml:para>Specify the path to the editor that you would like to use.</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">FileInfo</command:parameterValue>
-          <dev:type>
-            <maml:name>FileInfo</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
-    <command:parameters>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
-        <maml:name>EditorPath</maml:name>
-        <maml:Description>
-          <maml:para>Specify the path to the editor that you would like to use.</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">FileInfo</command:parameterValue>
-        <dev:type>
-          <maml:name>FileInfo</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-    </command:parameters>
+    <command:parameters />
     <command:inputTypes />
     <command:returnValues />
     <maml:alertSet>
       <maml:alert>
-        <maml:para>Author: Sam Erde Version: 0.0.2 Modified: 2024/10/12</maml:para>
+        <maml:para>Author: Sam Erde Version: 0.1.0 Modified: 2024/10/12</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -125,27 +100,39 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Pattern</maml:name>
+          <maml:Description>
+            <maml:para>A regex pattern to match environment variable names against.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Target</maml:name>
           <maml:Description>
-            <maml:para>The target of the environment variable to retrieve. Defaults to User. (Process, User, or Machine)</maml:para>
+            <maml:para>The target (Process, Machine, User) to pull environment variables from. The default is process. Multiple targets may be specified.</maml:para>
           </maml:Description>
           <command:parameterValueGroup>
             <command:parameterValue required="false" command:variableLength="false">Process</command:parameterValue>
             <command:parameterValue required="false" command:variableLength="false">User</command:parameterValue>
             <command:parameterValue required="false" command:variableLength="false">Machine</command:parameterValue>
           </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">EnvironmentVariableTarget</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">EnvironmentVariableTarget[]</command:parameterValue>
           <dev:type>
-            <maml:name>EnvironmentVariableTarget</maml:name>
+            <maml:name>EnvironmentVariableTarget[]</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>User</dev:defaultValue>
+          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>All</maml:name>
           <maml:Description>
-            <maml:para>Switch to show environment variables in all target scopes.</maml:para>
+            <maml:para>Optionally get all environment variables from all targets. Process ID and process name will be included for process environment variables.</maml:para>
           </maml:Description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -168,22 +155,34 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
-        <maml:name>Target</maml:name>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Pattern</maml:name>
         <maml:Description>
-          <maml:para>The target of the environment variable to retrieve. Defaults to User. (Process, User, or Machine)</maml:para>
+          <maml:para>A regex pattern to match environment variable names against.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">EnvironmentVariableTarget</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
-          <maml:name>EnvironmentVariableTarget</maml:name>
+          <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>User</dev:defaultValue>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Target</maml:name>
+        <maml:Description>
+          <maml:para>The target (Process, Machine, User) to pull environment variables from. The default is process. Multiple targets may be specified.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">EnvironmentVariableTarget[]</command:parameterValue>
+        <dev:type>
+          <maml:name>EnvironmentVariableTarget[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>All</maml:name>
         <maml:Description>
-          <maml:para>Switch to show environment variables in all target scopes.</maml:para>
+          <maml:para>Optionally get all environment variables from all targets. Process ID and process name will be included for process environment variables.</maml:para>
         </maml:Description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -197,7 +196,7 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.String</maml:name>
+          <maml:name>System.Collections.Generic.List[PSObject]</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -206,7 +205,10 @@
     </command:returnValues>
     <maml:alertSet>
       <maml:alert>
-        <maml:para>Author: Sam Erde Version: 0.0.2 Modified: 2024/10/12</maml:para>
+        <maml:para>Author: Sam Erde Version: 0.1.0 Modified: 2024/10/8</maml:para>
+        <maml:para>To Do: Return environment variables if -Target is used without either -Name or -Pattern.</maml:para>
+        <maml:para></maml:para>
+        <maml:para>About Environment Variables:</maml:para>
         <maml:para>Variable names are case-sensitive on Linux and macOS, but not on Windows.</maml:para>
         <maml:para>Why is 'Target' used by .NET instead of the familiar 'Scope' parameter name? @IISResetMe (Mathias R. Jessen) explains: "Scope" would imply some sort of integrated hierarchy of env variables - that's not really the case. Target=Process translates to kernel32!GetEnvironmentVariable (which then in turn reads the PEB from the calling process), whereas Target={User,Machine} causes a registry lookup against environment data in either HKCU or HKLM.</maml:para>
         <maml:para>The relevant sources for the User and Machine targets are in the registry at: - HKEY_CURRENT_USER\Environment</maml:para>
@@ -218,10 +220,40 @@
     <command:examples>
       <command:example>
         <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
-        <dev:code>Get-EnvironmentVariable -Name "PATH"
-Retrieves the value of the "PATH" environment variable.</dev:code>
+        <dev:code>Get-EnvironmentVariable -Name 'UserName'
+Retrieves the value of the "UserName" environment variable from the process target.</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 2 --------------------------</maml:title>
+        <dev:code>Get-EnvironmentVariable -Name 'Path' -Target 'Machine'
+Retrieves the value of the PATH environment variable from the machine target.</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 3 --------------------------</maml:title>
+        <dev:code>Get-EnvironmentVariable -Pattern '^u'
+Get environment variables with names that begin with the letter "u" in any target.</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 4 --------------------------</maml:title>
+        <dev:code>Get-EnvironmentVariable -Pattern 'git' | Format-Table Name,Target,PID,ProcessName,Value</dev:code>
+        <dev:remarks>
+          <maml:para>Get all process environment variables that match the pattern "git" and return the results as a table.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 5 --------------------------</maml:title>
+        <dev:code>Get-EnvironmentVariable -Pattern 'path' -Target Machine,Process,User | Format-Table Name,Target,PID,ProcessName,Value</dev:code>
+        <dev:remarks>
+          <maml:para>Return all environment variables that match the pattern "path" from all targets and format the results as a table.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
@@ -249,7 +281,7 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Array</maml:name>
+          <maml:name>System.Reflection.RuntimeAssembly[]</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -367,7 +399,7 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Get available type accelerators. These can be useful when trying to find or remember the different type accellerators that are available to use in PowerShell.</maml:para>
+      <maml:para>Get available type accelerators. These can be useful when trying to find or remember the different type accelerators that are available to use in PowerShell.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -384,17 +416,6 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
           </dev:type>
           <dev:defaultValue>*</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>GridView</maml:name>
-          <maml:Description>
-            <maml:para>Show the output in a grid view.</maml:para>
-          </maml:Description>
-          <dev:type>
-            <maml:name>SwitchParameter</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -410,24 +431,12 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
         </dev:type>
         <dev:defaultValue>*</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>GridView</maml:name>
-        <maml:Description>
-          <maml:para>Show the output in a grid view.</maml:para>
-        </maml:Description>
-        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-        <dev:type>
-          <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
-      </command:parameter>
     </command:parameters>
     <command:inputTypes />
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Array</maml:name>
+          <maml:name>Object[]</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -436,7 +445,7 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
     </command:returnValues>
     <maml:alertSet>
       <maml:alert>
-        <maml:para>Author: Sam Erde Version: 0.0.2 Modified: 2024/10/12</maml:para>
+        <maml:para>Author: Sam Erde Version: 0.0.3 Modified: 2024/10/29</maml:para>
         <maml:para>Thanks to Jeff Hicks (@JDHITSolutions) for helpful suggestions and improvements on this output!</maml:para>
       </maml:alert>
     </maml:alertSet>
@@ -446,6 +455,13 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
         <dev:code>Get-TypeAccelerator -Name ADSI</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 2 --------------------------</maml:title>
+        <dev:code>Get-TypeAccelerator -Name ps*</dev:code>
+        <dev:remarks>
+          <maml:para>Get all type accelerators that begin with the string "ps".</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
@@ -491,18 +507,6 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
-          <maml:name>CentralProfile</maml:name>
-          <maml:Description>
-            <maml:para>The file path to your central PowerShell profile.</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
           <maml:name>Font</maml:name>
           <maml:Description>
             <maml:para>The font to use for your consoles (PowerShell, Windows PowerShell, git bash, etc.)</maml:para>
@@ -514,7 +518,7 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
           <maml:name>Packages</maml:name>
           <maml:Description>
             <maml:para>Packages to install with winget.</maml:para>
@@ -526,7 +530,7 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
           </dev:type>
           <dev:defaultValue>@('Microsoft.WindowsTerminal', 'git.git', 'JanDeDobbeleer.OhMyPosh')</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="6" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
           <maml:name>Modules</maml:name>
           <maml:Description>
             <maml:para>PowerShell modules to install.</maml:para>
@@ -536,7 +540,7 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
             <maml:name>String[]</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>@('CompletionPredictor', 'Microsoft.PowerShell.ConsoleGuiTools', 'Microsoft.PowerShell.PSResourceGet', 'posh-git', 'PowerShellForGitHub', 'Terminal-Icons')</dev:defaultValue>
+          <dev:defaultValue>@('CompletionPredictor', 'Microsoft.PowerShell.ConsoleGuiTools', 'Microsoft.PowerShell.PSResourceGet', 'posh-git', 'PowerShellForGitHub', 'Terminal-Icons', 'PSReadLine', 'PowerShellGet')</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>SkipPackages</maml:name>
@@ -588,18 +592,6 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
-        <maml:name>CentralProfile</maml:name>
-        <maml:Description>
-          <maml:para>The file path to your central PowerShell profile.</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
         <maml:name>Font</maml:name>
         <maml:Description>
           <maml:para>The font to use for your consoles (PowerShell, Windows PowerShell, git bash, etc.)</maml:para>
@@ -611,7 +603,7 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
         <maml:name>Packages</maml:name>
         <maml:Description>
           <maml:para>Packages to install with winget.</maml:para>
@@ -635,7 +627,7 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="6" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
         <maml:name>Modules</maml:name>
         <maml:Description>
           <maml:para>PowerShell modules to install.</maml:para>
@@ -645,7 +637,7 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
           <maml:name>String[]</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>@('CompletionPredictor', 'Microsoft.PowerShell.ConsoleGuiTools', 'Microsoft.PowerShell.PSResourceGet', 'posh-git', 'PowerShellForGitHub', 'Terminal-Icons')</dev:defaultValue>
+        <dev:defaultValue>@('CompletionPredictor', 'Microsoft.PowerShell.ConsoleGuiTools', 'Microsoft.PowerShell.PSResourceGet', 'posh-git', 'PowerShellForGitHub', 'Terminal-Icons', 'PSReadLine', 'PowerShellGet')</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>SkipModules</maml:name>
@@ -664,8 +656,8 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
     <command:returnValues />
     <maml:alertSet>
       <maml:alert>
-        <maml:para>Author: Sam Erde Version: 0.0.2 Modified: 2024/10/12</maml:para>
-        <maml:para>To Do     Add status/verbose output of changes being made     Create basic starter profile if none exist     Create dot-sourced profile     Create interactive picker for packages and modules (separate functions)     Bootstrap Out-GridView or Out-ConsoleGridView</maml:para>
+        <maml:para>Author: Sam Erde Version: 0.0.3 Modified: 2024/11/08</maml:para>
+        <maml:para>To Do     Add status/verbose output of changes being made     Create basic starter profile if none exist     Create dot-sourced profile     Create interactive picker for packages and modules (separate functions)     Bootstrap Out-GridView or Out-ConsoleGridView for the interactive picker     Do not install already installed packages     Do not install ConsoleGuiTools in Windows PowerShell</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -689,7 +681,7 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>This script installs the Microsoft.WinGet.CommandNotFound module and enables the required experimental features in PowerShell 7.</maml:para>
+      <maml:para>This script installs the Microsoft.WinGet.CommandNotFound module and enables the required PowerShell features.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -701,8 +693,8 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
     <command:returnValues />
     <maml:alertSet>
       <maml:alert>
-        <maml:para>Author: Sam Erde Version: 0.0.1 Modified: 2024-10-14</maml:para>
-        <maml:para>May not work with PowerShell installed from MSIX or the Microsoft Store: &lt;https://github.com/microsoft/PowerToys/issues/30818&gt;</maml:para>
+        <maml:para>Author: Sam Erde Version: 0.1.1 Modified: 2025-02-08</maml:para>
+        <maml:para>requires -version 7.4</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -726,7 +718,7 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>An over-engineered script to install Oh My Posh.</maml:para>
+      <maml:para>An over-engineered script to install Oh My Posh. This script exists as an exercise and is not intended for production use.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -735,7 +727,7 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
           <maml:name>WingetSource</maml:name>
           <maml:Description>
             <maml:para>Specify which source to install from.</maml:para>
-            <maml:para> - winget  - Install from winget (default).  - msstore - Install from the Microsoft Store.</maml:para>
+            <maml:para>    - winget  - Install from winget (default).     - msstore - Install from the Microsoft Store.</maml:para>
           </maml:Description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -792,7 +784,7 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
         <maml:name>WingetSource</maml:name>
         <maml:Description>
           <maml:para>Specify which source to install from.</maml:para>
-          <maml:para> - winget  - Install from winget (default).  - msstore - Install from the Microsoft Store.</maml:para>
+          <maml:para>    - winget  - Install from winget (default).     - msstore - Install from the Microsoft Store.</maml:para>
         </maml:Description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -848,7 +840,7 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
     <command:returnValues />
     <maml:alertSet>
       <maml:alert>
-        <maml:para></maml:para>
+        <maml:para>Author: Sam Erde Version: 0.1.0 Modified: 2024-10-23</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -868,11 +860,11 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
       <command:verb>Install</command:verb>
       <command:noun>PowerShellISE</command:noun>
       <maml:description>
-        <maml:para>Install the Windows PowerShell ISE if you removed it after installing VS Code.</maml:para>
+        <maml:para>Install the Windows PowerShell ISE</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>This script installs the Windows PowerShell ISE if it is not already. It includes a step that resets the Windows Automatic Update server source in the registry temporary, which may resolve errors that some people experience while trying to add Windows Capabilities. This was created because Out-GridView in Windows PowerShell 5.1 does not work without the ISE installed. However, Out-GridView was rewritten and included in PowerShell 7 for Windows.</maml:para>
+      <maml:para>This script installs Windows PowerShell ISE if it was not installed or previously removed. It includes a step that temporarily resets the Windows Automatic Update server source in the registry, which may resolve errors that some systems experience while trying to add Windows Capabilities.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -884,7 +876,8 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
     <command:returnValues />
     <maml:alertSet>
       <maml:alert>
-        <maml:para>To Do:     - Check for Windows client vs Windows Server OS     - Add parameter to make the Windows Update registry change optional     - Requires admin but adding that breaks the build</maml:para>
+        <maml:para>Author: Sam Erde Version: 1.0.0 Modified: 2025-01-07</maml:para>
+        <maml:para>To Do: Add parameter to make the Windows Update registry change optional.</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -908,7 +901,7 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Install WinGet on Windows Sandbox (or on builds of Windows 10 prior to build 1709 that did not ship with it preinstalled).</maml:para>
+      <maml:para>Install WinGet on Windows Sandbox (or on builds of Windows 10 prior to build 1709 that did not ship with it preinstalled). This script exists mostly as an exercise, as there are already many ways to install WinGet.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -991,6 +984,7 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
     <command:returnValues />
     <maml:alertSet>
       <maml:alert>
+        <maml:para>Author: Sam Erde Version: 0.1.0 Modified: 2024-10-23</maml:para>
         <maml:para>To Do: - Check for newer versions of packages on GitHub</maml:para>
         <maml:para>- Error handling</maml:para>
         <maml:para>- Create the target folder if it does not already exist</maml:para>
@@ -1033,7 +1027,16 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
     </command:syntax>
     <command:parameters />
     <command:inputTypes />
-    <command:returnValues />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Management.Automation.PSCredential</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
     <maml:alertSet>
       <maml:alert>
         <maml:para></maml:para>
@@ -1389,7 +1392,7 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
       <command:verb>Out</command:verb>
       <command:noun>JsonFile</command:noun>
       <maml:description>
-        <maml:para>Convert an object to JSON and write to a file.</maml:para>
+        <maml:para>Convert an object to JSON and write it to a file.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
@@ -1401,7 +1404,7 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
           <maml:name>Object</maml:name>
           <maml:Description>
-            <maml:para>Object to convert to JSON and save it to a file. Check for empty objects here or in the function body? [ValidateScript({ if (-not [string]::IsNullOrWhiteSpace($ ) -and -not [string]::IsNullOrEmpty($ )) { $true } })]</maml:para>
+            <maml:para>The object to convert to JSON. [ValidateScript({ if (-not [string]::IsNullOrWhiteSpace($ ) -and -not [string]::IsNullOrEmpty($ )) { $true } })]</maml:para>
           </maml:Description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -1413,7 +1416,7 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>FilePath</maml:name>
           <maml:Description>
-            <maml:para>Full path and filename to save the JSON to.</maml:para>
+            <maml:para>Full path and filename to save the JSON to. [ValidatePattern('\.json$')] # Do not require a JSON extension.</maml:para>
           </maml:Description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1422,13 +1425,25 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Depth</maml:name>
+          <maml:Description>
+            <maml:para>Depth to serialize the object into JSON. Default is 2.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>2</dev:defaultValue>
+        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
         <maml:name>Object</maml:name>
         <maml:Description>
-          <maml:para>Object to convert to JSON and save it to a file. Check for empty objects here or in the function body? [ValidateScript({ if (-not [string]::IsNullOrWhiteSpace($ ) -and -not [string]::IsNullOrEmpty($ )) { $true } })]</maml:para>
+          <maml:para>The object to convert to JSON. [ValidateScript({ if (-not [string]::IsNullOrWhiteSpace($ ) -and -not [string]::IsNullOrEmpty($ )) { $true } })]</maml:para>
         </maml:Description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -1437,10 +1452,22 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Depth</maml:name>
+        <maml:Description>
+          <maml:para>Depth to serialize the object into JSON. Default is 2.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>2</dev:defaultValue>
+      </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>FilePath</maml:name>
         <maml:Description>
-          <maml:para>Full path and filename to save the JSON to.</maml:para>
+          <maml:para>Full path and filename to save the JSON to. [ValidatePattern('\.json$')] # Do not require a JSON extension.</maml:para>
         </maml:Description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1454,7 +1481,7 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
     <command:returnValues />
     <maml:alertSet>
       <maml:alert>
-        <maml:para>Author: Sam Erde Version: 0.2.0 Modified: 2024/10/15</maml:para>
+        <maml:para>Author: Sam Erde Version: 0.2.1 Modified: 2024/10/29</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -1536,6 +1563,113 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
       <command:example>
         <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
         <dev:code>Set-ConsoleFont -Font 'FiraCode Nerd Font'</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Set-DefaultTerminal</command:name>
+      <command:verb>Set</command:verb>
+      <command:noun>DefaultTerminal</command:noun>
+      <maml:description>
+        <maml:para>Configure the default terminal for Windows</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>This function sets that default terminal in Windows to your choice of Windows PowerShell, PowerShell, Command Prompt, or Windows Terminal (default).</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Set-DefaultTerminal</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+          <maml:name>Name</maml:name>
+          <maml:Description>
+            <maml:para>The name of the application to use as the default terminal in Windows.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>WindowsTerminal</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
+          <maml:name>WhatIf</maml:name>
+          <maml:Description>
+            <maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
+          </maml:Description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
+          <maml:name>Confirm</maml:name>
+          <maml:Description>
+            <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
+          </maml:Description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>Name</maml:name>
+        <maml:Description>
+          <maml:para>The name of the application to use as the default terminal in Windows.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>WindowsTerminal</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
+        <maml:name>WhatIf</maml:name>
+        <maml:Description>
+          <maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
+        <maml:name>Confirm</maml:name>
+        <maml:Description>
+          <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes />
+    <command:returnValues />
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para>Author: Sam Erde Version: 0.0.1 Modified: 2024-11-15</maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
+        <dev:code>Set-DefaultTerminal -Name 'WindowsTerminal'</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
@@ -1643,7 +1777,7 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
     <command:returnValues />
     <maml:alertSet>
       <maml:alert>
-        <maml:para></maml:para>
+        <maml:para>Author: Sam Erde Version: 1.0.0 Modified: 2024-10-23</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -1700,7 +1834,16 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
       </command:parameter>
     </command:parameters>
     <command:inputTypes />
-    <command:returnValues />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
     <maml:alertSet>
       <maml:alert>
         <maml:para></maml:para>
@@ -1780,6 +1923,7 @@ Retrieves the value of the "PATH" environment variable.</dev:code>
     </command:returnValues>
     <maml:alertSet>
       <maml:alert>
+        <maml:para>Author: Sam Erde Version: 1.0.0 Modified: 2024-10-23</maml:para>
         <maml:para>I am grateful to Jeffrey Hicks for guiding me towards an understanding of how to complete this function and for providing even nicer code than I started with. I encourage you to reach out to him for PowerShell training and subscribe to his newsletter! 🙏</maml:para>
         <maml:para>    https://jdhitsolutions.github.io/     https://www.linkedin.com/in/jefferyhicks/     https://twitter.com/JeffHicks</maml:para>
       </maml:alert>
@@ -1862,7 +2006,7 @@ Show-WithoutEmptyProperty -Object $Object</dev:code>
     </command:returnValues>
     <maml:alertSet>
       <maml:alert>
-        <maml:para></maml:para>
+        <maml:para>Author: Sam Erde Version: 1.0.0 Modified: 2024-10-23</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -2060,7 +2204,7 @@ Show-WithoutEmptyProperty -Object $Object</dev:code>
     <command:returnValues />
     <maml:alertSet>
       <maml:alert>
-        <maml:para></maml:para>
+        <maml:para>Author: Sam Erde Version: 0.5.9 Modified: 2024-10-23</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>

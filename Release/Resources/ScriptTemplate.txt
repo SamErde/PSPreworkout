@@ -21,16 +21,16 @@ function New-Function {
 
     )
 
-    begin {
-
-    } # end begin block
-
     process {
 
     } # end process block
 
-    end {
+    begin {
+        Start-Transcript
+    } # end begin block
 
+    end {
+        Stop-Transcript
     } # end end block
 
 } # end function New-Function

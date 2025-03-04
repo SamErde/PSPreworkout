@@ -145,7 +145,7 @@ Add-BuildTask ImportModuleManifest {
         Import-Module $script:ModuleManifestFile -Force -PassThru -ErrorAction Stop
     } catch {
         Write-Build Red "      ...$_`n"
-        throw "Unable to load the project module."
+        throw 'Unable to load the project module.'
     }
     Write-Build Green "      ...$script:ModuleName imported successfully"
 }
@@ -462,8 +462,10 @@ Add-BuildTask Build {
         $null = $scriptContent.Append((Get-Content -Path $script.FullName -Raw))
         $null = $scriptContent.AppendLine('')
         $null = $scriptContent.AppendLine('')
+        # This is adding extra blank lines.
     }
     $scriptContent.ToString() | Out-File -FilePath $script:BuildModuleRootFile -Encoding:utf8 -Force
+    # Add here: Invoke-Formatter -ScriptDefinition $script:BuildModuleRootFile -ErrorAction Stop
     Write-Build Gray '        ...Module creation complete.'
 
     Write-Build Gray '        Cleaning up leftover artifacts...'
@@ -536,13 +538,34 @@ Add-BuildTask Archive {
 
     $null = New-Item -Path $archivePath -ItemType Directory -Force
 
-    $zipFileName = '{0}_{1}_{2}.{3}.zip' -f $script:ModuleName, $script:ModuleVersion, ([DateTime]::UtcNow.ToString('yyyyMMdd')), ([DateTime]::UtcNow.ToString('hhmmss'))
-    $zipFile = Join-Path -Path $archivePath -ChildPath $zipFileName
+    $zipFileNameArchive = '{0}_{1}_{2}.{3}.zip' -f $script:ModuleName, $script:ModuleVersion, ([DateTime]::UtcNow.ToString('yyyyMMdd')), ([DateTime]::UtcNow.ToString('hhmmss'))
+    $zipFileArchive = Join-Path -Path $archivePath -ChildPath $zipFileNameArchive
 
-    if ($PSEdition -eq 'Desktop') {
+
+    if ($PSEdition -eq 'Desktop' -or $IsWindows) {
         Add-Type -AssemblyName 'System.IO.Compression.FileSystem'
     }
-    [System.IO.Compression.ZipFile]::CreateFromDirectory($script:ArtifactsPath, $zipFile)
-
+    [System.IO.Compression.ZipFile]::CreateFromDirectory($script:ArtifactsPath, $zipFileArchive)
     Write-Build Green '        ...Archive Complete!'
+
+
+    Write-Build White '        Creating release artifacts...'
+    $releasePath = Join-Path -Path $BuildRoot -ChildPath 'Release' ; [void]$releasePath
+    $zipFileNameRelease = '{0}.zip' -f $script:ModuleName
+    $zipFileRelease = Join-Path -Path $script:ArtifactsPath -ChildPath $zipFileNameRelease
+
+    #region SDE
+    $ReleaseFolder = Join-Path -Path $PSScriptRoot -ChildPath '..\Release'
+    #if (-not (Test-Path -Path $ReleaseFolder)) {
+    #    New-Item -Path (Split-Path $ReleaseFolder -Parent) -ItemType Directory -Name (Split-Path $ReleaseFolder -Leaf) | Out-Null
+    #}
+    #$ReleaseFolder = Resolve-Path $ReleaseFolder | Out-Null
+    $ArtifactsFolder = Resolve-Path (Join-Path -Path $PSScriptRoot -ChildPath 'Artifacts')
+    $ExternalHelpFolder = Get-ChildItem -Directory -Path (Join-Path -Path $PSScriptRoot -ChildPath '..\docs') | Select-Object -ExpandProperty FullName
+
+    Copy-Item -Path $ArtifactsFolder\* -Destination "$ReleaseFolder" -Recurse -Exclude @('ccReport', 'en-US', 'testOutput', 'Release', 'PSPreworkout.zip') -Force
+    Copy-Item -Path $ExternalHelpFolder -Destination $ReleaseFolder -Recurse -Force
+    [System.IO.Compression.ZipFile]::CreateFromDirectory($ReleaseFolder, $zipFileRelease)
+    Write-Build Green '        ...Archive Complete!'
+    #endregion SDE
 } #Archive
