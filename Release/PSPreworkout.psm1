@@ -124,10 +124,10 @@ function Get-EnvironmentVariable {
         [string]
         $Pattern,
 
-        # The target of the environment variable to retrieve: Process (default), User, or Machine.
+        # The target of the environment variable to retrieve: Process, User, or Machine. Default is all.
         [Parameter()]
         [System.EnvironmentVariableTarget[]]
-        $Target,
+        $Target = [System.EnvironmentVariableTarget].GetEnumValues(),
 
         # Switch to show environment variables in all target scopes.
         [Parameter()]
@@ -139,39 +139,16 @@ function Get-EnvironmentVariable {
         # Initialize the collection of environment variables that will be returned to the pipeline at the end.
         [System.Collections.Generic.List[PSObject]]$EnvironmentVariables = @()
 
-        # Get environment variables from all targets if no parameters are specified
+        # Get all environment variables from all targets if no parameters are specified
         if (
-            'Name' -notin $PSBoundParameters.Keys -and
-            'Pattern' -notin $PSBoundParameters.Keys -and
-            'Target' -notin $PSBoundParameters.Keys
+            $PSBoundParameters.ContainsKey('Name') -eq $false -and
+            $PSBoundParameters.ContainsKey('Pattern') -eq $false -and
+            $PSBoundParameters.ContainsKey('Target') -eq $false
         ) {
             $All = $true
-            $Target = @([System.EnvironmentVariableTarget]::Process, [System.EnvironmentVariableTarget]::User, [System.EnvironmentVariableTarget]::Machine)
+            $Target = [System.EnvironmentVariableTarget].GetEnumValues()
         }
 
-        # If a Name or a Pattern is specified with no Target, get the name/pattern matches from all targets.
-        if ( ( $PSBoundParameters.ContainsKey('Name') -or $PSBoundParameters.ContainsKey('Pattern') ) -and
-            -not $PSBoundParameters.ContainsKey('Target')
-        ) {
-            $Target = @('Process', 'User', 'Machine')
-        }
-
-        # Handle -All when used with or without a name, pattern, or target parameter
-        if ( $PSBoundParameters.ContainsKey('All') ) {
-
-            # Get all matches for a specific name or pattern
-            if ( $PSBoundParameters.ContainsKey('Name') -or $PSBoundParameters.ContainsKey('Pattern') ) {
-                # Don't need to change anything (yet?)
-            }
-
-            # Get all variables from a specific target if a name or pattern are not specified
-            if ( $PSBoundParameters.ContainsKey('Target') -and
-                -not ( $PSBoundParameters.ContainsKey('Name') -or $PSBoundParameters.ContainsKey('Pattern') )
-            ) {
-                # Don't change the target. Don't need to do anything here?
-            }
-
-        }
         Write-Debug -Message "Parameters: $($PSBoundParameters.GetEnumerator())`n`n`t   Name: $Name`n`tPattern: $Pattern`n`t Target: $Target`n`t    All: $All" -ErrorAction SilentlyContinue
     } # end begin block
 
@@ -184,7 +161,7 @@ function Get-EnvironmentVariable {
                 $ThisEnvironmentVariable = [ordered]@{
                     Name        = $Name
                     Value       = [Environment]::GetEnvironmentVariable($Name, $thisTarget)
-                    Target      = $thisTarget[0]
+                    Target      = $thisTarget
                     PID         = if ($thisTarget -eq 'Process') { $PID } else { $null }
                     ProcessName = if ($thisTarget -eq 'Process') { (Get-Process -Id $PID).Name } else { $null }
                 }
@@ -201,7 +178,7 @@ function Get-EnvironmentVariable {
                     $ThisEnvironmentVariable = [ordered]@{
                         Name        = $PatternResult.Name
                         Value       = $PatternResult.Value
-                        Target      = $thisTarget[0]
+                        Target      = $thisTarget
                         PID         = if ($thisTarget -eq 'Process') { $PID } else { $null }
                         ProcessName = if ($thisTarget -eq 'Process') { (Get-Process -Id $PID).Name } else { $null }
                     }
@@ -212,7 +189,7 @@ function Get-EnvironmentVariable {
             } elseif ( $PSBoundParameters.ContainsKey('Target') -and
                 -not ( $PSBoundParameters.ContainsKey('Name') -or $PSBoundParameters.ContainsKey('Pattern') )
             ) {
-                foreach ( $ev in ([Environment]::GetEnvironmentVariables([System.EnvironmentVariableTarget]::$thisTarget)).GetEnumerator() ) {
+                foreach ( $ev in ([Environment]::GetEnvironmentVariables($thisTarget)).GetEnumerator() ) {
                     $ThisEnvironmentVariable = [ordered]@{
                         Name        = $ev.Name
                         Value       = $ev.Value
@@ -226,7 +203,7 @@ function Get-EnvironmentVariable {
 
             } else {
                 # Get all environment variables.
-                foreach ( $ev in ([Environment]::GetEnvironmentVariables([System.EnvironmentVariableTarget]::$thisTarget).GetEnumerator()) ) {
+                foreach ( $ev in ([Environment]::GetEnvironmentVariables($thisTarget).GetEnumerator()) ) {
                     $ThisEnvironmentVariable = [ordered]@{
                         Name        = $ev.Name
                         Value       = $ev.Value
@@ -242,6 +219,10 @@ function Get-EnvironmentVariable {
     } # end process block
 
     end {
+        # Insert a custom type name for the output objects so custom formatting can be applied.
+        foreach ($item in $EnvironmentVariables) {
+            $item.PSTypeNames.Insert(0, 'PSPreworkout.EnvironmentVariable')
+        }
         $EnvironmentVariables
     } # end end block
 } # end function
