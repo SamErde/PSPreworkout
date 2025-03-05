@@ -39,10 +39,10 @@ jobs:
           # Check if the prerelease tag is non-empty
           if [[ -n "$prerelease_tag" ]]; then
             echo "Prerelease tag found: $prerelease_tag"
-            echo "::set-output name=has_prerelease::true"
+            echo "has_prerelease=true" >> $GITHUB_OUTPUT
           else
             echo "No prerelease tag found."
-            echo "::set-output name=has_prerelease::false"
+            echo "has_prerelease=false" >> $GITHUB_OUTPUT
           fi
 
   prerelease:
