@@ -27,7 +27,7 @@ function Get-TypeAccelerator {
 
     #>
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Get-TypeAccelerator')]
-    [OutputType('System.Array')]
+    [OutputType('Object[]')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'Fighting with VS Code autoformatting.')]
     param (
 
@@ -38,6 +38,7 @@ function Get-TypeAccelerator {
         $Name = '*'
     )
 
+    Write-Debug "Getting type accelerators with the name: $Name"
     $TypeAccelerators = ([PSObject].Assembly.GetType('System.Management.Automation.TypeAccelerators')::Get).GetEnumerator() |
         Where-Object { $_.Key -like $Name } |
             ForEach-Object {

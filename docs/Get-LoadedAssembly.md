@@ -38,7 +38,7 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 
 ## OUTPUTS
 
-### System.Array
+### Object[]
 ## NOTES
 To Do: Add -Name parameter to get a specific one.
 

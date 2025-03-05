@@ -24,6 +24,7 @@ function Show-LoadedAssembly {
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'But this is better.')]
     # [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '', Justification = 'There is a lot of them.')]
     [Alias('Show-LoadedAssemblies')]
+    [OutputType([Object])]
     param (
         # Show a grid view of the loaded assemblies
         [Parameter()]

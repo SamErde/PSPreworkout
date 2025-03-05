@@ -12,30 +12,26 @@ jobs:
     # The New-ExternalHelpCab cmdlet uses makecab, which depends on Windows
     runs-on: windows-latest
     steps:
-      #- name: ✅ Checkout Repository
-      #  uses: actions/checkout@v4
+
+      - name: ✅ Checkout Repository
+        uses: actions/checkout@v4
+
       - name: 📁 Display the Path
         shell: pwsh
         run: echo ${env:PATH}
       - name: 🔢 Display the Version
         shell: pwsh
         run: $PSVersionTable
+
       - name: 📖 Create and Package External PowerShell Help
         shell: pwsh
         run: |
           Install-Module -Name PlatyPS -Scope CurrentUser -Force
           Import-Module -Name PlatyPS
-          # Copy-Item ".\Help\en-US\PSPreworkout-help.xml" ".\Help\en-US"
+          Write-Host "$($env:PWD)"
           $params = @{
-              CabFilesFolder  = ".\Help\en-US"
+              CabFilesFolder  = ".\Release\en-US"     # Source XML folder.
               LandingPagePath = ".\docs\PSPreworkout.md"
-              OutputFolder    = ".\Help\en-US"
+              OutputFolder    = ".\docs\en-US"  # Actual output folder.
           }
           New-ExternalHelpCab @params
-
-    # Can I add a separate batch of jobs that runs on Ubuntu within this same workflow?
-      # git-auto-commit-action only runs on Linux-based platforms.
-      #- name: 💾 Commit Changes
-      #  uses: stefanzweifel/git-auto-commit-action@v5
-      #  with:
-      #    commit_message: 'Create and package external help.'

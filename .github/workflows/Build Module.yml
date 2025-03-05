@@ -56,7 +56,7 @@ jobs:
 
     - name: 🥾 Bootstrap
       shell: pwsh
-      run: ./actions_bootstrap.ps1
+      run: .\src\actions_bootstrap.ps1
 
     - name: 👷‍♂️ Test and Build
       shell: pwsh

@@ -99,7 +99,7 @@ Accepted values: Process, User, Machine
 
 Required: False
 Position: Named
-Default value: None
+Default value: [System.EnvironmentVariableTarget].GetEnumValues()
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -128,14 +128,14 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 
 ## OUTPUTS
 
-### System.Collections.Generic.List[PSObject]
+### System.Object[]
 ## NOTES
 Author: Sam Erde
-Version: 0.1.0
-Modified: 2024/10/8
+Version: 0.2.0
+Modified: 2025/03/05
 
 To Do: Return environment variables if -Target is used without either -Name or -Pattern.
-
+To Do: Do not allow name and pattern parameters to be used together.
 
 About Environment Variables:
 
