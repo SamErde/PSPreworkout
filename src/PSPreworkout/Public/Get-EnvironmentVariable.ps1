@@ -102,14 +102,14 @@ function Get-EnvironmentVariable {
             'Target' -notin $PSBoundParameters.Keys
         ) {
             $All = $true
-            $Target = @([System.EnvironmentVariableTarget]::Process, [System.EnvironmentVariableTarget]::User, [System.EnvironmentVariableTarget]::Machine)
+            $Target = [System.EnvironmentVariableTarget].GetEnumValues.Invoke()
         }
 
         # If a Name or a Pattern is specified with no Target, get the name/pattern matches from all targets.
         if ( ( $PSBoundParameters.ContainsKey('Name') -or $PSBoundParameters.ContainsKey('Pattern') ) -and
             -not $PSBoundParameters.ContainsKey('Target')
         ) {
-            $Target = @('Process', 'User', 'Machine')
+            $Target = [System.EnvironmentVariableTarget].GetEnumValues.Invoke()
         }
 
         # Handle -All when used with or without a name, pattern, or target parameter
@@ -198,6 +198,10 @@ function Get-EnvironmentVariable {
     } # end process block
 
     end {
+        # Insert a custom type name for the output objects so custom formatting can be applied.
+        foreach ($item in $EnvironmentVariables) {
+            $item.PSTypeNames.Insert(0, 'PSPreworkout.EnvironmentVariable')
+        }
         $EnvironmentVariables
     } # end end block
 } # end function
