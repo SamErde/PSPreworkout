@@ -5,7 +5,8 @@
 name: 👮‍♂️ PSScriptAnalyzer
 
 on:
-  pull_request:
+  #pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
