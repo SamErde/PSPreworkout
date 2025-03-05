@@ -83,7 +83,13 @@
 
     # List of all files packaged with this module
     FileList             = @(
-        'Resources/ScriptTemplate.txt'
+        'Resources/ScriptTemplate.txt',
+        'PSPreworkout.Format.ps1xml'
+    )
+
+    # Formats to process when this module is imported
+    FormatsToProcess     = @(
+        'PSPreworkout.Format.ps1xml'
     )
 
     # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.

@@ -3,8 +3,9 @@ name: 📖 Deploy MkDocs to GitHub Pages
 on:
   push:
     branches:
-      - main  # The branch you want to deploy from
-    paths:  # Only deploy MkDocs when the contents of the docs folder change or when this workflow changes.
+      - main
+    paths:
+    # For push, only deploy MkDocs when the contents of the docs folder change or when this workflow changes.
       - 'docs/**'
       - '.github/workflows/Deploy MkDocs.yml'
       - './mkdocs.yml'
@@ -13,6 +14,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
 
     steps:
       - name: ✅ Checkout Repository

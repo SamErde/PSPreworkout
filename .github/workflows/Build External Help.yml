@@ -4,12 +4,17 @@ on:
   pull_request:
     branches:
       - main
-  #push:
+  push:
+    branches:
+      - main
+    paths:
+      - 'docs/en-US/**'
+      - 'docs/**/**'
   workflow_dispatch:
 
 jobs:
   package_help:
-    # The New-ExternalHelpCab cmdlet uses makecab, which depends on Windows
+    # The New-ExternalHelpCab cmdlet uses makecab, which depends on Windows.
     runs-on: windows-latest
     steps:
 

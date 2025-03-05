@@ -36,7 +36,7 @@ function Update-AllTheThings {
         SupportsShouldProcess,
         HelpUri = 'https://day3bits.com/PSPreworkout/Update-AllTheThings'
     )]
-    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', 'Update-AllTheThings', Justification = 'This is what we do.')]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '', Justification = 'This is what we do.')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '', Justification = 'Interactive Use')]
     [Alias('uatt')]
     param (
