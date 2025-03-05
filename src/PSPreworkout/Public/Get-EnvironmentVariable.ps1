@@ -67,7 +67,7 @@ function Get-EnvironmentVariable {
     #>
     [Alias('gev')]
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Get-EnvironmentVariable')]
-    [OutputType('System.Collections.Generic.List[PSObject]')]
+    [OutputType('System.Object[]')]
     param (
         # The name of the environment variable to retrieve. If not specified, all environment variables are returned.
         [Parameter(Position = 0)]
