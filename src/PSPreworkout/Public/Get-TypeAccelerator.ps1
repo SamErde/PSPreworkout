@@ -38,6 +38,7 @@ function Get-TypeAccelerator {
         $Name = '*'
     )
 
+    Write-Debug "Getting type accelerators with the name: $Name"
     $TypeAccelerators = ([PSObject].Assembly.GetType('System.Management.Automation.TypeAccelerators')::Get).GetEnumerator() |
         Where-Object { $_.Key -like $Name } |
             ForEach-Object {
