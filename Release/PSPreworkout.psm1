@@ -111,7 +111,7 @@ function Get-EnvironmentVariable {
 #>
     [Alias('gev')]
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Get-EnvironmentVariable')]
-    [OutputType('System.Collections.Generic.List[PSObject]')]
+    [OutputType('System.Object[]')]
     param (
         # The name of the environment variable to retrieve. If not specified, all environment variables are returned.
         [Parameter(Position = 0)]
@@ -392,6 +392,7 @@ function Get-TypeAccelerator {
         $Name = '*'
     )
 
+    Write-Debug "Getting type accelerators with the name: $Name"
     $TypeAccelerators = ([PSObject].Assembly.GetType('System.Management.Automation.TypeAccelerators')::Get).GetEnumerator() |
         Where-Object { $_.Key -like $Name } |
             ForEach-Object {
@@ -1361,7 +1362,7 @@ function Update-AllTheThings {
         SupportsShouldProcess,
         HelpUri = 'https://day3bits.com/PSPreworkout/Update-AllTheThings'
     )]
-    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', 'Update-AllTheThings', Justification = 'This is what we do.')]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '', Justification = 'This is what we do.')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '', Justification = 'Interactive Use')]
     [Alias('uatt')]
     param (

@@ -128,7 +128,7 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 
 ## OUTPUTS
 
-### System.Collections.Generic.List[PSObject]
+### System.Object[]
 ## NOTES
 Author: Sam Erde
 Version: 0.2.0
