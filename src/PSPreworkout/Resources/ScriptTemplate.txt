@@ -26,7 +26,7 @@ function New-Function {
     } # end process block
 
     begin {
-        Start-Transcript
+        Start-Transcript -Path (Join-Path -Path $PSCommandPath -ChildPath 'Transcript.log')
     } # end begin block
 
     end {
