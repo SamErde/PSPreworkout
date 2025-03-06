@@ -32,18 +32,19 @@ jobs:
         run: |
           # Define the manifest file path
           manifest_file="./${GITHUB_REPOSITORY}/src/${GITHUB_REPOSITORY}/${GITHUB_REPOSITORY}.psd1"
+          echo "has_prerelease=true" >> $GITHUB_OUTPUT
 
           # Extract the Prerelease tag from the manifest
-          prerelease_tag=$(grep 'Prerelease' "$manifest_file" | awk -F'"' '{print $2}')
+          #prerelease_tag=$(grep 'Prerelease' "$manifest_file" | awk -F'"' '{print $2}')
 
           # Check if the prerelease tag is non-empty
-          if [[ -n "$prerelease_tag" ]]; then
-            echo "Prerelease tag found: $prerelease_tag"
-            echo "has_prerelease=true" >> $GITHUB_OUTPUT
-          else
-            echo "No prerelease tag found."
-            echo "has_prerelease=false" >> $GITHUB_OUTPUT
-          fi
+          #if [[ -n "$prerelease_tag" ]]; then
+          #  echo "Prerelease tag found: $prerelease_tag"
+          #  echo "has_prerelease=true" >> $GITHUB_OUTPUT
+          #else
+          #  echo "No prerelease tag found."
+          #  echo "has_prerelease=false" >> $GITHUB_OUTPUT
+          #fi
 
   prerelease:
     name: 🚀 Release and Publish
