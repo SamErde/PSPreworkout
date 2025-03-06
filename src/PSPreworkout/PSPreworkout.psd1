@@ -113,7 +113,7 @@
             ReleaseNotes = 'Added Pester-based unit tests.'
 
             # Prerelease string of this module
-            Prerelease   = $null
+            Prerelease   = 'rc6'
 
         } # End of PSData hashtable
 
