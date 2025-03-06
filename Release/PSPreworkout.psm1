@@ -110,27 +110,28 @@ function Get-EnvironmentVariable {
 .EXTERNALHELP PSPreworkout-help.xml
 #>
     [Alias('gev')]
-    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Get-EnvironmentVariable')]
+    [CmdletBinding(DefaultParameterSetName = 'LookupByName', HelpUri = 'https://day3bits.com/PSPreworkout/Get-EnvironmentVariable')]
     [OutputType('System.Object[]')]
     param (
-        # The name of the environment variable to retrieve. If not specified, all environment variables are returned.
-        [Parameter(Position = 0)]
-        #[Parameter(Position = 0, ParameterSetName = 'LookupByName')]
+        # The name of the environment variable to retrieve. If no name or pattern is specified, all environment variables are returned.
+        [Parameter(Position = 0, ParameterSetName = 'LookupByName')]
+        [ValidateNotNullOrEmpty()]
         [string]$Name,
 
-        # A regex pattern to search variable names by
-        [Parameter()]
-        #[Parameter(Position = 0, ParameterSetName = 'LookupByRegexPattern')]
-        [string]
-        $Pattern,
+        # A regex pattern to match environment variable names against. If no name or pattern is specified, all environment variables are returned.
+        [Parameter(Position = 0, ParameterSetName = 'LookupByRegexPattern')]
+        [ValidateNotNullOrEmpty()]
+        [string]$Pattern,
 
         # The target of the environment variable to retrieve: Process, User, or Machine. Default is all.
-        [Parameter()]
+        [Parameter(ParameterSetName = 'LookupByName')]
+        [Parameter(ParameterSetName = 'LookupByRegexPattern')]
         [System.EnvironmentVariableTarget[]]
         $Target = [System.EnvironmentVariableTarget].GetEnumValues(),
 
         # Switch to show environment variables in all target scopes.
-        [Parameter()]
+        [Parameter(ParameterSetName = 'LookupByName')]
+        [Parameter(ParameterSetName = 'LookupByRegexPattern')]
         [switch]
         $All
     )
@@ -139,92 +140,46 @@ function Get-EnvironmentVariable {
         # Initialize the collection of environment variables that will be returned to the pipeline at the end.
         [System.Collections.Generic.List[PSObject]]$EnvironmentVariables = @()
 
-        # Get all environment variables from all targets if no parameters are specified
-        if (
-            $PSBoundParameters.ContainsKey('Name') -eq $false -and
-            $PSBoundParameters.ContainsKey('Pattern') -eq $false -and
-            $PSBoundParameters.ContainsKey('Target') -eq $false
-        ) {
-            $All = $true
-            $Target = [System.EnvironmentVariableTarget].GetEnumValues()
+        # Convert the name to an escaped regex pattern if the name parameter is specified.
+        if ($PSBoundParameters.ContainsKey('Name')) {
+            $Pattern = "^$([regex]::Escape($Name))$"
         }
 
-        Write-Debug -Message "Parameters: $($PSBoundParameters.GetEnumerator())`n`n`t   Name: $Name`n`tPattern: $Pattern`n`t Target: $Target`n`t    All: $All" -ErrorAction SilentlyContinue
+        # If no name or pattern is specified, get all environment variables.
+        if ( !($Pattern) -or ($Pattern.Length -eq 0) ) {
+            $Pattern = '.*'
+        }
+
+        Write-Verbose -Message "Parameters: $($PSBoundParameters.GetEnumerator())`n`n`t   Name: $Name`n`tPattern: $Pattern`n`t Target: $Target`n`t    All: $All" -ErrorAction SilentlyContinue
     } # end begin block
 
     process {
+
+        # Get the environment variables from the specified target(s).
         foreach ($thisTarget in $Target) {
 
-            if ( $PSBoundParameters.ContainsKey('Name') -and -not $PSBoundParameters.ContainsKey('Pattern') ) {
-                # If a variable name was specified, get that environment variable.
-                # Temporarily using this -and -not condition because I couldn't get exclusive Name/Pattern parameter sets to work.
+            $Result = [Environment]::GetEnvironmentVariables($thisTarget).GetEnumerator() | Where-Object { $_.Key -match $pattern }
+            foreach ($PatternResult in $Result) {
                 $ThisEnvironmentVariable = [ordered]@{
-                    Name        = $Name
-                    Value       = [Environment]::GetEnvironmentVariable($Name, $thisTarget)
+                    PSTypeName  = 'PSPreworkout.EnvironmentVariable'
+                    Name        = $PatternResult.Name
+                    Value       = $PatternResult.Value
                     Target      = $thisTarget
                     PID         = if ($thisTarget -eq 'Process') { $PID } else { $null }
                     ProcessName = if ($thisTarget -eq 'Process') { (Get-Process -Id $PID).Name } else { $null }
                 }
                 $item = New-Object -TypeName PSObject -Property $ThisEnvironmentVariable
                 $EnvironmentVariables.Add($item)
+            } # end foreach PatternResult
 
-            } elseif ( $PSBoundParameters.ContainsKey('Pattern') ) {
-                if ($Name) {
-                    Write-Verbose -Message 'A value for the Name parameter was specified, but it is being ignored because a Pattern was also provided.'
-                }
-                # If a pattern is specified, get environment variables with names that match the pattern.
-                $Result = [Environment]::GetEnvironmentVariables($thisTarget).GetEnumerator() | Where-Object { $_.Key -match $pattern }
-                foreach ($PatternResult in $Result) {
-                    $ThisEnvironmentVariable = [ordered]@{
-                        Name        = $PatternResult.Name
-                        Value       = $PatternResult.Value
-                        Target      = $thisTarget
-                        PID         = if ($thisTarget -eq 'Process') { $PID } else { $null }
-                        ProcessName = if ($thisTarget -eq 'Process') { (Get-Process -Id $PID).Name } else { $null }
-                    }
-                    $item = New-Object -TypeName PSObject -Property $ThisEnvironmentVariable
-                    $EnvironmentVariables.Add($item)
-                }
-
-            } elseif ( $PSBoundParameters.ContainsKey('Target') -and
-                -not ( $PSBoundParameters.ContainsKey('Name') -or $PSBoundParameters.ContainsKey('Pattern') )
-            ) {
-                foreach ( $ev in ([Environment]::GetEnvironmentVariables($thisTarget)).GetEnumerator() ) {
-                    $ThisEnvironmentVariable = [ordered]@{
-                        Name        = $ev.Name
-                        Value       = $ev.Value
-                        Target      = $thisTarget
-                        PID         = if ($thisTarget -eq 'Process') { $PID } else { $null }
-                        ProcessName = if ($thisTarget -eq 'Process') { (Get-Process -Id $PID).Name } else { $null }
-                    }
-                    $item = New-Object -TypeName PSObject -Property $ThisEnvironmentVariable
-                    $EnvironmentVariables.Add($item)
-                }
-
-            } else {
-                # Get all environment variables.
-                foreach ( $ev in ([Environment]::GetEnvironmentVariables($thisTarget).GetEnumerator()) ) {
-                    $ThisEnvironmentVariable = [ordered]@{
-                        Name        = $ev.Name
-                        Value       = $ev.Value
-                        Target      = $thisTarget[0]
-                        PID         = if ($thisTarget -eq 'Process') { $PID } else { $null }
-                        ProcessName = if ($thisTarget -eq 'Process') { (Get-Process -Id $PID).Name } else { $null }
-                    }
-                    $item = New-Object -TypeName PSObject -Property $ThisEnvironmentVariable
-                    $EnvironmentVariables.Add($item)
-                }
-            }
         } # end foreach target
+
     } # end process block
 
     end {
-        # Insert a custom type name for the output objects so custom formatting can be applied.
-        foreach ($item in $EnvironmentVariables) {
-            $item.PSTypeNames.Insert(0, 'PSPreworkout.EnvironmentVariable')
-        }
         $EnvironmentVariables
     } # end end block
+
 } # end function
 
 
