@@ -58,3 +58,20 @@ jobs:
         with:
           commit_message: 'Copy MkDocs index to README'
           file_pattern: 'docs/index.md README.md'
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          token: ${{ secrets.Publish_MkDocs }}
+          commit-message: Update Documentation
+          branch: auto-pr
+          title: 'Automated PR to publish MkDocs and updated README'
+          body: 'This pull request is created automatically by the workflow.'
+          labels: automated-pr
+
+      - name: Merge Pull Request
+        uses: peter-evans/merge-pull-request@v2
+        with:
+          token: ${{ secrets.Publish_MkDocs }}
+          pull-request: ${{ steps.create-pull-request.outputs.pull-request-number }}
+          merge-method: squash
