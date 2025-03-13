@@ -12,7 +12,12 @@ on:
   workflow_dispatch:
 
 jobs:
+
   build:
+    permissions:
+      contents: write
+      pull-requests: write
+
     runs-on: ubuntu-latest
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
@@ -60,7 +65,7 @@ jobs:
           file_pattern: 'docs/index.md README.md'
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v4
+        uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.Publish_MkDocs }}
           commit-message: Update Documentation
@@ -69,9 +74,14 @@ jobs:
           body: 'This pull request is created automatically by the workflow.'
           labels: automated-pr
 
-      - name: Merge Pull Request
-        uses: peter-evans/merge-pull-request@v2
-        with:
-          token: ${{ secrets.Publish_MkDocs }}
-          pull-request: ${{ steps.create-pull-request.outputs.pull-request-number }}
-          merge-method: squash
+      #- name: Merge Pull Request
+      #  uses: peter-evans/merge-pull-request@v3
+      #  with:
+      #    token: ${{ secrets.Publish_MkDocs }}
+      #    pull-request: ${{ steps.create-pull-request.outputs.pull-request-number }}
+      #    merge-method: squash
+
+      - name: Enable Pull Request Automerge
+        run: gh pr merge --merge --auto "1"
+        env:
+          GH_TOKEN: ${{ secrets.Publish_MkDocs }}
