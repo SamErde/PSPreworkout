@@ -109,6 +109,7 @@ nav:
       - Show-LoadedAssembly: "Show-LoadedAssembly.md"
   - Daily Functions:
       - New-Credential: "New-Credential.md"
+      - Get-CommandHistory: "Get-CommandHistory.md"
       - Get-EnvironmentVariable: "Get-EnvironmentVariable.md"
       - Set-EnvironmentVariable: "Set-EnvironmentVariable.md"
       - Test-IsElevated: "Test-IsElevated.md"
