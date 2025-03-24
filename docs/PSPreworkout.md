@@ -2,7 +2,7 @@
 Module Name: PSPreworkout
 Module Guid: 378339de-a0df-4d44-873b-4fd32c388e06
 Download Help Link: NA
-Help Version: 1.7.3
+Help Version: 1.8.0
 Locale: en-US
 ---
 
@@ -16,6 +16,9 @@ Edit the PSReadLine History File
 
 ### [Edit-WingetSettingsFile](Edit-WingetSettingsFile.md)
 Edit the WinGet settings file.
+
+### [Get-CommandHistory](Get-CommandHistory.md)
+Get a filtered list of commands from your history.
 
 ### [Get-EnvironmentVariable](Get-EnvironmentVariable.md)
 Retrieves the value of an environment variable.

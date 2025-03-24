@@ -4,7 +4,7 @@
     RootModule           = 'PSPreworkout.psm1'
 
     # Version number of this module.
-    ModuleVersion        = '1.7.3'
+    ModuleVersion        = '1.8.0'
 
     # Supported PSEditions = @('Desktop', 'Core')
     CompatiblePSEditions = @('Core', 'Desktop')
@@ -31,6 +31,7 @@
     FunctionsToExport    = @(
         'Edit-PSReadLineHistoryFile',
         'Edit-WinGetSettingsFile',
+        'Get-CommandHistory',
         'Get-EnvironmentVariable',
         'Get-LoadedAssembly',
         'Get-PowerShellPortable',
@@ -113,7 +114,7 @@
             ReleaseNotes = 'Added Pester-based unit tests.'
 
             # Prerelease string of this module
-            Prerelease   = 'rc6'
+            # Prerelease   = ''
 
         } # End of PSData hashtable
 
