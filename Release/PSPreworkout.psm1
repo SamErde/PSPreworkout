@@ -105,6 +105,66 @@ function Edit-WingetSettingsFile {
 
 
 
+function Get-CommandHistory {
+    <#
+.EXTERNALHELP PSPreworkout-help.xml
+#>
+
+    [CmdletBinding(DefaultParameterSetName = 'BasicFilter')]
+    [Alias('gch')]
+    [OutputType([Microsoft.PowerShell.Commands.HistoryInfo[]])]
+    param (
+        # Show all command history without filtering anything out.
+        [Parameter(ParameterSetName = 'All')]
+        [switch] $All,
+
+        # A string or array of strings to filter out (ignore) in the command history list.
+        [Parameter(ParameterSetName = 'BasicFilter')]
+        [ValidateNotNullOrWhiteSpace()]
+        [string[]] $FilterWords,
+
+        # A string or regex pattern to search for matches in the command history.
+        [Parameter(ParameterSetName = 'PatternSearch', Mandatory, Position = 0)]
+        [ValidateNotNullOrWhiteSpace()]
+        [string] $Pattern
+    )
+
+    process {
+        Get-History | Where-Object {
+            $_.ExecutionStatus -eq 'Completed' -and ($_.CommandLine.Length -gt 3) -and $CommandFilter.Invoke()
+        }
+    }
+
+    begin {
+        # Set the filter to ignore a default list of command unless (-All is present).
+        [string]$DefaultIgnoreCommands = 'Get-History|Invoke-CommandHistory|Get-CommandHistory|clear'
+
+        # Add optional filter words to exclude per the FilterWords parameter.
+        if ($FilterWords) {
+            $FilterWords = '|' + $($FilterWords -join '|')
+            [string]$IgnoreCommands = $DefaultIgnoreCommands + "$FilterWords"
+        }
+
+        # Create the filter. If the Pattern parameter is used, override the filter to match the pattern.
+        if ($Pattern) {
+            [string]$Pattern = ($Pattern -join '|').Trim()
+            [scriptblock]$CommandFilter = { $_.CommandLine -match $Pattern }
+
+        } elseif ($All) {
+            [scriptblock]$CommandFilter = { $true }
+
+        } else {
+            [scriptblock]$CommandFilter = { $_.CommandLine -notmatch $IgnoreCommands }
+        }
+    }
+
+    end {
+        Remove-Variable DefaultIgnoreCommands, FilterWords, IgnoreCommands, CommandFilter -ErrorAction SilentlyContinue
+    }
+} # end function Get-CommandHistory
+
+
+
 function Get-EnvironmentVariable {
     <#
 .EXTERNALHELP PSPreworkout-help.xml
@@ -1027,16 +1087,16 @@ function New-ScriptFromTemplate {
     $FunctionBody = (Get-Content -Path "$PSScriptRoot\ScriptTemplate.txt" -Raw)
 
     # Replace template placeholders with strings from parameter inputs.
-    $FunctionBody = $FunctionBody -Replace 'New-Function', $Name
-    $FunctionBody = $FunctionBody -Replace '__SYNOPSIS__', $Synopsis
-    $FunctionBody = $FunctionBody -Replace '__DESCRIPTION__', $Description
-    $FunctionBody = $FunctionBody -Replace '__DATE__', (Get-Date -Format 'yyyy-MM-dd')
-    $FunctionBody = $FunctionBody -Replace '__AUTHOR__', $Author
+    $FunctionBody = $FunctionBody -replace 'New-Function', $Name
+    $FunctionBody = $FunctionBody -replace '__SYNOPSIS__', $Synopsis
+    $FunctionBody = $FunctionBody -replace '__DESCRIPTION__', $Description
+    $FunctionBody = $FunctionBody -replace '__DATE__', (Get-Date -Format 'yyyy-MM-dd')
+    $FunctionBody = $FunctionBody -replace '__AUTHOR__', $Author
     # Set an alias for the new function if one is given in parameters.
     if ($PSBoundParameters.ContainsKey('Alias')) {
-        $FunctionBody = $FunctionBody -Replace '__ALIAS__', "[Alias(`'$Alias`')]"
+        $FunctionBody = $FunctionBody -replace '__ALIAS__', "[Alias(`'$Alias`')]"
     } else {
-        $FunctionBody = $FunctionBody -Replace '__ALIAS__', ''
+        $FunctionBody = $FunctionBody -replace '__ALIAS__', ''
     }
 
     # Create the new file.
