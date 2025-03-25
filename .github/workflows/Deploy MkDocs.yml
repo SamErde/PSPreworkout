@@ -82,6 +82,6 @@ jobs:
       #    merge-method: squash
 
       - name: Enable Pull Request Automerge
-        run: gh pr merge --merge --auto "1"
+        run: gh pr merge --merge --auto "${{ steps.create-pull-request.outputs.pull-request-number }}"
         env:
           GH_TOKEN: ${{ secrets.Publish_MkDocs }}
