@@ -4,7 +4,7 @@
     RootModule           = 'PSPreworkout.psm1'
 
     # Version number of this module.
-    ModuleVersion        = '1.8.0'
+    ModuleVersion        = '1.8.1'
 
     # Supported PSEditions = @('Desktop', 'Core')
     CompatiblePSEditions = @('Core', 'Desktop')
@@ -111,7 +111,7 @@
             IconUri      = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/media/PSPreworkout-Animated-Logo-170.png'
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'Added Pester-based unit tests.'
+            ReleaseNotes = 'PSPreworkout 1.8.x added the Get-CommandHistory (gh) function, fixed a breaking bug in Install-CommandNotFoundUtility, and added some Pester-based unit tests.'
 
             # Prerelease string of this module
             # Prerelease   = ''
