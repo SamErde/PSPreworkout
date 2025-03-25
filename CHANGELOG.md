@@ -1,4 +1,6 @@
+<!-- markdownlint-disable MD004 -->
 <!-- markdownlint-disable MD024 -->
+<!-- markdownlint-disable MD034 -->
 # Changelog
 
 All notable changes to this project will be documented in this file.
@@ -8,7 +10,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 <!-- Show the history of all changes since the last release. -->
 [*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/latest...HEAD)
 
-## [1.8.0] - 2025-02-25
+## [1.8.1] - 2025-02-25
+
+## Fixed
+
+* Fixed an issue that was preventing PSPreworkout from being imported in Windows PowerShell.
+
+[*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v1.8.0...v1.8.1)
+
+## [1.8.0] - 2025-02-24
 
 This release adds improved error handling to several functions, a new `Get-CommandHistory` function, and improvements to project workflows.
 
@@ -105,7 +115,7 @@ This release is focused on enhancements that make the existing functions more us
 
 ### Added
 
-- Add updatable and online [external] help.
+- Add updatable and online (external) help.
 
 [*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v1.4.6...v1.4.3)
 
@@ -271,3 +281,4 @@ This release is focused on enhancements that make the existing functions more us
 [1.7.1]: https://github.com/SamErde/PSPreworkout/tag/v1.7.1
 [1.7.2]: https://github.com/SamErde/PSPreworkout/tag/v1.7.2
 [1.8.0]: https://github.com/SamErde/PSPreworkout/tag/v1.8.0
+[1.8.1]: https://github.com/SamErde/PSPreworkout/tag/v1.8.1
