@@ -55,6 +55,9 @@ Edit the PSReadLine History File
 ### [Edit-WingetSettingsFile](Edit-WingetSettingsFile.md)
 Edit the WinGet settings file.
 
+### [Get-CommandHistory](Get-CommandHistory.md)
+Get a filtered list of commands from your history.
+
 ### [Get-EnvironmentVariable](Get-EnvironmentVariable.md)
 Retrieves the value of an environment variable.
 
