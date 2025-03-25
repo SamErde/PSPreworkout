@@ -12,47 +12,48 @@ Retrieves the value of an environment variable.
 
 ## SYNTAX
 
+### LookupByName (Default)
 ```
-Get-EnvironmentVariable [[-Name] <String>] [-Pattern <String>] [-Target <EnvironmentVariableTarget[]>] [-All]
+Get-EnvironmentVariable [[-Name] <String>] [-Target <EnvironmentVariableTarget[]>] [-All]
+ [<CommonParameters>]
+```
+
+### LookupByRegexPattern
+```
+Get-EnvironmentVariable [[-Pattern] <String>] [-Target <EnvironmentVariableTarget[]>] [-All]
  [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-The Get-EnvironmentVariable function retrieves the value of the specified environment variable or displays all environment variables.
+The Get-EnvironmentVariable function retrieves the value of the specified environment variable or displays all
+environment variables.
+It is capable of finding variables by an exact name match or by using a regex pattern match.
+It can retrieve environment variables from the process, machine, and user targets.
+If no parameters are specified,
+all environment variables are returned from all targets.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Get-EnvironmentVariable -Name 'UserName'
-Retrieves the value of the "UserName" environment variable from the process target.
+Get-EnvironmentVariable -Name 'UserName' -Target 'User'
 ```
+
+Retrieves the value of the "UserName" environment variable from the process target.
 
 ### EXAMPLE 2
 ```
 Get-EnvironmentVariable -Name 'Path' -Target 'Machine'
-Retrieves the value of the PATH environment variable from the machine target.
 ```
+
+Retrieves the value of the PATH environment variable from the machine target.
 
 ### EXAMPLE 3
 ```
 Get-EnvironmentVariable -Pattern '^u'
+```
+
 Get environment variables with names that begin with the letter "u" in any target.
-```
-
-### EXAMPLE 4
-```
-Get-EnvironmentVariable -Pattern 'git' | Format-Table Name,Target,PID,ProcessName,Value
-```
-
-Get all process environment variables that match the pattern "git" and return the results as a table.
-
-### EXAMPLE 5
-```
-Get-EnvironmentVariable -Pattern 'path' -Target Machine,Process,User | Format-Table Name,Target,PID,ProcessName,Value
-```
-
-Return all environment variables that match the pattern "path" from all targets and format the results as a table.
 
 ## PARAMETERS
 
@@ -61,7 +62,7 @@ The name of the environment variable to retrieve.
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: LookupByName
 Aliases:
 
 Required: False
@@ -72,15 +73,15 @@ Accept wildcard characters: False
 ```
 
 ### -Pattern
-A regex pattern to match environment variable names against.
+A regex pattern to find matching environment variable names.
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: LookupByRegexPattern
 Aliases:
 
 Required: False
-Position: Named
+Position: 1
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -88,7 +89,6 @@ Accept wildcard characters: False
 
 ### -Target
 The target (Process, Machine, User) to pull environment variables from.
-The default is process.
 Multiple targets may be specified.
 
 ```yaml
@@ -105,7 +105,7 @@ Accept wildcard characters: False
 ```
 
 ### -All
-Optionally get all environment variables from all targets.
+Optionally get all environment variables from all targets or all environment variables from one specified target.
 Process ID and process name will be included for process environment variables.
 
 ```yaml
@@ -131,15 +131,16 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ### System.Object[]
 ## NOTES
 Author: Sam Erde
-Version: 0.2.0
+Version: 1.0.0
 Modified: 2025/03/05
-
-To Do: Return environment variables if -Target is used without either -Name or -Pattern.
-To Do: Do not allow name and pattern parameters to be used together.
 
 About Environment Variables:
 
 Variable names are case-sensitive on Linux and macOS, but not on Windows.
+PowerShell is case-insensitive by default
+and compensates for case-sensitivity on Linux and macOS.
+To make PowerShell case-sensitive, use the -CaseSensitive
+parameter when starting PowerShell.
 
 Why is 'Target' used by .NET instead of the familiar 'Scope' parameter name?
 @IISResetMe (Mathias R.
