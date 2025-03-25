@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 This release adds improved error handling to several functions, a new `Get-CommandHistory` function, and improvements to project workflows.
 
-## What's Changed
+## Changed
 
 * Improved error handling by @SamErde in https://github.com/SamErde/PSPreworkout/pull/63
 
@@ -22,7 +22,7 @@ This release adds improved error handling to several functions, a new `Get-Comma
 * Build script now creates a new release artifact.
 * New Pester tests.
 
-**Full Changelog**: <https://github.com/SamErde/PSPreworkout/compare/v1.7.2...v1.8.0>
+[*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v1.7.2...v1.8.0)
 
 ## [1.7.2] - 2025-02-19
 
