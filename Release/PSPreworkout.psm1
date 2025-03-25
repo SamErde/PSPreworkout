@@ -653,12 +653,15 @@ function Install-CommandNotFoundUtility {
     <#
 .EXTERNALHELP PSPreworkout-help.xml
 #>
-    #requires -version 7.4
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Install-CommandNotFoundUtility')]
     param (
     )
 
     begin {
+        if ($PSVersionTable.PSVersion -lt [version]"7.4.0") {
+            Write-Error -Message 'The CommandNotFoundUtility module requires PowerShell 7.4 or higher.'
+            break
+        }
     } # end begin block
 
     process {
