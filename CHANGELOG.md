@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [1.8.1] - 2025-02-25
 
-## Fixed
+### Fixed
 
 * Fixed an issue that was preventing PSPreworkout from being imported in Windows PowerShell.
 
@@ -22,11 +22,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 This release adds improved error handling to several functions, a new `Get-CommandHistory` function, and improvements to project workflows.
 
-## Changed
+### Changed
 
 * Improved error handling by @SamErde in https://github.com/SamErde/PSPreworkout/pull/63
 
-## Added
+### Added
 
 * Get-CommandHistory by @SamErde in https://github.com/SamErde/PSPreworkout/pull/68
 * Build script now creates a new release artifact.
