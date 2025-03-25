@@ -39,7 +39,7 @@ docs_dir: "docs"
 
 # extra_templates:
 # extra:
-#plugins:
+plugins:
 #  - social
 
 theme:
