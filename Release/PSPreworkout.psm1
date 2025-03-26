@@ -120,12 +120,12 @@ function Get-CommandHistory {
 
         # A string or array of strings to filter out (ignore) in the command history list.
         [Parameter(ParameterSetName = 'BasicFilter')]
-        [ValidateNotNullOrWhiteSpace()]
+        [ValidateNotNullOrEmpty()]
         [string[]] $FilterWords,
 
         # A string or regex pattern to search for matches in the command history.
         [Parameter(ParameterSetName = 'PatternSearch', Mandatory, Position = 0)]
-        [ValidateNotNullOrWhiteSpace()]
+        [ValidateNotNullOrEmpty()]
         [string] $Pattern
     )
 
@@ -145,12 +145,12 @@ function Get-CommandHistory {
         # Add optional filter words to exclude per the FilterWords parameter.
         if ($FilterWords) {
             # $FilterWords = '|' + $($FilterWords -join '|')
-            [string]$IgnoreCommands += $FilterWords
+            $IgnoreCommands += $FilterWords
         }
 
         # Add the default ignore commands to the list of ignored commands as long as the All switch is not present.
         if (-not $All.IsPresent) {
-            [string]$IgnoreCommands += $DefaultIgnoreCommands
+            $IgnoreCommands += $DefaultIgnoreCommands
         }
 
         # Create the filter. If the Pattern parameter is used, override the filter to match the pattern.
