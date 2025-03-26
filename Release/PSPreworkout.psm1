@@ -136,13 +136,21 @@ function Get-CommandHistory {
     }
 
     begin {
+        [string[]]$IgnoreCommands = @()
+        [string]$CommandFilter = $null
+
         # Set the filter to ignore a default list of command unless (-All is present).
         [string]$DefaultIgnoreCommands = 'Get-History|Invoke-CommandHistory|Get-CommandHistory|clear'
 
         # Add optional filter words to exclude per the FilterWords parameter.
         if ($FilterWords) {
-            $FilterWords = '|' + $($FilterWords -join '|')
-            [string]$IgnoreCommands = $DefaultIgnoreCommands + "$FilterWords"
+            # $FilterWords = '|' + $($FilterWords -join '|')
+            [string]$IgnoreCommands += $FilterWords
+        }
+
+        # Add the default ignore commands to the list of ignored commands as long as the All switch is not present.
+        if (-not $All.IsPresent) {
+            [string]$IgnoreCommands += $DefaultIgnoreCommands
         }
 
         # Create the filter. If the Pattern parameter is used, override the filter to match the pattern.
@@ -154,6 +162,7 @@ function Get-CommandHistory {
             [scriptblock]$CommandFilter = { $true }
 
         } else {
+            $IgnoreCommands = $IgnoreCommands -join '|'
             [scriptblock]$CommandFilter = { $_.CommandLine -notmatch $IgnoreCommands }
         }
     }
