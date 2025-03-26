@@ -10,22 +10,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 <!-- Show the history of all changes since the last release. -->
 [*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/latest...HEAD)
 
-## [1.8.2] - 2025-02-26
+## [1.8.3] - 2025-02-26
 
 ### Fixed
 
 * Fixed an issue that resulted in the default parameter set returning no output in `Get-CommandHistory`.
 * Added missing AliasesToExport value for 'gch' in manifest.
-
-[*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v1.8.1...v1.8.2)
-
-## [1.8.1] - 2025-02-25
-
-### Fixed
-
+* Fixed string type declaration on array for `Get-CommandHistory`.
 * Fixed an issue that was preventing PSPreworkout from being imported in Windows PowerShell.
 
-[*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v1.8.0...v1.8.1)
+[*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v1.8.0...v1.8.3)
 
 ## [1.8.0] - 2025-02-24
 
@@ -290,5 +284,4 @@ This release is focused on enhancements that make the existing functions more us
 [1.7.1]: https://github.com/SamErde/PSPreworkout/tag/v1.7.1
 [1.7.2]: https://github.com/SamErde/PSPreworkout/tag/v1.7.2
 [1.8.0]: https://github.com/SamErde/PSPreworkout/tag/v1.8.0
-[1.8.1]: https://github.com/SamErde/PSPreworkout/tag/v1.8.1
-[1.8.2]: https://github.com/SamErde/PSPreworkout/tag/v1.8.2
+[1.8.3]: https://github.com/SamErde/PSPreworkout/tag/v1.8.3
