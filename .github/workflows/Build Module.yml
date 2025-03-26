@@ -16,6 +16,7 @@ on:
       - '**.md'
       - 'docs/**'
       - 'src/Drafts/**'
+
   push:
     paths:
       - 'src/PSPreworkout/**'
@@ -24,20 +25,21 @@ on:
       - '!docs/**'
       - '!src/Drafts/**'
     #paths-ignore: # Cannot use both paths and paths-ignore simultaneously.
-    #  - '**.md'
-    #  - 'docs/**'
-    #  - 'src/Drafts/**'
+      - '**.md'
+      - 'docs/**'
+      - 'src/Drafts/**'
+
   workflow_dispatch:
 
 jobs:
   test:
-    name: 🧪 Run Tests
+    name: 🧪 Run Tests and Build
     runs-on: ubuntu-latest
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
       cancel-in-progress: true
-    strategy:
-      fail-fast: false
+    # strategy:
+    #  fail-fast: false
 
     steps:
 
