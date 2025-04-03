@@ -39,7 +39,7 @@ jobs:
 
       - name: 👷‍♂️ Build & Deploy MkDocs
         run: |
-          mkdocs build -f ./.github/mkdocs.yml
+          mkdocs build -f '/.github/mkdocs.yml'
           mkdocs gh-deploy --force
 
       # Combine markdown files to create the MkDocs index and the repository readme
