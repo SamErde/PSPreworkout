@@ -19,7 +19,7 @@ site_author: "Sam Erde" # meta tag to the generated HTML header
 copyright: "(c) 2025 Sam Erde"
 # remote_branch:
 # remote_name:
-docs_dir: "/docs"
+docs_dir: "./docs"
 # site_dir:
 # extra_css:
 # extra_javascript:
