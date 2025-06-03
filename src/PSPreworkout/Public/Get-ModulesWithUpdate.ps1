@@ -14,7 +14,9 @@
     This command retrieves all installed PowerShell modules and checks for updates available in the PowerShell Gallery.
 
     .NOTES
-    To Do: Add support for checking other repositories.
+    To Do:
+    - Batch and "paginate" online checks to speed up. Find-Module can return up to 63 results in one request.
+    - Add support for checking other repositories.
 
     #>
     [CmdletBinding()]
