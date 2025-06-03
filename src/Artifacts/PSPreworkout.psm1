@@ -766,9 +766,8 @@ function Install-CommandNotFoundUtility {
     )
 
     begin {
-        if ($PSVersionTable.PSVersion -lt [version]"7.4.0") {
-            Write-Error -Message 'The CommandNotFoundUtility module requires PowerShell 7.4 or higher.'
-            break
+        if ($PSVersionTable.PSVersion -lt [version]'7.4.0') {
+            throw 'The CommandNotFoundUtility module requires PowerShell 7.4 or higher.'
         }
     } # end begin block
 
