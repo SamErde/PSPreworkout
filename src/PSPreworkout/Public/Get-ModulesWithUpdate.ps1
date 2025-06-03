@@ -19,6 +19,7 @@ function Get-ModulesWithUpdate {
     #>
     [CmdletBinding()]
     [OutputType('PSPreworkout.ModuleInfo')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '', Justification = 'Making it pretty.')]
     param(
         # List of modules to check for updates. This parameter is accepts wildcards and checks all modules by default.
         [Parameter(
