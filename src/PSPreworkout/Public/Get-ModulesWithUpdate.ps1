@@ -71,7 +71,7 @@
                 # The Get-PSResource cmdlet provides Repository name and can be optimized to check other repositories if needed.
                 # If a newer version is available, create a custom object with PSPreworkout.ModuleInfo type.
                 # Treat the installed version as an array in case multiple versions are installed.
-                if ( ($OnlineModule.Version -as [version]) -gt @(($Module.Version))[0] ) {
+                if ( [version]($OnlineModule.Version) -gt @(($Module.Version))[0] ) {
                     Write-Verbose "$($Module.Name) $($Module.Version) --> $($OnlineModule.Version) 🆕"
 
                     # Create a custom object with PSPreworkout.ModuleInfo type
@@ -110,4 +110,3 @@
         }
     } # end process block
 }
-
