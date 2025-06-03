@@ -342,10 +342,8 @@ function Get-ModulesWithUpdate {
                         UpdateAvailable = $true
                         OnlineVersion   = $OnlineModule.Version
                         ReleaseNotes    = $OnlineModule.ReleaseNotes
-                    }
-
-                    # Add the module to the list of modules with updates.
-                    $ModulesWithUpdates.Add($ModuleInfo)
+                    }                    # Add the module to the list of modules with updates.
+                    $ModulesWithUpdates.Add($ModuleInfo) | Out-Null
                 }
             } catch {
                 # Show a warning if the module is not found in the online repository.
@@ -354,7 +352,7 @@ function Get-ModulesWithUpdate {
         }
 
         if (-not $ModulesWithUpdates -or $ModulesWithUpdates.Count -eq 0) {
-            Write-Information 'No module updates found in the online repository.'
+            Write-Host 'No module updates found in the online repository.'
             return
         } else {
             # Return the list of modules with updates to the host or the pipeline.
@@ -1043,10 +1041,11 @@ function New-Credential {
 #>
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/New-Credential')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'OK')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '', Justification = 'Making it pretty.')]
     [OutputType('System.Management.Automation.PSCredential')]
     param ()
 
-    Write-Output 'Create a Credential'
+    Write-Host 'Create a Credential'
     $User = Read-Host -Prompt 'User'
     $Password = Read-Host "Password for user $User" -AsSecureString
     $Credential = [System.Management.Automation.PSCredential]::New($User, $Password)
