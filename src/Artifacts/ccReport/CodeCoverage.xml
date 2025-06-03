@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE report PUBLIC "-//JACOCO//DTD Report 1.1//EN" "report.dtd"[]>
-<report name="Pester (06/03/2025 19:32:04)">
-  <sessioninfo id="this" start="1748979119600" dump="1748979124048" />
+<report name="Pester (06/03/2025 20:09:47)">
+  <sessioninfo id="this" start="1748981383486" dump="1748981387732" />
   <package name="Public">
     <class name="Public/Edit-PSReadLineHistoryFile" sourcefilename="Edit-PSReadLineHistoryFile.ps1">
       <method name="Edit-PSReadLineHistoryFile" desc="()" line="28">
@@ -152,7 +152,7 @@
       <counter type="CLASS" missed="1" covered="0" />
     </class>
     <class name="Public/New-Credential" sourcefilename="New-Credential.ps1">
-      <method name="New-Credential" desc="()" line="17">
+      <method name="New-Credential" desc="()" line="18">
         <counter type="INSTRUCTION" missed="5" covered="0" />
         <counter type="LINE" missed="5" covered="0" />
         <counter type="METHOD" missed="1" covered="0" />
@@ -650,11 +650,11 @@
       <counter type="CLASS" missed="1" covered="0" />
     </sourcefile>
     <sourcefile name="New-Credential.ps1">
-      <line nr="17" mi="1" ci="0" mb="0" cb="0" />
       <line nr="18" mi="1" ci="0" mb="0" cb="0" />
       <line nr="19" mi="1" ci="0" mb="0" cb="0" />
       <line nr="20" mi="1" ci="0" mb="0" cb="0" />
       <line nr="21" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="22" mi="1" ci="0" mb="0" cb="0" />
       <counter type="INSTRUCTION" missed="5" covered="0" />
       <counter type="LINE" missed="5" covered="0" />
       <counter type="METHOD" missed="1" covered="0" />
