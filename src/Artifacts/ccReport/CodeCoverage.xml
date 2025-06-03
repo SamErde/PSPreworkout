@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE report PUBLIC "-//JACOCO//DTD Report 1.1//EN" "report.dtd"[]>
 <<<<<<< HEAD
+<<<<<<< HEAD
 <report name="Pester (06/03/2025 20:30:09)">
   <sessioninfo id="this" start="1748982604717" dump="1748982609054" />
 =======
 <report name="Pester (06/03/2025 20:03:14)">
   <sessioninfo id="this" start="1748980989860" dump="1748980994226" />
 >>>>>>> 669a9955f11917a4d930b1908300e19ce012b700
+=======
+<report name="Pester (06/03/2025 20:35:47)">
+  <sessioninfo id="this" start="1748982943320" dump="1748982947992" />
+>>>>>>> 3475de166fe255f25e1b3d074bae880b45660d1a
   <package name="Public">
     <class name="Public/Edit-PSReadLineHistoryFile" sourcefilename="Edit-PSReadLineHistoryFile.ps1">
       <method name="Edit-PSReadLineHistoryFile" desc="()" line="28">
