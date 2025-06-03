@@ -56,6 +56,9 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 
 ### PSPreworkout.ModuleInfo
 ## NOTES
-To Do: Add support for checking other repositories.
+To Do:
+- Batch and "paginate" online checks to speed up.
+Find-Module can return up to 63 results in one request.
+- Add support for checking other repositories.
 
 ## RELATED LINKS

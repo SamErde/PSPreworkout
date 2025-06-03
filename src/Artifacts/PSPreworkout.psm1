@@ -297,7 +297,7 @@ function Get-ModulesWithUpdate {
         # Get installed modules.
         Write-Host -ForegroundColor Cyan "Getting installed modules ($($Name -join ','))..."
         try {
-            [System.Collections.Generic.List[System.Object]] $Modules = Get-InstalledModule -Name $Name
+            [System.Collections.Generic.List[System.Object]] $Modules = Get-InstalledModule -Name $Name | Sort-Object Name
         } catch {
             throw $_
         }
@@ -324,7 +324,7 @@ function Get-ModulesWithUpdate {
                 # The Get-PSResource cmdlet provides Repository name and can be optimized to check other repositories if needed.
                 # If a newer version is available, create a custom object with PSPreworkout.ModuleInfo type.
                 # Treat the installed version as an array in case multiple versions are installed.
-                if ( ($OnlineModule.Version -as [version]) -gt @(($Module.Version))[0] ) {
+                if ( [version]($OnlineModule.Version) -gt @(($Module.Version))[0] ) {
                     Write-Verbose "$($Module.Name) $($Module.Version) --> $($OnlineModule.Version) 🆕"
 
                     # Create a custom object with PSPreworkout.ModuleInfo type
@@ -358,12 +358,11 @@ function Get-ModulesWithUpdate {
             return
         } else {
             # Return the list of modules with updates to the host or the pipeline.
-            Write-Host "Found $($ModulesWithUpdates.Count) modules with updates available." -ForegroundColor Yellow
+            Write-Host "Found $($ModulesWithUpdates.Count) modules with updates available."
             $ModulesWithUpdates
         }
     } # end process block
 }
-
 
 
 

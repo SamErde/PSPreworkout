@@ -510,7 +510,7 @@
     </command:returnValues>
     <maml:alertSet>
       <maml:alert>
-        <maml:para>To Do: Add support for checking other repositories.</maml:para>
+        <maml:para>To Do: - Batch and "paginate" online checks to speed up. Find-Module can return up to 63 results in one request. - Add support for checking other repositories.</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
