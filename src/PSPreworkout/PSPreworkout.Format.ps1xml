@@ -78,10 +78,10 @@
                     <TableColumnHeader>
                         <Label>OnlineVersion</Label>
                         <Width>15</Width>
+                    </TableColumnHeader>
                     <TableColumnHeader>
                         <Label>Repository</Label>
                         <Width>15</Width>
-                    </TableColumnHeader>
                     </TableColumnHeader>
                     <TableColumnHeader>
                         <Label>Description</Label>
