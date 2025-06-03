@@ -33,7 +33,7 @@
         'Edit-WinGetSettingsFile',
         'Get-CommandHistory',
         'Get-EnvironmentVariable',
-        'Get-ModulesWithUpdates',
+        'Get-ModulesWithUpdate',
         'Get-LoadedAssembly',
         'Get-PowerShellPortable',
         'Get-TypeAccelerator',
