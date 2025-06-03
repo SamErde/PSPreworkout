@@ -1,4 +1,4 @@
-function Get-ModulesWithUpdates {
+function Get-ModulesWithUpdate {
     <#
     .SYNOPSIS
     Get a list of installed PowerShell modules that have updates available in the PowerShell Gallery.
@@ -10,7 +10,7 @@ function Get-ModulesWithUpdates {
     The module name or list of module names to check for updates. Wildcards are allowed, and all modules are checked by default.
 
     .EXAMPLE
-    Get-ModulesWithUpdates
+    Get-ModulesWithUpdate
     This command retrieves all installed PowerShell modules and checks for updates available in the PowerShell Gallery.
 
     .NOTES
