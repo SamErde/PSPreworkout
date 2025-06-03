@@ -342,10 +342,8 @@ function Get-ModulesWithUpdate {
                         UpdateAvailable = $true
                         OnlineVersion   = $OnlineModule.Version
                         ReleaseNotes    = $OnlineModule.ReleaseNotes
-                    }
-
-                    # Add the module to the list of modules with updates.
-                    $ModulesWithUpdates.Add($ModuleInfo)
+                    }                    # Add the module to the list of modules with updates.
+                    $ModulesWithUpdates.Add($ModuleInfo) | Out-Null
                 }
             } catch {
                 # Show a warning if the module is not found in the online repository.
@@ -354,7 +352,7 @@ function Get-ModulesWithUpdate {
         }
 
         if (-not $ModulesWithUpdates -or $ModulesWithUpdates.Count -eq 0) {
-            Write-Information 'No module updates found in the online repository.'
+            Write-Host 'No module updates found in the online repository.'
             return
         } else {
             # Return the list of modules with updates to the host or the pipeline.

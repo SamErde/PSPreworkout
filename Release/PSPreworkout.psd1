@@ -4,7 +4,7 @@
     RootModule           = 'PSPreworkout.psm1'
 
     # Version number of this module.
-    ModuleVersion        = '1.9.1'
+    ModuleVersion        = '1.9.2'
 
     # Supported PSEditions = @('Desktop', 'Core')
     CompatiblePSEditions = @('Core', 'Desktop')
@@ -113,7 +113,7 @@
             IconUri      = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/media/PSPreworkout-Animated-Logo-170.png'
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'https://github.com/SamErde/PSPreworkout/CHANGELOG.md'
+            ReleaseNotes = 'https://github.com/SamErde/PSPreworkout/releases'
 
             # Prerelease string of this module
             # Prerelease   = ''
