@@ -1,4 +1,4 @@
-function Get-ModulesWithUpdate {
+﻿function Get-ModulesWithUpdate {
     <#
     .SYNOPSIS
     Get a list of installed PowerShell modules that have updates available in the PowerShell Gallery.
@@ -108,3 +108,4 @@ function Get-ModulesWithUpdate {
         }
     } # end process block
 }
+
