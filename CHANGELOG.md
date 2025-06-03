@@ -10,6 +10,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 <!-- Show the history of all changes since the last release. -->
 [*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/latest...HEAD)
 
+## [1.9.0] - 2025-06-03
+
+### Added
+
+This release adds a new function with custom formatting to show updates that available for installed modules.
+
+* Get-ModulesWithUpdate by @SamErde in [#74](https://github.com/SamErde/PSPreworkout/pull/74)
+
+[*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v1.8.3...v1.9.0)
+
 ## [1.8.3] - 2025-02-26
 
 ### Fixed
@@ -285,3 +295,4 @@ This release is focused on enhancements that make the existing functions more us
 [1.7.2]: https://github.com/SamErde/PSPreworkout/tag/v1.7.2
 [1.8.0]: https://github.com/SamErde/PSPreworkout/tag/v1.8.0
 [1.8.3]: https://github.com/SamErde/PSPreworkout/tag/v1.8.3
+[1.9.0]: https://github.com/SamErde/PSPreworkout/tag/v1.9.0
