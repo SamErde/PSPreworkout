@@ -116,4 +116,5 @@ nav:
       - Update-AllTheThings: "Update-AllTheThings.md"
       - Out-JsonFile: "Out-JsonFile.md"
       - Show-WithoutEmptyProperty: "Show-WithoutEmptyProperty.md"
+      - Get-ModulesWithUpdate: "Get-ModulesWithUpdate.md"
       - Get-PowerShellPortable: "Get-PowerShellPortable.md"
