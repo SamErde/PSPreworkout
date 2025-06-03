@@ -1,4 +1,6 @@
+<!-- markdownlint-disable MD004 -->
 <!-- markdownlint-disable MD024 -->
+<!-- markdownlint-disable MD034 -->
 # Changelog
 
 All notable changes to this project will be documented in this file.
@@ -8,22 +10,32 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 <!-- Show the history of all changes since the last release. -->
 [*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/latest...HEAD)
 
-## [1.7.3-rc5] - 2025-02-25
+## [1.8.3] - 2025-02-26
 
-Updates to test the modified build and release process.
+### Fixed
 
-## What's Changed
+* Fixed an issue that resulted in the default parameter set returning no output in `Get-CommandHistory`.
+* Added missing AliasesToExport value for 'gch' in manifest.
+* Fixed string type declaration on array for `Get-CommandHistory`.
+* Fixed an issue that was preventing PSPreworkout from being imported in Windows PowerShell.
 
-- Dev general by @SamErde in <https://github.com/SamErde/PSPreworkout/pull/61>
-- Repository Maintenance by @SamErde in <https://github.com/SamErde/PSPreworkout/pull/62>
-- Add version 1.7.2 with improved error handling by @SamErde in <https://github.com/SamErde/PSPreworkout/pull/63>
+[*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v1.8.0...v1.8.3)
 
-## Added
+## [1.8.0] - 2025-02-24
 
-- Build script now creates a new release artifact.
-- New Pester tests.
+This release adds improved error handling to several functions, a new `Get-CommandHistory` function, and improvements to project workflows.
 
-**Full Changelog**: <https://github.com/SamErde/PSPreworkout/compare/v1.7.2...v1.7.3-prerelease.5>
+### Changed
+
+* Improved error handling by @SamErde in https://github.com/SamErde/PSPreworkout/pull/63
+
+### Added
+
+* Get-CommandHistory by @SamErde in https://github.com/SamErde/PSPreworkout/pull/68
+* Build script now creates a new release artifact.
+* New Pester tests.
+
+[*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v1.7.2...v1.8.0)
 
 ## [1.7.2] - 2025-02-19
 
@@ -106,7 +118,7 @@ This release is focused on enhancements that make the existing functions more us
 
 ### Added
 
-- Add updatable and online [external] help.
+- Add updatable and online (external) help.
 
 [*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v1.4.6...v1.4.3)
 
@@ -271,4 +283,5 @@ This release is focused on enhancements that make the existing functions more us
 [1.6.0]: https://github.com/SamErde/PSPreworkout/tag/v1.6.0
 [1.7.1]: https://github.com/SamErde/PSPreworkout/tag/v1.7.1
 [1.7.2]: https://github.com/SamErde/PSPreworkout/tag/v1.7.2
-[1.7.3-rc5]: https://github.com/SamErde/PSPreworkout/tag/v1.7.3-rc5
+[1.8.0]: https://github.com/SamErde/PSPreworkout/tag/v1.8.0
+[1.8.3]: https://github.com/SamErde/PSPreworkout/tag/v1.8.3

@@ -41,6 +41,4 @@ Author: Sam Erde
 Version: 0.1.1
 Modified: 2025-02-08
 
-requires -version 7.4
-
 ## RELATED LINKS

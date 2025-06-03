@@ -8,7 +8,7 @@ on:
     # For push, only deploy MkDocs when the contents of the docs folder change or when this workflow changes.
       - 'docs/**'
       - '.github/workflows/Deploy MkDocs.yml'
-      - './mkdocs.yml'
+      - '.github/mkdocs.yml'
   workflow_dispatch:
 
 jobs:
@@ -63,25 +63,3 @@ jobs:
         with:
           commit_message: 'Copy MkDocs index to README'
           file_pattern: 'docs/index.md README.md'
-
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v7
-        with:
-          token: ${{ secrets.Publish_MkDocs }}
-          commit-message: Update Documentation
-          branch: auto-pr
-          title: 'Automated PR to publish MkDocs and updated README'
-          body: 'This pull request is created automatically by the workflow.'
-          labels: automated-pr
-
-      #- name: Merge Pull Request
-      #  uses: peter-evans/merge-pull-request@v3
-      #  with:
-      #    token: ${{ secrets.Publish_MkDocs }}
-      #    pull-request: ${{ steps.create-pull-request.outputs.pull-request-number }}
-      #    merge-method: squash
-
-      - name: Enable Pull Request Automerge
-        run: gh pr merge --merge --auto "${{ steps.create-pull-request.outputs.pull-request-number }}"
-        env:
-          GH_TOKEN: ${{ secrets.Publish_MkDocs }}

@@ -4,7 +4,7 @@
     RootModule           = 'PSPreworkout.psm1'
 
     # Version number of this module.
-    ModuleVersion        = '1.8.0'
+    ModuleVersion        = '1.9.0'
 
     # Supported PSEditions = @('Desktop', 'Core')
     CompatiblePSEditions = @('Core', 'Desktop')
@@ -33,6 +33,7 @@
         'Edit-WinGetSettingsFile',
         'Get-CommandHistory',
         'Get-EnvironmentVariable',
+        'Get-ModulesWithUpdate',
         'Get-LoadedAssembly',
         'Get-PowerShellPortable',
         'Get-TypeAccelerator',
@@ -73,6 +74,7 @@
         'UaTT',
         'Skip-Choco',
         'Edit-HistoryFile',
+        'gch',
         'gev',
         'Get-Assembly',
         'Get-PSPortable',
@@ -111,7 +113,7 @@
             IconUri      = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/media/PSPreworkout-Animated-Logo-170.png'
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'Added Pester-based unit tests.'
+            ReleaseNotes = 'https://github.com/SamErde/PSPreworkout/releases'
 
             # Prerelease string of this module
             # Prerelease   = ''

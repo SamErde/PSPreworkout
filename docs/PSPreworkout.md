@@ -2,7 +2,7 @@
 Module Name: PSPreworkout
 Module Guid: 378339de-a0df-4d44-873b-4fd32c388e06
 Download Help Link: NA
-Help Version: 1.8.0
+Help Version: 1.9.0
 Locale: en-US
 ---
 
@@ -25,6 +25,9 @@ Retrieves the value of an environment variable.
 
 ### [Get-LoadedAssembly](Get-LoadedAssembly.md)
 Get all assemblies loaded in PowerShell.
+
+### [Get-ModulesWithUpdate](Get-ModulesWithUpdate.md)
+Get a list of installed PowerShell modules that have updates available in the PowerShell Gallery.
 
 ### [Get-PowerShellPortable](Get-PowerShellPortable.md)
 Download a portable version of PowerShell to run anywhere on demand.
