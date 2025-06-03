@@ -4,7 +4,7 @@
     RootModule           = 'PSPreworkout.psm1'
 
     # Version number of this module.
-    ModuleVersion        = '1.8.3'
+    ModuleVersion        = '1.9.0'
 
     # Supported PSEditions = @('Desktop', 'Core')
     CompatiblePSEditions = @('Core', 'Desktop')
@@ -33,6 +33,7 @@
         'Edit-WinGetSettingsFile',
         'Get-CommandHistory',
         'Get-EnvironmentVariable',
+        'Get-ModulesWithUpdates',
         'Get-LoadedAssembly',
         'Get-PowerShellPortable',
         'Get-TypeAccelerator',
@@ -100,19 +101,19 @@
         PSData = @{
 
             # Tags applied to this module. These help with module discovery in online galleries.
-            Tags       = 'PowerShell', 'Utilities', 'Tools', 'Windows', 'Linux', 'macOS'
+            Tags         = 'PowerShell', 'Utilities', 'Tools', 'Windows', 'Linux', 'macOS'
 
             # A URL to the license for this module.
-            LicenseUri = 'https://github.com/SamErde/PSPreworkout/blob/main/LICENSE'
+            LicenseUri   = 'https://github.com/SamErde/PSPreworkout/blob/main/LICENSE'
 
             # A URL to the main website for this project.
-            ProjectUri = 'https://github.com/SamErde/PSPreworkout'
+            ProjectUri   = 'https://github.com/SamErde/PSPreworkout'
 
             # A URL to an icon representing this module.
-            IconUri    = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/media/PSPreworkout-Animated-Logo-170.png'
+            IconUri      = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/media/PSPreworkout-Animated-Logo-170.png'
 
             # ReleaseNotes of this module
-            # ReleaseNotes = ''
+            ReleaseNotes = 'https://github.com/SamErde/PSPreworkout/releases'
 
             # Prerelease string of this module
             # Prerelease   = ''
