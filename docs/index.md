@@ -64,6 +64,9 @@ Retrieves the value of an environment variable.
 ### [Get-LoadedAssembly](Get-LoadedAssembly.md)
 Get all assemblies loaded in PowerShell.
 
+### [Get-ModulesWithUpdate](Get-ModulesWithUpdate.md)
+Get a list of installed PowerShell modules that have updates available in the PowerShell Gallery.
+
 ### [Get-PowerShellPortable](Get-PowerShellPortable.md)
 Download a portable version of PowerShell to run anywhere on demand.
 
