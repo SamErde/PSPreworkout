@@ -76,12 +76,12 @@
                         <Width>15</Width>
                     </TableColumnHeader>
                     <TableColumnHeader>
+                        <Label>OnlineVersion</Label>
+                        <Width>15</Width>
+                    <TableColumnHeader>
                         <Label>Repository</Label>
                         <Width>15</Width>
                     </TableColumnHeader>
-                    <TableColumnHeader>
-                        <Label>OnlineVersion</Label>
-                        <Width>15</Width>
                     </TableColumnHeader>
                     <TableColumnHeader>
                         <Label>Description</Label>
@@ -99,10 +99,10 @@
                                 <PropertyName>Version</PropertyName>
                             </TableColumnItem>
                             <TableColumnItem>
-                                <PropertyName>Repository</PropertyName>
+                                <PropertyName>OnlineVersion</PropertyName>
                             </TableColumnItem>
                             <TableColumnItem>
-                                <PropertyName>OnlineVersion</PropertyName>
+                                <PropertyName>Repository</PropertyName>
                             </TableColumnItem>
                             <TableColumnItem>
                                 <PropertyName>Description</PropertyName>
