@@ -44,7 +44,7 @@
         # Get installed modules.
         Write-Host -ForegroundColor Cyan "Getting installed modules ($($Name -join ','))..."
         try {
-            [System.Collections.Generic.List[System.Object]] $Modules = Get-InstalledModule -Name $Name
+            [System.Collections.Generic.List[System.Object]] $Modules = Get-InstalledModule -Name $Name | Sort-Object Name
         } catch {
             throw $_
         }
