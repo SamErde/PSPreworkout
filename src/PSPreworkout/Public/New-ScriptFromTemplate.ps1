@@ -96,7 +96,7 @@ function New-ScriptFromTemplate {
         [string]
         $Path,
 
-        # Optionally skip name validation checks.
+        # Optionally skip validation checks.
         [Parameter()]
         [switch]
         $SkipValidation
@@ -125,7 +125,7 @@ function New-ScriptFromTemplate {
 
     # Create the function builder string builder and function body string.
     $FunctionBuilder = [System.Text.StringBuilder]::New()
-    $FunctionBody = (Get-Content -Path "$PSScriptRoot\ScriptTemplate.txt" -Raw)
+    $FunctionBody = (Get-Content -Path "$ModuleBase\Resources\ScriptTemplate.txt" -Raw)
 
     # Replace template placeholders with strings from parameter inputs.
     $FunctionBody = $FunctionBody -replace 'New-Function', $Name
@@ -140,8 +140,19 @@ function New-ScriptFromTemplate {
         $FunctionBody = $FunctionBody -replace '__ALIAS__', ''
     }
 
-    # Create the new file.
+    # Write the function body to the string builder.
     [void]$FunctionBuilder.Append($FunctionBody)
+
+    # Analyze the script for common issues.
+    if (-not $SkipValidation) {
+        $Analysis = Invoke-ScriptAnalyzer -ScriptDefinition $FunctionBuilder.ToString() -IncludeDefaultRules -ErrorAction Stop
+        if ($Analysis.Count -gt 0) {
+            Write-Warning 'Script analysis found issues:'
+            $Analysis | Format-Table -AutoSize
+        }
+    }
+
+    # Create the new file.
     $FunctionBuilder.ToString() | Out-File -FilePath $ScriptPath -Encoding utf8 -Force
 
 } # end function New-ScriptFromTemplate
