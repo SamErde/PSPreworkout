@@ -10,6 +10,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 <!-- Show the history of all changes since the last release. -->
 [*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/latest...HEAD)
 
+---
+
+## [1.9.3] - 2025-06-09
+
+This release fixes a problem in the `New-ScriptFromTemplate` function that occured when the template was moved from the Public folder to the Resources folder.
+
+### Fixed
+
+* Issue #81 in New-FunctionFromTemplate by @SamErde
+
+### Added
+
+* PSScriptAnalyzer script validation for `New-ScriptFromTemplate` by @SamErde in [#82](https://github.com/SamErde/PSPreworkout/pull/82)
+
+[*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v1.9.2...v1.9.3)
+
 ## [1.9.2] - 2025-06-03
 
 ### Fixed
@@ -308,3 +324,4 @@ This release is focused on enhancements that make the existing functions more us
 [1.8.3]: https://github.com/SamErde/PSPreworkout/tag/v1.8.3
 [1.9.0]: https://github.com/SamErde/PSPreworkout/tag/v1.9.0
 [1.9.2]: https://github.com/SamErde/PSPreworkout/tag/v1.9.2
+[1.9.3]: https://github.com/SamErde/PSPreworkout/tag/v1.9.3
