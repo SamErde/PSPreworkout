@@ -125,7 +125,7 @@ function New-ScriptFromTemplate {
 
     # Create the function builder string builder and function body string.
     $FunctionBuilder = [System.Text.StringBuilder]::New()
-    $FunctionBody = (Get-Content -Path "$ModuleBase\Resources\ScriptTemplate.txt" -Raw)
+    $FunctionBody = (Get-Content -Path "$PSScriptRoot\..\Resources\ScriptTemplate.txt" -Raw)
 
     # Replace template placeholders with strings from parameter inputs.
     $FunctionBody = $FunctionBody -replace 'New-Function', $Name
