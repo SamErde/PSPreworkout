@@ -168,8 +168,7 @@ Accept wildcard characters: False
 ```
 
 ### -SkipValidation
-Optionally skip validation of the script name.
-This will not check for use of approved verbs or restricted characters.
+Optionally skip validation of the script.
 
 ```yaml
 Type: SwitchParameter
