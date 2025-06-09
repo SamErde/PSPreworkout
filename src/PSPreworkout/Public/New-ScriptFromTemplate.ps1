@@ -27,7 +27,7 @@ function New-ScriptFromTemplate {
         The path of the directory to save the new script in.
 
         .PARAMETER SkipValidation
-        Optionally skip validation of the script name. This will not check for use of approved verbs or restricted characters.
+        Optionally skip validation of the script.
 
         .EXAMPLE
         New-ScriptFromTemplate -Name 'Get-Demo' -Synopsis 'Get a demo.' -Description 'This function gets a demo.' -Alias 'Get-Sample' -Parameter 'SerialNumber'
