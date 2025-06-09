@@ -37,6 +37,6 @@ jobs:
           PS_GALLERY_KEY: ${{ secrets.POWERSHELLGALLERY_KEY }}
         shell: pwsh
         run: |
-          echo ${env:PATH}
-          $PSVersionTable
+          Write-Verbose "Script root dir:`t $PSScriptRoot"
+          Write-Verbose "Working directory:`t $($PWD.path)"
           Publish-Module -Path '.\src\PSPreworkout' -NuGetApiKey ${{ secrets.POWERSHELLGALLERY_KEY }}
