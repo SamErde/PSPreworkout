@@ -12,6 +12,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [1.9.4] - 2025-06-23
+
+This release fixes a bug in `Get-ModulesWithUpdate` in which it failed to check some prerelease module versions.
+
+[*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v1.9.3...v1.9.4)
+
 ## [1.9.3] - 2025-06-09
 
 This release fixes a problem in the `New-ScriptFromTemplate` function that occured when the template was moved from the Public folder to the Resources folder.
@@ -325,3 +331,4 @@ This release is focused on enhancements that make the existing functions more us
 [1.9.0]: https://github.com/SamErde/PSPreworkout/tag/v1.9.0
 [1.9.2]: https://github.com/SamErde/PSPreworkout/tag/v1.9.2
 [1.9.3]: https://github.com/SamErde/PSPreworkout/tag/v1.9.3
+[1.9.4]: https://github.com/SamErde/PSPreworkout/tag/v1.9.4
