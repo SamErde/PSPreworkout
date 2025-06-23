@@ -295,7 +295,7 @@ function Get-ModulesWithUpdate {
 
     process {
         # Get installed modules.
-        Write-Host -ForegroundColor Cyan "Getting installed modules ($($Name -join ','))..."
+        Write-Host -ForegroundColor Cyan "Getting installed modules ($($Name -join ', '))..."
         try {
             [System.Collections.Generic.List[System.Object]] $Modules = Get-InstalledModule -Name $Name | Sort-Object Name
         } catch {
@@ -307,31 +307,53 @@ function Get-ModulesWithUpdate {
             Write-Warning 'No matching modules were found.'
             return
         } else {
-            Write-Host "Found $($Modules.Count) installed modules.`n"
+            Write-Host "Found $($Modules.Count) installed modules." -ForegroundColor Cyan
         }
 
         Write-Host 'Checking the repository for newer versions of the modules...' -ForegroundColor Cyan
         foreach ($Module in $Modules) {
 
-            Write-Verbose "$($Module.Name) $($Module.Version)"
+            $InstalledVersion = $Module.Version
 
             # Use $true for the AllowPrerelease argument if the module version string contains 'beta', 'prerelease', 'preview', or 'rc'.
-            $PreRelease = ( $Module.Version -match 'beta|prerelease|preview|rc' )
+            $IsPrerelease = ( $InstalledVersion -match 'beta|prerelease|preview|rc' )
+            if ($IsPrerelease) {
+                $Prerelease = '-' + ($InstalledVersion -split '-')[1]
+            } else {
+                $Prerelease = '~~NA~~'
+            }
 
             try {
-                # Get the latest online version. Only allow pre-release versions if a pre-release version is already installed.
-                $OnlineModule = Find-Module -Name $Module.Name -AllowPrerelease:$PreRelease
+                # Get the latest online version. Only check pre-release versions if a pre-release version is already installed.
+                $OnlineModule = Find-Module -Name $Module.Name -AllowPrerelease:$IsPrerelease
+                $OnlineVersion = $OnlineModule.Version
+                # Find-PSResource -Name Maester -Version 1.1.16-preview -Prerelease
                 # The Get-PSResource cmdlet provides Repository name and can be optimized to check other repositories if needed.
+
+                Write-Verbose "$($Module.Name) $InstalledVersion (Installed)"
+                Write-Verbose "$($Module.Name) $OnlineVersion (Online)"
+
                 # If a newer version is available, create a custom object with PSPreworkout.ModuleInfo type.
-                # Treat the installed version as an array in case multiple versions are installed.
-                if ( [version]($OnlineModule.Version) -gt @(($Module.Version))[0] ) {
-                    Write-Verbose "$($Module.Name) $($Module.Version) --> $($OnlineModule.Version) 🆕"
+                if (
+                    (
+                        # Compare the version numbers while ignoring the pre-release suffix.
+                        # Treat the installed version as an array in case multiple versions are installed.
+                        [version]$OnlineVersion.Replace($Prerelease, '') -gt @([version]$InstalledVersion.Replace($Prerelease, ''))[0]
+                    ) -or
+                    (
+                        # Check if the version numbers are equal, but the installed version is a pre-release version and the online version is not.
+                        # This allows updates from prerelease to stable versions.
+                        ( [version]$OnlineVersion.Replace($Prerelease, '') -ge @([version]($InstalledVersion).Replace($Prerelease, ''))[0] ) -and
+                        ( $OnlineVersion -notmatch $Prerelease -and $InstalledVersion -match $Prerelease)
+                    )
+                ) {
+                    Write-Verbose "$($Module.Name) $($InstalledVersion) --> $($OnlineVersion) 🆕`n"
 
                     # Create a custom object with PSPreworkout.ModuleInfo type
                     $ModuleInfo = [PSCustomObject]@{
                         PSTypeName      = 'PSPreworkout.ModuleInfo'
                         Name            = $Module.Name
-                        Version         = $Module.Version
+                        Version         = $InstalledVersion
                         Repository      = $Module.Repository
                         Description     = $Module.Description
                         Author          = $Module.Author
@@ -340,7 +362,7 @@ function Get-ModulesWithUpdate {
                         PublishedDate   = $Module.PublishedDate
                         InstalledDate   = $Module.InstalledDate
                         UpdateAvailable = $true
-                        OnlineVersion   = $OnlineModule.Version
+                        OnlineVersion   = $OnlineVersion
                         ReleaseNotes    = $OnlineModule.ReleaseNotes
                     }                    # Add the module to the list of modules with updates.
                     $ModulesWithUpdates.Add($ModuleInfo) | Out-Null
@@ -356,7 +378,7 @@ function Get-ModulesWithUpdate {
             return
         } else {
             # Return the list of modules with updates to the host or the pipeline.
-            Write-Host "Found $($ModulesWithUpdates.Count) modules with updates available."
+            Write-Host "Found $($ModulesWithUpdates.Count) modules with updates available." -ForegroundColor Yellow
             $ModulesWithUpdates
         }
     } # end process block
