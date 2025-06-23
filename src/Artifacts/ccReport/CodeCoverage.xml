@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE report PUBLIC "-//JACOCO//DTD Report 1.1//EN" "report.dtd"[]>
-<report name="Pester (06/09/2025 15:00:53)">
-  <sessioninfo id="this" start="1749481249759" dump="1749481253805" />
+<report name="Pester (06/23/2025 21:47:15)">
+  <sessioninfo id="this" start="1750715230820" dump="1750715235153" />
   <package name="Public">
     <class name="Public/Edit-PSReadLineHistoryFile" sourcefilename="Edit-PSReadLineHistoryFile.ps1">
       <method name="Edit-PSReadLineHistoryFile" desc="()" line="28">
@@ -60,12 +60,12 @@
     </class>
     <class name="Public/Get-ModulesWithUpdate" sourcefilename="Get-ModulesWithUpdate.ps1">
       <method name="Get-ModulesWithUpdate" desc="()" line="35">
-        <counter type="INSTRUCTION" missed="50" covered="0" />
-        <counter type="LINE" missed="35" covered="0" />
+        <counter type="INSTRUCTION" missed="61" covered="0" />
+        <counter type="LINE" missed="44" covered="0" />
         <counter type="METHOD" missed="1" covered="0" />
       </method>
-      <counter type="INSTRUCTION" missed="50" covered="0" />
-      <counter type="LINE" missed="35" covered="0" />
+      <counter type="INSTRUCTION" missed="61" covered="0" />
+      <counter type="LINE" missed="44" covered="0" />
       <counter type="METHOD" missed="1" covered="0" />
       <counter type="CLASS" missed="1" covered="0" />
     </class>
@@ -361,33 +361,42 @@
       <line nr="57" mi="2" ci="0" mb="0" cb="0" />
       <line nr="60" mi="1" ci="0" mb="0" cb="0" />
       <line nr="61" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="63" mi="3" ci="0" mb="0" cb="0" />
+      <line nr="63" mi="1" ci="0" mb="0" cb="0" />
       <line nr="66" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="67" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="68" mi="2" ci="0" mb="0" cb="0" />
       <line nr="70" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="74" mi="4" ci="0" mb="0" cb="0" />
-      <line nr="75" mi="4" ci="0" mb="0" cb="0" />
-      <line nr="78" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="79" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="80" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="81" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="82" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="83" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="84" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="75" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="76" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="80" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="81" mi="2" ci="0" mb="0" cb="0" />
       <line nr="85" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="86" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="87" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="88" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="89" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="90" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="91" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="93" mi="2" ci="0" mb="0" cb="0" />
-      <line nr="97" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="88" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="93" mi="4" ci="0" mb="0" cb="0" />
+      <line nr="94" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="97" mi="4" ci="0" mb="0" cb="0" />
+      <line nr="100" mi="1" ci="0" mb="0" cb="0" />
       <line nr="101" mi="1" ci="0" mb="0" cb="0" />
       <line nr="102" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="106" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="103" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="104" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="105" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="106" mi="1" ci="0" mb="0" cb="0" />
       <line nr="107" mi="1" ci="0" mb="0" cb="0" />
-      <counter type="INSTRUCTION" missed="50" covered="0" />
-      <counter type="LINE" missed="35" covered="0" />
+      <line nr="108" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="109" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="110" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="111" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="112" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="113" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="115" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="119" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="123" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="124" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="128" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="129" mi="1" ci="0" mb="0" cb="0" />
+      <counter type="INSTRUCTION" missed="61" covered="0" />
+      <counter type="LINE" missed="44" covered="0" />
       <counter type="METHOD" missed="1" covered="0" />
       <counter type="CLASS" missed="1" covered="0" />
     </sourcefile>
@@ -944,13 +953,13 @@
       <counter type="METHOD" missed="1" covered="0" />
       <counter type="CLASS" missed="1" covered="0" />
     </sourcefile>
-    <counter type="INSTRUCTION" missed="642" covered="45" />
-    <counter type="LINE" missed="509" covered="31" />
+    <counter type="INSTRUCTION" missed="653" covered="45" />
+    <counter type="LINE" missed="518" covered="31" />
     <counter type="METHOD" missed="20" covered="5" />
     <counter type="CLASS" missed="20" covered="3" />
   </package>
-  <counter type="INSTRUCTION" missed="642" covered="45" />
-  <counter type="LINE" missed="509" covered="31" />
+  <counter type="INSTRUCTION" missed="653" covered="45" />
+  <counter type="LINE" missed="518" covered="31" />
   <counter type="METHOD" missed="20" covered="5" />
   <counter type="CLASS" missed="20" covered="3" />
 </report>
