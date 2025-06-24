@@ -113,7 +113,7 @@
             IconUri      = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/media/PSPreworkout-Animated-Logo-170.png'
 
             # ReleaseNotes of this module
-            ReleaseNotes = "This maintenance release fixes a bug in how `Get-ModulesWithUpdate` handles prerelease versions.`n`nFor more info, see <https://github.com/SamErde/PSPreworkout/releases>."
+            ReleaseNotes = "This maintenance release fixes a bug in how `Get-ModulesWithUpdate` handles prerelease versions.`n`nFor more info, see <https://github.com/SamErde/PSPreworkout/CHANGELOG.md>."
 
             # Prerelease string of this module
             # Prerelease   = ''
