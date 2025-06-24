@@ -41,25 +41,3 @@ jobs:
         run: |
           mkdocs build
           mkdocs gh-deploy --force
-
-      # Combine markdown files to create the MkDocs index and the repository readme
-      - name: 📖 Update Index & Readme
-        shell: pwsh
-        run: |
-          [int16]$LineNumber = (Select-String -Path '.\docs\index.md' -Pattern 'Summary' -List).LineNumber + 1
-          $IndexTop = Get-Content -Path ./docs/index.md -TotalCount $LineNumber
-          $ModuleContent = Get-Content -Path ./docs/PSPreworkout.md | Select-Object -Skip 12
-          $FooterContent = "`n</Details>`n"
-          $CombinedContent = $IndexTop + $ModuleContent + $FooterContent
-          $CombinedContent | Set-Content -Path ./docs/index.md
-          $ModuleContent = $ModuleContent.Replace( '](' , '](./docs/' )
-          $CombinedContent = $IndexTop + $ModuleContent
-          $CombinedContent | Set-Content -Path ./README.md
-          # Copy-Item ./docs/index.md ./README.md
-
-        # git-auto-commit-action only runs on Linux-based platforms.
-      - name: 💾 Commit Changes
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: 'Copy MkDocs index to README'
-          file_pattern: 'docs/index.md README.md'
