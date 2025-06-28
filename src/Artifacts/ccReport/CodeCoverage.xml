@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE report PUBLIC "-//JACOCO//DTD Report 1.1//EN" "report.dtd"[]>
-<report name="Pester (06/23/2025 21:47:15)">
-  <sessioninfo id="this" start="1750715230820" dump="1750715235153" />
+<report name="Pester (06/28/2025 20:19:09)">
+  <sessioninfo id="this" start="1751141945609" dump="1751141949929" />
   <package name="Public">
     <class name="Public/Edit-PSReadLineHistoryFile" sourcefilename="Edit-PSReadLineHistoryFile.ps1">
-      <method name="Edit-PSReadLineHistoryFile" desc="()" line="28">
-        <counter type="INSTRUCTION" missed="7" covered="0" />
-        <counter type="LINE" missed="5" covered="0" />
+      <method name="Edit-PSReadLineHistoryFile" desc="()" line="23">
+        <counter type="INSTRUCTION" missed="6" covered="0" />
+        <counter type="LINE" missed="4" covered="0" />
         <counter type="METHOD" missed="1" covered="0" />
       </method>
-      <counter type="INSTRUCTION" missed="7" covered="0" />
-      <counter type="LINE" missed="5" covered="0" />
+      <counter type="INSTRUCTION" missed="6" covered="0" />
+      <counter type="LINE" missed="4" covered="0" />
       <counter type="METHOD" missed="1" covered="0" />
       <counter type="CLASS" missed="1" covered="0" />
     </class>
@@ -245,13 +245,13 @@
       <counter type="CLASS" missed="1" covered="0" />
     </class>
     <class name="Public/Test-IsElevated" sourcefilename="Test-IsElevated.ps1">
-      <method name="Test-IsElevated" desc="()" line="24">
-        <counter type="INSTRUCTION" missed="7" covered="0" />
-        <counter type="LINE" missed="4" covered="0" />
+      <method name="Test-IsElevated" desc="()" line="25">
+        <counter type="INSTRUCTION" missed="41" covered="0" />
+        <counter type="LINE" missed="30" covered="0" />
         <counter type="METHOD" missed="1" covered="0" />
       </method>
-      <counter type="INSTRUCTION" missed="7" covered="0" />
-      <counter type="LINE" missed="4" covered="0" />
+      <counter type="INSTRUCTION" missed="41" covered="0" />
+      <counter type="LINE" missed="30" covered="0" />
       <counter type="METHOD" missed="1" covered="0" />
       <counter type="CLASS" missed="1" covered="0" />
     </class>
@@ -267,13 +267,12 @@
       <counter type="CLASS" missed="1" covered="0" />
     </class>
     <sourcefile name="Edit-PSReadLineHistoryFile.ps1">
-      <line nr="28" mi="2" ci="0" mb="0" cb="0" />
-      <line nr="32" mi="2" ci="0" mb="0" cb="0" />
-      <line nr="34" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="63" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="68" mi="1" ci="0" mb="0" cb="0" />
-      <counter type="INSTRUCTION" missed="7" covered="0" />
-      <counter type="LINE" missed="5" covered="0" />
+      <line nr="23" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="24" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="26" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="29" mi="1" ci="0" mb="0" cb="0" />
+      <counter type="INSTRUCTION" missed="6" covered="0" />
+      <counter type="LINE" missed="4" covered="0" />
       <counter type="METHOD" missed="1" covered="0" />
       <counter type="CLASS" missed="1" covered="0" />
     </sourcefile>
@@ -805,12 +804,38 @@
       <counter type="CLASS" missed="1" covered="0" />
     </sourcefile>
     <sourcefile name="Test-IsElevated.ps1">
-      <line nr="24" mi="2" ci="0" mb="0" cb="0" />
       <line nr="25" mi="2" ci="0" mb="0" cb="0" />
-      <line nr="26" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="29" mi="2" ci="0" mb="0" cb="0" />
-      <counter type="INSTRUCTION" missed="7" covered="0" />
-      <counter type="LINE" missed="4" covered="0" />
+      <line nr="26" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="27" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="32" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="33" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="34" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="37" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="42" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="43" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="46" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="52" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="54" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="55" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="56" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="57" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="58" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="63" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="64" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="65" mi="3" ci="0" mb="0" cb="0" />
+      <line nr="66" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="68" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="73" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="78" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="79" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="80" mi="3" ci="0" mb="0" cb="0" />
+      <line nr="81" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="82" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="86" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="90" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="91" mi="1" ci="0" mb="0" cb="0" />
+      <counter type="INSTRUCTION" missed="41" covered="0" />
+      <counter type="LINE" missed="30" covered="0" />
       <counter type="METHOD" missed="1" covered="0" />
       <counter type="CLASS" missed="1" covered="0" />
     </sourcefile>
@@ -953,13 +978,13 @@
       <counter type="METHOD" missed="1" covered="0" />
       <counter type="CLASS" missed="1" covered="0" />
     </sourcefile>
-    <counter type="INSTRUCTION" missed="653" covered="45" />
-    <counter type="LINE" missed="518" covered="31" />
+    <counter type="INSTRUCTION" missed="686" covered="45" />
+    <counter type="LINE" missed="543" covered="31" />
     <counter type="METHOD" missed="20" covered="5" />
     <counter type="CLASS" missed="20" covered="3" />
   </package>
-  <counter type="INSTRUCTION" missed="653" covered="45" />
-  <counter type="LINE" missed="518" covered="31" />
+  <counter type="INSTRUCTION" missed="686" covered="45" />
+  <counter type="LINE" missed="543" covered="31" />
   <counter type="METHOD" missed="20" covered="5" />
   <counter type="CLASS" missed="20" covered="3" />
 </report>

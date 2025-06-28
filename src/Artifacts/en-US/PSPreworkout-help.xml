@@ -22,8 +22,7 @@
     <command:returnValues />
     <maml:alertSet>
       <maml:alert>
-        <maml:para>Author: Sam Erde Version: 0.0.2 Modified: 2025-01-06</maml:para>
-        <maml:para>Idea: History search with a TUI? This may already be done by the PowerShell Run module.</maml:para>
+        <maml:para>Author: Sam Erde Version: 0.0.3 Modified: 2025-01-06</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -2225,7 +2224,7 @@ Show-WithoutEmptyProperty -Object $Object</dev:code>
     </command:returnValues>
     <maml:alertSet>
       <maml:alert>
-        <maml:para>Author: Sam Erde Version: 1.0.0 Modified: 2024-10-23</maml:para>
+        <maml:para>Author: Sam Erde Version: 1.1.0 Modified: 2025-06-28</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>

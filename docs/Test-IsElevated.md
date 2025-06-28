@@ -39,7 +39,7 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ### Boolean
 ## NOTES
 Author: Sam Erde
-Version: 1.0.0
-Modified: 2024-10-23
+Version: 1.1.0
+Modified: 2025-06-28
 
 ## RELATED LINKS
