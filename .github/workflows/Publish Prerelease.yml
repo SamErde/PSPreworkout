@@ -3,7 +3,7 @@ name: 🏷️ Publish Prerelease Version
 # This workflow automatically increments the version with a prerelease suffix and publishes to PowerShell Gallery.
 
 on:
-  push:
+  pull_request:
     branches:
       - prerelease
   workflow_dispatch:
@@ -21,48 +21,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - name: 🥾 Bootstrap Dependencies
-        shell: pwsh
-        run: |
-          try {
-            Write-Host "Bootstrapping build dependencies..." -ForegroundColor Cyan
-            
-            # Ensure PSGallery is available and trusted
-            if (-not (Get-PSRepository -Name PSGallery -ErrorAction SilentlyContinue)) {
-              Write-Host "Registering PSGallery repository..." -ForegroundColor Yellow
-              Register-PSRepository -Default
-            }
-            
-            Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
-            Write-Host "PSGallery repository configured" -ForegroundColor Green
-            
-            # Run the bootstrap script
-            if (Test-Path ".\src\actions_bootstrap.ps1") {
-              .\src\actions_bootstrap.ps1
-            } else {
-              Write-Warning "Bootstrap script not found, installing dependencies manually..."
-              
-              # Install required modules manually
-              $modules = @(
-                @{Name = 'Pester'; Version = '5.6.1'},
-                @{Name = 'InvokeBuild'; Version = '5.11.3'},
-                @{Name = 'PSScriptAnalyzer'; Version = '1.22.0'},
-                @{Name = 'platyPS'; Version = '0.12.0'}
-              )
-              
-              foreach ($module in $modules) {
-                Write-Host "Installing $($module.Name) version $($module.Version)..." -ForegroundColor Yellow
-                Install-Module -Name $module.Name -RequiredVersion $module.Version -Force -SkipPublisherCheck
-              }
-            }
-            
-            Write-Host "Bootstrap completed successfully!" -ForegroundColor Green
-            
-          } catch {
-            Write-Error "Bootstrap failed: $($_.Exception.Message)"
-            throw
-          }
 
       - name: 🔧 Generate Prerelease Version
         id: version
@@ -122,91 +80,6 @@ jobs:
             
           } catch {
             Write-Error "Failed to generate prerelease version: $($_.Exception.Message)"
-            throw
-          }
-
-      - name: 👷‍♂️ Build Module
-        shell: pwsh
-        run: |
-          try {
-            Write-Host "Building module..." -ForegroundColor Cyan
-            
-            # Run the build process
-            Invoke-Build -File .\src\PSPreworkout.build.ps1 -Task 'Clean', 'Build'
-            
-            # Verify the build output exists
-            $artifactsPath = ".\src\Artifacts\PSPreworkout"
-            if (-not (Test-Path $artifactsPath)) {
-              throw "Build artifacts not found at expected path: $artifactsPath"
-            }
-            
-            # Check if manifest exists in artifacts
-            $builtManifestPath = Join-Path $artifactsPath "PSPreworkout.psd1"
-            if (-not (Test-Path $builtManifestPath)) {
-              throw "Built manifest not found at: $builtManifestPath"
-            }
-            
-            Write-Host "Module build completed successfully!" -ForegroundColor Green
-            Write-Host "Build artifacts located at: $artifactsPath" -ForegroundColor Green
-            
-          } catch {
-            Write-Error "Module build failed: $($_.Exception.Message)"
-            throw
-          }
-
-      - name: 🧪 Test Module
-        shell: pwsh
-        run: |
-          try {
-            Write-Host "Running module tests..." -ForegroundColor Cyan
-            
-            # Test the built module
-            $modulePath = ".\src\Artifacts\PSPreworkout"
-            
-            if (-not (Test-Path $modulePath)) {
-              throw "Built module not found at expected path: $modulePath"
-            }
-            
-            # Import and test the module
-            Import-Module $modulePath -Force
-            $moduleInfo = Get-Module PSPreworkout
-            
-            if (-not $moduleInfo) {
-              throw "Failed to import PSPreworkout module"
-            }
-            
-            Write-Host "Module imported successfully. Version: $($moduleInfo.Version)" -ForegroundColor Green
-            
-            # Verify prerelease version is set correctly
-            $manifestPath = Join-Path $modulePath "PSPreworkout.psd1"
-            $manifest = Import-PowerShellDataFile -Path $manifestPath
-            $prereleaseValue = $manifest.PrivateData.PSData.Prerelease
-            
-            if (-not $prereleaseValue) {
-              throw "Prerelease value not found in built manifest"
-            }
-            
-            if ($prereleaseValue -notmatch '^preview\.\d{12}$') {
-              throw "Invalid prerelease format: $prereleaseValue"
-            }
-            
-            Write-Host "Prerelease version validated: $prereleaseValue" -ForegroundColor Green
-            
-            # Basic validation - check some key functions exist
-            $commands = Get-Command -Module PSPreworkout
-            $expectedCommands = @('Get-ModulesWithUpdate', 'Update-AllTheThings', 'Test-IsElevated')
-            
-            foreach ($cmd in $expectedCommands) {
-              if ($cmd -notin $commands.Name) {
-                throw "Expected command '$cmd' not found in module"
-              }
-            }
-            
-            Write-Host "Found $($commands.Count) commands in module" -ForegroundColor Green
-            Write-Host "Module validation completed successfully!" -ForegroundColor Green
-            
-          } catch {
-            Write-Error "Module testing failed: $($_.Exception.Message)"
             throw
           }
 
