@@ -17,6 +17,7 @@ permissions:
 jobs:
   release:
     name: 🚀 Release and Publish
+    if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     steps:
 
