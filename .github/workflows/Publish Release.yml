@@ -5,11 +5,16 @@ on:
   push:
     tags:
       - 'v*.*.*'
-    #branches:
-    #  - main
+    branches:
+      - main
     paths:
       - 'CHANGELOG.md'
   workflow_dispatch:
+
+# Only allow one job to run at a time
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: write
@@ -17,6 +22,7 @@ permissions:
 jobs:
   release:
     name: 🚀 Release and Publish
+    # Only run if the commit contains a tag
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     steps:
