@@ -1,9 +1,9 @@
-# This psm1 is for local testing and development use only
+# This PSM1 is for local testing and development use only.
 
-# Dot-source the parent import for local development variables
+# Dot-source the parent import for local development variables.
 . $PSScriptRoot\Imports.ps1
 
-# Discover all ps1 file(s) in Public and Private paths
+# Discover all PS1 file(s) in Public and Private paths.
 
 $itemSplat = @{
     Filter      = '*.ps1'
@@ -18,7 +18,7 @@ try {
     throw 'Unable to get get file information from Public & Private src.'
 }
 
-# Dot-source all .ps1 file(s) found
+# Dot-source all .PS1 file(s) found.
 foreach ($file in @($public + $private)) {
     try {
         . $file.FullName
@@ -27,5 +27,5 @@ foreach ($file in @($public + $private)) {
     }
 }
 
-# export all public functions
+# Export all public functions.
 Export-ModuleMember -Function $Public.Basename -Alias *

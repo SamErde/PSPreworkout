@@ -40,10 +40,7 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 
 ## NOTES
 Author: Sam Erde
-Version: 0.0.2
+Version: 0.0.3
 Modified: 2025-01-06
-
-Idea: History search with a TUI?
-This may already be done by the PowerShell Run module.
 
 ## RELATED LINKS
