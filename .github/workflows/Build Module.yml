@@ -37,7 +37,8 @@ jobs:
     - name: 📁 Display the Path
       shell: pwsh
       run: |
-        Write-Host "Building $(${{ github.repository }}).Replace(${{ github.owner }}/, '') Module"
+        Run Write-Host "Building (SamErde/PSPreworkout).Replace(/, '') Module"
+        Write-Host "Building (${{ github.repository }}).Replace("${{ github.owner }}"/, '') Module"
         $PSVersionTable
         Write-Host "Current Directory: $PWD" -ForegroundColor Cyan
         (Get-ChildItem env:*).GetEnumerator() | Sort-Object Name | Out-String

@@ -29,7 +29,7 @@ jobs:
       - name: 📖 Create and Package External PowerShell Help
         shell: pwsh
         run: |
-          Write-Host "Building $(${{ github.repository }}).Replace(${{ github.owner }}/, '') External Help"
+          Write-Host "Building (${{ github.repository }}).Replace("${{ github.owner }}"/, '') External Help"
           Write-Host "Current Directory: $PWD" -ForegroundColor Cyan
           $PSVersionTable
           Install-Module -Name PlatyPS -Scope CurrentUser -Force
