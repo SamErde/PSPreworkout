@@ -1,0 +1,17 @@
+name: Test
+
+on:
+  # Allows manual triggering of the workflow
+  workflow_dispatch:
+
+jobs:
+  experiments:
+    runs-on: windows-latest
+    steps:
+
+      - name: Test PowerShell and Stuff
+        shell: pwsh
+        run: |
+          (${{ github.repository }} | Out-String).Replace("SamErde/",'') | Write-Host -ForegroundColor Cyan
+          (${{ github.repository }} | Out-String).Replace("${{ github.owner }}/",'') | Write-Host -ForegroundColor Yellow
+          Write-Host "${{ github.repository.name }}"  -ForegroundColor Green
