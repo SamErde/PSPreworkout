@@ -8,7 +8,7 @@ schema: 2.0.0
 # Set-DefaultTerminal
 
 ## SYNOPSIS
-Configure the default terminal for Windows
+Configure the default terminal for Windows.
 
 ## SYNTAX
 
@@ -18,7 +18,8 @@ Set-DefaultTerminal [[-Name] <String>] [-WhatIf] [-Confirm]
 ```
 
 ## DESCRIPTION
-This function sets that default terminal in Windows to your choice of Windows PowerShell, PowerShell, Command Prompt, or Windows Terminal (default).
+This function sets that default terminal in Windows to your choice of Windows PowerShell, PowerShell, Command Prompt,
+or Windows Terminal (default).
 
 ## EXAMPLES
 
@@ -84,8 +85,5 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## OUTPUTS
 
 ## NOTES
-Author: Sam Erde
-Version: 0.0.1
-Modified: 2024-11-15
 
 ## RELATED LINKS

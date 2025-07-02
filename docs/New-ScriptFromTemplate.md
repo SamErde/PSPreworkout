@@ -147,7 +147,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: (Get-CimInstance -ClassName Win32_UserAccount -Filter "Name = `'$([System.Security.Principal.WindowsIdentity]::GetCurrent().Name.Split('\')[1])`'").FullName
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
