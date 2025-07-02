@@ -36,16 +36,12 @@ jobs:
 
     - name: 📁 Display the Path
       shell: pwsh
-      run: echo ${{ github.repository }} - ${env:PATH}
-
-    - name: 🔢 Display the Version
-      shell: pwsh
-      run: $PSVersionTable
-
-    # Uncomment below to explore what modules/variables/env variables are available in the build image
-    - name: 📦 Modules and Variables Display
-      shell: pwsh
-      run: Get-Module -ListAvailable; (Get-Variable).GetEnumerator() | Sort-Object Name | Out-String; (Get-ChildItem env:*).GetEnumerator() | Sort-Object Name | Out-String
+      run: |
+        Write-Host "Building ${{ github.repository }}"
+        $PSVersionTable
+        Write-Verbose "${env:PATH}" -Verbose
+        Write-Verbose "Current Directory: $($env:PWD)" -Verbose
+        (Get-ChildItem env:*).GetEnumerator() | Sort-Object Name | Out-String
 
     - name: 🥾 Bootstrap
       shell: pwsh

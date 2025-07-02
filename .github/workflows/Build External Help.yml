@@ -26,22 +26,19 @@ jobs:
       - name: ✅ Checkout Repository
         uses: actions/checkout@v4
 
-      - name: 📁 Display the Path
-        shell: pwsh
-        run: echo ${env:PATH}
-      - name: 🔢 Display the Version
-        shell: pwsh
-        run: $PSVersionTable
-
       - name: 📖 Create and Package External PowerShell Help
         shell: pwsh
         run: |
+          Write-Host "Building ${{ github.repository }} External Help"
+          Write-Verbose "${env:PATH}" -Verbose
+          Write-Verbose "Current Directory: $($env:PWD)" -Verbose
+          $PSVersionTable
           Install-Module -Name PlatyPS -Scope CurrentUser -Force
           Import-Module -Name PlatyPS
           Write-Host "$($env:PWD)"
           $params = @{
-              CabFilesFolder  = ".\Release\en-US"     # Source XML folder.
-              LandingPagePath = ".\docs\PSPreworkout.md"
-              OutputFolder    = ".\docs\en-US"  # Actual output folder.
+              CabFilesFolder  = ".\Release\en-US"        # Source XML folder.
+              LandingPagePath = ".\docs\PSPreworkout.md" # Path to the landing page.
+              OutputFolder    = ".\docs\en-US"           # Actual output folder.
           }
           New-ExternalHelpCab @params
