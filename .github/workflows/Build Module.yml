@@ -6,7 +6,7 @@
 # https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-powershell
 # https://github.com/actions/upload-artifact#where-does-the-upload-go
 
-name: 👷 Build PSPreworkout Module
+name: 👷 Build Module
 on:
   pull_request:
     branches:
@@ -37,7 +37,6 @@ jobs:
     - name: 📁 Display the Path
       shell: pwsh
       run: |
-        $PSVersionTable
         Write-Host "Current Directory: $PWD" -ForegroundColor Cyan
         (Get-ChildItem env:*).GetEnumerator() | Sort-Object Name | Out-String
 

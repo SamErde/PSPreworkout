@@ -3,7 +3,7 @@ name: 📚 Create External Help
 on:
   # Run after the 'Build Module' workflow completes.
   workflow_run:
-    workflows: ['Build Module', '👷 Build PSPreworkout Module']
+    workflows: ['Build Module', '👷 Build Module']
     types:
       - completed
 
@@ -29,11 +29,10 @@ jobs:
       - name: 📖 Create and Package External PowerShell Help
         shell: pwsh
         run: |
+          Write-Host "${{ github.event.repository.name }}" -ForegroundColor Green
           Write-Host "Current Directory: $PWD" -ForegroundColor Cyan
-          $PSVersionTable
           Install-Module -Name PlatyPS -Scope CurrentUser -Force
           Import-Module -Name PlatyPS
-          Write-Host "$($env:PWD)"
           $params = @{
               CabFilesFolder  = ".\Release\en-US"        # Source XML folder.
               LandingPagePath = ".\docs\PSPreworkout.md" # Path to the landing page.
