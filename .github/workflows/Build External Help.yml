@@ -29,9 +29,8 @@ jobs:
       - name: 📖 Create and Package External PowerShell Help
         shell: pwsh
         run: |
-          Write-Host "Building ${{ github.repository }} External Help"
-          Write-Verbose "${env:PATH}" -Verbose
-          Write-Verbose "Current Directory: $($env:PWD)" -Verbose
+          Write-Host "Building $(${{ github.repository }}).Replace(${{ github.owner }}/, '') External Help"
+          Write-Host "Current Directory: $PWD" -ForegroundColor Cyan
           $PSVersionTable
           Install-Module -Name PlatyPS -Scope CurrentUser -Force
           Import-Module -Name PlatyPS
