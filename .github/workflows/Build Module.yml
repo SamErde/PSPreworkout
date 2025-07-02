@@ -37,10 +37,9 @@ jobs:
     - name: 📁 Display the Path
       shell: pwsh
       run: |
-        Write-Host "Building ${{ github.repository }}"
+        Write-Host "Building $(${{ github.repository }}).Replace(${{ github.owner }}/, '') Module"
         $PSVersionTable
-        Write-Verbose "${env:PATH}" -Verbose
-        Write-Verbose "Current Directory: $($env:PWD)" -Verbose
+        Write-Host "Current Directory: $PWD" -ForegroundColor Cyan
         (Get-ChildItem env:*).GetEnumerator() | Sort-Object Name | Out-String
 
     - name: 🥾 Bootstrap
