@@ -6,11 +6,17 @@
 - Remove all trailing spaces
 - Use proper cmdlet binding and parameter validation
 - Always include comment-based help for functions
-
-# General Coding Guidelines
 - Always add meaningful comments for complex logic
 - Prefer explicit error handling over silent failures
 - Include unit tests for all new functions
+- Use try/catch blocks for file operations, registry operations, and external commands
+- Validate file paths and registry keys before operations
+- Use -ErrorAction Stop for critical operations that should halt execution on failure
+
+# Cross-Platform Considerations
+- Test platform compatibility using $IsWindows, $IsLinux, $IsMacOS variables
+- Provide graceful fallbacks for platform-specific features
+- Use .NET methods over Windows-specific cmdlets when possible
 
 # Response Preferences
 - Include brief explanations of why a particular approach is recommended
@@ -31,7 +37,7 @@ Generate commit messages for PowerShell projects using this format:
 Follow the GitMoji specifications at <https://conventional-emoji-commits.site/full-specification/specification> for
 commit messages. Tailor commit messages for PowerShell development, using the provided types and scopes.
 
-### PowerShell-Specific Types:
+## PowerShell-Specific Types:
 - **feat**: ✨ New cmdlet, function, or module feature
 - **fix**: 🐛 Bug fix in PowerShell code
 - **docs**: 📚 Help documentation, comment-based help
@@ -46,7 +52,7 @@ commit messages. Tailor commit messages for PowerShell development, using the pr
 - **packaging**: 📦 Packaging changes, module version updates
 - **security**: 🔒 Security-related changes, input validation, authentication
 
-### PowerShell Scopes:
+## PowerShell Scopes:
 - module: Module-level changes
 - cmdlet: Specific cmdlet modifications
 - function: Function updates
