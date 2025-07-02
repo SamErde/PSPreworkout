@@ -12,6 +12,17 @@ jobs:
       - name: Test PowerShell and Stuff
         shell: pwsh
         run: |
-          ("1: ${{ github.repository }}" | Out-String).Replace("SamErde/",'') | Write-Host -ForegroundColor Cyan
-          ("2: ${{ github.repository }}" | Out-String).Replace("${{ github.repository_owner }}",'').Replace('/','') | Write-Host -ForegroundColor Yellow
-          Write-Host "3: ${{ github.repository.name }}"  -ForegroundColor Green
+          # Method 1: Direct repository name (Recommended)
+          Write-Host "1: ${{ github.event.repository.name }}" -ForegroundColor Green
+
+          # Method 2: Extract from full repository path
+          $RepoName = "${{ github.repository }}".Split('/')[1]
+          Write-Host "2: $RepoName" -ForegroundColor Cyan
+
+          # Method 3: Using regex replacement
+          $RepoNameRegex = "${{ github.repository }}" -replace '^[^/]+/', ''
+          Write-Host "3: $RepoNameRegex" -ForegroundColor Yellow
+
+          # Additional context information
+          Write-Host "Full repository: ${{ github.repository }}" -ForegroundColor Magenta
+          Write-Host "Repository owner: ${{ github.repository_owner }}" -ForegroundColor Blue
