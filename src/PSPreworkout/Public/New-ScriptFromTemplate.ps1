@@ -135,7 +135,11 @@ function New-ScriptFromTemplate {
 
     # Create the function builder string builder and function body string.
     $FunctionBuilder = [System.Text.StringBuilder]::New()
-    $FunctionBody = (Get-Content -Path "$PSScriptRoot\..\Resources\ScriptTemplate.txt" -Raw)
+    try {
+        $FunctionBody = Get-Content -Path "$PSScriptRoot\..\Resources\ScriptTemplate.txt" -Raw -ErrorAction Stop
+    } catch {
+        throw "Failed to read script template: $_"
+    }
 
     # Replace template placeholders with strings from parameter inputs.
     $FunctionBody = $FunctionBody -replace 'New-Function', $Name
@@ -163,6 +167,11 @@ function New-ScriptFromTemplate {
     }
 
     # Create the new file.
-    $FunctionBuilder.ToString() | Out-File -FilePath $ScriptPath -Encoding utf8 -Force
+    try {
+        $FunctionBuilder.ToString() | Out-File -FilePath $ScriptPath -Encoding utf8 -Force -ErrorAction Stop
+        Write-Verbose "Script created successfully: $ScriptPath"
+    } catch {
+        throw "Failed to create script file '$ScriptPath': $_"
+    }
 
 } # end function New-ScriptFromTemplate
