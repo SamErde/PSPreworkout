@@ -1,12 +1,20 @@
 name: 📚 Create External Help
 
 on:
-  pull_request:
+  # Run after the 'Build Module' workflow completes.
+  workflow_run:
+    workflows: ['Build Module']
+    types:
+      - completed
+
+  # Run after a push to the main branch changes files in the '/docs' directory or subdirectories.
+  push:
     branches:
       - main
     paths:
-      - 'docs/en-US/**'
-      - 'docs/**/**'
+      - 'docs/**'
+
+  # Allows manual triggering of the workflow
   workflow_dispatch:
 
 jobs:
