@@ -12,6 +12,6 @@ jobs:
       - name: Test PowerShell and Stuff
         shell: pwsh
         run: |
-          ("${{ github.repository }}" | Out-String).Replace("SamErde/",'') | Write-Host -ForegroundColor Cyan
-          ("${{ github.repository }}" | Out-String).Replace("${{ github.owner }}/",'') | Write-Host -ForegroundColor Yellow
-          Write-Host "${{ github.repository.name }}"  -ForegroundColor Green
+          ("1: ${{ github.repository }}" | Out-String).Replace("SamErde/",'') | Write-Host -ForegroundColor Cyan
+          ("2: ${{ github.repository }}" | Out-String).Replace("${{ github.owner }}",'').Replace('/','') | Write-Host -ForegroundColor Yellow
+          Write-Host "3: ${{ github.repository.name }}"  -ForegroundColor Green
