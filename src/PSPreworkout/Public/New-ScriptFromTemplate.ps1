@@ -82,7 +82,7 @@ function New-ScriptFromTemplate {
         [Parameter()]
         [ValidateNotNullOrEmpty()]
         [string]
-        $Author = (Get-CimInstance -ClassName Win32_UserAccount -Filter "Name = `'$([System.Security.Principal.WindowsIdentity]::GetCurrent().Name.Split('\')[1])`'").FullName,
+        $Author,
 
         # Parameter name(s) to include
         #[Parameter()]
@@ -121,6 +121,16 @@ function New-ScriptFromTemplate {
         $ScriptPath = [System.IO.Path]::Combine($Path, "$Name.ps1")
     } else {
         $ScriptPath = ".\$Name.ps1"
+    }
+
+    # Attempt to set the author name from the user's Git config or from the identity of the currently logged in user.
+    if (-not $PSBoundParameters.ContainsKey('Name') ) {
+        $Name = if ( (git config user.name).Length -gt 0 ) {
+            git config user.name
+        } else {
+            [System.Environment]::UserName
+        }
+        Write-Verbose "Using author name: $Name"
     }
 
     # Create the function builder string builder and function body string.
