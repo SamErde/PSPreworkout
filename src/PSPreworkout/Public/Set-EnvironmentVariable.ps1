@@ -18,11 +18,6 @@ function Set-EnvironmentVariable {
     .EXAMPLE
     Set-EnvironmentVariable -Name 'FavoriteDrink' -Value 'Coffee' -Target 'User'
 
-    .NOTES
-    Author: Sam Erde
-    Version: 1.0.0
-    Modified: 2024-10-23
-
     #>
     [Alias('sev')]
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Set-EnvironmentVariable')]
@@ -43,15 +38,11 @@ function Set-EnvironmentVariable {
         $Target
     )
 
-    begin {
-        #
-    }
-
     process {
-        [Environment]::SetEnvironmentVariable($Name, $Value, $Target)
-    }
-
-    end {
-        #
+        try {
+            [Environment]::SetEnvironmentVariable($Name, $Value, $Target)
+        } catch {
+            throw "Failed to set environment variable '$Name' with value '$Value' for target '$Target': $_"
+        }
     }
 }
