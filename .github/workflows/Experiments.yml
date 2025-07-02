@@ -13,5 +13,5 @@ jobs:
         shell: pwsh
         run: |
           ("1: ${{ github.repository }}" | Out-String).Replace("SamErde/",'') | Write-Host -ForegroundColor Cyan
-          ("2: ${{ github.repository }}" | Out-String).Replace("${{ github.owner }}",'').Replace('/','') | Write-Host -ForegroundColor Yellow
+          ("2: ${{ github.repository }}" | Out-String).Replace("${{ github.repository_owner }}",'').Replace('/','') | Write-Host -ForegroundColor Yellow
           Write-Host "3: ${{ github.repository.name }}"  -ForegroundColor Green
