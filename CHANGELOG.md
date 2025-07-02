@@ -12,6 +12,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [1.9.5] - 2025-07-02
+
+This maintenance release fixes a syntax error in the module manifest, adds error handling to more operations, and enhances cross-platform compatibility.
+
+### Fixed
+
+* Missing comma in FunctionsToExport array in module manifest that could prevent proper module loading
+
+### Enhanced
+
+* Added comprehensive error handling for file operations, registry operations, and external command
+* Improved cross-platform compatibility
+* Enhanced extraction of default name value from Git config or currently logged on user
+
+[*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v1.9.4...v1.9.5)
+
 ## [1.9.4] - 2025-06-23
 
 This release fixes a bug in `Get-ModulesWithUpdate` in which it failed to check some prerelease module versions.
@@ -332,3 +348,4 @@ This release is focused on enhancements that make the existing functions more us
 [1.9.2]: https://github.com/SamErde/PSPreworkout/tag/v1.9.2
 [1.9.3]: https://github.com/SamErde/PSPreworkout/tag/v1.9.3
 [1.9.4]: https://github.com/SamErde/PSPreworkout/tag/v1.9.4
+[1.9.5]: https://github.com/SamErde/PSPreworkout/tag/v1.9.5
