@@ -3,7 +3,7 @@ name: 📚 Create External Help
 on:
   # Run after the 'Build Module' workflow completes.
   workflow_run:
-    workflows: ['Build Module']
+    workflows: ['Build Module', '👷 Build PSPreworkout Module']
     types:
       - completed
 
