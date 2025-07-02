@@ -1,9 +1,9 @@
 # Project Files #
 Archive/
-Artifacts/
-Artifacts/*
-cov.xml
-coverage.xml
+#Artifacts/
+#Artifacts/*
+#cov.xml
+#coverage.xml
 
 # Negative Include
 !/Artifacts/en-US/
@@ -19,3 +19,5 @@ coverage.xml
 ### OS ###
 Thumbs.db
 .DS_Store
+
+### Codacy ###
