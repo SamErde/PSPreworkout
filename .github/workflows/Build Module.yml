@@ -19,6 +19,10 @@ on:
 
   workflow_dispatch:
 
+permissions:
+  contents: write  # Required to read and write the repository contents
+  packages: write # Required to create and update package help files
+
 jobs:
   test:
     name: 🧪 Run Tests and Build

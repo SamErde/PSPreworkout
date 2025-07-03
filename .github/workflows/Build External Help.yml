@@ -17,6 +17,10 @@ on:
   # Allows manual triggering of the workflow
   workflow_dispatch:
 
+permissions:
+  contents: read  # Required to read the repository contents
+  packages: write # Required to create and update package help files
+
 jobs:
   package_help:
     # The New-ExternalHelpCab cmdlet uses makecab, which depends on Windows.
