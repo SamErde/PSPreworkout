@@ -13,7 +13,7 @@ Initialize configuration your PowerShell environment and git.
 ## SYNTAX
 
 ```
-Initialize-PSEnvironmentConfiguration [[-Name] <String>] [[-Email] <String>] [[-Font] <String>]
+Initialize-PSEnvironmentConfiguration [-Name] <String> [-Email] <String> [[-Font] <String>]
  [[-Packages] <String[]>] [-SkipPackages] [[-Modules] <String[]>] [-SkipModules]
  [<CommonParameters>]
 ```
@@ -40,7 +40,7 @@ Type: String
 Parameter Sets: (All)
 Aliases:
 
-Required: False
+Required: True
 Position: 1
 Default value: None
 Accept pipeline input: False
@@ -55,7 +55,7 @@ Type: String
 Parameter Sets: (All)
 Aliases:
 
-Required: False
+Required: True
 Position: 2
 Default value: None
 Accept pipeline input: False

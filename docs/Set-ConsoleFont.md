@@ -8,7 +8,7 @@ schema: 2.0.0
 # Set-ConsoleFont
 
 ## SYNOPSIS
-Set the font for your consoles.
+Set the font for your consoles in Windows.
 
 ## SYNTAX
 
@@ -17,10 +17,10 @@ Set-ConsoleFont [-Font] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Set-ConsoleFont allows you to set the font for all of your registered consoles (PowerShell, Windows PowerShell,
-Windows Terminal, or Command Prompt).
-It provides tab-autocomplete for the font parameter, listing all of the Nerd
-Fonts and monospace fonts installed on your system.
+Set-ConsoleFont allows you to set the font for all of your registered Windows consoles (Windows PowerShell,
+Windows Terminal, PowerShell, or Command Prompt).
+It provides tab-autocomplete for the font parameter, listing
+all of the Nerd Fonts and monospace fonts installed in Windows.
 
 ## EXAMPLES
 
@@ -32,7 +32,7 @@ Set-ConsoleFont -Font 'FiraCode Nerd Font'
 ## PARAMETERS
 
 ### -Font
-The name of the font to set for your consoles.
+The name of the font to set for your consoles in Windows.
 
 ```yaml
 Type: String
