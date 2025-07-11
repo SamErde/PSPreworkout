@@ -1,14 +1,17 @@
 name: 📖 Deploy MkDocs to GitHub Pages
 
 on:
+
+  # Run when changes are made to the contents of the docs folder, the MkDocs config, or this workflow.
   push:
     branches:
       - main
     paths:
-    # For push, only deploy MkDocs when the contents of the docs folder change or when this workflow changes.
       - 'docs/**'
       - '.github/workflows/Deploy MkDocs.yml'
       - '.github/mkdocs.yml'
+
+  # Allow manual triggering of the workflow.
   workflow_dispatch:
 
 jobs:

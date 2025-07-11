@@ -65,12 +65,13 @@ function Initialize-PSEnvironmentConfiguration {
     [Alias('Init-PSEnvConfig')]
     param (
         # Your name (used for Git config)
-        [Parameter()]
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
         [string]
         $Name,
 
         # Your email address (used for Git config)
-        [Parameter()]
+        [Parameter(Mandatory)]
         [ValidateScript({ [mailaddress]::new($_) })]
         [string]
         $Email,
@@ -216,8 +217,12 @@ function Initialize-PSEnvironmentConfiguration {
                 Write-Information 'Setting the font is not yet supported in Linux or macOS.' -InformationAction Continue
                 continue
             }
-            Get-ChildItem -Path 'HKCU:\Console' | ForEach-Object {
-                Set-ItemProperty -Path (($_.Name).Replace('HKEY_CURRENT_USER', 'HKCU:')) -Name 'FaceName' -Value $ConsoleFont
+            try {
+                Get-ChildItem -Path 'HKCU:\Console' | ForEach-Object {
+                    Set-ItemProperty -Path (($_.Name).Replace('HKEY_CURRENT_USER', 'HKCU:')) -Name 'FaceName' -Value $ConsoleFont
+                }
+            } catch {
+                Write-Warning "Failed to set console font: $_"
             }
         }
         #endregion Font
@@ -240,7 +245,11 @@ function Initialize-PSEnvironmentConfiguration {
         #region Windows Terminal
         $KeyPath = 'HKCU:\Console\%%Startup'
         if (-not (Test-Path -Path $keyPath)) {
-            New-Item -Path $KeyPath | Out-Null
+            try {
+                New-Item -Path $KeyPath >$null
+            } catch {
+                throw "Failed to create registry key: $_"
+            }
         } else {
             Write-Verbose -Message "Key already exists: $KeyPath"
         }
@@ -248,8 +257,12 @@ function Initialize-PSEnvironmentConfiguration {
         # Set Windows Terminal as the default terminal application if it is installed on this system.
         if (Test-Path -Path "$env:LOCALAPPDATA\Microsoft\WindowsApps\Microsoft.WindowsTerminal_8wekyb3d8bbwe\wt.exe" -PathType Leaf) {
             # Set Windows Terminal as the default terminal application for Windows.
-            New-ItemProperty -Path 'HKCU:\Console\%%Startup' -Name 'DelegationConsole' -Value '{2EACA947-7F5F-4CFA-BA87-8F7FBEEFBE69}' -Force | Out-Null
-            New-ItemProperty -Path 'HKCU:\Console\%%Startup' -Name 'DelegationTerminal' -Value '{E12CFF52-A866-4C77-9A90-F570A7AA2C6B}' -Force | Out-Null
+            try {
+                New-ItemProperty -Path 'HKCU:\Console\%%Startup' -Name 'DelegationConsole' -Value '{2EACA947-7F5F-4CFA-BA87-8F7FBEEFBE69}' -Force >$null
+                New-ItemProperty -Path 'HKCU:\Console\%%Startup' -Name 'DelegationTerminal' -Value '{E12CFF52-A866-4C77-9A90-F570A7AA2C6B}' -Force >$null
+            } catch {
+                throw "Failed to set default terminal: $_"
+            }
         }
         #endregion Windows Terminal
 

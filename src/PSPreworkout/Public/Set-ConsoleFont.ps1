@@ -1,15 +1,15 @@
 function Set-ConsoleFont {
     <#
     .SYNOPSIS
-    Set the font for your consoles.
+    Set the font for your consoles in Windows.
 
     .DESCRIPTION
-    Set-ConsoleFont allows you to set the font for all of your registered consoles (PowerShell, Windows PowerShell,
-    Windows Terminal, or Command Prompt). It provides tab-autocomplete for the font parameter, listing all of the Nerd
-    Fonts and monospace fonts installed on your system.
+    Set-ConsoleFont allows you to set the font for all of your registered Windows consoles (Windows PowerShell,
+    Windows Terminal, PowerShell, or Command Prompt). It provides tab-autocomplete for the font parameter, listing
+    all of the Nerd Fonts and monospace fonts installed in Windows.
 
     .PARAMETER Font
-    The name of the font to set for your consoles.
+    The name of the font to set for your consoles in Windows.
 
     .EXAMPLE
     Set-ConsoleFont -Font 'FiraCode Nerd Font'
@@ -40,8 +40,12 @@ function Set-ConsoleFont {
         return
     }
 
-    Get-ChildItem -Path 'HKCU:\Console' | ForEach-Object {
-        Set-ItemProperty -Path (($_.Name).Replace('HKEY_CURRENT_USER', 'HKCU:')) -Name 'FaceName' -Value $Font
+    try {
+        Get-ChildItem -Path 'HKCU:\Console' | ForEach-Object {
+            Set-ItemProperty -Path (($_.Name).Replace('HKEY_CURRENT_USER', 'HKCU:')) -Name 'FaceName' -Value $Font
+        }
+    } catch {
+        throw "Failed to set console font: $_"
     }
 }
 

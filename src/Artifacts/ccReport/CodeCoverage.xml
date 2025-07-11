@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE report PUBLIC "-//JACOCO//DTD Report 1.1//EN" "report.dtd"[]>
-<report name="Pester (06/28/2025 20:24:27)">
-  <sessioninfo id="this" start="1751142263522" dump="1751142267938" />
+<report name="Pester (07/03/2025 15:15:05)">
+  <sessioninfo id="this" start="1751555703009" dump="1751555705166" />
   <package name="Public">
     <class name="Public/Edit-PSReadLineHistoryFile" sourcefilename="Edit-PSReadLineHistoryFile.ps1">
-      <method name="Edit-PSReadLineHistoryFile" desc="()" line="23">
-        <counter type="INSTRUCTION" missed="6" covered="0" />
-        <counter type="LINE" missed="4" covered="0" />
+      <method name="Edit-PSReadLineHistoryFile" desc="()" line="18">
+        <counter type="INSTRUCTION" missed="8" covered="0" />
+        <counter type="LINE" missed="6" covered="0" />
         <counter type="METHOD" missed="1" covered="0" />
       </method>
-      <counter type="INSTRUCTION" missed="6" covered="0" />
-      <counter type="LINE" missed="4" covered="0" />
+      <counter type="INSTRUCTION" missed="8" covered="0" />
+      <counter type="LINE" missed="6" covered="0" />
       <counter type="METHOD" missed="1" covered="0" />
       <counter type="CLASS" missed="1" covered="0" />
     </class>
     <class name="Public/Edit-WinGetSettingsFile" sourcefilename="Edit-WinGetSettingsFile.ps1">
-      <method name="Edit-WingetSettingsFile" desc="()" line="24">
-        <counter type="INSTRUCTION" missed="18" covered="0" />
-        <counter type="LINE" missed="12" covered="0" />
+      <method name="Edit-WingetSettingsFile" desc="()" line="18">
+        <counter type="INSTRUCTION" missed="2" covered="0" />
+        <counter type="LINE" missed="2" covered="0" />
         <counter type="METHOD" missed="1" covered="0" />
       </method>
-      <counter type="INSTRUCTION" missed="18" covered="0" />
-      <counter type="LINE" missed="12" covered="0" />
+      <counter type="INSTRUCTION" missed="2" covered="0" />
+      <counter type="LINE" missed="2" covered="0" />
       <counter type="METHOD" missed="1" covered="0" />
       <counter type="CLASS" missed="1" covered="0" />
     </class>
@@ -92,18 +92,18 @@
       <counter type="CLASS" missed="0" covered="1" />
     </class>
     <class name="Public/Initialize-PSEnvironmentConfiguration" sourcefilename="Initialize-PSEnvironmentConfiguration.ps1">
-      <method name="Initialize-PSEnvironmentConfiguration" desc="()" line="74">
+      <method name="Initialize-PSEnvironmentConfiguration" desc="()" line="75">
         <counter type="INSTRUCTION" missed="79" covered="0" />
-        <counter type="LINE" missed="65" covered="0" />
+        <counter type="LINE" missed="68" covered="0" />
         <counter type="METHOD" missed="1" covered="0" />
       </method>
-      <method name="&lt;script&gt;" desc="()" line="263">
+      <method name="&lt;script&gt;" desc="()" line="276">
         <counter type="INSTRUCTION" missed="8" covered="1" />
         <counter type="LINE" missed="4" covered="1" />
         <counter type="METHOD" missed="0" covered="1" />
       </method>
       <counter type="INSTRUCTION" missed="87" covered="1" />
-      <counter type="LINE" missed="69" covered="1" />
+      <counter type="LINE" missed="72" covered="1" />
       <counter type="METHOD" missed="1" covered="1" />
       <counter type="CLASS" missed="1" covered="0" />
     </class>
@@ -163,62 +163,62 @@
       <counter type="CLASS" missed="1" covered="0" />
     </class>
     <class name="Public/New-ScriptFromTemplate" sourcefilename="New-ScriptFromTemplate.ps1">
-      <method name="New-ScriptFromTemplate" desc="()" line="85">
-        <counter type="INSTRUCTION" missed="36" covered="0" />
-        <counter type="LINE" missed="29" covered="0" />
+      <method name="New-ScriptFromTemplate" desc="()" line="95">
+        <counter type="INSTRUCTION" missed="42" covered="0" />
+        <counter type="LINE" missed="36" covered="0" />
         <counter type="METHOD" missed="1" covered="0" />
       </method>
-      <counter type="INSTRUCTION" missed="36" covered="0" />
-      <counter type="LINE" missed="29" covered="0" />
+      <counter type="INSTRUCTION" missed="42" covered="0" />
+      <counter type="LINE" missed="36" covered="0" />
       <counter type="METHOD" missed="1" covered="0" />
       <counter type="CLASS" missed="1" covered="0" />
     </class>
     <class name="Public/Out-JsonFile" sourcefilename="Out-JsonFile.ps1">
-      <method name="Out-JsonFile" desc="()" line="48">
-        <counter type="INSTRUCTION" missed="24" covered="0" />
-        <counter type="LINE" missed="16" covered="0" />
+      <method name="Out-JsonFile" desc="()" line="43">
+        <counter type="INSTRUCTION" missed="25" covered="0" />
+        <counter type="LINE" missed="17" covered="0" />
         <counter type="METHOD" missed="1" covered="0" />
       </method>
-      <counter type="INSTRUCTION" missed="24" covered="0" />
-      <counter type="LINE" missed="16" covered="0" />
+      <counter type="INSTRUCTION" missed="25" covered="0" />
+      <counter type="LINE" missed="17" covered="0" />
       <counter type="METHOD" missed="1" covered="0" />
       <counter type="CLASS" missed="1" covered="0" />
     </class>
     <class name="Public/Set-ConsoleFont" sourcefilename="Set-ConsoleFont.ps1">
       <method name="Set-ConsoleFont" desc="()" line="26">
-        <counter type="INSTRUCTION" missed="16" covered="0" />
-        <counter type="LINE" missed="9" covered="0" />
+        <counter type="INSTRUCTION" missed="17" covered="0" />
+        <counter type="LINE" missed="10" covered="0" />
         <counter type="METHOD" missed="1" covered="0" />
       </method>
-      <method name="&lt;script&gt;" desc="()" line="49">
+      <method name="&lt;script&gt;" desc="()" line="53">
         <counter type="INSTRUCTION" missed="8" covered="1" />
         <counter type="LINE" missed="4" covered="1" />
         <counter type="METHOD" missed="0" covered="1" />
       </method>
-      <counter type="INSTRUCTION" missed="24" covered="1" />
-      <counter type="LINE" missed="13" covered="1" />
+      <counter type="INSTRUCTION" missed="25" covered="1" />
+      <counter type="LINE" missed="14" covered="1" />
       <counter type="METHOD" missed="1" covered="1" />
       <counter type="CLASS" missed="1" covered="0" />
     </class>
     <class name="Public/Set-DefaultTerminal" sourcefilename="Set-DefaultTerminal.ps1">
-      <method name="Set-DefaultTerminal" desc="()" line="30">
-        <counter type="INSTRUCTION" missed="13" covered="0" />
-        <counter type="LINE" missed="9" covered="0" />
+      <method name="Set-DefaultTerminal" desc="()" line="26">
+        <counter type="INSTRUCTION" missed="12" covered="0" />
+        <counter type="LINE" missed="11" covered="0" />
         <counter type="METHOD" missed="1" covered="0" />
       </method>
-      <counter type="INSTRUCTION" missed="13" covered="0" />
-      <counter type="LINE" missed="9" covered="0" />
+      <counter type="INSTRUCTION" missed="12" covered="0" />
+      <counter type="LINE" missed="11" covered="0" />
       <counter type="METHOD" missed="1" covered="0" />
       <counter type="CLASS" missed="1" covered="0" />
     </class>
     <class name="Public/Set-EnvironmentVariable" sourcefilename="Set-EnvironmentVariable.ps1">
-      <method name="Set-EnvironmentVariable" desc="()" line="51">
-        <counter type="INSTRUCTION" missed="1" covered="0" />
-        <counter type="LINE" missed="1" covered="0" />
+      <method name="Set-EnvironmentVariable" desc="()" line="43">
+        <counter type="INSTRUCTION" missed="2" covered="0" />
+        <counter type="LINE" missed="2" covered="0" />
         <counter type="METHOD" missed="1" covered="0" />
       </method>
-      <counter type="INSTRUCTION" missed="1" covered="0" />
-      <counter type="LINE" missed="1" covered="0" />
+      <counter type="INSTRUCTION" missed="2" covered="0" />
+      <counter type="LINE" missed="2" covered="0" />
       <counter type="METHOD" missed="1" covered="0" />
       <counter type="CLASS" missed="1" covered="0" />
     </class>
@@ -267,30 +267,22 @@
       <counter type="CLASS" missed="1" covered="0" />
     </class>
     <sourcefile name="Edit-PSReadLineHistoryFile.ps1">
-      <line nr="23" mi="2" ci="0" mb="0" cb="0" />
-      <line nr="24" mi="2" ci="0" mb="0" cb="0" />
-      <line nr="26" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="18" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="19" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="22" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="24" mi="1" ci="0" mb="0" cb="0" />
       <line nr="29" mi="1" ci="0" mb="0" cb="0" />
-      <counter type="INSTRUCTION" missed="6" covered="0" />
-      <counter type="LINE" missed="4" covered="0" />
+      <line nr="31" mi="1" ci="0" mb="0" cb="0" />
+      <counter type="INSTRUCTION" missed="8" covered="0" />
+      <counter type="LINE" missed="6" covered="0" />
       <counter type="METHOD" missed="1" covered="0" />
       <counter type="CLASS" missed="1" covered="0" />
     </sourcefile>
     <sourcefile name="Edit-WinGetSettingsFile.ps1">
-      <line nr="24" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="25" mi="2" ci="0" mb="0" cb="0" />
-      <line nr="26" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="31" mi="2" ci="0" mb="0" cb="0" />
-      <line nr="32" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="33" mi="2" ci="0" mb="0" cb="0" />
-      <line nr="34" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="35" mi="2" ci="0" mb="0" cb="0" />
-      <line nr="36" mi="3" ci="0" mb="0" cb="0" />
-      <line nr="37" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="38" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="40" mi="1" ci="0" mb="0" cb="0" />
-      <counter type="INSTRUCTION" missed="18" covered="0" />
-      <counter type="LINE" missed="12" covered="0" />
+      <line nr="18" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="20" mi="1" ci="0" mb="0" cb="0" />
+      <counter type="INSTRUCTION" missed="2" covered="0" />
+      <counter type="LINE" missed="2" covered="0" />
       <counter type="METHOD" missed="1" covered="0" />
       <counter type="CLASS" missed="1" covered="0" />
     </sourcefile>
@@ -469,16 +461,15 @@
       <counter type="CLASS" missed="0" covered="1" />
     </sourcefile>
     <sourcefile name="Initialize-PSEnvironmentConfiguration.ps1">
-      <line nr="74" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="88" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="89" mi="2" ci="0" mb="0" cb="0" />
-      <line nr="90" mi="3" ci="0" mb="0" cb="0" />
-      <line nr="97" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="112" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="127" mi="2" ci="0" mb="0" cb="0" />
-      <line nr="133" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="75" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="89" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="90" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="91" mi="3" ci="0" mb="0" cb="0" />
+      <line nr="98" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="113" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="128" mi="2" ci="0" mb="0" cb="0" />
       <line nr="134" mi="2" ci="0" mb="0" cb="0" />
-      <line nr="139" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="135" mi="2" ci="0" mb="0" cb="0" />
       <line nr="140" mi="1" ci="0" mb="0" cb="0" />
       <line nr="141" mi="1" ci="0" mb="0" cb="0" />
       <line nr="142" mi="1" ci="0" mb="0" cb="0" />
@@ -486,61 +477,65 @@
       <line nr="144" mi="1" ci="0" mb="0" cb="0" />
       <line nr="145" mi="1" ci="0" mb="0" cb="0" />
       <line nr="146" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="149" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="147" mi="1" ci="0" mb="0" cb="0" />
       <line nr="150" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="152" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="154" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="158" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="163" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="151" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="153" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="155" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="159" mi="1" ci="0" mb="0" cb="0" />
       <line nr="164" mi="1" ci="0" mb="0" cb="0" />
       <line nr="165" mi="1" ci="0" mb="0" cb="0" />
       <line nr="166" mi="1" ci="0" mb="0" cb="0" />
       <line nr="167" mi="1" ci="0" mb="0" cb="0" />
       <line nr="168" mi="1" ci="0" mb="0" cb="0" />
       <line nr="169" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="173" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="175" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="170" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="174" mi="1" ci="0" mb="0" cb="0" />
       <line nr="176" mi="1" ci="0" mb="0" cb="0" />
       <line nr="177" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="179" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="182" mi="2" ci="0" mb="0" cb="0" />
-      <line nr="183" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="185" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="178" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="180" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="183" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="184" mi="1" ci="0" mb="0" cb="0" />
       <line nr="186" mi="1" ci="0" mb="0" cb="0" />
       <line nr="187" mi="1" ci="0" mb="0" cb="0" />
       <line nr="188" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="190" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="193" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="199" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="189" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="191" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="194" mi="1" ci="0" mb="0" cb="0" />
       <line nr="200" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="202" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="204" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="201" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="203" mi="1" ci="0" mb="0" cb="0" />
       <line nr="205" mi="1" ci="0" mb="0" cb="0" />
       <line nr="206" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="214" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="207" mi="1" ci="0" mb="0" cb="0" />
       <line nr="215" mi="1" ci="0" mb="0" cb="0" />
       <line nr="216" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="219" mi="2" ci="0" mb="0" cb="0" />
-      <line nr="220" mi="3" ci="0" mb="0" cb="0" />
-      <line nr="228" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="229" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="231" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="232" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="217" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="221" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="222" mi="3" ci="0" mb="0" cb="0" />
+      <line nr="225" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="233" mi="1" ci="0" mb="0" cb="0" />
       <line nr="234" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="241" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="242" mi="2" ci="0" mb="0" cb="0" />
-      <line nr="243" mi="2" ci="0" mb="0" cb="0" />
-      <line nr="245" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="236" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="237" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="239" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="246" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="247" mi="2" ci="0" mb="0" cb="0" />
       <line nr="249" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="251" mi="2" ci="0" mb="0" cb="0" />
-      <line nr="252" mi="2" ci="0" mb="0" cb="0" />
-      <line nr="263" mi="0" ci="1" mb="0" cb="0" />
-      <line nr="269" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="270" mi="2" ci="0" mb="0" cb="0" />
-      <line nr="271" mi="3" ci="0" mb="0" cb="0" />
-      <line nr="274" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="251" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="254" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="258" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="261" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="262" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="264" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="276" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="282" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="283" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="284" mi="3" ci="0" mb="0" cb="0" />
+      <line nr="287" mi="2" ci="0" mb="0" cb="0" />
       <counter type="INSTRUCTION" missed="87" covered="1" />
-      <counter type="LINE" missed="69" covered="1" />
+      <counter type="LINE" missed="72" covered="1" />
       <counter type="METHOD" missed="1" covered="1" />
       <counter type="CLASS" missed="1" covered="0" />
     </sourcefile>
@@ -669,7 +664,6 @@
       <counter type="CLASS" missed="1" covered="0" />
     </sourcefile>
     <sourcefile name="New-ScriptFromTemplate.ps1">
-      <line nr="85" mi="2" ci="0" mb="0" cb="0" />
       <line nr="95" mi="1" ci="0" mb="0" cb="0" />
       <line nr="105" mi="2" ci="0" mb="0" cb="0" />
       <line nr="106" mi="1" ci="0" mb="0" cb="0" />
@@ -683,45 +677,54 @@
       <line nr="123" mi="1" ci="0" mb="0" cb="0" />
       <line nr="127" mi="1" ci="0" mb="0" cb="0" />
       <line nr="128" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="129" mi="1" ci="0" mb="0" cb="0" />
       <line nr="131" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="132" mi="1" ci="0" mb="0" cb="0" />
       <line nr="133" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="134" mi="2" ci="0" mb="0" cb="0" />
-      <line nr="135" mi="1" ci="0" mb="0" cb="0" />
       <line nr="137" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="138" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="140" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="144" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="139" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="141" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="145" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="146" mi="1" ci="0" mb="0" cb="0" />
       <line nr="147" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="148" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="148" mi="2" ci="0" mb="0" cb="0" />
       <line nr="149" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="150" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="151" mi="2" ci="0" mb="0" cb="0" />
-      <line nr="156" mi="2" ci="0" mb="0" cb="0" />
-      <counter type="INSTRUCTION" missed="36" covered="0" />
-      <counter type="LINE" missed="29" covered="0" />
+      <line nr="151" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="152" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="154" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="158" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="161" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="162" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="163" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="164" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="165" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="171" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="172" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="174" mi="1" ci="0" mb="0" cb="0" />
+      <counter type="INSTRUCTION" missed="42" covered="0" />
+      <counter type="LINE" missed="36" covered="0" />
       <counter type="METHOD" missed="1" covered="0" />
       <counter type="CLASS" missed="1" covered="0" />
     </sourcefile>
     <sourcefile name="Out-JsonFile.ps1">
-      <line nr="48" mi="2" ci="0" mb="0" cb="0" />
-      <line nr="49" mi="2" ci="0" mb="0" cb="0" />
-      <line nr="50" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="52" mi="2" ci="0" mb="0" cb="0" />
-      <line nr="54" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="62" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="43" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="44" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="45" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="47" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="49" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="57" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="59" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="60" mi="2" ci="0" mb="0" cb="0" />
       <line nr="64" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="65" mi="2" ci="0" mb="0" cb="0" />
-      <line nr="70" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="74" mi="2" ci="0" mb="0" cb="0" />
-      <line nr="77" mi="2" ci="0" mb="0" cb="0" />
-      <line nr="78" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="80" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="82" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="88" mi="3" ci="0" mb="0" cb="0" />
-      <line nr="92" mi="1" ci="0" mb="0" cb="0" />
-      <counter type="INSTRUCTION" missed="24" covered="0" />
-      <counter type="LINE" missed="16" covered="0" />
+      <line nr="68" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="71" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="72" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="74" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="76" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="83" mi="3" ci="0" mb="0" cb="0" />
+      <line nr="85" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="90" mi="1" ci="0" mb="0" cb="0" />
+      <counter type="INSTRUCTION" missed="25" covered="0" />
+      <counter type="LINE" missed="17" covered="0" />
       <counter type="METHOD" missed="1" covered="0" />
       <counter type="CLASS" missed="1" covered="0" />
     </sourcefile>
@@ -733,37 +736,41 @@
       <line nr="36" mi="1" ci="0" mb="0" cb="0" />
       <line nr="38" mi="1" ci="0" mb="0" cb="0" />
       <line nr="39" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="43" mi="2" ci="0" mb="0" cb="0" />
-      <line nr="44" mi="3" ci="0" mb="0" cb="0" />
-      <line nr="49" mi="0" ci="1" mb="0" cb="0" />
-      <line nr="55" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="56" mi="2" ci="0" mb="0" cb="0" />
-      <line nr="57" mi="3" ci="0" mb="0" cb="0" />
+      <line nr="44" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="45" mi="3" ci="0" mb="0" cb="0" />
+      <line nr="48" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="53" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="59" mi="1" ci="0" mb="0" cb="0" />
       <line nr="60" mi="2" ci="0" mb="0" cb="0" />
-      <counter type="INSTRUCTION" missed="24" covered="1" />
-      <counter type="LINE" missed="13" covered="1" />
+      <line nr="61" mi="3" ci="0" mb="0" cb="0" />
+      <line nr="64" mi="2" ci="0" mb="0" cb="0" />
+      <counter type="INSTRUCTION" missed="25" covered="1" />
+      <counter type="LINE" missed="14" covered="1" />
       <counter type="METHOD" missed="1" covered="1" />
       <counter type="CLASS" missed="1" covered="0" />
     </sourcefile>
     <sourcefile name="Set-DefaultTerminal.ps1">
-      <line nr="30" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="31" mi="2" ci="0" mb="0" cb="0" />
-      <line nr="32" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="26" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="27" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="29" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="31" mi="1" ci="0" mb="0" cb="0" />
       <line nr="34" mi="1" ci="0" mb="0" cb="0" />
       <line nr="39" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="41" mi="2" ci="0" mb="0" cb="0" />
-      <line nr="42" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="42" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="43" mi="1" ci="0" mb="0" cb="0" />
       <line nr="45" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="51" mi="1" ci="0" mb="0" cb="0" />
-      <counter type="INSTRUCTION" missed="13" covered="0" />
-      <counter type="LINE" missed="9" covered="0" />
+      <line nr="49" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="55" mi="1" ci="0" mb="0" cb="0" />
+      <counter type="INSTRUCTION" missed="12" covered="0" />
+      <counter type="LINE" missed="11" covered="0" />
       <counter type="METHOD" missed="1" covered="0" />
       <counter type="CLASS" missed="1" covered="0" />
     </sourcefile>
     <sourcefile name="Set-EnvironmentVariable.ps1">
-      <line nr="51" mi="1" ci="0" mb="0" cb="0" />
-      <counter type="INSTRUCTION" missed="1" covered="0" />
-      <counter type="LINE" missed="1" covered="0" />
+      <line nr="43" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="45" mi="1" ci="0" mb="0" cb="0" />
+      <counter type="INSTRUCTION" missed="2" covered="0" />
+      <counter type="LINE" missed="2" covered="0" />
       <counter type="METHOD" missed="1" covered="0" />
       <counter type="CLASS" missed="1" covered="0" />
     </sourcefile>
@@ -978,13 +985,13 @@
       <counter type="METHOD" missed="1" covered="0" />
       <counter type="CLASS" missed="1" covered="0" />
     </sourcefile>
-    <counter type="INSTRUCTION" missed="686" covered="45" />
-    <counter type="LINE" missed="543" covered="31" />
+    <counter type="INSTRUCTION" missed="680" covered="45" />
+    <counter type="LINE" missed="550" covered="31" />
     <counter type="METHOD" missed="20" covered="5" />
     <counter type="CLASS" missed="20" covered="3" />
   </package>
-  <counter type="INSTRUCTION" missed="686" covered="45" />
-  <counter type="LINE" missed="543" covered="31" />
+  <counter type="INSTRUCTION" missed="680" covered="45" />
+  <counter type="LINE" missed="550" covered="31" />
   <counter type="METHOD" missed="20" covered="5" />
   <counter type="CLASS" missed="20" covered="3" />
 </report>

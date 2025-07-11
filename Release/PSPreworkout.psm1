@@ -19,10 +19,18 @@ function Edit-PSReadLineHistoryFile {
     $HistoryFilePath = (Get-PSReadLineOption).HistorySavePath
     if ((Get-Command code)) {
         # Open the file in Visual Studio Code if code found
-        code $HistoryFilePath
+        try {
+            code $HistoryFilePath
+        } catch {
+            throw "Failed to open history file in VS Code: $_"
+        }
     } else {
         # Open the text file with the default file handler if VS Code is not found.
-        Start-Process $HistoryFilePath
+        try {
+            Start-Process $HistoryFilePath
+        } catch {
+            throw "Failed to open history file with default handler: $_"
+        }
     }
 
 } # end function Edit-PSreadLineHistoryFile
@@ -38,30 +46,12 @@ function Edit-WingetSettingsFile {
         # To Do: Add parameters to choose an editor
     )
 
-    begin {
-        $WinGetSettingsFile = "$env:LOCALAPPDATA\Packages\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe\LocalState\settings.json"
-        if (-not (Test-Path -PathType Leaf -Path $WinGetSettingsFile)) {
-            Write-Information -MessageData 'No WinGet configuration file found. Creating a new one.' -InformationAction Continue
-        }
-    } # end begin block
-
-    process {
-        if ( (Get-Command code -ErrorAction SilentlyContinue) ) {
-            code $WinGetSettingsFile
-        } elseif ( (Get-Command notepad -ErrorAction SilentlyContinue) ) {
-            notepad $WinGetSettingsFile
-        } elseif ((Get-AppxPackage -Name 'Microsoft.WindowsNotepad' -ErrorAction SilentlyContinue)) {
-            Start-Process "shell:AppsFolder\$(Get-StartApps -Name 'Notepad' | Select-Object -ExpandProperty AppId)" $WinGetSettingsFile
-        } elseif (Get-Command 'powershell_ise.exe' -ErrorAction SilentlyContinue) {
-            powershell_ise $WinGetSettingsFile
-        } else {
-            Write-Warning -Message 'No editors were found. You might want to install Visual Studio Code, Notepad, or Notepad++.'
-        }
-    } # end process block
-
-    end {
-        # end
+    try {
+        winget settings
+    } catch {
+        throw "Failed to open WinGet settings: $_"
     }
+
 } # end function Edit-WinGetSettingsFile
 
 
@@ -526,12 +516,13 @@ function Initialize-PSEnvironmentConfiguration {
     [Alias('Init-PSEnvConfig')]
     param (
         # Your name (used for Git config)
-        [Parameter()]
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
         [string]
         $Name,
 
         # Your email address (used for Git config)
-        [Parameter()]
+        [Parameter(Mandatory)]
         [ValidateScript({ [mailaddress]::new($_) })]
         [string]
         $Email,
@@ -677,8 +668,12 @@ function Initialize-PSEnvironmentConfiguration {
                 Write-Information 'Setting the font is not yet supported in Linux or macOS.' -InformationAction Continue
                 continue
             }
-            Get-ChildItem -Path 'HKCU:\Console' | ForEach-Object {
-                Set-ItemProperty -Path (($_.Name).Replace('HKEY_CURRENT_USER', 'HKCU:')) -Name 'FaceName' -Value $ConsoleFont
+            try {
+                Get-ChildItem -Path 'HKCU:\Console' | ForEach-Object {
+                    Set-ItemProperty -Path (($_.Name).Replace('HKEY_CURRENT_USER', 'HKCU:')) -Name 'FaceName' -Value $ConsoleFont
+                }
+            } catch {
+                Write-Warning "Failed to set console font: $_"
             }
         }
         #endregion Font
@@ -701,7 +696,11 @@ function Initialize-PSEnvironmentConfiguration {
         #region Windows Terminal
         $KeyPath = 'HKCU:\Console\%%Startup'
         if (-not (Test-Path -Path $keyPath)) {
-            New-Item -Path $KeyPath | Out-Null
+            try {
+                New-Item -Path $KeyPath >$null
+            } catch {
+                throw "Failed to create registry key: $_"
+            }
         } else {
             Write-Verbose -Message "Key already exists: $KeyPath"
         }
@@ -709,8 +708,12 @@ function Initialize-PSEnvironmentConfiguration {
         # Set Windows Terminal as the default terminal application if it is installed on this system.
         if (Test-Path -Path "$env:LOCALAPPDATA\Microsoft\WindowsApps\Microsoft.WindowsTerminal_8wekyb3d8bbwe\wt.exe" -PathType Leaf) {
             # Set Windows Terminal as the default terminal application for Windows.
-            New-ItemProperty -Path 'HKCU:\Console\%%Startup' -Name 'DelegationConsole' -Value '{2EACA947-7F5F-4CFA-BA87-8F7FBEEFBE69}' -Force | Out-Null
-            New-ItemProperty -Path 'HKCU:\Console\%%Startup' -Name 'DelegationTerminal' -Value '{E12CFF52-A866-4C77-9A90-F570A7AA2C6B}' -Force | Out-Null
+            try {
+                New-ItemProperty -Path 'HKCU:\Console\%%Startup' -Name 'DelegationConsole' -Value '{2EACA947-7F5F-4CFA-BA87-8F7FBEEFBE69}' -Force >$null
+                New-ItemProperty -Path 'HKCU:\Console\%%Startup' -Name 'DelegationTerminal' -Value '{E12CFF52-A866-4C77-9A90-F570A7AA2C6B}' -Force >$null
+            } catch {
+                throw "Failed to set default terminal: $_"
+            }
         }
         #endregion Windows Terminal
 
@@ -1087,7 +1090,7 @@ function New-ScriptFromTemplate {
         [Parameter()]
         [ValidateNotNullOrEmpty()]
         [string]
-        $Author = (Get-CimInstance -ClassName Win32_UserAccount -Filter "Name = `'$([System.Security.Principal.WindowsIdentity]::GetCurrent().Name.Split('\')[1])`'").FullName,
+        $Author,
 
         # Parameter name(s) to include
         #[Parameter()]
@@ -1128,9 +1131,23 @@ function New-ScriptFromTemplate {
         $ScriptPath = ".\$Name.ps1"
     }
 
+    # Attempt to set the author name from the user's Git config or from the identity of the currently logged in user.
+    if (-not $PSBoundParameters.ContainsKey('Name') ) {
+        $Name = if ( (git config user.name).Length -gt 0 ) {
+            git config user.name
+        } else {
+            [System.Environment]::UserName
+        }
+        Write-Verbose "Using author name: $Name"
+    }
+
     # Create the function builder string builder and function body string.
     $FunctionBuilder = [System.Text.StringBuilder]::New()
-    $FunctionBody = (Get-Content -Path "$PSScriptRoot\..\Resources\ScriptTemplate.txt" -Raw)
+    try {
+        $FunctionBody = Get-Content -Path "$PSScriptRoot\..\Resources\ScriptTemplate.txt" -Raw -ErrorAction Stop
+    } catch {
+        throw "Failed to read script template: $_"
+    }
 
     # Replace template placeholders with strings from parameter inputs.
     $FunctionBody = $FunctionBody -replace 'New-Function', $Name
@@ -1158,7 +1175,12 @@ function New-ScriptFromTemplate {
     }
 
     # Create the new file.
-    $FunctionBuilder.ToString() | Out-File -FilePath $ScriptPath -Encoding utf8 -Force
+    try {
+        $FunctionBuilder.ToString() | Out-File -FilePath $ScriptPath -Encoding utf8 -Force -ErrorAction Stop
+        Write-Verbose "Script created successfully: $ScriptPath"
+    } catch {
+        throw "Failed to create script file '$ScriptPath': $_"
+    }
 
 } # end function New-ScriptFromTemplate
 
@@ -1207,7 +1229,6 @@ function Out-JsonFile {
             }
 
             # To Do: Check for a bare directory path and add a filename to it.
-
             $OutFile = $FilePath
 
         } else {
@@ -1226,7 +1247,11 @@ function Out-JsonFile {
     } # end begin block
 
     process {
-        $Object | ConvertTo-Json -Depth $Depth | Out-File -FilePath $OutFile -Force
+        try {
+            $Object | ConvertTo-Json -Depth $Depth | Out-File -FilePath $OutFile -Force
+        } catch {
+            throw "Failed to convert object to JSON and write to file: $_"
+        }
     } # end process block
 
     end {
@@ -1266,8 +1291,12 @@ function Set-ConsoleFont {
         return
     }
 
-    Get-ChildItem -Path 'HKCU:\Console' | ForEach-Object {
-        Set-ItemProperty -Path (($_.Name).Replace('HKEY_CURRENT_USER', 'HKCU:')) -Name 'FaceName' -Value $Font
+    try {
+        Get-ChildItem -Path 'HKCU:\Console' | ForEach-Object {
+            Set-ItemProperty -Path (($_.Name).Replace('HKEY_CURRENT_USER', 'HKCU:')) -Name 'FaceName' -Value $Font
+        }
+    } catch {
+        throw "Failed to set console font: $_"
     }
 }
 
@@ -1304,7 +1333,11 @@ function Set-DefaultTerminal {
     begin {
         $KeyPath = 'HKCU:\Console\%%Startup'
         if (-not (Test-Path -Path $keyPath)) {
-            New-Item -Path $KeyPath | Out-Null
+            try {
+                New-Item -Path $KeyPath >$null
+            } catch {
+                throw "Failed to create registry key: $_"
+            }
         } else {
             Write-Verbose -Message "Key already exists: $KeyPath"
         }
@@ -1313,8 +1346,12 @@ function Set-DefaultTerminal {
     process {
         switch ($Name) {
             'WindowsTerminal' {
-                New-ItemProperty -Path 'HKCU:\Console\%%Startup' -Name 'DelegationConsole' -Value '{2EACA947-7F5F-4CFA-BA87-8F7FBEEFBE69}' -Force | Out-Null
-                New-ItemProperty -Path 'HKCU:\Console\%%Startup' -Name 'DelegationTerminal' -Value '{E12CFF52-A866-4C77-9A90-F570A7AA2C6B}' -Force | Out-Null
+                try {
+                    New-ItemProperty -Path 'HKCU:\Console\%%Startup' -Name 'DelegationConsole' -Value '{2EACA947-7F5F-4CFA-BA87-8F7FBEEFBE69}' -Force >$null
+                    New-ItemProperty -Path 'HKCU:\Console\%%Startup' -Name 'DelegationTerminal' -Value '{E12CFF52-A866-4C77-9A90-F570A7AA2C6B}' -Force >$null
+                } catch {
+                    throw "Failed to set default terminal: $_"
+                }
             }
             default {
                 Write-Information -MessageData 'No terminal application was specified.' -InformationAction Continue
@@ -1353,16 +1390,12 @@ function Set-EnvironmentVariable {
         $Target
     )
 
-    begin {
-        #
-    }
-
     process {
-        [Environment]::SetEnvironmentVariable($Name, $Value, $Target)
-    }
-
-    end {
-        #
+        try {
+            [Environment]::SetEnvironmentVariable($Name, $Value, $Target)
+        } catch {
+            throw "Failed to set environment variable '$Name' with value '$Value' for target '$Target': $_"
+        }
     }
 }
 

@@ -1,4 +1,5 @@
 name: 🏷️ Publish from Changelog Tag
+
 # When pushing a new commit that is tagged with a version (eg: v1.2.5), check CHANGELOG.md for a header that
 # matches this tag and publish a new GitHub release with it, then publish the module to the PowerShell Gallery.
 on:
@@ -9,6 +10,8 @@ on:
       - main
     paths:
       - 'CHANGELOG.md'
+
+  # Allows manual triggering of the workflow.
   workflow_dispatch:
 
 # Only allow one job to run at a time

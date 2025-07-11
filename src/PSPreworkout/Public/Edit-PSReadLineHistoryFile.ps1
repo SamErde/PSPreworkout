@@ -9,11 +9,6 @@ function Edit-PSReadLineHistoryFile {
 
     .EXAMPLE
     Edit-PSReadLineHistoryFile
-
-    .NOTES
-    Author: Sam Erde
-    Version: 0.0.3
-    Modified: 2025-01-06
     #>
 
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Edit-PSReadLineHistoryFile')]
@@ -23,10 +18,18 @@ function Edit-PSReadLineHistoryFile {
     $HistoryFilePath = (Get-PSReadLineOption).HistorySavePath
     if ((Get-Command code)) {
         # Open the file in Visual Studio Code if code found
-        code $HistoryFilePath
+        try {
+            code $HistoryFilePath
+        } catch {
+            throw "Failed to open history file in VS Code: $_"
+        }
     } else {
         # Open the text file with the default file handler if VS Code is not found.
-        Start-Process $HistoryFilePath
+        try {
+            Start-Process $HistoryFilePath
+        } catch {
+            throw "Failed to open history file with default handler: $_"
+        }
     }
 
 } # end function Edit-PSreadLineHistoryFile

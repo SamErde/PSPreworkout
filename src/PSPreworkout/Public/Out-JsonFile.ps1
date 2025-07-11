@@ -21,11 +21,6 @@ function Out-JsonFile {
     Out-JsonFile -Object $TestObject
 
     Writes $TestObject as JSON to TestObject.json in the current working directory of the file system.
-
-    .NOTES
-    Author: Sam Erde
-    Version: 0.2.1
-    Modified: 2024/10/29
     #>
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Out-JsonFile')]
     param (
@@ -66,7 +61,6 @@ function Out-JsonFile {
             }
 
             # To Do: Check for a bare directory path and add a filename to it.
-
             $OutFile = $FilePath
 
         } else {
@@ -85,7 +79,11 @@ function Out-JsonFile {
     } # end begin block
 
     process {
-        $Object | ConvertTo-Json -Depth $Depth | Out-File -FilePath $OutFile -Force
+        try {
+            $Object | ConvertTo-Json -Depth $Depth | Out-File -FilePath $OutFile -Force
+        } catch {
+            throw "Failed to convert object to JSON and write to file: $_"
+        }
     } # end process block
 
     end {

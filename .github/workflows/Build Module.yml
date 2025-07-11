@@ -6,7 +6,7 @@
 # https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-powershell
 # https://github.com/actions/upload-artifact#where-does-the-upload-go
 
-name: 👷 Build PSPreworkout Module
+name: 👷 Build Module
 on:
   pull_request:
     branches:
@@ -18,6 +18,10 @@ on:
       - 'src/Drafts/**'
 
   workflow_dispatch:
+
+permissions:
+  contents: write  # Required to read and write the repository contents
+  packages: write # Required to create and update package help files
 
 jobs:
   test:
@@ -36,16 +40,9 @@ jobs:
 
     - name: 📁 Display the Path
       shell: pwsh
-      run: echo ${env:PATH}
-
-    - name: 🔢 Display the Version
-      shell: pwsh
-      run: $PSVersionTable
-
-    # Uncomment below to explore what modules/variables/env variables are available in the build image
-    - name: 📦 Modules and Variables Display
-      shell: pwsh
-      run: Get-Module -ListAvailable; (Get-Variable).GetEnumerator() | Sort-Object Name | Out-String; (Get-ChildItem env:*).GetEnumerator() | Sort-Object Name | Out-String
+      run: |
+        Write-Host "Current Directory: $PWD" -ForegroundColor Cyan
+        (Get-ChildItem env:*).GetEnumerator() | Sort-Object Name | Out-String
 
     - name: 🥾 Bootstrap
       shell: pwsh

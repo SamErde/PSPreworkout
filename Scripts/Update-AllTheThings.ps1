@@ -177,7 +177,7 @@ function Update-AllTheThings {
             Write-Progress @ProgressParam1
 
             # Do not update prerelease modules
-            if ($module.Version -match 'alpha|beta|prelease|preview') {
+            if ($module.Version -match 'alpha|beta|prerelease|preview') {
                 Write-Information "`t`tSkipping $($module.Name) because a prerelease version is currently installed." -InformationAction Continue
                 continue
             }

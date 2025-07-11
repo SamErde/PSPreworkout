@@ -1,13 +1,25 @@
 name: 📚 Create External Help
 
 on:
-  pull_request:
+  # Run after the 'Build Module' workflow completes.
+  workflow_run:
+    workflows: ['Build Module', '👷 Build Module']
+    types:
+      - completed
+
+  # Run after a push to the main branch changes files in the '/docs' directory or subdirectories.
+  push:
     branches:
       - main
     paths:
-      - 'docs/en-US/**'
-      - 'docs/**/**'
+      - 'docs/**'
+
+  # Allows manual triggering of the workflow
   workflow_dispatch:
+
+permissions:
+  contents: read  # Required to read the repository contents
+  packages: write # Required to create and update package help files
 
 jobs:
   package_help:
@@ -18,22 +30,16 @@ jobs:
       - name: ✅ Checkout Repository
         uses: actions/checkout@v4
 
-      - name: 📁 Display the Path
-        shell: pwsh
-        run: echo ${env:PATH}
-      - name: 🔢 Display the Version
-        shell: pwsh
-        run: $PSVersionTable
-
       - name: 📖 Create and Package External PowerShell Help
         shell: pwsh
         run: |
+          Write-Host "${{ github.event.repository.name }}" -ForegroundColor Green
+          Write-Host "Current Directory: $PWD" -ForegroundColor Cyan
           Install-Module -Name PlatyPS -Scope CurrentUser -Force
           Import-Module -Name PlatyPS
-          Write-Host "$($env:PWD)"
           $params = @{
-              CabFilesFolder  = ".\Release\en-US"     # Source XML folder.
-              LandingPagePath = ".\docs\PSPreworkout.md"
-              OutputFolder    = ".\docs\en-US"  # Actual output folder.
+              CabFilesFolder  = ".\Release\en-US"        # Source XML folder.
+              LandingPagePath = ".\docs\PSPreworkout.md" # Path to the landing page.
+              OutputFolder    = ".\docs\en-US"           # Actual output folder.
           }
           New-ExternalHelpCab @params
