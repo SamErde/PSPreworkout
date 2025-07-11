@@ -10,7 +10,7 @@ Please note there is a code of conduct, please follow it in all your interaction
 
 ## Contributing via Pull Requests
 
-Please use the `development` branch as your target when submitting a pull request. If you have questions about how to do that, I would be more than happy to walk you through the steps over in the [discussions](https://github.com/SamErde/PSPreworkout/discussions)!
+Please use the `prerelease` branch as your target when submitting a pull request. If you have questions about how to do that, I would be more than happy to walk you through the steps over in the [discussions](https://github.com/SamErde/PSPreworkout/discussions)!
 
 ## Code of Conduct
 
