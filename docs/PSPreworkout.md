@@ -2,7 +2,7 @@
 Module Name: PSPreworkout
 Module Guid: 378339de-a0df-4d44-873b-4fd32c388e06
 Download Help Link: NA
-Help Version: 1.9.5
+Help Version: 1.9.6
 Locale: en-US
 ---
 
@@ -22,6 +22,9 @@ Get a filtered list of commands from your history.
 
 ### [Get-EnvironmentVariable](Get-EnvironmentVariable.md)
 Retrieves the value of an environment variable.
+
+### [Get-HashtableValueType](Get-HashtableValueType.md)
+Get the object type of each value in a hashtable.
 
 ### [Get-LoadedAssembly](Get-LoadedAssembly.md)
 Get all assemblies loaded in PowerShell.

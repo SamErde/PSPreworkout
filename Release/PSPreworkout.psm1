@@ -204,6 +204,81 @@ function Get-EnvironmentVariable {
 
 
 
+function Get-HashtableValueType {
+    <#
+.EXTERNALHELP PSPreworkout-help.xml
+#>
+    [CmdletBinding()]
+    param (
+        # The hashtable to inspect.
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
+        [ValidateNotNullOrEmpty()]
+        [hashtable]$Hashtable,
+
+        # Optional key to filter results to a specific hashtable entry.
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
+        # Provide tab completion for the Key parameter based on the provided hashtable's keys.
+        [ArgumentCompleter({
+                param($CommandName, $ParameterName, $WordToComplete, $CommandAst, $FakeBoundParameters)
+                [void]$CommandName, $ParameterName, $CommandAst
+                # Get the hashtable from the bound parameters
+                if ($FakeBoundParameters.ContainsKey('Hashtable')) {
+                    $HashtableArg = $FakeBoundParameters['Hashtable']
+
+                    # Return keys that match the current word being typed
+                    $HashtableArg.Keys | Sort-Object | Where-Object { $_ -like "$WordToComplete*" } | ForEach-Object {
+                        # Wrap in quotes if the key contains spaces or special characters
+                        if ($_ -match '\s|[^\w]') {
+                            "'$_'"
+                        } else {
+                            $_
+                        }
+                    }
+                }
+            })]
+        [string]$Key
+    )
+
+    begin {
+        Write-Verbose 'Initializing the list to hold type information.'
+        [System.Collections.Generic.List[System.Reflection.TypeInfo]]$ValueType = @()
+    }
+
+    process {
+        # Filter hashtable entries based on Key parameter if specified
+        $EntriesToProcess = if ($PSBoundParameters.ContainsKey('Key')) {
+            Write-Verbose "Filtering to specific key: [$Key]"
+            if ($Hashtable.ContainsKey($Key)) {
+                @{ $Key = $Hashtable[$Key] }.GetEnumerator() | Sort-Object -Property Key
+            } else {
+                Write-Warning "Key [$Key] not found in hashtable."
+                @()
+            }
+        } else {
+            Write-Verbose 'Processing all hashtable entries.'
+            $Hashtable.GetEnumerator() | Sort-Object -Property Key
+        }
+
+        $ValueType = foreach ( $Item in $EntriesToProcess ) {
+            Write-Verbose "Getting the object type of the value for [$($Item.Key)]."
+            [System.Reflection.TypeInfo]$ItemValueType = $Item.Value.GetType()
+
+            # Set a custom format type name and add a NoteProperty to display the key.
+            $ItemValueType.PSTypeNames.Insert(0, 'PSPreworkout.HashtableValueType')
+            $ItemValueType | Add-Member -MemberType NoteProperty -Name 'ItemKey' -Value $Item.Key -Force
+            $ItemValueType
+        }
+
+        # Output the list of type information for each entry
+        $ValueType
+    }
+
+    end {}
+}
+
+
+
 function Get-LoadedAssembly {
     <#
 .EXTERNALHELP PSPreworkout-help.xml

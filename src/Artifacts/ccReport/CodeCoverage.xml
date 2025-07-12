@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE report PUBLIC "-//JACOCO//DTD Report 1.1//EN" "report.dtd"[]>
-<report name="Pester (07/11/2025 20:13:11)">
-  <sessioninfo id="this" start="1752264787164" dump="1752264791705" />
+<report name="Pester (07/12/2025 09:28:15)">
+  <sessioninfo id="this" start="1752312486403" dump="1752312495275" />
   <package name="Public">
     <class name="Public/Edit-PSReadLineHistoryFile" sourcefilename="Edit-PSReadLineHistoryFile.ps1">
       <method name="Edit-PSReadLineHistoryFile" desc="()" line="18">
@@ -46,6 +46,17 @@
       <counter type="LINE" missed="1" covered="18" />
       <counter type="METHOD" missed="0" covered="1" />
       <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="Public/Get-HashtableValueType" sourcefilename="Get-HashtableValueType.ps1">
+      <method name="Get-HashtableValueType" desc="()" line="65">
+        <counter type="INSTRUCTION" missed="33" covered="0" />
+        <counter type="LINE" missed="24" covered="0" />
+        <counter type="METHOD" missed="1" covered="0" />
+      </method>
+      <counter type="INSTRUCTION" missed="33" covered="0" />
+      <counter type="LINE" missed="24" covered="0" />
+      <counter type="METHOD" missed="1" covered="0" />
+      <counter type="CLASS" missed="1" covered="0" />
     </class>
     <class name="Public/Get-LoadedAssembly" sourcefilename="Get-LoadedAssembly.ps1">
       <method name="Get-LoadedAssembly" desc="()" line="27">
@@ -333,6 +344,36 @@
       <counter type="LINE" missed="1" covered="18" />
       <counter type="METHOD" missed="0" covered="1" />
       <counter type="CLASS" missed="0" covered="1" />
+    </sourcefile>
+    <sourcefile name="Get-HashtableValueType.ps1">
+      <line nr="65" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="67" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="68" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="71" mi="5" ci="0" mb="0" cb="0" />
+      <line nr="73" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="74" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="76" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="85" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="86" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="91" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="92" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="93" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="94" mi="3" ci="0" mb="0" cb="0" />
+      <line nr="96" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="97" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="100" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="101" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="104" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="105" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="106" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="109" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="110" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="111" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="115" mi="1" ci="0" mb="0" cb="0" />
+      <counter type="INSTRUCTION" missed="33" covered="0" />
+      <counter type="LINE" missed="24" covered="0" />
+      <counter type="METHOD" missed="1" covered="0" />
+      <counter type="CLASS" missed="1" covered="0" />
     </sourcefile>
     <sourcefile name="Get-LoadedAssembly.ps1">
       <line nr="27" mi="0" ci="4" mb="0" cb="0" />
@@ -985,13 +1026,13 @@
       <counter type="METHOD" missed="1" covered="0" />
       <counter type="CLASS" missed="1" covered="0" />
     </sourcefile>
-    <counter type="INSTRUCTION" missed="680" covered="45" />
-    <counter type="LINE" missed="550" covered="31" />
-    <counter type="METHOD" missed="20" covered="5" />
-    <counter type="CLASS" missed="20" covered="3" />
+    <counter type="INSTRUCTION" missed="713" covered="45" />
+    <counter type="LINE" missed="574" covered="31" />
+    <counter type="METHOD" missed="21" covered="5" />
+    <counter type="CLASS" missed="21" covered="3" />
   </package>
-  <counter type="INSTRUCTION" missed="680" covered="45" />
-  <counter type="LINE" missed="550" covered="31" />
-  <counter type="METHOD" missed="20" covered="5" />
-  <counter type="CLASS" missed="20" covered="3" />
+  <counter type="INSTRUCTION" missed="713" covered="45" />
+  <counter type="LINE" missed="574" covered="31" />
+  <counter type="METHOD" missed="21" covered="5" />
+  <counter type="CLASS" missed="21" covered="3" />
 </report>

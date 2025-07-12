@@ -1,262 +1,270 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="143" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2025-07-11" time="20:13:05">
-  <environment platform="Linux" user-domain="" user="runner" cwd="/home/runner/work/PSPreworkout/PSPreworkout/src/Tests/Unit" clr-version="8.0.15" nunit-version="2.5.8.0" machine-name="pkrvmfkh1xnbeme" os-version="6.11.0-1015-azure" />
-  <culture-info current-culture="" current-uiculture="" />
-  <test-suite type="TestFixture" name="Pester" executed="True" result="Success" success="True" time="4.5407" asserts="0" description="Pester">
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="147" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2025-07-12" time="05:28:04">
+  <environment nunit-version="2.5.8.0" user-domain="AzureAD" os-version="10.0.26120" platform="Microsoft Windows 11 Enterprise|C:\WINDOWS|\Device\Harddisk0\Partition3" user="SamErde" machine-name="T14" clr-version="9.0.6" cwd="C:\Users\SamErde\Code\Personal\PSPreworkout\src\Tests\Unit" />
+  <culture-info current-culture="en-US" current-uiculture="en-US" />
+  <test-suite type="TestFixture" name="Pester" executed="True" result="Success" success="True" time="8.8725" asserts="0" description="Pester">
     <results>
-      <test-suite type="TestFixture" name="/home/runner/work/PSPreworkout/PSPreworkout/src/Tests/Unit/ExportedFunctions.Tests.ps1" executed="True" result="Success" success="True" time="3.752" asserts="0" description="/home/runner/work/PSPreworkout/PSPreworkout/src/Tests/Unit/ExportedFunctions.Tests.ps1">
+      <test-suite type="TestFixture" name="C:\Users\SamErde\Code\Personal\PSPreworkout\src\Tests\Unit\ExportedFunctions.Tests.ps1" executed="True" result="Success" success="True" time="6.4148" asserts="0" description="C:\Users\SamErde\Code\Personal\PSPreworkout\src\Tests\Unit\ExportedFunctions.Tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="PSPreworkout" executed="True" result="Success" success="True" time="3.162" asserts="0" description="PSPreworkout">
+          <test-suite type="TestFixture" name="PSPreworkout" executed="True" result="Success" success="True" time="2.9264" asserts="0" description="PSPreworkout">
             <results>
-              <test-suite type="TestFixture" name="PSPreworkout.Exported Commands" executed="True" result="Success" success="True" time="0.5205" asserts="0" description="PSPreworkout.Exported Commands">
+              <test-suite type="TestFixture" name="PSPreworkout.Exported Commands" executed="True" result="Success" success="True" time="1.0177" asserts="0" description="PSPreworkout.Exported Commands">
                 <results>
-                  <test-suite type="TestFixture" name="PSPreworkout.Exported Commands.Number of commands" executed="True" result="Success" success="True" time="0.1359" asserts="0" description="PSPreworkout.Exported Commands.Number of commands">
+                  <test-suite type="TestFixture" name="PSPreworkout.Exported Commands.Number of commands" executed="True" result="Success" success="True" time="0.6115" asserts="0" description="PSPreworkout.Exported Commands.Number of commands">
                     <results>
-                      <test-case description="Exports the same number of public functions as what is listed in the Module Manifest" name="PSPreworkout.Exported Commands.Number of commands.Exports the same number of public functions as what is listed in the Module Manifest" time="0.1128" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Exports the same number of public functions as what is listed in the Module Manifest" name="PSPreworkout.Exported Commands.Number of commands.Exports the same number of public functions as what is listed in the Module Manifest" time="0.4115" asserts="0" success="True" result="Success" executed="True" />
                     </results>
                   </test-suite>
-                  <test-suite type="TestFixture" name="PSPreworkout.Exported Commands.Explicitly exported commands" executed="True" result="Success" success="True" time="0.5146" asserts="0" description="PSPreworkout.Exported Commands.Explicitly exported commands">
+                  <test-suite type="TestFixture" name="PSPreworkout.Exported Commands.Explicitly exported commands" executed="True" result="Success" success="True" time="1.0118" asserts="0" description="PSPreworkout.Exported Commands.Explicitly exported commands">
                     <results>
-                      <test-suite type="ParameterizedTest" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes &lt;_&gt; in the Module Manifest ExportedFunctions" executed="True" result="Success" success="True" time="0.3619" asserts="0" description="Includes &lt;_&gt; in the Module Manifest ExportedFunctions">
+                      <test-suite type="ParameterizedTest" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes &lt;_&gt; in the Module Manifest ExportedFunctions" executed="True" result="Success" success="True" time="0.3834" asserts="0" description="Includes &lt;_&gt; in the Module Manifest ExportedFunctions">
                         <results>
-                          <test-case description="Includes Edit-HistoryFile in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Edit-HistoryFile in the Module Manifest ExportedFunctions" time="0.0147" asserts="0" success="True" result="Success" executed="True" />
-                          <test-case description="Includes Get-Assembly in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Get-Assembly in the Module Manifest ExportedFunctions" time="0.0095" asserts="0" success="True" result="Success" executed="True" />
-                          <test-case description="Includes Get-PSPortable in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Get-PSPortable in the Module Manifest ExportedFunctions" time="0.0079" asserts="0" success="True" result="Success" executed="True" />
-                          <test-case description="Includes Init-PSEnvConfig in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Init-PSEnvConfig in the Module Manifest ExportedFunctions" time="0.0063" asserts="0" success="True" result="Success" executed="True" />
-                          <test-case description="Includes New-Script in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes New-Script in the Module Manifest ExportedFunctions" time="0.0086" asserts="0" success="True" result="Success" executed="True" />
-                          <test-case description="Includes Show-LoadedAssemblies in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Show-LoadedAssemblies in the Module Manifest ExportedFunctions" time="0.0064" asserts="0" success="True" result="Success" executed="True" />
-                          <test-case description="Includes Edit-PSReadLineHistoryFile in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Edit-PSReadLineHistoryFile in the Module Manifest ExportedFunctions" time="0.0108" asserts="0" success="True" result="Success" executed="True" />
-                          <test-case description="Includes Edit-WingetSettingsFile in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Edit-WingetSettingsFile in the Module Manifest ExportedFunctions" time="0.0106" asserts="0" success="True" result="Success" executed="True" />
-                          <test-case description="Includes Get-CommandHistory in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Get-CommandHistory in the Module Manifest ExportedFunctions" time="0.0366" asserts="0" success="True" result="Success" executed="True" />
-                          <test-case description="Includes Get-EnvironmentVariable in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Get-EnvironmentVariable in the Module Manifest ExportedFunctions" time="0.0187" asserts="0" success="True" result="Success" executed="True" />
-                          <test-case description="Includes Get-LoadedAssembly in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Get-LoadedAssembly in the Module Manifest ExportedFunctions" time="0.0188" asserts="0" success="True" result="Success" executed="True" />
-                          <test-case description="Includes Get-ModulesWithUpdate in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Get-ModulesWithUpdate in the Module Manifest ExportedFunctions" time="0.0186" asserts="0" success="True" result="Success" executed="True" />
-                          <test-case description="Includes Get-PowerShellPortable in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Get-PowerShellPortable in the Module Manifest ExportedFunctions" time="0.0232" asserts="0" success="True" result="Success" executed="True" />
-                          <test-case description="Includes Get-TypeAccelerator in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Get-TypeAccelerator in the Module Manifest ExportedFunctions" time="0.0138" asserts="0" success="True" result="Success" executed="True" />
-                          <test-case description="Includes Initialize-PSEnvironmentConfiguration in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Initialize-PSEnvironmentConfiguration in the Module Manifest ExportedFunctions" time="0.0089" asserts="0" success="True" result="Success" executed="True" />
-                          <test-case description="Includes Install-CommandNotFoundUtility in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Install-CommandNotFoundUtility in the Module Manifest ExportedFunctions" time="0.0093" asserts="0" success="True" result="Success" executed="True" />
-                          <test-case description="Includes Install-OhMyPosh in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Install-OhMyPosh in the Module Manifest ExportedFunctions" time="0.0096" asserts="0" success="True" result="Success" executed="True" />
-                          <test-case description="Includes Install-PowerShellISE in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Install-PowerShellISE in the Module Manifest ExportedFunctions" time="0.009" asserts="0" success="True" result="Success" executed="True" />
-                          <test-case description="Includes Install-WinGet in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Install-WinGet in the Module Manifest ExportedFunctions" time="0.0094" asserts="0" success="True" result="Success" executed="True" />
-                          <test-case description="Includes New-Credential in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes New-Credential in the Module Manifest ExportedFunctions" time="0.0092" asserts="0" success="True" result="Success" executed="True" />
-                          <test-case description="Includes New-ScriptFromTemplate in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes New-ScriptFromTemplate in the Module Manifest ExportedFunctions" time="0.0153" asserts="0" success="True" result="Success" executed="True" />
-                          <test-case description="Includes Out-JsonFile in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Out-JsonFile in the Module Manifest ExportedFunctions" time="0.0089" asserts="0" success="True" result="Success" executed="True" />
-                          <test-case description="Includes Set-ConsoleFont in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Set-ConsoleFont in the Module Manifest ExportedFunctions" time="0.0084" asserts="0" success="True" result="Success" executed="True" />
-                          <test-case description="Includes Set-DefaultTerminal in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Set-DefaultTerminal in the Module Manifest ExportedFunctions" time="0.0083" asserts="0" success="True" result="Success" executed="True" />
-                          <test-case description="Includes Set-EnvironmentVariable in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Set-EnvironmentVariable in the Module Manifest ExportedFunctions" time="0.0114" asserts="0" success="True" result="Success" executed="True" />
-                          <test-case description="Includes Show-LoadedAssembly in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Show-LoadedAssembly in the Module Manifest ExportedFunctions" time="0.015" asserts="0" success="True" result="Success" executed="True" />
-                          <test-case description="Includes Show-WithoutEmptyProperty in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Show-WithoutEmptyProperty in the Module Manifest ExportedFunctions" time="0.0189" asserts="0" success="True" result="Success" executed="True" />
-                          <test-case description="Includes Test-IsElevated in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Test-IsElevated in the Module Manifest ExportedFunctions" time="0.0089" asserts="0" success="True" result="Success" executed="True" />
-                          <test-case description="Includes Update-AllTheThings in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Update-AllTheThings in the Module Manifest ExportedFunctions" time="0.0068" asserts="0" success="True" result="Success" executed="True" />
+                          <test-case description="Includes Edit-HistoryFile in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Edit-HistoryFile in the Module Manifest ExportedFunctions" time="0.0767" asserts="0" success="True" result="Success" executed="True" />
+                          <test-case description="Includes Get-Assembly in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Get-Assembly in the Module Manifest ExportedFunctions" time="0.0076" asserts="0" success="True" result="Success" executed="True" />
+                          <test-case description="Includes Get-PSPortable in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Get-PSPortable in the Module Manifest ExportedFunctions" time="0.0118" asserts="0" success="True" result="Success" executed="True" />
+                          <test-case description="Includes Init-PSEnvConfig in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Init-PSEnvConfig in the Module Manifest ExportedFunctions" time="0.012" asserts="0" success="True" result="Success" executed="True" />
+                          <test-case description="Includes New-Script in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes New-Script in the Module Manifest ExportedFunctions" time="0.0121" asserts="0" success="True" result="Success" executed="True" />
+                          <test-case description="Includes Show-LoadedAssemblies in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Show-LoadedAssemblies in the Module Manifest ExportedFunctions" time="0.0111" asserts="0" success="True" result="Success" executed="True" />
+                          <test-case description="Includes Edit-PSReadLineHistoryFile in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Edit-PSReadLineHistoryFile in the Module Manifest ExportedFunctions" time="0.0131" asserts="0" success="True" result="Success" executed="True" />
+                          <test-case description="Includes Edit-WingetSettingsFile in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Edit-WingetSettingsFile in the Module Manifest ExportedFunctions" time="0.024" asserts="0" success="True" result="Success" executed="True" />
+                          <test-case description="Includes Get-CommandHistory in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Get-CommandHistory in the Module Manifest ExportedFunctions" time="0.011" asserts="0" success="True" result="Success" executed="True" />
+                          <test-case description="Includes Get-EnvironmentVariable in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Get-EnvironmentVariable in the Module Manifest ExportedFunctions" time="0.0161" asserts="0" success="True" result="Success" executed="True" />
+                          <test-case description="Includes Get-HashtableValueType in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Get-HashtableValueType in the Module Manifest ExportedFunctions" time="0.0106" asserts="0" success="True" result="Success" executed="True" />
+                          <test-case description="Includes Get-LoadedAssembly in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Get-LoadedAssembly in the Module Manifest ExportedFunctions" time="0.0156" asserts="0" success="True" result="Success" executed="True" />
+                          <test-case description="Includes Get-ModulesWithUpdate in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Get-ModulesWithUpdate in the Module Manifest ExportedFunctions" time="0.014" asserts="0" success="True" result="Success" executed="True" />
+                          <test-case description="Includes Get-PowerShellPortable in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Get-PowerShellPortable in the Module Manifest ExportedFunctions" time="0.0105" asserts="0" success="True" result="Success" executed="True" />
+                          <test-case description="Includes Get-TypeAccelerator in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Get-TypeAccelerator in the Module Manifest ExportedFunctions" time="0.0069" asserts="0" success="True" result="Success" executed="True" />
+                          <test-case description="Includes Initialize-PSEnvironmentConfiguration in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Initialize-PSEnvironmentConfiguration in the Module Manifest ExportedFunctions" time="0.0155" asserts="0" success="True" result="Success" executed="True" />
+                          <test-case description="Includes Install-CommandNotFoundUtility in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Install-CommandNotFoundUtility in the Module Manifest ExportedFunctions" time="0.0044" asserts="0" success="True" result="Success" executed="True" />
+                          <test-case description="Includes Install-OhMyPosh in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Install-OhMyPosh in the Module Manifest ExportedFunctions" time="0.0069" asserts="0" success="True" result="Success" executed="True" />
+                          <test-case description="Includes Install-PowerShellISE in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Install-PowerShellISE in the Module Manifest ExportedFunctions" time="0.0051" asserts="0" success="True" result="Success" executed="True" />
+                          <test-case description="Includes Install-WinGet in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Install-WinGet in the Module Manifest ExportedFunctions" time="0.0039" asserts="0" success="True" result="Success" executed="True" />
+                          <test-case description="Includes New-Credential in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes New-Credential in the Module Manifest ExportedFunctions" time="0.0067" asserts="0" success="True" result="Success" executed="True" />
+                          <test-case description="Includes New-ScriptFromTemplate in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes New-ScriptFromTemplate in the Module Manifest ExportedFunctions" time="0.0069" asserts="0" success="True" result="Success" executed="True" />
+                          <test-case description="Includes Out-JsonFile in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Out-JsonFile in the Module Manifest ExportedFunctions" time="0.0045" asserts="0" success="True" result="Success" executed="True" />
+                          <test-case description="Includes Set-ConsoleFont in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Set-ConsoleFont in the Module Manifest ExportedFunctions" time="0.0097" asserts="0" success="True" result="Success" executed="True" />
+                          <test-case description="Includes Set-DefaultTerminal in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Set-DefaultTerminal in the Module Manifest ExportedFunctions" time="0.0123" asserts="0" success="True" result="Success" executed="True" />
+                          <test-case description="Includes Set-EnvironmentVariable in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Set-EnvironmentVariable in the Module Manifest ExportedFunctions" time="0.0094" asserts="0" success="True" result="Success" executed="True" />
+                          <test-case description="Includes Show-LoadedAssembly in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Show-LoadedAssembly in the Module Manifest ExportedFunctions" time="0.0108" asserts="0" success="True" result="Success" executed="True" />
+                          <test-case description="Includes Show-WithoutEmptyProperty in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Show-WithoutEmptyProperty in the Module Manifest ExportedFunctions" time="0.0053" asserts="0" success="True" result="Success" executed="True" />
+                          <test-case description="Includes Test-IsElevated in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Test-IsElevated in the Module Manifest ExportedFunctions" time="0.0238" asserts="0" success="True" result="Success" executed="True" />
+                          <test-case description="Includes Update-AllTheThings in the Module Manifest ExportedFunctions" name="PSPreworkout.Exported Commands.Explicitly exported commands.Includes Update-AllTheThings in the Module Manifest ExportedFunctions" time="0.0051" asserts="0" success="True" result="Success" executed="True" />
                         </results>
                       </test-suite>
                     </results>
                   </test-suite>
                 </results>
               </test-suite>
-              <test-suite type="TestFixture" name="PSPreworkout.Command Help" executed="True" result="Success" success="True" time="3.1475" asserts="0" description="PSPreworkout.Command Help">
+              <test-suite type="TestFixture" name="PSPreworkout.Command Help" executed="True" result="Success" success="True" time="2.8918" asserts="0" description="PSPreworkout.Command Help">
                 <results>
-                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Edit-HistoryFile" executed="True" result="Success" success="True" time="0.0873" asserts="0" description="PSPreworkout.Command Help.Edit-HistoryFile">
+                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Edit-HistoryFile" executed="True" result="Success" success="True" time="0.2004" asserts="0" description="PSPreworkout.Command Help.Edit-HistoryFile">
                     <results>
-                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Edit-HistoryFile.Includes a Synopsis" time="0.0297" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Edit-HistoryFile.Includes a Description" time="0.0102" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Edit-HistoryFile.Includes an Example" time="0.0324" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Edit-HistoryFile.Includes a Synopsis" time="0.0695" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Edit-HistoryFile.Includes a Description" time="0.0453" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Edit-HistoryFile.Includes an Example" time="0.058" asserts="0" success="True" result="Success" executed="True" />
                     </results>
                   </test-suite>
-                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Get-Assembly" executed="True" result="Success" success="True" time="0.1432" asserts="0" description="PSPreworkout.Command Help.Get-Assembly">
+                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Get-Assembly" executed="True" result="Success" success="True" time="0.2356" asserts="0" description="PSPreworkout.Command Help.Get-Assembly">
                     <results>
-                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Get-Assembly.Includes a Synopsis" time="0.0233" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Get-Assembly.Includes a Description" time="0.0097" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Get-Assembly.Includes an Example" time="0.0092" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Get-Assembly.Includes a Synopsis" time="0.013" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Get-Assembly.Includes a Description" time="0.0069" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Get-Assembly.Includes an Example" time="0.0079" asserts="0" success="True" result="Success" executed="True" />
                     </results>
                   </test-suite>
-                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Get-PSPortable" executed="True" result="Success" success="True" time="0.1935" asserts="0" description="PSPreworkout.Command Help.Get-PSPortable">
+                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Get-PSPortable" executed="True" result="Success" success="True" time="0.2782" asserts="0" description="PSPreworkout.Command Help.Get-PSPortable">
                     <results>
-                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Get-PSPortable.Includes a Synopsis" time="0.0158" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Get-PSPortable.Includes a Description" time="0.0123" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Get-PSPortable.Includes an Example" time="0.012" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Get-PSPortable.Includes a Synopsis" time="0.015" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Get-PSPortable.Includes a Description" time="0.0105" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Get-PSPortable.Includes an Example" time="0.011" asserts="0" success="True" result="Success" executed="True" />
                     </results>
                   </test-suite>
-                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Init-PSEnvConfig" executed="True" result="Success" success="True" time="0.2537" asserts="0" description="PSPreworkout.Command Help.Init-PSEnvConfig">
+                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Init-PSEnvConfig" executed="True" result="Success" success="True" time="0.3184" asserts="0" description="PSPreworkout.Command Help.Init-PSEnvConfig">
                     <results>
-                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Init-PSEnvConfig.Includes a Synopsis" time="0.0204" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Init-PSEnvConfig.Includes a Description" time="0.0194" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Init-PSEnvConfig.Includes an Example" time="0.0134" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Init-PSEnvConfig.Includes a Synopsis" time="0.02" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Init-PSEnvConfig.Includes a Description" time="0.0063" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Init-PSEnvConfig.Includes an Example" time="0.0086" asserts="0" success="True" result="Success" executed="True" />
                     </results>
                   </test-suite>
-                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.New-Script" executed="True" result="Success" success="True" time="0.2995" asserts="0" description="PSPreworkout.Command Help.New-Script">
+                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.New-Script" executed="True" result="Success" success="True" time="0.3462" asserts="0" description="PSPreworkout.Command Help.New-Script">
                     <results>
-                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.New-Script.Includes a Synopsis" time="0.014" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.New-Script.Includes a Description" time="0.0125" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.New-Script.Includes an Example" time="0.0125" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.New-Script.Includes a Synopsis" time="0.0095" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.New-Script.Includes a Description" time="0.0066" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.New-Script.Includes an Example" time="0.0061" asserts="0" success="True" result="Success" executed="True" />
                     </results>
                   </test-suite>
-                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Show-LoadedAssemblies" executed="True" result="Success" success="True" time="0.3381" asserts="0" description="PSPreworkout.Command Help.Show-LoadedAssemblies">
+                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Show-LoadedAssemblies" executed="True" result="Success" success="True" time="0.3961" asserts="0" description="PSPreworkout.Command Help.Show-LoadedAssemblies">
                     <results>
-                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Show-LoadedAssemblies.Includes a Synopsis" time="0.0108" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Show-LoadedAssemblies.Includes a Description" time="0.0096" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Show-LoadedAssemblies.Includes an Example" time="0.0107" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Show-LoadedAssemblies.Includes a Synopsis" time="0.0124" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Show-LoadedAssemblies.Includes a Description" time="0.0119" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Show-LoadedAssemblies.Includes an Example" time="0.0115" asserts="0" success="True" result="Success" executed="True" />
                     </results>
                   </test-suite>
-                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Edit-PSReadLineHistoryFile" executed="True" result="Success" success="True" time="0.4539" asserts="0" description="PSPreworkout.Command Help.Edit-PSReadLineHistoryFile">
+                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Edit-PSReadLineHistoryFile" executed="True" result="Success" success="True" time="0.4631" asserts="0" description="PSPreworkout.Command Help.Edit-PSReadLineHistoryFile">
                     <results>
-                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Edit-PSReadLineHistoryFile.Includes a Synopsis" time="0.0453" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Edit-PSReadLineHistoryFile.Includes a Description" time="0.0343" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Edit-PSReadLineHistoryFile.Includes an Example" time="0.0297" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Edit-PSReadLineHistoryFile.Includes a Synopsis" time="0.025" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Edit-PSReadLineHistoryFile.Includes a Description" time="0.0211" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Edit-PSReadLineHistoryFile.Includes an Example" time="0.0136" asserts="0" success="True" result="Success" executed="True" />
                     </results>
                   </test-suite>
-                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Edit-WingetSettingsFile" executed="True" result="Success" success="True" time="0.5526" asserts="0" description="PSPreworkout.Command Help.Edit-WingetSettingsFile">
+                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Edit-WingetSettingsFile" executed="True" result="Success" success="True" time="0.5235" asserts="0" description="PSPreworkout.Command Help.Edit-WingetSettingsFile">
                     <results>
-                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Edit-WingetSettingsFile.Includes a Synopsis" time="0.0297" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Edit-WingetSettingsFile.Includes a Description" time="0.035" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Edit-WingetSettingsFile.Includes an Example" time="0.0292" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Edit-WingetSettingsFile.Includes a Synopsis" time="0.0146" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Edit-WingetSettingsFile.Includes a Description" time="0.0141" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Edit-WingetSettingsFile.Includes an Example" time="0.0256" asserts="0" success="True" result="Success" executed="True" />
                     </results>
                   </test-suite>
-                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Get-CommandHistory" executed="True" result="Success" success="True" time="0.6493" asserts="0" description="PSPreworkout.Command Help.Get-CommandHistory">
+                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Get-CommandHistory" executed="True" result="Success" success="True" time="0.5899" asserts="0" description="PSPreworkout.Command Help.Get-CommandHistory">
                     <results>
-                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Get-CommandHistory.Includes a Synopsis" time="0.031" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Get-CommandHistory.Includes a Description" time="0.03" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Get-CommandHistory.Includes an Example" time="0.031" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Get-CommandHistory.Includes a Synopsis" time="0.0233" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Get-CommandHistory.Includes a Description" time="0.0195" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Get-CommandHistory.Includes an Example" time="0.0153" asserts="0" success="True" result="Success" executed="True" />
                     </results>
                   </test-suite>
-                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Get-EnvironmentVariable" executed="True" result="Success" success="True" time="0.7568" asserts="0" description="PSPreworkout.Command Help.Get-EnvironmentVariable">
+                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Get-EnvironmentVariable" executed="True" result="Success" success="True" time="0.6737" asserts="0" description="PSPreworkout.Command Help.Get-EnvironmentVariable">
                     <results>
-                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Get-EnvironmentVariable.Includes a Synopsis" time="0.0313" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Get-EnvironmentVariable.Includes a Description" time="0.0303" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Get-EnvironmentVariable.Includes an Example" time="0.0406" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Get-EnvironmentVariable.Includes a Synopsis" time="0.0205" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Get-EnvironmentVariable.Includes a Description" time="0.0209" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Get-EnvironmentVariable.Includes an Example" time="0.0342" asserts="0" success="True" result="Success" executed="True" />
                     </results>
                   </test-suite>
-                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Get-LoadedAssembly" executed="True" result="Success" success="True" time="0.8504" asserts="0" description="PSPreworkout.Command Help.Get-LoadedAssembly">
+                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Get-HashtableValueType" executed="True" result="Success" success="True" time="0.7473" asserts="0" description="PSPreworkout.Command Help.Get-HashtableValueType">
                     <results>
-                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Get-LoadedAssembly.Includes a Synopsis" time="0.0302" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Get-LoadedAssembly.Includes a Description" time="0.0291" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Get-LoadedAssembly.Includes an Example" time="0.0294" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Get-HashtableValueType.Includes a Synopsis" time="0.0288" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Get-HashtableValueType.Includes a Description" time="0.0206" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Get-HashtableValueType.Includes an Example" time="0.0143" asserts="0" success="True" result="Success" executed="True" />
                     </results>
                   </test-suite>
-                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Get-ModulesWithUpdate" executed="True" result="Success" success="True" time="0.9489" asserts="0" description="PSPreworkout.Command Help.Get-ModulesWithUpdate">
+                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Get-LoadedAssembly" executed="True" result="Success" success="True" time="0.8002" asserts="0" description="PSPreworkout.Command Help.Get-LoadedAssembly">
                     <results>
-                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Get-ModulesWithUpdate.Includes a Synopsis" time="0.0323" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Get-ModulesWithUpdate.Includes a Description" time="0.031" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Get-ModulesWithUpdate.Includes an Example" time="0.0304" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Get-LoadedAssembly.Includes a Synopsis" time="0.0162" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Get-LoadedAssembly.Includes a Description" time="0.0156" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Get-LoadedAssembly.Includes an Example" time="0.0151" asserts="0" success="True" result="Success" executed="True" />
                     </results>
                   </test-suite>
-                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Get-PowerShellPortable" executed="True" result="Success" success="True" time="1.0492" asserts="0" description="PSPreworkout.Command Help.Get-PowerShellPortable">
+                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Get-ModulesWithUpdate" executed="True" result="Success" success="True" time="0.8801" asserts="0" description="PSPreworkout.Command Help.Get-ModulesWithUpdate">
                     <results>
-                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Get-PowerShellPortable.Includes a Synopsis" time="0.0316" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Get-PowerShellPortable.Includes a Description" time="0.0307" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Get-PowerShellPortable.Includes an Example" time="0.0334" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Get-ModulesWithUpdate.Includes a Synopsis" time="0.0305" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Get-ModulesWithUpdate.Includes a Description" time="0.019" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Get-ModulesWithUpdate.Includes an Example" time="0.0205" asserts="0" success="True" result="Success" executed="True" />
                     </results>
                   </test-suite>
-                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Get-TypeAccelerator" executed="True" result="Success" success="True" time="1.1513" asserts="0" description="PSPreworkout.Command Help.Get-TypeAccelerator">
+                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Get-PowerShellPortable" executed="True" result="Success" success="True" time="0.9726" asserts="0" description="PSPreworkout.Command Help.Get-PowerShellPortable">
                     <results>
-                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Get-TypeAccelerator.Includes a Synopsis" time="0.0375" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Get-TypeAccelerator.Includes a Description" time="0.0299" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Get-TypeAccelerator.Includes an Example" time="0.0296" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Get-PowerShellPortable.Includes a Synopsis" time="0.0317" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Get-PowerShellPortable.Includes a Description" time="0.0221" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Get-PowerShellPortable.Includes an Example" time="0.0282" asserts="0" success="True" result="Success" executed="True" />
                     </results>
                   </test-suite>
-                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Initialize-PSEnvironmentConfiguration" executed="True" result="Success" success="True" time="1.2553" asserts="0" description="PSPreworkout.Command Help.Initialize-PSEnvironmentConfiguration">
+                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Get-TypeAccelerator" executed="True" result="Success" success="True" time="1.0455" asserts="0" description="PSPreworkout.Command Help.Get-TypeAccelerator">
                     <results>
-                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Initialize-PSEnvironmentConfiguration.Includes a Synopsis" time="0.0337" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Initialize-PSEnvironmentConfiguration.Includes a Description" time="0.0322" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Initialize-PSEnvironmentConfiguration.Includes an Example" time="0.0322" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Get-TypeAccelerator.Includes a Synopsis" time="0.025" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Get-TypeAccelerator.Includes a Description" time="0.0243" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Get-TypeAccelerator.Includes an Example" time="0.013" asserts="0" success="True" result="Success" executed="True" />
                     </results>
                   </test-suite>
-                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Install-CommandNotFoundUtility" executed="True" result="Success" success="True" time="1.3496" asserts="0" description="PSPreworkout.Command Help.Install-CommandNotFoundUtility">
+                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Initialize-PSEnvironmentConfiguration" executed="True" result="Success" success="True" time="1.0979" asserts="0" description="PSPreworkout.Command Help.Initialize-PSEnvironmentConfiguration">
                     <results>
-                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Install-CommandNotFoundUtility.Includes a Synopsis" time="0.0297" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Install-CommandNotFoundUtility.Includes a Description" time="0.029" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Install-CommandNotFoundUtility.Includes an Example" time="0.029" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Initialize-PSEnvironmentConfiguration.Includes a Synopsis" time="0.0152" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Initialize-PSEnvironmentConfiguration.Includes a Description" time="0.0146" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Initialize-PSEnvironmentConfiguration.Includes an Example" time="0.0129" asserts="0" success="True" result="Success" executed="True" />
                     </results>
                   </test-suite>
-                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Install-OhMyPosh" executed="True" result="Success" success="True" time="1.4479" asserts="0" description="PSPreworkout.Command Help.Install-OhMyPosh">
+                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Install-CommandNotFoundUtility" executed="True" result="Success" success="True" time="1.1521" asserts="0" description="PSPreworkout.Command Help.Install-CommandNotFoundUtility">
                     <results>
-                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Install-OhMyPosh.Includes a Synopsis" time="0.0313" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Install-OhMyPosh.Includes a Description" time="0.0318" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Install-OhMyPosh.Includes an Example" time="0.0306" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Install-CommandNotFoundUtility.Includes a Synopsis" time="0.0151" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Install-CommandNotFoundUtility.Includes a Description" time="0.0181" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Install-CommandNotFoundUtility.Includes an Example" time="0.0135" asserts="0" success="True" result="Success" executed="True" />
                     </results>
                   </test-suite>
-                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Install-PowerShellISE" executed="True" result="Success" success="True" time="1.5419" asserts="0" description="PSPreworkout.Command Help.Install-PowerShellISE">
+                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Install-OhMyPosh" executed="True" result="Success" success="True" time="1.2047" asserts="0" description="PSPreworkout.Command Help.Install-OhMyPosh">
                     <results>
-                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Install-PowerShellISE.Includes a Synopsis" time="0.0303" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Install-PowerShellISE.Includes a Description" time="0.0296" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Install-PowerShellISE.Includes an Example" time="0.0295" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Install-OhMyPosh.Includes a Synopsis" time="0.0156" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Install-OhMyPosh.Includes a Description" time="0.0139" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Install-OhMyPosh.Includes an Example" time="0.0172" asserts="0" success="True" result="Success" executed="True" />
                     </results>
                   </test-suite>
-                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Install-WinGet" executed="True" result="Success" success="True" time="1.638" asserts="0" description="PSPreworkout.Command Help.Install-WinGet">
+                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Install-PowerShellISE" executed="True" result="Success" success="True" time="1.2523" asserts="0" description="PSPreworkout.Command Help.Install-PowerShellISE">
                     <results>
-                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Install-WinGet.Includes a Synopsis" time="0.0311" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Install-WinGet.Includes a Description" time="0.0302" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Install-WinGet.Includes an Example" time="0.0302" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Install-PowerShellISE.Includes a Synopsis" time="0.0155" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Install-PowerShellISE.Includes a Description" time="0.0122" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Install-PowerShellISE.Includes an Example" time="0.0142" asserts="0" success="True" result="Success" executed="True" />
                     </results>
                   </test-suite>
-                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.New-Credential" executed="True" result="Success" success="True" time="1.7335" asserts="0" description="PSPreworkout.Command Help.New-Credential">
+                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Install-WinGet" executed="True" result="Success" success="True" time="1.3068" asserts="0" description="PSPreworkout.Command Help.Install-WinGet">
                     <results>
-                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.New-Credential.Includes a Synopsis" time="0.0331" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.New-Credential.Includes a Description" time="0.0288" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.New-Credential.Includes an Example" time="0.0291" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Install-WinGet.Includes a Synopsis" time="0.0164" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Install-WinGet.Includes a Description" time="0.0122" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Install-WinGet.Includes an Example" time="0.0126" asserts="0" success="True" result="Success" executed="True" />
                     </results>
                   </test-suite>
-                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.New-ScriptFromTemplate" executed="True" result="Success" success="True" time="1.8336" asserts="0" description="PSPreworkout.Command Help.New-ScriptFromTemplate">
+                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.New-Credential" executed="True" result="Success" success="True" time="1.3784" asserts="0" description="PSPreworkout.Command Help.New-Credential">
                     <results>
-                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.New-ScriptFromTemplate.Includes a Synopsis" time="0.0324" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.New-ScriptFromTemplate.Includes a Description" time="0.0316" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.New-ScriptFromTemplate.Includes an Example" time="0.0316" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.New-Credential.Includes a Synopsis" time="0.0214" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.New-Credential.Includes a Description" time="0.0216" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.New-Credential.Includes an Example" time="0.0197" asserts="0" success="True" result="Success" executed="True" />
                     </results>
                   </test-suite>
-                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Out-JsonFile" executed="True" result="Success" success="True" time="1.9299" asserts="0" description="PSPreworkout.Command Help.Out-JsonFile">
+                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.New-ScriptFromTemplate" executed="True" result="Success" success="True" time="1.4387" asserts="0" description="PSPreworkout.Command Help.New-ScriptFromTemplate">
                     <results>
-                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Out-JsonFile.Includes a Synopsis" time="0.0309" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Out-JsonFile.Includes a Description" time="0.0302" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Out-JsonFile.Includes an Example" time="0.0307" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.New-ScriptFromTemplate.Includes a Synopsis" time="0.0206" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.New-ScriptFromTemplate.Includes a Description" time="0.0183" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.New-ScriptFromTemplate.Includes an Example" time="0.0138" asserts="0" success="True" result="Success" executed="True" />
                     </results>
                   </test-suite>
-                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Set-ConsoleFont" executed="True" result="Success" success="True" time="2.0286" asserts="0" description="PSPreworkout.Command Help.Set-ConsoleFont">
+                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Out-JsonFile" executed="True" result="Success" success="True" time="1.4828" asserts="0" description="PSPreworkout.Command Help.Out-JsonFile">
                     <results>
-                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Set-ConsoleFont.Includes a Synopsis" time="0.0331" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Set-ConsoleFont.Includes a Description" time="0.0302" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Set-ConsoleFont.Includes an Example" time="0.0307" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Out-JsonFile.Includes a Synopsis" time="0.0142" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Out-JsonFile.Includes a Description" time="0.0125" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Out-JsonFile.Includes an Example" time="0.0129" asserts="0" success="True" result="Success" executed="True" />
                     </results>
                   </test-suite>
-                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Set-DefaultTerminal" executed="True" result="Success" success="True" time="2.1225" asserts="0" description="PSPreworkout.Command Help.Set-DefaultTerminal">
+                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Set-ConsoleFont" executed="True" result="Success" success="True" time="1.5396" asserts="0" description="PSPreworkout.Command Help.Set-ConsoleFont">
                     <results>
-                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Set-DefaultTerminal.Includes a Synopsis" time="0.0305" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Set-DefaultTerminal.Includes a Description" time="0.0296" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Set-DefaultTerminal.Includes an Example" time="0.0293" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Set-ConsoleFont.Includes a Synopsis" time="0.014" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Set-ConsoleFont.Includes a Description" time="0.0176" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Set-ConsoleFont.Includes an Example" time="0.0196" asserts="0" success="True" result="Success" executed="True" />
                     </results>
                   </test-suite>
-                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Set-EnvironmentVariable" executed="True" result="Success" success="True" time="2.2157" asserts="0" description="PSPreworkout.Command Help.Set-EnvironmentVariable">
+                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Set-DefaultTerminal" executed="True" result="Success" success="True" time="1.6069" asserts="0" description="PSPreworkout.Command Help.Set-DefaultTerminal">
                     <results>
-                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Set-EnvironmentVariable.Includes a Synopsis" time="0.0303" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Set-EnvironmentVariable.Includes a Description" time="0.0292" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Set-EnvironmentVariable.Includes an Example" time="0.0292" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Set-DefaultTerminal.Includes a Synopsis" time="0.0217" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Set-DefaultTerminal.Includes a Description" time="0.0213" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Set-DefaultTerminal.Includes an Example" time="0.0182" asserts="0" success="True" result="Success" executed="True" />
                     </results>
                   </test-suite>
-                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Show-LoadedAssembly" executed="True" result="Success" success="True" time="2.3124" asserts="0" description="PSPreworkout.Command Help.Show-LoadedAssembly">
+                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Set-EnvironmentVariable" executed="True" result="Success" success="True" time="1.6568" asserts="0" description="PSPreworkout.Command Help.Set-EnvironmentVariable">
                     <results>
-                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Show-LoadedAssembly.Includes a Synopsis" time="0.0304" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Show-LoadedAssembly.Includes a Description" time="0.0322" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Show-LoadedAssembly.Includes an Example" time="0.0294" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Set-EnvironmentVariable.Includes a Synopsis" time="0.0153" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Set-EnvironmentVariable.Includes a Description" time="0.0134" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Set-EnvironmentVariable.Includes an Example" time="0.0157" asserts="0" success="True" result="Success" executed="True" />
                     </results>
                   </test-suite>
-                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Show-WithoutEmptyProperty" executed="True" result="Success" success="True" time="2.4116" asserts="0" description="PSPreworkout.Command Help.Show-WithoutEmptyProperty">
+                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Show-LoadedAssembly" executed="True" result="Success" success="True" time="1.7128" asserts="0" description="PSPreworkout.Command Help.Show-LoadedAssembly">
                     <results>
-                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Show-WithoutEmptyProperty.Includes a Synopsis" time="0.0331" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Show-WithoutEmptyProperty.Includes a Description" time="0.0298" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Show-WithoutEmptyProperty.Includes an Example" time="0.0306" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Show-LoadedAssembly.Includes a Synopsis" time="0.0182" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Show-LoadedAssembly.Includes a Description" time="0.0168" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Show-LoadedAssembly.Includes an Example" time="0.0107" asserts="0" success="True" result="Success" executed="True" />
                     </results>
                   </test-suite>
-                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Test-IsElevated" executed="True" result="Success" success="True" time="2.5124" asserts="0" description="PSPreworkout.Command Help.Test-IsElevated">
+                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Show-WithoutEmptyProperty" executed="True" result="Success" success="True" time="1.7569" asserts="0" description="PSPreworkout.Command Help.Show-WithoutEmptyProperty">
                     <results>
-                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Test-IsElevated.Includes a Synopsis" time="0.033" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Test-IsElevated.Includes a Description" time="0.0311" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Test-IsElevated.Includes an Example" time="0.0311" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Show-WithoutEmptyProperty.Includes a Synopsis" time="0.0157" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Show-WithoutEmptyProperty.Includes a Description" time="0.0113" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Show-WithoutEmptyProperty.Includes an Example" time="0.012" asserts="0" success="True" result="Success" executed="True" />
                     </results>
                   </test-suite>
-                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Update-AllTheThings" executed="True" result="Success" success="True" time="2.6206" asserts="0" description="PSPreworkout.Command Help.Update-AllTheThings">
+                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Test-IsElevated" executed="True" result="Success" success="True" time="1.8158" asserts="0" description="PSPreworkout.Command Help.Test-IsElevated">
                     <results>
-                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Update-AllTheThings.Includes a Synopsis" time="0.034" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Update-AllTheThings.Includes a Description" time="0.0362" asserts="0" success="True" result="Success" executed="True" />
-                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Update-AllTheThings.Includes an Example" time="0.033" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Test-IsElevated.Includes a Synopsis" time="0.023" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Test-IsElevated.Includes a Description" time="0.0145" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Test-IsElevated.Includes an Example" time="0.016" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="PSPreworkout.Command Help.Update-AllTheThings" executed="True" result="Success" success="True" time="1.865" asserts="0" description="PSPreworkout.Command Help.Update-AllTheThings">
+                    <results>
+                      <test-case description="Includes a Synopsis" name="PSPreworkout.Command Help.Update-AllTheThings.Includes a Synopsis" time="0.0162" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes a Description" name="PSPreworkout.Command Help.Update-AllTheThings.Includes a Description" time="0.0135" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="Includes an Example" name="PSPreworkout.Command Help.Update-AllTheThings.Includes an Example" time="0.0139" asserts="0" success="True" result="Success" executed="True" />
                     </results>
                   </test-suite>
                 </results>
@@ -265,82 +273,82 @@
           </test-suite>
         </results>
       </test-suite>
-      <test-suite type="TestFixture" name="/home/runner/work/PSPreworkout/PSPreworkout/src/Tests/Unit/Get-EnvironmentVariable.Tests.ps1" executed="True" result="Success" success="True" time="0.0817" asserts="0" description="/home/runner/work/PSPreworkout/PSPreworkout/src/Tests/Unit/Get-EnvironmentVariable.Tests.ps1">
+      <test-suite type="TestFixture" name="C:\Users\SamErde\Code\Personal\PSPreworkout\src\Tests\Unit\Get-EnvironmentVariable.Tests.ps1" executed="True" result="Success" success="True" time="0.2517" asserts="0" description="C:\Users\SamErde\Code\Personal\PSPreworkout\src\Tests\Unit\Get-EnvironmentVariable.Tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="Get-EnvironmentVariable" executed="True" result="Success" success="True" time="0.0632" asserts="0" description="Get-EnvironmentVariable">
+          <test-suite type="TestFixture" name="Get-EnvironmentVariable" executed="True" result="Success" success="True" time="0.1539" asserts="0" description="Get-EnvironmentVariable">
             <results>
-              <test-case description="Should return the value of an existing environment variable" name="Get-EnvironmentVariable.Should return the value of an existing environment variable" time="0.0583" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should return the value of an existing environment variable" name="Get-EnvironmentVariable.Should return the value of an existing environment variable" time="0.147" asserts="0" success="True" result="Success" executed="True" />
             </results>
           </test-suite>
         </results>
       </test-suite>
-      <test-suite type="TestFixture" name="/home/runner/work/PSPreworkout/PSPreworkout/src/Tests/Unit/Get-LoadedAssembly.Tests.ps1" executed="True" result="Success" success="True" time="0.0756" asserts="0" description="/home/runner/work/PSPreworkout/PSPreworkout/src/Tests/Unit/Get-LoadedAssembly.Tests.ps1">
+      <test-suite type="TestFixture" name="C:\Users\SamErde\Code\Personal\PSPreworkout\src\Tests\Unit\Get-LoadedAssembly.Tests.ps1" executed="True" result="Success" success="True" time="0.4419" asserts="0" description="C:\Users\SamErde\Code\Personal\PSPreworkout\src\Tests\Unit\Get-LoadedAssembly.Tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="Get-LoadedAssembly Tests" executed="True" result="Success" success="True" time="0.0578" asserts="0" description="Get-LoadedAssembly Tests">
+          <test-suite type="TestFixture" name="Get-LoadedAssembly Tests" executed="True" result="Success" success="True" time="0.307" asserts="0" description="Get-LoadedAssembly Tests">
             <results>
-              <test-suite type="TestFixture" name="Get-LoadedAssembly Tests.Function Tests" executed="True" result="Success" success="True" time="0.0542" asserts="0" description="Get-LoadedAssembly Tests.Function Tests">
+              <test-suite type="TestFixture" name="Get-LoadedAssembly Tests.Function Tests" executed="True" result="Success" success="True" time="0.2977" asserts="0" description="Get-LoadedAssembly Tests.Function Tests">
                 <results>
-                  <test-case description="Function should exist" name="Get-LoadedAssembly Tests.Function Tests.Function should exist" time="0.0096" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="Function should have correct alias" name="Get-LoadedAssembly Tests.Function Tests.Function should have correct alias" time="0.0087" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="Function should have valid HelpUri" name="Get-LoadedAssembly Tests.Function Tests.Function should have valid HelpUri" time="0.0105" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="Function should return non-empty output" name="Get-LoadedAssembly Tests.Function Tests.Function should return non-empty output" time="0.0211" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Function should exist" name="Get-LoadedAssembly Tests.Function Tests.Function should exist" time="0.0692" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Function should have correct alias" name="Get-LoadedAssembly Tests.Function Tests.Function should have correct alias" time="0.0489" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Function should have valid HelpUri" name="Get-LoadedAssembly Tests.Function Tests.Function should have valid HelpUri" time="0.0837" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Function should return non-empty output" name="Get-LoadedAssembly Tests.Function Tests.Function should return non-empty output" time="0.0864" asserts="0" success="True" result="Success" executed="True" />
                 </results>
               </test-suite>
             </results>
           </test-suite>
         </results>
       </test-suite>
-      <test-suite type="TestFixture" name="/home/runner/work/PSPreworkout/PSPreworkout/src/Tests/Unit/Get-PowerShellPortable.Tests.ps1" executed="True" result="Success" success="True" time="0.0641" asserts="0" description="/home/runner/work/PSPreworkout/PSPreworkout/src/Tests/Unit/Get-PowerShellPortable.Tests.ps1">
+      <test-suite type="TestFixture" name="C:\Users\SamErde\Code\Personal\PSPreworkout\src\Tests\Unit\Get-PowerShellPortable.Tests.ps1" executed="True" result="Success" success="True" time="0.381" asserts="0" description="C:\Users\SamErde\Code\Personal\PSPreworkout\src\Tests\Unit\Get-PowerShellPortable.Tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="Get-PowerShellPortable Tests" executed="True" result="Success" success="True" time="0.0458" asserts="0" description="Get-PowerShellPortable Tests">
+          <test-suite type="TestFixture" name="Get-PowerShellPortable Tests" executed="True" result="Success" success="True" time="0.2287" asserts="0" description="Get-PowerShellPortable Tests">
             <results>
-              <test-suite type="TestFixture" name="Get-PowerShellPortable Tests.Function Tests" executed="True" result="Success" success="True" time="0.0422" asserts="0" description="Get-PowerShellPortable Tests.Function Tests">
+              <test-suite type="TestFixture" name="Get-PowerShellPortable Tests.Function Tests" executed="True" result="Success" success="True" time="0.222" asserts="0" description="Get-PowerShellPortable Tests.Function Tests">
                 <results>
-                  <test-case description="Function should exist" name="Get-PowerShellPortable Tests.Function Tests.Function should exist" time="0.007" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="Function should have valid HelpUri" name="Get-PowerShellPortable Tests.Function Tests.Function should have valid HelpUri" time="0.011" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="Function should determine correct download URL for Windows" name="Get-PowerShellPortable Tests.Function Tests.Function should determine correct download URL for Windows" time="0.0068" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="Function should determine correct download URL for Linux" name="Get-PowerShellPortable Tests.Function Tests.Function should determine correct download URL for Linux" time="0.0066" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="Function should determine correct download URL for macOS" name="Get-PowerShellPortable Tests.Function Tests.Function should determine correct download URL for macOS" time="0.0065" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Function should exist" name="Get-PowerShellPortable Tests.Function Tests.Function should exist" time="0.0432" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Function should have valid HelpUri" name="Get-PowerShellPortable Tests.Function Tests.Function should have valid HelpUri" time="0.036" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Function should determine correct download URL for Windows" name="Get-PowerShellPortable Tests.Function Tests.Function should determine correct download URL for Windows" time="0.055" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Function should determine correct download URL for Linux" name="Get-PowerShellPortable Tests.Function Tests.Function should determine correct download URL for Linux" time="0.0334" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Function should determine correct download URL for macOS" name="Get-PowerShellPortable Tests.Function Tests.Function should determine correct download URL for macOS" time="0.0307" asserts="0" success="True" result="Success" executed="True" />
                 </results>
               </test-suite>
             </results>
           </test-suite>
         </results>
       </test-suite>
-      <test-suite type="TestFixture" name="/home/runner/work/PSPreworkout/PSPreworkout/src/Tests/Unit/Get-TypeAccelerator.Tests.ps1" executed="True" result="Success" success="True" time="0.4395" asserts="0" description="/home/runner/work/PSPreworkout/PSPreworkout/src/Tests/Unit/Get-TypeAccelerator.Tests.ps1">
+      <test-suite type="TestFixture" name="C:\Users\SamErde\Code\Personal\PSPreworkout\src\Tests\Unit\Get-TypeAccelerator.Tests.ps1" executed="True" result="Success" success="True" time="0.5556" asserts="0" description="C:\Users\SamErde\Code\Personal\PSPreworkout\src\Tests\Unit\Get-TypeAccelerator.Tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="Get-TypeAccelerator Tests" executed="True" result="Success" success="True" time="0.418" asserts="0" description="Get-TypeAccelerator Tests">
+          <test-suite type="TestFixture" name="Get-TypeAccelerator Tests" executed="True" result="Success" success="True" time="0.4493" asserts="0" description="Get-TypeAccelerator Tests">
             <results>
-              <test-suite type="TestFixture" name="Get-TypeAccelerator Tests.Function Tests" executed="True" result="Success" success="True" time="0.4144" asserts="0" description="Get-TypeAccelerator Tests.Function Tests">
+              <test-suite type="TestFixture" name="Get-TypeAccelerator Tests.Function Tests" executed="True" result="Success" success="True" time="0.445" asserts="0" description="Get-TypeAccelerator Tests.Function Tests">
                 <results>
-                  <test-case description="Function should exist" name="Get-TypeAccelerator Tests.Function Tests.Function should exist" time="0.0067" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="Function should have valid HelpUri" name="Get-TypeAccelerator Tests.Function Tests.Function should have valid HelpUri" time="0.0062" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="Function should return an object" name="Get-TypeAccelerator Tests.Function Tests.Function should return an object" time="0.3524" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="Function should return non-empty output" name="Get-TypeAccelerator Tests.Function Tests.Function should return non-empty output" time="0.0155" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="Function should filter by exact name" name="Get-TypeAccelerator Tests.Function Tests.Function should filter by exact name" time="0.0109" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="Function should filter by wildcard name" name="Get-TypeAccelerator Tests.Function Tests.Function should filter by wildcard name" time="0.0173" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Function should exist" name="Get-TypeAccelerator Tests.Function Tests.Function should exist" time="0.0314" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Function should have valid HelpUri" name="Get-TypeAccelerator Tests.Function Tests.Function should have valid HelpUri" time="0.0402" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Function should return an object" name="Get-TypeAccelerator Tests.Function Tests.Function should return an object" time="0.2013" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Function should return non-empty output" name="Get-TypeAccelerator Tests.Function Tests.Function should return non-empty output" time="0.0822" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Function should filter by exact name" name="Get-TypeAccelerator Tests.Function Tests.Function should filter by exact name" time="0.0437" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Function should filter by wildcard name" name="Get-TypeAccelerator Tests.Function Tests.Function should filter by wildcard name" time="0.0398" asserts="0" success="True" result="Success" executed="True" />
                 </results>
               </test-suite>
             </results>
           </test-suite>
         </results>
       </test-suite>
-      <test-suite type="TestFixture" name="/home/runner/work/PSPreworkout/PSPreworkout/src/Tests/Unit/PSPreworkout-Module.Tests.ps1" executed="True" result="Success" success="True" time="0.1279" asserts="0" description="/home/runner/work/PSPreworkout/PSPreworkout/src/Tests/Unit/PSPreworkout-Module.Tests.ps1">
+      <test-suite type="TestFixture" name="C:\Users\SamErde\Code\Personal\PSPreworkout\src\Tests\Unit\PSPreworkout-Module.Tests.ps1" executed="True" result="Success" success="True" time="0.8276" asserts="0" description="C:\Users\SamErde\Code\Personal\PSPreworkout\src\Tests\Unit\PSPreworkout-Module.Tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="Module Tests" executed="True" result="Success" success="True" time="0.1041" asserts="0" description="Module Tests">
+          <test-suite type="TestFixture" name="Module Tests" executed="True" result="Success" success="True" time="0.6699" asserts="0" description="Module Tests">
             <results>
-              <test-suite type="TestFixture" name="Module Tests.Module Tests" executed="True" result="Success" success="True" time="0.1004" asserts="0" description="Module Tests.Module Tests">
+              <test-suite type="TestFixture" name="Module Tests.Module Tests" executed="True" result="Success" success="True" time="0.6632" asserts="0" description="Module Tests.Module Tests">
                 <results>
-                  <test-case description="Passes Test-ModuleManifest" name="Module Tests.Module Tests.Passes Test-ModuleManifest" time="0.0145" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="root module PSPreworkout.psm1 should exist" name="Module Tests.Module Tests.root module PSPreworkout.psm1 should exist" time="0.0075" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="manifest should contain PSPreworkout.psm1" name="Module Tests.Module Tests.manifest should contain PSPreworkout.psm1" time="0.0077" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="should have a matching module name in the manifest" name="Module Tests.Module Tests.should have a matching module name in the manifest" time="0.0075" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="should have a valid description in the manifest" name="Module Tests.Module Tests.should have a valid description in the manifest" time="0.0084" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="should have a valid author in the manifest" name="Module Tests.Module Tests.should have a valid author in the manifest" time="0.0082" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="should have a valid version in the manifest" name="Module Tests.Module Tests.should have a valid version in the manifest" time="0.008" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="should have a valid guid in the manifest" name="Module Tests.Module Tests.should have a valid guid in the manifest" time="0.0086" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="should not have any spaces in the tags" name="Module Tests.Module Tests.should not have any spaces in the tags" time="0.0167" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="should have a valid project Uri" name="Module Tests.Module Tests.should have a valid project Uri" time="0.0082" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Passes Test-ModuleManifest" name="Module Tests.Module Tests.Passes Test-ModuleManifest" time="0.2049" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="root module PSPreworkout.psm1 should exist" name="Module Tests.Module Tests.root module PSPreworkout.psm1 should exist" time="0.0538" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="manifest should contain PSPreworkout.psm1" name="Module Tests.Module Tests.manifest should contain PSPreworkout.psm1" time="0.0461" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="should have a matching module name in the manifest" name="Module Tests.Module Tests.should have a matching module name in the manifest" time="0.0411" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="should have a valid description in the manifest" name="Module Tests.Module Tests.should have a valid description in the manifest" time="0.0316" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="should have a valid author in the manifest" name="Module Tests.Module Tests.should have a valid author in the manifest" time="0.0331" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="should have a valid version in the manifest" name="Module Tests.Module Tests.should have a valid version in the manifest" time="0.045" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="should have a valid guid in the manifest" name="Module Tests.Module Tests.should have a valid guid in the manifest" time="0.0995" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="should not have any spaces in the tags" name="Module Tests.Module Tests.should not have any spaces in the tags" time="0.049" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="should have a valid project Uri" name="Module Tests.Module Tests.should have a valid project Uri" time="0.0504" asserts="0" success="True" result="Success" executed="True" />
                 </results>
               </test-suite>
             </results>
