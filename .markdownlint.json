@@ -1,0 +1,14 @@
+{
+  "default": true,
+  "docs/**/*.md": {
+    "MD009": false,
+    "MD022": false,
+    "MD031": false,
+    "MD040": false
+  },
+  "README.md": {
+    "MD013": false,
+    "MD022": false,
+    "MD033": false
+  }
+}
