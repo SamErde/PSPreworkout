@@ -62,7 +62,7 @@ function Get-HashtableValueType {
         # Provide tab completion for the Key parameter based on the provided hashtable's keys.
         [ArgumentCompleter({
                 param($CommandName, $ParameterName, $WordToComplete, $CommandAst, $FakeBoundParameters)
-
+                [void]$CommandName, $ParameterName, $CommandAst
                 # Get the hashtable from the bound parameters
                 if ($FakeBoundParameters.ContainsKey('Hashtable')) {
                     $HashtableArg = $FakeBoundParameters['Hashtable']
