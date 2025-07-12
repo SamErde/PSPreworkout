@@ -1,5 +1,8 @@
 {
   "default": true,
+  "MD013": {
+    "line_length": 120
+  },
   "docs/**/*.md": {
     "MD009": false,
     "MD022": false,
