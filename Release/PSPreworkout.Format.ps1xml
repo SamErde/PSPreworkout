@@ -131,9 +131,6 @@
                     <TableColumnHeader>
                         <Label>TypeFullName</Label>
                     </TableColumnHeader>
-                    <TableColumnHeader>
-                        <Label>Value</Label>
-                    </TableColumnHeader>
                 </TableHeaders>
                 <TableRowEntries>
                     <TableRowEntry>
@@ -147,9 +144,6 @@
                             </TableColumnItem>
                             <TableColumnItem>
                                 <PropertyName>FullName</PropertyName>
-                            </TableColumnItem>
-                            <TableColumnItem>
-                                <PropertyName>ItemValue</PropertyName>
                             </TableColumnItem>
                         </TableColumnItems>
                     </TableRowEntry>
