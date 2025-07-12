@@ -4,7 +4,7 @@
     RootModule           = 'PSPreworkout.psm1'
 
     # Version number of this module.
-    ModuleVersion        = '1.9.5'
+    ModuleVersion        = '1.9.6'
 
     # Supported PSEditions = @('Desktop', 'Core')
     CompatiblePSEditions = @('Core', 'Desktop')
@@ -33,8 +33,9 @@
         'Edit-WinGetSettingsFile',
         'Get-CommandHistory',
         'Get-EnvironmentVariable',
-        'Get-ModulesWithUpdate',
+        'Get-HashtableValueType',
         'Get-LoadedAssembly',
+        'Get-ModulesWithUpdate',
         'Get-PowerShellPortable',
         'Get-TypeAccelerator',
         'Initialize-PSEnvironmentConfiguration',

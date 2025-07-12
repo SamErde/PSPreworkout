@@ -113,5 +113,42 @@
                 </TableRowEntries>
             </TableControl>
         </View>
+
+        <View>
+            <Name>HashtableValueTypeTable</Name>
+            <ViewSelectedBy>
+                <TypeName>PSPreworkout.HashtableValueType</TypeName>
+            </ViewSelectedBy>
+            <TableControl>
+                <AutoSize />
+                <TableHeaders>
+                    <TableColumnHeader>
+                        <Label>Key</Label>
+                    </TableColumnHeader>
+                    <TableColumnHeader>
+                        <Label>TypeName</Label>
+                    </TableColumnHeader>
+                    <TableColumnHeader>
+                        <Label>TypeFullName</Label>
+                    </TableColumnHeader>
+                </TableHeaders>
+                <TableRowEntries>
+                    <TableRowEntry>
+                        <Wrap />
+                        <TableColumnItems>
+                            <TableColumnItem>
+                                <PropertyName>ItemKey</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Name</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>FullName</PropertyName>
+                            </TableColumnItem>
+                        </TableColumnItems>
+                    </TableRowEntry>
+                </TableRowEntries>
+            </TableControl>
+        </View>
     </ViewDefinitions>
 </Configuration>

@@ -12,6 +12,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [1.9.6] - 2025-07-12
+
+In this release, @JakeHildreth contributed a slick new utility function for analyzing hashtable data types. Thanks, Jake! 💛👊
+
+Some minor improvements were also made to other functions and documentation.
+
+### Added
+
+* **Get-HashtableValueType** - New function to inspect and analyze the data types of hashtable values, by @JakeHildreth.
+  * Supports pipeline input for seamless integration with existing workflows, by @JakeHildreth.
+  * Returns custom formatted `System.Reflection.TypeInfo` objects, by @SamErde.
+  * Supports filtering to specific hashtable keys with the `-Key` parameter, by @SamErde.
+  * Includes intelligent tab completion for the `-Key` parameter, by @SamErde.
+
+### Enhanced
+
+* **Test-IsAdmin** - Enhanced test for elevated (admin/root) privileges on Linux and macOS platforms, by @SamErde.
+
 ## [1.9.5] - 2025-07-02
 
 This maintenance release fixes a syntax error in the module manifest, adds error handling to more operations, and enhances cross-platform compatibility.
@@ -233,7 +251,7 @@ This release is focused on enhancements that make the existing functions more us
 
 - Fix broken build output due to corrupt formatter 🤷‍♂️
 - Comment out incomplete parameters in `Initialize-PSEnvironmentConfiguration`
-- Remove `-Force` on module install scriptblock for `Initialize-PSEnvironmentConfiguration`
+- Remove `-Force` on module install script block for `Initialize-PSEnvironmentConfiguration`
 
 ### Removed
 
@@ -349,3 +367,4 @@ This release is focused on enhancements that make the existing functions more us
 [1.9.3]: https://github.com/SamErde/PSPreworkout/tag/v1.9.3
 [1.9.4]: https://github.com/SamErde/PSPreworkout/tag/v1.9.4
 [1.9.5]: https://github.com/SamErde/PSPreworkout/tag/v1.9.5
+[1.9.6]: https://github.com/SamErde/PSPreworkout/tag/v1.9.6

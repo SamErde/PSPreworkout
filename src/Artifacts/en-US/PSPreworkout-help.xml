@@ -409,6 +409,143 @@
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
+      <command:name>Get-HashtableValueType</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>HashtableValueType</command:noun>
+      <maml:description>
+        <maml:para>Get the object type of each value in a hashtable.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>This function retrieves the object type information of each value in a hashtable and returns System.Reflection.TypeInfo objects with additional ItemKey properties for identification. Results can be filtered to a specific key using the Key parameter.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-HashtableValueType</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
+          <maml:name>Hashtable</maml:name>
+          <maml:Description>
+            <maml:para>The hashtable to inspect.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
+          <dev:type>
+            <maml:name>Hashtable</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Key</maml:name>
+          <maml:Description>
+            <maml:para>Optional. Specify a specific hashtable key to get the type information for only that key's value. If not specified, type information for all keys will be returned. Tab completion is available for this parameter based on the keys in the provided hashtable.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
+        <maml:name>Hashtable</maml:name>
+        <maml:Description>
+          <maml:para>The hashtable to inspect.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
+        <dev:type>
+          <maml:name>Hashtable</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Key</maml:name>
+        <maml:Description>
+          <maml:para>Optional. Specify a specific hashtable key to get the type information for only that key's value. If not specified, type information for all keys will be returned. Tab completion is available for this parameter based on the keys in the provided hashtable.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Reflection.TypeInfo</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Type information objects for each hashtable entry, enhanced with an ItemKey property</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>and formatted using the PSPreworkout.HashtableValueType custom type.</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para>This function is useful for debugging hashtables and understanding the data types of their values. The output includes custom formatting via PSPreworkout.Format.ps1xml for improved readability.</maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
+        <dev:code>Get-HashtableValueType -Hashtable @{ Key1 = 123; Key2 = "Hello"; Key3 = @(1, 2, 3) }</dev:code>
+        <dev:remarks>
+          <maml:para>Returns type information for all keys in the hashtable, sorted by key name.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 2 --------------------------</maml:title>
+        <dev:code>Get-HashtableValueType -Hashtable @{ Key1 = 123; Key2 = "Hello"; Key3 = @(1, 2, 3) } -Key "Key2"</dev:code>
+        <dev:remarks>
+          <maml:para>Returns type information only for the "Key2" entry (System.String).</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 3 --------------------------</maml:title>
+        <dev:code>@{ Name = "John"; Age = 30; Active = $true } | Get-HashtableValueType</dev:code>
+        <dev:remarks>
+          <maml:para>Demonstrates pipeline input usage to analyze hashtable value types.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 4 --------------------------</maml:title>
+        <dev:code>$config = @{ "Server Name" = "web01"; Port = 8080; SSL = $true }
+Get-HashtableValueType $config -Key &lt;TAB&gt;</dev:code>
+        <dev:remarks>
+          <maml:para>Shows tab completion for keys, including proper quoting for keys with spaces.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>about_Hashtables</maml:linkText>
+        <maml:uri></maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
       <command:name>Get-LoadedAssembly</command:name>
       <command:verb>Get</command:verb>
       <command:noun>LoadedAssembly</command:noun>
