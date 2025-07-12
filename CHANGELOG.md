@@ -13,7 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
-## [1.9.6] - 2025-07-12
+## [1.9.6.1] - 2025-07-12
 
 In this release, @JakeHildreth contributed a slick new utility function for analyzing hashtable data types. Thanks, Jake! 💛👊
 
