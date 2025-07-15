@@ -13,6 +13,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [1.9.6.10] - 2025-07-15
+
+### Changed
+
+* Added and improved unit tests
+* Cleaned up unnecessary code
+* Improved help content
+* Clean up files and workflows
+* Sync module, change log, and release version numbers
+
+[*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v1.9.6...v1.9.10)
+
 ## [1.9.6] - 2025-07-12
 
 In this release, @JakeHildreth contributed a slick new utility function for analyzing hashtable data types. Thanks, Jake! 💛👊
@@ -30,6 +42,8 @@ Some minor improvements were also made to other functions and documentation.
 ### Enhanced
 
 * **Test-IsAdmin** - Enhanced test for elevated (admin/root) privileges on Linux and macOS platforms, by @SamErde.
+
+[*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v1.9.5...v1.9.6)
 
 ## [1.9.5] - 2025-07-02
 
@@ -369,3 +383,4 @@ This release is focused on enhancements that make the existing functions more us
 [1.9.4]: https://github.com/SamErde/PSPreworkout/tag/v1.9.4
 [1.9.5]: https://github.com/SamErde/PSPreworkout/tag/v1.9.5
 [1.9.6]: https://github.com/SamErde/PSPreworkout/tag/v1.9.6
+[1.9.6.10]: https://github.com/SamErde/PSPreworkout/tag/v1.9.6.10
