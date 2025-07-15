@@ -13,7 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
-## [1.9.6.10] - 2025-07-15
+## [1.9.7] - 2025-07-15
 
 ### Changed
 
@@ -383,4 +383,4 @@ This release is focused on enhancements that make the existing functions more us
 [1.9.4]: https://github.com/SamErde/PSPreworkout/tag/v1.9.4
 [1.9.5]: https://github.com/SamErde/PSPreworkout/tag/v1.9.5
 [1.9.6]: https://github.com/SamErde/PSPreworkout/tag/v1.9.6
-[1.9.6.10]: https://github.com/SamErde/PSPreworkout/tag/v1.9.6.10
+[1.9.7]: https://github.com/SamErde/PSPreworkout/tag/v1.9.7
