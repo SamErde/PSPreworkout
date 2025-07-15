@@ -51,11 +51,18 @@ Describe 'Get-EnvironmentVariable' {
             $Result | Should -Not -BeNullOrEmpty
             $Result.Count | Should -BeGreaterThan 0
 
-            # Should include variables from all targets
+            # Should include variables from all available targets (at least Process should always be available)
             $Targets = $Result.Target | Sort-Object -Unique
             $Targets | Should -Contain 'Process'
-            $Targets | Should -Contain 'User'
-            $Targets | Should -Contain 'Machine'
+
+            # On Windows, all three targets should be available; on Linux/macOS, Process is guaranteed
+            if ($IsWindows -or $PSVersionTable.PSEdition -eq 'Desktop') {
+                $Targets | Should -Contain 'User'
+                $Targets | Should -Contain 'Machine'
+            } else {
+                # On non-Windows systems, we may only have Process target available
+                Write-Verbose 'Running on non-Windows system, Process target should be available'
+            }
         }
 
         It 'Should return objects with the correct PSTypeName' {
@@ -176,11 +183,21 @@ Describe 'Get-EnvironmentVariable' {
         It 'Should return environment variables from multiple specified targets' {
             $Result = Get-EnvironmentVariable -Target 'Machine', 'User'
 
-            $Result | Should -Not -BeNullOrEmpty
-            $UniqueTargets = $Result.Target | Sort-Object -Unique
-            $UniqueTargets | Should -Contain 'Machine'
-            $UniqueTargets | Should -Contain 'User'
-            $UniqueTargets | Should -Not -Contain 'Process'
+            # On Windows, should have results; on Linux/macOS, these targets may be empty
+            if ($IsWindows -or $PSVersionTable.PSEdition -eq 'Desktop') {
+                $Result | Should -Not -BeNullOrEmpty
+                $UniqueTargets = $Result.Target | Sort-Object -Unique
+                $UniqueTargets | Should -Contain 'Machine'
+                $UniqueTargets | Should -Contain 'User'
+                $UniqueTargets | Should -Not -Contain 'Process'
+            } else {
+                # On non-Windows systems, Machine and User targets may not have variables
+                Write-Verbose 'Running on non-Windows system, Machine/User targets may be empty'
+                if ($Result) {
+                    $UniqueTargets = $Result.Target | Sort-Object -Unique
+                    $UniqueTargets | Should -Not -Contain 'Process'
+                }
+            }
         }
 
         It 'Should return environment variables from all targets when Target includes all three' {
@@ -188,9 +205,16 @@ Describe 'Get-EnvironmentVariable' {
 
             $Result | Should -Not -BeNullOrEmpty
             $UniqueTargets = $Result.Target | Sort-Object -Unique
-            $UniqueTargets | Should -Contain 'Machine'
-            $UniqueTargets | Should -Contain 'User'
             $UniqueTargets | Should -Contain 'Process'
+
+            # On Windows, all three targets should be available
+            if ($IsWindows -or $PSVersionTable.PSEdition -eq 'Desktop') {
+                $UniqueTargets | Should -Contain 'Machine'
+                $UniqueTargets | Should -Contain 'User'
+            } else {
+                # On non-Windows systems, Machine and User may not have variables
+                Write-Verbose 'Running on non-Windows system, some targets may not have variables'
+            }
         }
     }
 
@@ -205,11 +229,21 @@ Describe 'Get-EnvironmentVariable' {
         It 'Should return all environment variables from multiple targets when Target and All are specified' {
             $Result = Get-EnvironmentVariable -Target 'Machine', 'User' -All
 
-            $Result | Should -Not -BeNullOrEmpty
-            $UniqueTargets = $Result.Target | Sort-Object -Unique
-            $UniqueTargets | Should -Contain 'Machine'
-            $UniqueTargets | Should -Contain 'User'
-            $UniqueTargets | Should -Not -Contain 'Process'
+            # On Windows, should have results; on Linux/macOS, these targets may be empty
+            if ($IsWindows -or $PSVersionTable.PSEdition -eq 'Desktop') {
+                $Result | Should -Not -BeNullOrEmpty
+                $UniqueTargets = $Result.Target | Sort-Object -Unique
+                $UniqueTargets | Should -Contain 'Machine'
+                $UniqueTargets | Should -Contain 'User'
+                $UniqueTargets | Should -Not -Contain 'Process'
+            } else {
+                # On non-Windows systems, Machine and User targets may not have variables
+                Write-Verbose 'Running on non-Windows system, Machine/User targets may be empty'
+                if ($Result) {
+                    $UniqueTargets = $Result.Target | Sort-Object -Unique
+                    $UniqueTargets | Should -Not -Contain 'Process'
+                }
+            }
         }
     }
 
