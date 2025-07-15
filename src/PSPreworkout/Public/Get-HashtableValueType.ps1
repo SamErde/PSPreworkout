@@ -98,6 +98,12 @@ function Get-HashtableValueType {
 
         [System.Collections.Generic.List[System.Reflection.TypeInfo]]$ValueType = foreach ( $Item in $EntriesToProcess ) {
             Write-Verbose "Getting the object type of the value for [$($Item.Key)]."
+
+            # Handle null values gracefully
+            if ($null -eq $Item.Value) {
+                Write-Verbose "Value for key [$($Item.Key)] is null, skipping type analysis."
+                continue
+            }
             [System.Reflection.TypeInfo]$ItemValueType = $Item.Value.GetType()
 
             # Set a custom format type name and add a NoteProperty to display the key.
@@ -109,6 +115,4 @@ function Get-HashtableValueType {
         # Output the list of type information for each entry
         $ValueType
     }
-
-    end {}
 }
