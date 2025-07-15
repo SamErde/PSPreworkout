@@ -4,7 +4,11 @@
     RootModule           = 'PSPreworkout.psm1'
 
     # Version number of this module.
+<<<<<<< HEAD
     ModuleVersion        = '1.9.6'
+=======
+    ModuleVersion        = '1.9.6.1'
+>>>>>>> main
 
     # Supported PSEditions = @('Desktop', 'Core')
     CompatiblePSEditions = @('Core', 'Desktop')
