@@ -1,12 +1,8 @@
 # Project Files #
-Archive/
-#Artifacts/
-#Artifacts/*
-#cov.xml
-#coverage.xml
-
-# Negative Include
-!/Artifacts/en-US/
+Archive
+Artifacts
+cov.xml
+coverage.xml
 
 ### VisualStudioCode ###
 .vscode/*
@@ -17,7 +13,13 @@ Archive/
 !.vscode/*.code-snippets
 
 ### OS ###
-Thumbs.db
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
 ### Codacy ###
+.codacy

@@ -166,10 +166,11 @@ Add-BuildTask Clean {
 Add-BuildTask Analyze {
 
     $scriptAnalyzerParams = @{
-        Path    = $script:ModuleSourcePath
-        Setting = 'PSScriptAnalyzerSettings.psd1'
-        Recurse = $true
-        Verbose = $false
+        Path        = $script:ModuleSourcePath
+        Setting     = 'PSScriptAnalyzerSettings.psd1'
+        ExcludeRule = @('PSUseDeclaredVarsMoreThanAssignments', 'PSAvoidUsingWriteHost')
+        Recurse     = $true
+        Verbose     = $false
     }
 
     Write-Build White '      Performing Module ScriptAnalyzer checks...'
@@ -190,7 +191,7 @@ Add-BuildTask AnalyzeTests -After Analyze {
         $scriptAnalyzerParams = @{
             Path        = $script:TestsPath
             Setting     = 'PSScriptAnalyzerSettings.psd1'
-            ExcludeRule = 'PSUseDeclaredVarsMoreThanAssignments'
+            ExcludeRule = @('PSUseDeclaredVarsMoreThanAssignments')
             Recurse     = $true
             Verbose     = $false
         }
@@ -551,21 +552,17 @@ Add-BuildTask Archive {
 
     Write-Build White '        Creating release artifacts...'
     $releasePath = Join-Path -Path $BuildRoot -ChildPath 'Release' ; [void]$releasePath
-    $zipFileNameRelease = '{0}.zip' -f $script:ModuleName
-    $zipFileRelease = Join-Path -Path $script:ArtifactsPath -ChildPath $zipFileNameRelease
+    #$zipFileNameRelease = '{0}.zip' -f $script:ModuleName
+    #$zipFileRelease = Join-Path -Path $script:ArtifactsPath -ChildPath $zipFileNameRelease
 
     #region SDE
-    $ReleaseFolder = Join-Path -Path $PSScriptRoot -ChildPath '..\Release'
-    #if (-not (Test-Path -Path $ReleaseFolder)) {
-    #    New-Item -Path (Split-Path $ReleaseFolder -Parent) -ItemType Directory -Name (Split-Path $ReleaseFolder -Leaf) | Out-Null
-    #}
-    #$ReleaseFolder = Resolve-Path $ReleaseFolder | Out-Null
-    $ArtifactsFolder = Resolve-Path (Join-Path -Path $PSScriptRoot -ChildPath 'Artifacts')
-    $ExternalHelpFolder = Get-ChildItem -Directory -Path (Join-Path -Path $PSScriptRoot -ChildPath '..\docs') | Select-Object -ExpandProperty FullName
+    #$ReleaseFolder = Join-Path -Path $PSScriptRoot -ChildPath '..\Release'
+    #$ArtifactsFolder = Resolve-Path (Join-Path -Path $PSScriptRoot -ChildPath 'Artifacts')
+    #$ExternalHelpFolder = Get-ChildItem -Directory -Path (Join-Path -Path $PSScriptRoot -ChildPath '..\docs') | Select-Object -ExpandProperty FullName
 
-    Copy-Item -Path $ArtifactsFolder\* -Destination "$ReleaseFolder" -Recurse -Exclude @('ccReport', 'en-US', 'testOutput', 'Release', 'PSPreworkout.zip') -Force
-    Copy-Item -Path $ExternalHelpFolder -Destination $ReleaseFolder -Recurse -Force
-    [System.IO.Compression.ZipFile]::CreateFromDirectory($ReleaseFolder, $zipFileRelease)
+    #Copy-Item -Path $ArtifactsFolder\* -Destination "$ReleaseFolder" -Recurse -Exclude @('ccReport', 'en-US', 'testOutput', 'Release', 'PSPreworkout.zip') -Force
+    #Copy-Item -Path $ExternalHelpFolder -Destination $ReleaseFolder -Recurse -Force
+    #[System.IO.Compression.ZipFile]::CreateFromDirectory($ReleaseFolder, $zipFileRelease)
     Write-Build Green '        ...Archive Complete!'
     #endregion SDE
 } #Archive

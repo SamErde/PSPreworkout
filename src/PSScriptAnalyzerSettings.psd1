@@ -33,7 +33,7 @@
     #Here you can specify customizations for particular rules. Several examples are included below:
     Rules               = @{
         PSUseCompatibleCmdlets = @{
-            compatibility = @('core-6.1.0-windows', 'desktop-5.1-windows')
+            compatibility = @('core-7.4.11-windows', 'desktop-5.1-windows')
         }
         PSUseCompatibleSyntax  = @{
             Enable         = $true

@@ -106,8 +106,4 @@ The output includes custom formatting via PSPreworkout.Format.ps1xml for improve
 
 ## RELATED LINKS
 
-<<<<<<< HEAD
 [about_Hashtables]()
-=======
-[about_Hashtables]()
->>>>>>> main

@@ -240,11 +240,6 @@ function Get-HashtableValueType {
         [string]$Key
     )
 
-    begin {
-        Write-Verbose 'Initializing the list to hold type information.'
-        [System.Collections.Generic.List[System.Reflection.TypeInfo]]$ValueType = @()
-    }
-
     process {
         # Filter hashtable entries based on Key parameter if specified
         $EntriesToProcess = if ($PSBoundParameters.ContainsKey('Key')) {
@@ -260,7 +255,7 @@ function Get-HashtableValueType {
             $Hashtable.GetEnumerator() | Sort-Object -Property Key
         }
 
-        $ValueType = foreach ( $Item in $EntriesToProcess ) {
+        [System.Collections.Generic.List[System.Reflection.TypeInfo]]$ValueType = foreach ( $Item in $EntriesToProcess ) {
             Write-Verbose "Getting the object type of the value for [$($Item.Key)]."
             [System.Reflection.TypeInfo]$ItemValueType = $Item.Value.GetType()
 

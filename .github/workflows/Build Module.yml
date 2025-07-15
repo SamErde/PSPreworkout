@@ -1,11 +1,3 @@
-# https://help.github.com/en/actions/automating-your-workflow-with-github-actions
-# https://help.github.com/en/actions/automating-your-workflow-with-github-actions/virtual-environments-for-github-hosted-runners
-# https://help.github.com/en/actions/automating-your-workflow-with-github-actions/software-installed-on-github-hosted-runners
-# https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#using-a-specific-shell
-# https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions
-# https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-powershell
-# https://github.com/actions/upload-artifact#where-does-the-upload-go
-
 name: 👷 Build Module
 on:
   pull_request:
@@ -13,14 +5,14 @@ on:
       - main
       - prerelease
     paths-ignore:
-      - '**.md'
-      - 'docs/**'
-      - 'src/Drafts/**'
+      - "**.md"
+      - "docs/**"
+      - "src/Drafts/**"
 
   workflow_dispatch:
 
 permissions:
-  contents: write  # Required to read and write the repository contents
+  contents: write # Required to read and write the repository contents
   packages: write # Required to create and update package help files
 
 jobs:
@@ -34,40 +26,39 @@ jobs:
     #  fail-fast: false
 
     steps:
+      - name: ✅ Checkout Repository
+        uses: actions/checkout@v4
 
-    - name: ✅ Checkout Repository
-      uses: actions/checkout@v4
+      - name: 📁 Display the Path
+        shell: pwsh
+        run: |
+          Write-Host "Current Directory: $PWD" -ForegroundColor Cyan
+          (Get-ChildItem env:*).GetEnumerator() | Sort-Object Name | Out-String
 
-    - name: 📁 Display the Path
-      shell: pwsh
-      run: |
-        Write-Host "Current Directory: $PWD" -ForegroundColor Cyan
-        (Get-ChildItem env:*).GetEnumerator() | Sort-Object Name | Out-String
+      - name: 🥾 Bootstrap
+        shell: pwsh
+        run: .\src\actions_bootstrap.ps1
 
-    - name: 🥾 Bootstrap
-      shell: pwsh
-      run: .\src\actions_bootstrap.ps1
+      - name: 👷‍♂️ Test and Build
+        shell: pwsh
+        run: Invoke-Build -File .\src\PSPreworkout.build.ps1
 
-    - name: 👷‍♂️ Test and Build
-      shell: pwsh
-      run: Invoke-Build -File .\src\PSPreworkout.build.ps1
+      - name: 🧪 Upload Pester Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: pester-results
+          path: .\src\Artifacts\testOutput
+          if-no-files-found: warn
 
-    - name: 🧪 Upload Pester Results
-      uses: actions/upload-artifact@v4
-      with:
-        name: pester-results
-        path: .\src\Artifacts\testOutput
-        if-no-files-found: warn
+      - name: 📦 Upload Build
+        uses: actions/upload-artifact@v4
+        with:
+          name: zip-archive
+          path: .\src\Archive
+          if-no-files-found: warn
+          # git-auto-commit-action only runs on Linux-based platforms.
 
-    - name: 📦 Upload Build
-      uses: actions/upload-artifact@v4
-      with:
-        name: zip-archive
-        path: .\src\Archive
-        if-no-files-found: warn
-        # git-auto-commit-action only runs on Linux-based platforms.
-
-    - name: 💾 Commit Changes
-      uses: stefanzweifel/git-auto-commit-action@v5
-      with:
-        commit_message: 'Commit Build'
+      - name: 💾 Commit Changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Commit Build"
