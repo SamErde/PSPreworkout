@@ -7,23 +7,8 @@
 - Use proper cmdlet binding and parameter validation
 - Always include comment-based help for functions
 - Prefer explicit error handling over silent failures
-- Use try/catch blocks for file operations, registry operations, and external commands
-- Validate file paths and registry keys before operations
-
-# Cross-Platform Considerations
-- Test platform compatibility using $IsWindows, $IsLinux, $IsMacOS variables
 - Provide graceful fallbacks for platform-specific features
 - Use .NET methods over Windows-specific cmdlets when possible
-
-# Response Preferences
-- Include brief explanations of why a particular approach is recommended
-- When suggesting refactoring, explain the benefits
-- Provide both the solution and alternative approaches when applicable
-
-# Security Guidelines
-- Never hardcode credentials or API keys
-- Always validate input parameters
-- Implement proper authentication and authorization checks
 
 # Commit Message Template for PowerShell Projects
 Generate commit messages for PowerShell projects using this format:
