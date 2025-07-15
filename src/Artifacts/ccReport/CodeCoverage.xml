@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE report PUBLIC "-//JACOCO//DTD Report 1.1//EN" "report.dtd"[]>
-<report name="Pester (07/15/2025 10:19:44)">
-  <sessioninfo id="this" start="1752574780811" dump="1752574784791" />
+<report name="Pester (07/15/2025 10:25:18)">
+  <sessioninfo id="this" start="1752575112212" dump="1752575118956" />
   <package name="Public">
     <class name="Public/Edit-PSReadLineHistoryFile" sourcefilename="Edit-PSReadLineHistoryFile.ps1">
       <method name="Edit-PSReadLineHistoryFile" desc="()" line="18">
@@ -38,11 +38,11 @@
     </class>
     <class name="Public/Get-EnvironmentVariable" sourcefilename="Get-EnvironmentVariable.ps1">
       <method name="Get-EnvironmentVariable" desc="()" line="93">
-        <counter type="INSTRUCTION" missed="0" covered="30" />
+        <counter type="INSTRUCTION" missed="2" covered="28" />
         <counter type="LINE" missed="0" covered="19" />
         <counter type="METHOD" missed="0" covered="1" />
       </method>
-      <counter type="INSTRUCTION" missed="0" covered="30" />
+      <counter type="INSTRUCTION" missed="2" covered="28" />
       <counter type="LINE" missed="0" covered="19" />
       <counter type="METHOD" missed="0" covered="1" />
       <counter type="CLASS" missed="0" covered="1" />
@@ -335,12 +335,12 @@
       <line nr="117" mi="0" ci="1" mb="0" cb="0" />
       <line nr="118" mi="0" ci="1" mb="0" cb="0" />
       <line nr="119" mi="0" ci="1" mb="0" cb="0" />
-      <line nr="120" mi="0" ci="3" mb="0" cb="0" />
-      <line nr="121" mi="0" ci="4" mb="0" cb="0" />
+      <line nr="120" mi="1" ci="2" mb="0" cb="0" />
+      <line nr="121" mi="1" ci="3" mb="0" cb="0" />
       <line nr="123" mi="0" ci="1" mb="0" cb="0" />
       <line nr="124" mi="0" ci="1" mb="0" cb="0" />
       <line nr="132" mi="0" ci="1" mb="0" cb="0" />
-      <counter type="INSTRUCTION" missed="0" covered="30" />
+      <counter type="INSTRUCTION" missed="2" covered="28" />
       <counter type="LINE" missed="0" covered="19" />
       <counter type="METHOD" missed="0" covered="1" />
       <counter type="CLASS" missed="0" covered="1" />
@@ -1026,12 +1026,12 @@
       <counter type="METHOD" missed="1" covered="0" />
       <counter type="CLASS" missed="1" covered="0" />
     </sourcefile>
-    <counter type="INSTRUCTION" missed="711" covered="48" />
+    <counter type="INSTRUCTION" missed="713" covered="46" />
     <counter type="LINE" missed="573" covered="32" />
     <counter type="METHOD" missed="21" covered="5" />
     <counter type="CLASS" missed="21" covered="3" />
   </package>
-  <counter type="INSTRUCTION" missed="711" covered="48" />
+  <counter type="INSTRUCTION" missed="713" covered="46" />
   <counter type="LINE" missed="573" covered="32" />
   <counter type="METHOD" missed="21" covered="5" />
   <counter type="CLASS" missed="21" covered="3" />
