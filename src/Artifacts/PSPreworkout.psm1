@@ -306,23 +306,165 @@ function Get-ModulesWithUpdate {
             Position = 0,
             ValueFromPipeline,
             ValueFromPipelineByPropertyName,
-            HelpMessage = 'Enter a module name or names. Wildcards are allowed.'
+            HelpMessage = 'Enter a module name or an array of names. Wildcards are allowed.'
         )]
         [ValidateNotNullOrEmpty()]
         [SupportsWildcards()]
-        [System.Collections.Generic.List[string]] $Name = @('*')
+        [System.Collections.Generic.List[string]] $Name = @('*'),
+
+        # Display console output while returning module objects to the pipeline.
+        [Parameter()]
+        [switch] $PassThru
     )
 
     begin {
+        # Check for required module and attempt to install if missing.
+        try {
+            if (-not (Get-Command -Name 'Get-InstalledPSResource' -ErrorAction SilentlyContinue)) {
+                Write-Information "The required module 'Microsoft.PowerShell.PSResourceGet' was not found. Attempting to install..." -InformationAction Continue
+                try {
+                    Install-Module -Name 'Microsoft.PowerShell.PSResourceGet' -Scope CurrentUser -AllowClobber -Force -Verbose:$false
+                    Write-Information "Successfully installed 'Microsoft.PowerShell.PSResourceGet'." -InformationAction Continue
+                    Import-Module -Name 'Microsoft.PowerShell.PSResourceGet' -Force -Verbose:$false
+                } catch {
+                    throw "Failed to install and import the required 'Microsoft.PowerShell.PSResourceGet' module. Please install it manually using: Install-Module -Name 'Microsoft.PowerShell.PSResourceGet'"
+                }
+            } else {
+                # Import the module if it's not already imported
+                if (-not (Get-Module -Name 'Microsoft.PowerShell.PSResourceGet')) {
+                    Import-Module -Name 'Microsoft.PowerShell.PSResourceGet' -Force -Verbose:$false
+                }
+            }
+        } catch {
+            throw "Error checking for required module 'Microsoft.PowerShell.PSResourceGet': $_"
+        }
+
+        # Get AllUsers scope paths from machine-level PSModulePath for cross-platform compatibility
+        [string[]] $AllUsersModulePaths = @(
+            [System.Environment]::GetEnvironmentVariable('PSModulePath', [System.EnvironmentVariableTarget]::Machine) -split [System.IO.Path]::PathSeparator |
+                Where-Object { $_ }
+        )
+        Write-Debug "AllUsers module paths: $($AllUsersModulePaths -join '; ')"
+
+        # Pre-compile a fast lookup function to see if the installed location is in an AllUsers path.
+        $IsAllUsersPath = {
+            param ($ModuleLocation)
+            foreach ($Path in $AllUsersModulePaths) {
+                if ($ModuleLocation.StartsWith($Path, [System.StringComparison]::OrdinalIgnoreCase)) {
+                    return $true
+                }
+            }
+            return $false
+        } # end IsAllUsersPath function
+
         # Initialize a list to hold modules with updates.
-        [System.Collections.Generic.List[System.Object]] $ModulesWithUpdates = @()
+        [System.Collections.Generic.List[PSCustomObject]] $ModulesWithUpdates = @()
     } # end begin block
 
     process {
-        # Get installed modules.
-        Write-Host -ForegroundColor Cyan "Getting installed modules ($($Name -join ', '))..."
+        #region Get installed modules
         try {
-            [System.Collections.Generic.List[System.Object]] $Modules = Get-InstalledModule -Name $Name | Sort-Object Name
+            # Optimize the search: if no wildcards are used, search for each module specifically
+            $HasWildcards = $Name | Where-Object { $_ -match '[*?]' }
+
+            if ($HasWildcards) {
+                Write-Host "Searching for installed modules matching patterns: $($Name -join ', ')" -ForegroundColor Cyan
+                # Use a wildcard search to get modules and determine if they are installed in an AllUsers or CurrentUser location.
+                [System.Collections.Generic.List[PSObject]] $Modules = Get-InstalledPSResource -Name $Name -Verbose:$false |
+                    Where-Object { $_.Type -eq 'Module' } | Group-Object -Property 'Name' |
+                    ForEach-Object {
+                        # For each module name, prioritize CurrentUser scope over AllUsers scope (reset arrays for each iteration).
+                        $CurrentUserModules = @()
+                        $AllUsersModules = @()
+
+                        # Categorize each installed instance of the module by scope (installation location).
+                        foreach ($Module in $_.Group) {
+                            if (& $IsAllUsersPath $Module.InstalledLocation) {
+                                $AllUsersModules += $Module
+                            } else {
+                                $CurrentUserModules += $Module
+                            }
+                        }
+
+                        if ($CurrentUserModules) {
+                            # If module exists in CurrentUser scope, use the highest version from CurrentUser
+                            $SelectedModule = $CurrentUserModules | Sort-Object Version -Descending | Select-Object -First 1
+                            if ($AllUsersModules) {
+                                $HighestAllUsers = $AllUsersModules | Sort-Object Version -Descending | Select-Object -First 1
+                                Write-Verbose "Module '$($_.Name)': Using CurrentUser version $($SelectedModule.Version) (AllUsers has $($HighestAllUsers.Version))."
+                                # Might be worth writing with colorful host output for user awareness.
+                            } else {
+                                Write-Verbose "Module '$($_.Name)': Using CurrentUser version $($SelectedModule.Version)"
+                            }
+                            $SelectedModule
+                        } elseif ($AllUsersModules) {
+                            # If only in AllUsers scope, use the highest version from AllUsers
+                            $SelectedModule = $AllUsersModules | Sort-Object Version -Descending | Select-Object -First 1
+                            Write-Verbose "Module '$($_.Name)': Using AllUsers version $($SelectedModule.Version) (no CurrentUser installation found)."
+                            $SelectedModule
+                        } else {
+                            # Fallback: if we can't determine scope, just use the highest version
+                            $SelectedModule = $_.Group | Sort-Object Version -Descending | Select-Object -First 1
+                            Write-Verbose "Module '$($_.Name)': Using highest version $($SelectedModule.Version) (scope undetermined)."
+                            $SelectedModule
+                        }
+                    } | Sort-Object Name
+            } else {
+                # Check each individually for better performance when not using wildcards.
+                Write-Host "Searching for specific installed modules: $($Name -join ', ')" -ForegroundColor Cyan
+                $AllModules = @()
+                foreach ($ModuleName in $Name) {
+                    Write-Verbose "Looking for installed module: $ModuleName"
+                    $ModuleResults = Get-InstalledPSResource -Name $ModuleName -ErrorAction SilentlyContinue -Verbose:$false |
+                        Where-Object { $_.Type -eq 'Module' }
+                    if ($ModuleResults) {
+                        Write-Verbose "Found $($ModuleResults.Count) installation(s) of module '$ModuleName'."
+                        $AllModules += $ModuleResults
+                    } else {
+                        Write-Verbose "Module '$ModuleName' not found in installed modules."
+                    }
+                }
+
+                # Group by module name only and select the best version with scope priority
+                [System.Collections.Generic.List[PSObject]] $Modules = $AllModules | Group-Object Name |
+                    ForEach-Object {
+                        # For each module name, prioritize CurrentUser scope over AllUsers scope
+                        # Use optimized scope detection for better performance
+                        $CurrentUserModules = @()
+                        $AllUsersModules = @()
+
+                        # Categorize each installed instance of the module by scope (installation location).
+                        foreach ($Module in $_.Group) {
+                            if (& $IsAllUsersPath $Module.InstalledLocation) {
+                                $AllUsersModules += $Module
+                            } else {
+                                $CurrentUserModules += $Module
+                            }
+                        }
+
+                        if ($CurrentUserModules) {
+                            # If module exists in CurrentUser scope, use the highest version from CurrentUser.
+                            $SelectedModule = $CurrentUserModules | Sort-Object Version -Descending | Select-Object -First 1
+                            if ($AllUsersModules) {
+                                $HighestAllUsers = $AllUsersModules | Sort-Object Version -Descending | Select-Object -First 1
+                                Write-Verbose "Module '$($_.Name)': Using CurrentUser version $($SelectedModule.Version) (AllUsers has $($HighestAllUsers.Version))."
+                            } else {
+                                Write-Verbose "Module '$($_.Name)': Using CurrentUser version $($SelectedModule.Version)."
+                            }
+                            $SelectedModule
+                        } elseif ($AllUsersModules) {
+                            # If only in AllUsers scope, use the highest version from AllUsers.
+                            $SelectedModule = $AllUsersModules | Sort-Object Version -Descending | Select-Object -First 1
+                            Write-Verbose "Module '$($_.Name)': Using AllUsers version $($SelectedModule.Version) (no CurrentUser installation)."
+                            $SelectedModule
+                        } else {
+                            # Fallback: if we can't determine scope, just use the highest version.
+                            $SelectedModule = $_.Group | Sort-Object Version -Descending | Select-Object -First 1
+                            Write-Verbose "Module '$($_.Name)': Using highest version $($SelectedModule.Version) (scope undetermined)."
+                            $SelectedModule
+                        }
+                    } | Sort-Object Name
+            } # end if-else for wildcard check vs explicit name check
         } catch {
             throw $_
         }
@@ -334,42 +476,105 @@ function Get-ModulesWithUpdate {
         } else {
             Write-Host "Found $($Modules.Count) installed modules." -ForegroundColor Cyan
         }
+        #endregion Get installed modules
 
+        #region Check for updates
         Write-Host 'Checking the repository for newer versions of the modules...' -ForegroundColor Cyan
         foreach ($Module in $Modules) {
 
+            #region Get module information
+            # Check installed [version] and prerelease status [boolean].
             $InstalledVersion = $Module.Version
+            $IsPrerelease = $Module.IsPrerelease -or (-not [string]::IsNullOrWhiteSpace($Module.Prerelease)) -or ( $InstalledVersion -match 'alpha|beta|prerelease|preview|rc' )
 
-            # Use $true for the AllowPrerelease argument if the module version string contains 'beta', 'prerelease', 'preview', or 'rc'.
-            $IsPrerelease = ( $InstalledVersion -match 'beta|prerelease|preview|rc' )
-            if ($IsPrerelease) {
-                $Prerelease = '-' + ($InstalledVersion -split '-')[1]
+            # Determine which repository to check based on the module's data.
+            $Repository = $null
+            if ($Module.Repository -and $Module.Repository -ne 'Unknown') {
+                $Repository = $Module.Repository
             } else {
-                $Prerelease = '~~NA~~'
+                Write-Verbose "No repository information found for '$($Module.Name)', checking all registered repositories."
             }
+            #endregion Get module information
 
             try {
-                # Get the latest online version. Only check pre-release versions if a pre-release version is already installed.
-                $OnlineModule = Find-Module -Name $Module.Name -AllowPrerelease:$IsPrerelease
+                # Get the latest online version from the appropriate repository
+                $OnlineModule = $null
+                try {
+                    if ($Repository) {
+                        Write-Verbose "Searching repository '$Repository' for module '$($Module.Name)' with Prerelease:$IsPrerelease"
+                        $OnlineModule = Find-PSResource -Name $Module.Name -Repository $Repository -Prerelease:$IsPrerelease
+                    } else {
+                        Write-Verbose "Searching all repositories for module '$($Module.Name)' with Prerelease:$IsPrerelease"
+                        $OnlineModule = Find-PSResource -Name $Module.Name -Prerelease:$IsPrerelease
+                    }
+                } catch {
+                    # If the specific search fails, try without specifying repository for prerelease modules
+                    if ($IsPrerelease -and $Repository) {
+                        Write-Verbose "Repository-specific search failed for prerelease module '$($Module.Name)', trying all repositories."
+                        try {
+                            $OnlineModule = Find-PSResource -Name $Module.Name -Prerelease:$IsPrerelease
+                        } catch {
+                            Write-Verbose "All-repository search also failed for '$($Module.Name)'"
+                        }
+                    }
+
+                    # If still no result, re-throw the original error to be handled by outer catch
+                    if (-not $OnlineModule) {
+                        throw
+                    }
+                }
+
+                if (-not $OnlineModule) {
+                    Write-Warning "No online version found for module '$($Module.Name)'."
+                    continue
+                }
+
                 $OnlineVersion = $OnlineModule.Version
-                # Find-PSResource -Name Maester -Version 1.1.16-preview -Prerelease
-                # The Get-PSResource cmdlet provides Repository name and can be optimized to check other repositories if needed.
 
                 Write-Verbose "$($Module.Name) $InstalledVersion (Installed)"
-                Write-Verbose "$($Module.Name) $OnlineVersion (Online)"
+                Write-Verbose "$($Module.Name) $OnlineVersion (Online)`n"
+
+                # Normalize version objects for accurate comparison
+                # PowerShell treats [version]"1.0.0" (Revision=-1) differently from [version]"1.0.0.0" (Revision=0)
+                # We need to normalize them by ensuring both have explicit 4-part notation
+
+                # Extract base version without prerelease suffix
+                $OnlineVersionBase = if ($OnlineVersion.ToString() -match '^(.+?)-') {
+                    $matches[1]
+                } else {
+                    $OnlineVersion.ToString()
+                }
+
+                $InstalledVersionBase = if ($InstalledVersion.ToString() -match '^(.+?)-') {
+                    $matches[1]
+                } else {
+                    $InstalledVersion.ToString()
+                }
+
+                # Create normalized versions by ensuring all 4 components are explicit
+                $OnlineVersionObj = [version]$OnlineVersionBase
+                $InstalledVersionObj = [version]$InstalledVersionBase
+
+                # Build normalized string with explicit 4-part format
+                $OnlineVersionNormalized = [version]"$($OnlineVersionObj.Major).$($OnlineVersionObj.Minor).$($OnlineVersionObj.Build).$([Math]::Max(0, $OnlineVersionObj.Revision))"
+                $InstalledVersionNormalized = [version]"$($InstalledVersionObj.Major).$($InstalledVersionObj.Minor).$($InstalledVersionObj.Build).$([Math]::Max(0, $InstalledVersionObj.Revision))"
+
+                # Determine if online version is prerelease (has any prerelease suffix)
+                $OnlineIsPrerelease = $OnlineVersion.ToString() -match '-'
+
+                Write-Verbose "Normalized versions: Installed=$InstalledVersionNormalized, Online=$OnlineVersionNormalized"
 
                 # If a newer version is available, create a custom object with PSPreworkout.ModuleInfo type.
                 if (
                     (
-                        # Compare the version numbers while ignoring the pre-release suffix.
-                        # Treat the installed version as an array in case multiple versions are installed.
-                        [version]$OnlineVersion.Replace($Prerelease, '') -gt @([version]$InstalledVersion.Replace($Prerelease, ''))[0]
+                        # Compare the normalized version objects directly for newer versions
+                        $OnlineVersionNormalized -gt $InstalledVersionNormalized
                     ) -or
                     (
-                        # Check if the version numbers are equal, but the installed version is a pre-release version and the online version is not.
-                        # This allows updates from prerelease to stable versions.
-                        ( [version]$OnlineVersion.Replace($Prerelease, '') -ge @([version]($InstalledVersion).Replace($Prerelease, ''))[0] ) -and
-                        ( $OnlineVersion -notmatch $Prerelease -and $InstalledVersion -match $Prerelease)
+                        # Allow updates from prerelease to stable versions with same or higher base version
+                        # This allows upgrading from "1.0.0-beta" to "1.0.0" (stable release)
+                        ($OnlineVersionNormalized -ge $InstalledVersionNormalized) -and
+                        ($IsPrerelease -and -not $OnlineIsPrerelease)
                     )
                 ) {
                     Write-Verbose "$($Module.Name) $($InstalledVersion) --> $($OnlineVersion) 🆕`n"
@@ -389,14 +594,32 @@ function Get-ModulesWithUpdate {
                         UpdateAvailable = $true
                         OnlineVersion   = $OnlineVersion
                         ReleaseNotes    = $OnlineModule.ReleaseNotes
-                    }                    # Add the module to the list of modules with updates.
+                    }
+                    # Add the module to the list of modules with updates.
                     $ModulesWithUpdates.Add($ModuleInfo) | Out-Null
+
+                    # Display module information when PassThru is specified
+                    if ($PassThru) {
+                        Write-Host "$($Module.Name): $($InstalledVersion) → $($OnlineVersion)" -ForegroundColor Green
+                    }
                 }
             } catch {
-                # Show a warning if the module is not found in the online repository.
-                Write-Warning "Module $($Module.Name) was not found in the online repository. $_"
+                # Handle different types of errors more specifically
+                $ErrorMessage = $_.Exception.Message
+                if ($ErrorMessage -match 'could not be found') {
+                    if ($Repository) {
+                        Write-Warning "Module '$($Module.Name)' was not found in repository '$Repository'. It may have been installed manually or from a different source."
+                    } else {
+                        Write-Warning "Module '$($Module.Name)' was not found in any registered repositories. It may have been installed manually or from an unregistered source."
+                    }
+                } elseif ($ErrorMessage -match 'null-valued expression') {
+                    Write-Warning "Module '$($Module.Name)' search returned null results. This may indicate a repository connectivity issue or the module may not be available in online repositories."
+                } else {
+                    Write-Warning "Error checking for updates to module '$($Module.Name)': $ErrorMessage"
+                }
             }
         }
+        #endregion Check for updates
 
         if (-not $ModulesWithUpdates -or $ModulesWithUpdates.Count -eq 0) {
             Write-Host 'No module updates found in the online repository.'

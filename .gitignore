@@ -1,6 +1,7 @@
 # Project Files #
 Archive
-Artifacts
+Artifacts/
+**/Artifacts/
 cov.xml
 coverage.xml
 

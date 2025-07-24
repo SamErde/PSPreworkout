@@ -596,11 +596,12 @@ Get-HashtableValueType $config -Key &lt;TAB&gt;</dev:code>
       <command:verb>Get</command:verb>
       <command:noun>ModulesWithUpdate</command:noun>
       <maml:description>
-        <maml:para>Get a list of installed PowerShell modules that have updates available in the PowerShell Gallery.</maml:para>
+        <maml:para>Get a list of installed PowerShell modules that have updates available in their source repository.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>This function retrieves a list of installed PowerShell modules and checks for updates available in the source repository.</maml:para>
+      <maml:para>This function retrieves a list of installed PowerShell modules and checks for updates available in their source repository (e.g.: PowerShell Gallery or MAR).</maml:para>
+      <maml:para>If a pre-release version is installed, it checks the repository for a newer pre-release version or an equivalent (or higher) stable version. Otherwise, it only checks for stable updates.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -608,7 +609,7 @@ Get-HashtableValueType $config -Key &lt;TAB&gt;</dev:code>
         <command:parameter required="false" variableLength="true" globbing="true" pipelineInput="True (ByPropertyName, ByValue)" position="1" aliases="none">
           <maml:name>Name</maml:name>
           <maml:Description>
-            <maml:para>The module name or list of module names to check for updates. Wildcards are allowed, and all modules are checked by default.</maml:para>
+            <maml:para>The module name or list of module names to check for updates. Wildcards and arrays are allowed. All modules ('*') are checked by default.</maml:para>
           </maml:Description>
           <command:parameterValue required="true" variableLength="false">System.Collections.Generic.List`1[System.String]</command:parameterValue>
           <dev:type>
@@ -617,13 +618,24 @@ Get-HashtableValueType $config -Key &lt;TAB&gt;</dev:code>
           </dev:type>
           <dev:defaultValue>@('*')</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>PassThru</maml:name>
+          <maml:Description>
+            <maml:para>Display console output while returning module objects to the pipeline. When specified, the function will show available updates in the console and also return module objects for further processing.</maml:para>
+          </maml:Description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
       <command:parameter required="false" variableLength="true" globbing="true" pipelineInput="True (ByPropertyName, ByValue)" position="1" aliases="none">
         <maml:name>Name</maml:name>
         <maml:Description>
-          <maml:para>The module name or list of module names to check for updates. Wildcards are allowed, and all modules are checked by default.</maml:para>
+          <maml:para>The module name or list of module names to check for updates. Wildcards and arrays are allowed. All modules ('*') are checked by default.</maml:para>
         </maml:Description>
         <command:parameterValue required="true" variableLength="false">System.Collections.Generic.List`1[System.String]</command:parameterValue>
         <dev:type>
@@ -631,6 +643,18 @@ Get-HashtableValueType $config -Key &lt;TAB&gt;</dev:code>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>@('*')</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>PassThru</maml:name>
+        <maml:Description>
+          <maml:para>Display console output while returning module objects to the pipeline. When specified, the function will show available updates in the console and also return module objects for further processing.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
     </command:parameters>
     <command:inputTypes />
@@ -646,14 +670,34 @@ Get-HashtableValueType $config -Key &lt;TAB&gt;</dev:code>
     </command:returnValues>
     <maml:alertSet>
       <maml:alert>
-        <maml:para>To Do: - Batch and "paginate" online checks to speed up. Find-Module can return up to 63 results in one request. - Add support for checking other repositories.</maml:para>
+        <maml:para>This function uses Microsoft.PowerShell.PSResourceGet cmdlets for improved performance and functionality over the PowerShellGet module's cmdlets. The required module will be automatically installed if not present.</maml:para>
+        <maml:para>Scope Priority: The function prioritizes CurrentUser scope modules over AllUsers scope modules, which matches PowerShell's own behavior for importing or updating modules. When a module is installed in both scopes, it checks for updates against the CurrentUser version since that's what PowerShell would load by default. Use -Verbose to see which version and scope is being used for each module.</maml:para>
+        <maml:para>To Do: - Batch and "paginate" online checks to speed up. Find-PSResource can return multiple results in one request. - Add parameter for specifying specific repositories to check.</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
       <command:example>
         <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
         <dev:code>Get-ModulesWithUpdate
-This command retrieves all installed PowerShell modules and checks for updates available in the PowerShell Gallery.</dev:code>
+This command retrieves all installed PowerShell modules and checks for updates in their source repository.</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 2 --------------------------</maml:title>
+        <dev:code>Get-ModulesWithUpdate -PassThru
+This command checks all installed modules for updates. It returns PSModuleInfo objects to the pipeline and displays
+console output about available updates.</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- EXAMPLE 3 --------------------------</maml:title>
+        <dev:code>Get-ModulesWithUpdate -Name 'Pester', 'PSScriptAnalyzer' -PassThru | Update-PSResource
+This command checks specific modules for updates, displays console output about available updates, and pipes the
+results to Update-PSResource.</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
