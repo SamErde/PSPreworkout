@@ -2,7 +2,7 @@
 Module Name: PSPreworkout
 Module Guid: 378339de-a0df-4d44-873b-4fd32c388e06
 Download Help Link: NA
-Help Version: 1.9.6.10
+Help Version: 1.9.8
 Locale: en-US
 ---
 
@@ -30,7 +30,7 @@ Get the object type of each value in a hashtable.
 Get all assemblies loaded in PowerShell.
 
 ### [Get-ModulesWithUpdate](Get-ModulesWithUpdate.md)
-Get a list of installed PowerShell modules that have updates available in the PowerShell Gallery.
+Get a list of installed PowerShell modules that have updates available in their source repository.
 
 ### [Get-PowerShellPortable](Get-PowerShellPortable.md)
 Download a portable version of PowerShell to run anywhere on demand.
