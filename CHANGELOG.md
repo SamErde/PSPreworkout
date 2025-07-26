@@ -13,6 +13,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [1.9.8] - 2025-07-26
+
+This release includes a major refactor of `Get-ModulesWithUpdate` to better handle prerelease versions and improve performance.
+
+### Changed
+
+- Use Microsoft.PowerShell.PSResourceGet instead of PowerShellGet.
+- Fix detection of prerelease versions that include a numerical suffix.
+- Detect 'alpha' prerelease versions.
+- Improve cross-platform support.
+- Support update checks from the module's original source repository.
+- Add PassThru parameter support.
+
+[*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v1.9.7...v1.9.8)
+
 ## [1.9.7] - 2025-07-15
 
 ### Changed
@@ -23,7 +38,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 * Clean up files and workflows
 * Sync module, change log, and release version numbers
 
-[*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v1.9.6...v1.9.10)
+[*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v1.9.6...v1.9.7)
 
 ## [1.9.6] - 2025-07-12
 
@@ -384,3 +399,4 @@ This release is focused on enhancements that make the existing functions more us
 [1.9.5]: https://github.com/SamErde/PSPreworkout/tag/v1.9.5
 [1.9.6]: https://github.com/SamErde/PSPreworkout/tag/v1.9.6
 [1.9.7]: https://github.com/SamErde/PSPreworkout/tag/v1.9.7
+[1.9.8]: https://github.com/SamErde/PSPreworkout/tag/v1.9.8
