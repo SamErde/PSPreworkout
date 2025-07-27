@@ -153,13 +153,13 @@
             # For installed modules: IsPrerelease property seems unreliable, so check multiple sources
             if ($Module.PSObject.Properties['IsPrerelease']) {
                 return $Module.IsPrerelease -or
-                       (-not [string]::IsNullOrWhiteSpace($Module.Prerelease)) -or
-                       ($VersionString -match '-') -or
-                       ($VersionString -match 'alpha|beta|prerelease|preview|rc')
+                (-not [string]::IsNullOrWhiteSpace($Module.Prerelease)) -or
+                ($VersionString -match '-') -or
+                ($VersionString -match 'alpha|beta|prerelease|preview|rc')
             } else {
                 # For online modules: more reliable IsPrerelease property
                 return $Module.IsPrerelease -or
-                       (-not [string]::IsNullOrWhiteSpace($Module.Prerelease))
+                (-not [string]::IsNullOrWhiteSpace($Module.Prerelease))
             }
         } # end IsModulePrerelease function
 
@@ -177,8 +177,9 @@
                 Write-Host "Searching for installed modules matching patterns: $($Name -join ', ')" -ForegroundColor Cyan
                 # Use a wildcard search to get modules and determine if they are installed in an AllUsers or CurrentUser location.
                 [System.Collections.Generic.List[PSObject]] $Modules = Get-InstalledPSResource -Name $Name -Verbose:$false |
-                    Where-Object { $_.Type -eq 'Module' } | Group-Object -Property 'Name' |
-                    ForEach-Object { & $SelectBestModuleVersion $_ } | Sort-Object Name
+                    Where-Object { $_.Type -eq 'Module' } | Group-Object -Property 'Name' | ForEach-Object {
+                        & $SelectBestModuleVersion $_
+                    } | Sort-Object Name
             } else {
                 # Check each individually for better performance when not using wildcards.
                 Write-Host "Searching for specific installed modules: $($Name -join ', ')" -ForegroundColor Cyan
