@@ -91,7 +91,7 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 
 ## OUTPUTS
 
-### PSPreworkout.ModuleInfo
+### System.Object[]
 ## NOTES
 This function uses Microsoft.PowerShell.PSResourceGet cmdlets for improved performance and functionality over the
 PowerShellGet module's cmdlets.
