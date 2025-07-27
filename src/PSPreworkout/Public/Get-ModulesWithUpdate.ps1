@@ -106,6 +106,63 @@
             return $false
         } # end IsAllUsersPath function
 
+        # Function to select the best module version with scope priority
+        $SelectBestModuleVersion = {
+            param ($ModuleGroup)
+
+            # For each module name, prioritize CurrentUser scope over AllUsers scope
+            $CurrentUserModules = @()
+            $AllUsersModules = @()
+
+            # Categorize each installed instance of the module by scope (installation location)
+            foreach ($Module in $ModuleGroup.Group) {
+                if (& $IsAllUsersPath $Module.InstalledLocation) {
+                    $AllUsersModules += $Module
+                } else {
+                    $CurrentUserModules += $Module
+                }
+            }
+
+            if ($CurrentUserModules) {
+                # If module exists in CurrentUser scope, use the highest version from CurrentUser
+                $SelectedModule = $CurrentUserModules | Sort-Object Version -Descending | Select-Object -First 1
+                if ($AllUsersModules) {
+                    $HighestAllUsers = $AllUsersModules | Sort-Object Version -Descending | Select-Object -First 1
+                    Write-Verbose "Module '$($ModuleGroup.Name)': Using CurrentUser version $($SelectedModule.Version) (AllUsers has $($HighestAllUsers.Version))."
+                } else {
+                    Write-Verbose "Module '$($ModuleGroup.Name)': Using CurrentUser version $($SelectedModule.Version)."
+                }
+                return $SelectedModule
+            } elseif ($AllUsersModules) {
+                # If only in AllUsers scope, use the highest version from AllUsers
+                $SelectedModule = $AllUsersModules | Sort-Object Version -Descending | Select-Object -First 1
+                Write-Verbose "Module '$($ModuleGroup.Name)': Using AllUsers version $($SelectedModule.Version) (no CurrentUser installation found)."
+                return $SelectedModule
+            } else {
+                # Fallback: if we can't determine scope, just use the highest version
+                $SelectedModule = $ModuleGroup.Group | Sort-Object Version -Descending | Select-Object -First 1
+                Write-Verbose "Module '$($ModuleGroup.Name)': Using highest version $($SelectedModule.Version) (scope undetermined)."
+                return $SelectedModule
+            }
+        } # end SelectBestModuleVersion function
+
+        # Function to detect if a module is prerelease
+        $IsModulePrerelease = {
+            param ($Module, $VersionString)
+
+            # For installed modules: IsPrerelease property seems unreliable, so check multiple sources
+            if ($Module.PSObject.Properties['IsPrerelease']) {
+                return $Module.IsPrerelease -or
+                       (-not [string]::IsNullOrWhiteSpace($Module.Prerelease)) -or
+                       ($VersionString -match '-') -or
+                       ($VersionString -match 'alpha|beta|prerelease|preview|rc')
+            } else {
+                # For online modules: more reliable IsPrerelease property
+                return $Module.IsPrerelease -or
+                       (-not [string]::IsNullOrWhiteSpace($Module.Prerelease))
+            }
+        } # end IsModulePrerelease function
+
         # Initialize a list to hold modules with updates.
         [System.Collections.Generic.List[PSCustomObject]] $ModulesWithUpdates = @()
     } # end begin block
@@ -121,43 +178,7 @@
                 # Use a wildcard search to get modules and determine if they are installed in an AllUsers or CurrentUser location.
                 [System.Collections.Generic.List[PSObject]] $Modules = Get-InstalledPSResource -Name $Name -Verbose:$false |
                     Where-Object { $_.Type -eq 'Module' } | Group-Object -Property 'Name' |
-                    ForEach-Object {
-                        # For each module name, prioritize CurrentUser scope over AllUsers scope (reset arrays for each iteration).
-                        $CurrentUserModules = @()
-                        $AllUsersModules = @()
-
-                        # Categorize each installed instance of the module by scope (installation location).
-                        foreach ($Module in $_.Group) {
-                            if (& $IsAllUsersPath $Module.InstalledLocation) {
-                                $AllUsersModules += $Module
-                            } else {
-                                $CurrentUserModules += $Module
-                            }
-                        }
-
-                        if ($CurrentUserModules) {
-                            # If module exists in CurrentUser scope, use the highest version from CurrentUser
-                            $SelectedModule = $CurrentUserModules | Sort-Object Version -Descending | Select-Object -First 1
-                            if ($AllUsersModules) {
-                                $HighestAllUsers = $AllUsersModules | Sort-Object Version -Descending | Select-Object -First 1
-                                Write-Verbose "Module '$($_.Name)': Using CurrentUser version $($SelectedModule.Version) (AllUsers has $($HighestAllUsers.Version))."
-                                # Might be worth writing with colorful host output for user awareness.
-                            } else {
-                                Write-Verbose "Module '$($_.Name)': Using CurrentUser version $($SelectedModule.Version)"
-                            }
-                            $SelectedModule
-                        } elseif ($AllUsersModules) {
-                            # If only in AllUsers scope, use the highest version from AllUsers
-                            $SelectedModule = $AllUsersModules | Sort-Object Version -Descending | Select-Object -First 1
-                            Write-Verbose "Module '$($_.Name)': Using AllUsers version $($SelectedModule.Version) (no CurrentUser installation found)."
-                            $SelectedModule
-                        } else {
-                            # Fallback: if we can't determine scope, just use the highest version
-                            $SelectedModule = $_.Group | Sort-Object Version -Descending | Select-Object -First 1
-                            Write-Verbose "Module '$($_.Name)': Using highest version $($SelectedModule.Version) (scope undetermined)."
-                            $SelectedModule
-                        }
-                    } | Sort-Object Name
+                    ForEach-Object { & $SelectBestModuleVersion $_ } | Sort-Object Name
             } else {
                 # Check each individually for better performance when not using wildcards.
                 Write-Host "Searching for specific installed modules: $($Name -join ', ')" -ForegroundColor Cyan
@@ -176,43 +197,7 @@
 
                 # Group by module name only and select the best version with scope priority
                 [System.Collections.Generic.List[PSObject]] $Modules = $AllModules | Group-Object Name |
-                    ForEach-Object {
-                        # For each module name, prioritize CurrentUser scope over AllUsers scope
-                        # Use optimized scope detection for better performance
-                        $CurrentUserModules = @()
-                        $AllUsersModules = @()
-
-                        # Categorize each installed instance of the module by scope (installation location).
-                        foreach ($Module in $_.Group) {
-                            if (& $IsAllUsersPath $Module.InstalledLocation) {
-                                $AllUsersModules += $Module
-                            } else {
-                                $CurrentUserModules += $Module
-                            }
-                        }
-
-                        if ($CurrentUserModules) {
-                            # If module exists in CurrentUser scope, use the highest version from CurrentUser.
-                            $SelectedModule = $CurrentUserModules | Sort-Object Version -Descending | Select-Object -First 1
-                            if ($AllUsersModules) {
-                                $HighestAllUsers = $AllUsersModules | Sort-Object Version -Descending | Select-Object -First 1
-                                Write-Verbose "Module '$($_.Name)': Using CurrentUser version $($SelectedModule.Version) (AllUsers has $($HighestAllUsers.Version))."
-                            } else {
-                                Write-Verbose "Module '$($_.Name)': Using CurrentUser version $($SelectedModule.Version)."
-                            }
-                            $SelectedModule
-                        } elseif ($AllUsersModules) {
-                            # If only in AllUsers scope, use the highest version from AllUsers.
-                            $SelectedModule = $AllUsersModules | Sort-Object Version -Descending | Select-Object -First 1
-                            Write-Verbose "Module '$($_.Name)': Using AllUsers version $($SelectedModule.Version) (no CurrentUser installation)."
-                            $SelectedModule
-                        } else {
-                            # Fallback: if we can't determine scope, just use the highest version.
-                            $SelectedModule = $_.Group | Sort-Object Version -Descending | Select-Object -First 1
-                            Write-Verbose "Module '$($_.Name)': Using highest version $($SelectedModule.Version) (scope undetermined)."
-                            $SelectedModule
-                        }
-                    } | Sort-Object Name
+                    ForEach-Object { & $SelectBestModuleVersion $_ } | Sort-Object Name
             } # end if-else for wildcard check vs explicit name check
         } catch {
             throw $_
@@ -238,10 +223,7 @@
 
             # Comprehensive prerelease detection for installed modules
             # Note: IsPrerelease property seems unreliable for installed modules, so check multiple sources
-            $IsPrerelease = $Module.IsPrerelease -or
-                           (-not [string]::IsNullOrWhiteSpace($Module.Prerelease)) -or
-                           ($InstalledVersionString -match '-') -or
-                           ($InstalledVersionString -match 'alpha|beta|prerelease|preview|rc')
+            $IsPrerelease = & $IsModulePrerelease $Module $InstalledVersionString
 
             # Determine which repository to check based on the module's data.
             $Repository = $null
@@ -335,8 +317,7 @@
 
                 # Determine if online version is prerelease using reliable properties
                 # Online modules have more reliable IsPrerelease property than installed modules
-                $OnlineIsPrerelease = $OnlineModule.IsPrerelease -or
-                                     (-not [string]::IsNullOrWhiteSpace($OnlineModule.Prerelease))
+                $OnlineIsPrerelease = & $IsModulePrerelease $OnlineModule
 
                 Write-Verbose "Normalized versions: Installed=$InstalledVersionNormalized, Online=$OnlineVersionNormalized"
                 Write-Verbose "Prerelease status: Installed=$IsPrerelease, Online=$OnlineIsPrerelease"
