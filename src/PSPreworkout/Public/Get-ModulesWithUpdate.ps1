@@ -47,7 +47,7 @@
 
     #>
     [CmdletBinding()]
-    [OutputType('PSPreworkout.ModuleInfo')]
+    [OutputType([System.Object[]])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '', Justification = 'Making it pretty.')]
     param(
         # List of modules to check for updates. This parameter is accepts wildcards and checks all modules by default.
@@ -234,7 +234,14 @@
             #region Get module information
             # Check installed [version] and prerelease status [boolean].
             $InstalledVersion = $Module.Version
-            $IsPrerelease = $Module.IsPrerelease -or (-not [string]::IsNullOrWhiteSpace($Module.Prerelease)) -or ( $InstalledVersion -match 'alpha|beta|prerelease|preview|rc' )
+            $InstalledVersionString = $InstalledVersion.ToString()
+
+            # Comprehensive prerelease detection for installed modules
+            # Note: IsPrerelease property seems unreliable for installed modules, so check multiple sources
+            $IsPrerelease = $Module.IsPrerelease -or
+                           (-not [string]::IsNullOrWhiteSpace($Module.Prerelease)) -or
+                           ($InstalledVersionString -match '-') -or
+                           ($InstalledVersionString -match 'alpha|beta|prerelease|preview|rc')
 
             # Determine which repository to check based on the module's data.
             $Repository = $null
@@ -287,31 +294,52 @@
                 # PowerShell treats [version]"1.0.0" (Revision=-1) differently from [version]"1.0.0.0" (Revision=0)
                 # We need to normalize them by ensuring both have explicit 4-part notation
 
-                # Extract base version without prerelease suffix
-                $OnlineVersionBase = if ($OnlineVersion.ToString() -match '^(.+?)-') {
+                # Extract base version without prerelease suffix - handle both string and version object types
+                $OnlineVersionString = $OnlineVersion.ToString()
+                $InstalledVersionString = $InstalledVersion.ToString()
+
+                $OnlineVersionBase = if ($OnlineVersionString -match '^(\d+\.\d+\.\d+(?:\.\d+)?)-') {
                     $matches[1]
                 } else {
-                    $OnlineVersion.ToString()
+                    # If it's already a version object without prerelease, just use its string representation
+                    $OnlineVersionString
                 }
 
-                $InstalledVersionBase = if ($InstalledVersion.ToString() -match '^(.+?)-') {
+                $InstalledVersionBase = if ($InstalledVersionString -match '^(\d+\.\d+\.\d+(?:\.\d+)?)-') {
                     $matches[1]
                 } else {
-                    $InstalledVersion.ToString()
+                    # If it's already a version object without prerelease, just use its string representation
+                    $InstalledVersionString
                 }
 
                 # Create normalized versions by ensuring all 4 components are explicit
-                $OnlineVersionObj = [version]$OnlineVersionBase
-                $InstalledVersionObj = [version]$InstalledVersionBase
+                # Wrap in try-catch to handle any version parsing issues
+                try {
+                    $OnlineVersionObj = [version]$OnlineVersionBase
+                    $InstalledVersionObj = [version]$InstalledVersionBase
 
-                # Build normalized string with explicit 4-part format
-                $OnlineVersionNormalized = [version]"$($OnlineVersionObj.Major).$($OnlineVersionObj.Minor).$($OnlineVersionObj.Build).$([Math]::Max(0, $OnlineVersionObj.Revision))"
-                $InstalledVersionNormalized = [version]"$($InstalledVersionObj.Major).$($InstalledVersionObj.Minor).$($InstalledVersionObj.Build).$([Math]::Max(0, $InstalledVersionObj.Revision))"
+                    # Build normalized version strings with proper handling of unspecified components
+                    # .NET Version treats -1 as "unspecified", so we need to normalize consistently
+                    $OnlineBuild = if ($OnlineVersionObj.Build -eq -1) { 0 } else { $OnlineVersionObj.Build }
+                    $OnlineRevision = if ($OnlineVersionObj.Revision -eq -1) { 0 } else { $OnlineVersionObj.Revision }
+                    $InstalledBuild = if ($InstalledVersionObj.Build -eq -1) { 0 } else { $InstalledVersionObj.Build }
+                    $InstalledRevision = if ($InstalledVersionObj.Revision -eq -1) { 0 } else { $InstalledVersionObj.Revision }
 
-                # Determine if online version is prerelease (has any prerelease suffix)
-                $OnlineIsPrerelease = $OnlineVersion.ToString() -match '-'
+                    # Create fully normalized 4-part version objects for accurate comparison
+                    $OnlineVersionNormalized = [version]"$($OnlineVersionObj.Major).$($OnlineVersionObj.Minor).$OnlineBuild.$OnlineRevision"
+                    $InstalledVersionNormalized = [version]"$($InstalledVersionObj.Major).$($InstalledVersionObj.Minor).$InstalledBuild.$InstalledRevision"
+                } catch {
+                    Write-Warning "Error parsing version for module '$($Module.Name)': Installed='$InstalledVersionString', Online='$OnlineVersionString'. Error: $($_.Exception.Message)"
+                    continue
+                }
+
+                # Determine if online version is prerelease using reliable properties
+                # Online modules have more reliable IsPrerelease property than installed modules
+                $OnlineIsPrerelease = $OnlineModule.IsPrerelease -or
+                                     (-not [string]::IsNullOrWhiteSpace($OnlineModule.Prerelease))
 
                 Write-Verbose "Normalized versions: Installed=$InstalledVersionNormalized, Online=$OnlineVersionNormalized"
+                Write-Verbose "Prerelease status: Installed=$IsPrerelease, Online=$OnlineIsPrerelease"
 
                 # If a newer version is available, create a custom object with PSPreworkout.ModuleInfo type.
                 if (
