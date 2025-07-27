@@ -339,26 +339,30 @@
 
                     # Create a custom object with PSPreworkout.ModuleInfo type
                     $ModuleInfo = [PSCustomObject]@{
-                        PSTypeName      = 'PSPreworkout.ModuleInfo'
-                        Name            = $Module.Name
-                        Version         = $InstalledVersion
-                        Repository      = $Module.Repository
-                        Description     = $Module.Description
-                        Author          = $Module.Author
-                        CompanyName     = $Module.CompanyName
-                        Copyright       = $Module.Copyright
-                        PublishedDate   = $Module.PublishedDate
-                        InstalledDate   = $Module.InstalledDate
-                        UpdateAvailable = $true
-                        OnlineVersion   = $OnlineVersion
-                        ReleaseNotes    = $OnlineModule.ReleaseNotes
+                        PSTypeName            = 'PSPreworkout.ModuleInfo'
+                        Name                  = $Module.Name
+                        Version               = $InstalledVersion
+                        Repository            = $Module.Repository
+                        Description           = $Module.Description
+                        Author                = $Module.Author
+                        CompanyName           = $Module.CompanyName
+                        Copyright             = $Module.Copyright
+                        PublishedDate         = $Module.PublishedDate
+                        InstalledDate         = $Module.InstalledDate
+                        UpdateAvailable       = $true
+                        OnlineVersion         = $OnlineVersion
+                        IsInstalledPrerelease = $IsPrerelease
+                        IsOnlinePrerelease    = $OnlineIsPrerelease
+                        ReleaseNotes          = $OnlineModule.ReleaseNotes
                     }
                     # Add the module to the list of modules with updates.
                     $ModulesWithUpdates.Add($ModuleInfo) | Out-Null
 
                     # Display module information when PassThru is specified
                     if ($PassThru) {
-                        Write-Host "$($Module.Name): $($InstalledVersion) → $($OnlineVersion)" -ForegroundColor Green
+                        $InstalledVersionDisplay = if ($IsPrerelease) { "$($InstalledVersion) (prerelease)" } else { $InstalledVersion }
+                        $OnlineVersionDisplay = if ($OnlineIsPrerelease) { "$($OnlineVersion) (prerelease)" } else { $OnlineVersion }
+                        Write-Host "$($Module.Name): $InstalledVersionDisplay → $OnlineVersionDisplay" -ForegroundColor Green
                     }
                 }
             } catch {

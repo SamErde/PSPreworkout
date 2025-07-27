@@ -73,11 +73,11 @@
                     </TableColumnHeader>
                     <TableColumnHeader>
                         <Label>Version</Label>
-                        <Width>15</Width>
+                        <Width>20</Width>
                     </TableColumnHeader>
                     <TableColumnHeader>
                         <Label>OnlineVersion</Label>
-                        <Width>15</Width>
+                        <Width>20</Width>
                     </TableColumnHeader>
                     <TableColumnHeader>
                         <Label>Repository</Label>
@@ -96,10 +96,22 @@
                                 <PropertyName>Name</PropertyName>
                             </TableColumnItem>
                             <TableColumnItem>
-                                <PropertyName>Version</PropertyName>
+                                <ScriptBlock>
+                                    if ($_.IsInstalledPrerelease) {
+                                        "$($_.Version) (prerelease)"
+                                    } else {
+                                        $_.Version.ToString()
+                                    }
+                                </ScriptBlock>
                             </TableColumnItem>
                             <TableColumnItem>
-                                <PropertyName>OnlineVersion</PropertyName>
+                                <ScriptBlock>
+                                    if ($_.IsOnlinePrerelease) {
+                                        "$($_.OnlineVersion) (prerelease)"
+                                    } else {
+                                        $_.OnlineVersion.ToString()
+                                    }
+                                </ScriptBlock>
                             </TableColumnItem>
                             <TableColumnItem>
                                 <PropertyName>Repository</PropertyName>

@@ -192,6 +192,15 @@ Describe 'Get-ModulesWithUpdate' {
             $Result.Author | Should -Not -BeNullOrEmpty
             $Result.ReleaseNotes | Should -Not -BeNullOrEmpty
         }
+
+        It 'Should include prerelease status properties' {
+            $Result = Get-ModulesWithUpdate -Name 'TestModule'
+
+            $Result.PSObject.Properties['IsInstalledPrerelease'] | Should -Not -BeNullOrEmpty
+            $Result.PSObject.Properties['IsOnlinePrerelease'] | Should -Not -BeNullOrEmpty
+            $Result.IsInstalledPrerelease | Should -BeOfType [bool]
+            $Result.IsOnlinePrerelease | Should -BeOfType [bool]
+        }
     }
 
     Context 'Version Normalization' {
