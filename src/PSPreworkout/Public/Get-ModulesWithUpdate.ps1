@@ -50,7 +50,7 @@
     [OutputType([System.Object[]])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '', Justification = 'Making it pretty.')]
     param(
-        # List of modules to check for updates. This parameter is accepts wildcards and checks all modules by default.
+        # List of modules to check for updates. This parameter accepts wildcards and checks all modules by default.
         [Parameter(
             Position = 0,
             ValueFromPipeline,
@@ -67,7 +67,7 @@
     )
 
     begin {
-        # Check for required module and attempt to install if missing.
+        # Check for required modules and attempt to install if missing.
         try {
             if (-not (Get-Command -Name 'Get-InstalledPSResource' -ErrorAction SilentlyContinue)) {
                 Write-Information "The required module 'Microsoft.PowerShell.PSResourceGet' was not found. Attempting to install..." -InformationAction Continue
@@ -79,7 +79,7 @@
                     throw "Failed to install and import the required 'Microsoft.PowerShell.PSResourceGet' module. Please install it manually using: Install-Module -Name 'Microsoft.PowerShell.PSResourceGet'"
                 }
             } else {
-                # Import the module if it's not already imported
+                # Import the module if it's not already imported.
                 if (-not (Get-Module -Name 'Microsoft.PowerShell.PSResourceGet')) {
                     Import-Module -Name 'Microsoft.PowerShell.PSResourceGet' -Force -Verbose:$false
                 }
@@ -88,14 +88,14 @@
             throw "Error checking for required module 'Microsoft.PowerShell.PSResourceGet': $_"
         }
 
-        # Get AllUsers scope paths from machine-level PSModulePath for cross-platform compatibility
+        # Get the AllUsers scope path[s] from PSModulePath. (Re-test on non-Windows platforms.) Ignores blank entries.
         [string[]] $AllUsersModulePaths = @(
             [System.Environment]::GetEnvironmentVariable('PSModulePath', [System.EnvironmentVariableTarget]::Machine) -split [System.IO.Path]::PathSeparator |
                 Where-Object { $_ }
         )
         Write-Debug "AllUsers module paths: $($AllUsersModulePaths -join '; ')"
 
-        # Pre-compile a fast lookup function to see if the installed location is in an AllUsers path.
+        # A lookup variable function to see if the installed module location is in an AllUsers path.
         $IsAllUsersPath = {
             param ($ModuleLocation)
             foreach ($Path in $AllUsersModulePaths) {
@@ -106,15 +106,15 @@
             return $false
         } # end IsAllUsersPath function
 
-        # Function to select the best module version with scope priority
+        # Function to select the best module version with scope and version priority.
         $SelectBestModuleVersion = {
             param ($ModuleGroup)
 
-            # For each module name, prioritize CurrentUser scope over AllUsers scope
+            # For each module name, prioritize CurrentUser scope over AllUsers scope.
             $CurrentUserModules = @()
             $AllUsersModules = @()
 
-            # Categorize each installed instance of the module by scope (installation location)
+            # Categorize each installed instance of the module by scope (installation location).
             foreach ($Module in $ModuleGroup.Group) {
                 if (& $IsAllUsersPath $Module.InstalledLocation) {
                     $AllUsersModules += $Module
@@ -124,7 +124,7 @@
             }
 
             if ($CurrentUserModules) {
-                # If module exists in CurrentUser scope, use the highest version from CurrentUser
+                # If module exists in CurrentUser scope, use the highest version from CurrentUser.
                 $SelectedModule = $CurrentUserModules | Sort-Object Version -Descending | Select-Object -First 1
                 if ($AllUsersModules) {
                     $HighestAllUsers = $AllUsersModules | Sort-Object Version -Descending | Select-Object -First 1
@@ -134,23 +134,23 @@
                 }
                 return $SelectedModule
             } elseif ($AllUsersModules) {
-                # If only in AllUsers scope, use the highest version from AllUsers
+                # If only in AllUsers scope, use the highest version from AllUsers.
                 $SelectedModule = $AllUsersModules | Sort-Object Version -Descending | Select-Object -First 1
                 Write-Verbose "Module '$($ModuleGroup.Name)': Using AllUsers version $($SelectedModule.Version) (no CurrentUser installation found)."
                 return $SelectedModule
             } else {
-                # Fallback: if we can't determine scope, just use the highest version
+                # Fallback: If we can't determine scope, just use the highest version.
                 $SelectedModule = $ModuleGroup.Group | Sort-Object Version -Descending | Select-Object -First 1
                 Write-Verbose "Module '$($ModuleGroup.Name)': Using highest version $($SelectedModule.Version) (scope undetermined)."
                 return $SelectedModule
             }
         } # end SelectBestModuleVersion function
 
-        # Function to detect if a module is prerelease
+        # Function to detect if a module is prerelease.
         $IsModulePrerelease = {
             param ($Module, $VersionString)
 
-            # For installed modules: IsPrerelease property seems unreliable, so check multiple sources
+            # Check multiple properties for prerelease status. Validate this logic before publishing.
             if ($Module.PSObject.Properties['IsPrerelease']) {
                 return $Module.IsPrerelease -or
                 (-not [string]::IsNullOrWhiteSpace($Module.Prerelease)) -or
@@ -204,7 +204,7 @@
             throw $_
         }
 
-        # End the script if no modules were found.
+        # End if no modules were found.
         if (-not $Modules -or $Modules.Count -eq 0) {
             Write-Warning 'No matching modules were found.'
             return
@@ -223,7 +223,6 @@
             $InstalledVersionString = $InstalledVersion.ToString()
 
             # Comprehensive prerelease detection for installed modules
-            # Note: IsPrerelease property seems unreliable for installed modules, so check multiple sources
             $IsPrerelease = & $IsModulePrerelease $Module $InstalledVersionString
 
             # Determine which repository to check based on the module's data.
@@ -236,7 +235,7 @@
             #endregion Get module information
 
             try {
-                # Get the latest online version from the appropriate repository
+                # Get the latest online version from the module's original source repository.
                 $OnlineModule = $null
                 try {
                     if ($Repository) {
@@ -247,24 +246,22 @@
                         $OnlineModule = Find-PSResource -Name $Module.Name -Prerelease:$IsPrerelease
                     }
                 } catch {
-                    # If the specific search fails, try without specifying repository for prerelease modules
-                    if ($IsPrerelease -and $Repository) {
-                        Write-Verbose "Repository-specific search failed for prerelease module '$($Module.Name)', trying all repositories."
+                    # If the specific repository fails, try without specifying repository.
+                        Write-Verbose "Repository-specific search failed for module '$($Module.Name)', trying all repositories with Prerelease:$IsPrerelease"
                         try {
                             $OnlineModule = Find-PSResource -Name $Module.Name -Prerelease:$IsPrerelease
                         } catch {
                             Write-Verbose "All-repository search also failed for '$($Module.Name)'"
                         }
-                    }
 
-                    # If still no result, re-throw the original error to be handled by outer catch
+                    # If still no result, re-throw the original error to be handled by the outer catch.
                     if (-not $OnlineModule) {
                         throw
                     }
                 }
 
                 if (-not $OnlineModule) {
-                    Write-Warning "No online version found for module '$($Module.Name)'."
+                    Write-Warning "No online version found for module '$($Module.Name)' (Prerelease:$IsPrerelease)."
                     continue
                 }
 
@@ -273,57 +270,54 @@
                 Write-Verbose "$($Module.Name) $InstalledVersion (Installed)"
                 Write-Verbose "$($Module.Name) $OnlineVersion (Online)`n"
 
-                # Normalize version objects for accurate comparison
-                # PowerShell treats [version]"1.0.0" (Revision=-1) differently from [version]"1.0.0.0" (Revision=0)
-                # We need to normalize them by ensuring both have explicit 4-part notation
+                # Normalize version objects for accurate comparison.
+                # PowerShell treats [version]"1.0.0" (Revision=-1) differently from [version]"1.0.0.0" (Revision=0).
+                # We need to normalize them by ensuring both have explicit 4-part notation.
 
-                # Extract base version without prerelease suffix - handle both string and version object types
+                # Extract the base version without a prerelease suffix (handle both string and version object types).
                 $OnlineVersionString = $OnlineVersion.ToString()
                 $InstalledVersionString = $InstalledVersion.ToString()
 
                 $OnlineVersionBase = if ($OnlineVersionString -match '^(\d+\.\d+\.\d+(?:\.\d+)?)-') {
                     $matches[1]
                 } else {
-                    # If it's already a version object without prerelease, just use its string representation
+                    # If it's already a version object without prerelease, just use its string representation.
                     $OnlineVersionString
                 }
 
                 $InstalledVersionBase = if ($InstalledVersionString -match '^(\d+\.\d+\.\d+(?:\.\d+)?)-') {
                     $matches[1]
                 } else {
-                    # If it's already a version object without prerelease, just use its string representation
+                    # If it's already a version object without prerelease, just use its string representation.
                     $InstalledVersionString
                 }
 
-                # Create normalized versions by ensuring all 4 components are explicit
-                # Wrap in try-catch to handle any version parsing issues
+                # .NET Version treats -1 as "unspecified", so we need to normalize with all 4 components explicitly defined.
                 try {
                     $OnlineVersionObj = [version]$OnlineVersionBase
                     $InstalledVersionObj = [version]$InstalledVersionBase
 
-                    # Build normalized version strings with proper handling of unspecified components
-                    # .NET Version treats -1 as "unspecified", so we need to normalize consistently
+                    # Build normalized version strings with proper handling of unspecified components.
                     $OnlineBuild = if ($OnlineVersionObj.Build -eq -1) { 0 } else { $OnlineVersionObj.Build }
                     $OnlineRevision = if ($OnlineVersionObj.Revision -eq -1) { 0 } else { $OnlineVersionObj.Revision }
                     $InstalledBuild = if ($InstalledVersionObj.Build -eq -1) { 0 } else { $InstalledVersionObj.Build }
                     $InstalledRevision = if ($InstalledVersionObj.Revision -eq -1) { 0 } else { $InstalledVersionObj.Revision }
 
                     # Create fully normalized 4-part version objects for accurate comparison
-                    $OnlineVersionNormalized = [version]"$($OnlineVersionObj.Major).$($OnlineVersionObj.Minor).$OnlineBuild.$OnlineRevision"
+                    $OnlineVersionNormalized    = [version]"$($OnlineVersionObj.Major).$($OnlineVersionObj.Minor).$OnlineBuild.$OnlineRevision"
                     $InstalledVersionNormalized = [version]"$($InstalledVersionObj.Major).$($InstalledVersionObj.Minor).$InstalledBuild.$InstalledRevision"
                 } catch {
                     Write-Warning "Error parsing version for module '$($Module.Name)': Installed='$InstalledVersionString', Online='$OnlineVersionString'. Error: $($_.Exception.Message)"
                     continue
                 }
 
-                # Determine if online version is prerelease using reliable properties
-                # Online modules have more reliable IsPrerelease property than installed modules
+                # Determine if online version is prerelease using reliable properties. Online modules have a more reliable IsPrerelease property than installed modules.
                 $OnlineIsPrerelease = & $IsModulePrerelease $OnlineModule
 
                 Write-Verbose "Normalized versions: Installed=$InstalledVersionNormalized, Online=$OnlineVersionNormalized"
                 Write-Verbose "Prerelease status: Installed=$IsPrerelease, Online=$OnlineIsPrerelease"
 
-                # If a newer version is available, create a custom object with PSPreworkout.ModuleInfo type.
+                # If a newer version is available, create a custom object with the PSPreworkout.ModuleInfo type.
                 if (
                     (
                         # Compare the normalized version objects directly for newer versions
@@ -354,12 +348,11 @@
                         OnlineVersion         = $OnlineVersion
                         IsInstalledPrerelease = $IsPrerelease
                         IsOnlinePrerelease    = $OnlineIsPrerelease
-                        ReleaseNotes          = $OnlineModule.ReleaseNotes
                     }
                     # Add the module to the list of modules with updates.
                     $ModulesWithUpdates.Add($ModuleInfo) | Out-Null
 
-                    # Display module information when PassThru is specified
+                    # Display module information when PassThru is specified.
                     if ($PassThru) {
                         $InstalledVersionDisplay = if ($IsPrerelease) { "$($InstalledVersion) (prerelease)" } else { $InstalledVersion }
                         $OnlineVersionDisplay = if ($OnlineIsPrerelease) { "$($OnlineVersion) (prerelease)" } else { $OnlineVersion }
@@ -367,7 +360,7 @@
                     }
                 }
             } catch {
-                # Handle different types of errors more specifically
+                # Handle different types of errors more specifically.
                 $ErrorMessage = $_.Exception.Message
                 if ($ErrorMessage -match 'could not be found') {
                     if ($Repository) {
