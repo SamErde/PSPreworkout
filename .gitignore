@@ -4,6 +4,7 @@ Artifacts/
 **/Artifacts/
 cov.xml
 coverage.xml
+Output/**/**
 
 ### VisualStudioCode ###
 .vscode/*
