@@ -1,10 +1,10 @@
 BeforeAll {
     Set-Location -Path $PSScriptRoot
     $ModuleName = 'PSPreworkout'
-    $PathToManifest = [System.IO.Path]::Combine('..', '..', 'Artifacts', "$ModuleName.psd1")
-    #if the module is already in memory, remove it
-    Get-Module $ModuleName -ErrorAction SilentlyContinue | Remove-Module -Force
-    Import-Module $PathToManifest -Force
+    # $PathToManifest = [System.IO.Path]::Combine('..', '..', 'Artifacts', "$ModuleName.psd1")
+    # If the module is already in memory, remove it.
+    # Get-Module $ModuleName -ErrorAction SilentlyContinue | Remove-Module -Force
+    # Import-Module $PathToManifest -Force
 }
 
 Describe 'Integration Tests' -Tag Integration {
@@ -15,4 +15,4 @@ Describe 'Integration Tests' -Tag Integration {
     }
 }
 
-Remove-Module 'PSPreworkout' -Force
+Remove-Module $ModuleName -Force

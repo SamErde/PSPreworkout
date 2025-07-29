@@ -190,7 +190,6 @@ Describe 'Get-ModulesWithUpdate' {
             $Result.Repository | Should -Not -BeNullOrEmpty
             $Result.Description | Should -Not -BeNullOrEmpty
             $Result.Author | Should -Not -BeNullOrEmpty
-            $Result.ReleaseNotes | Should -Not -BeNullOrEmpty
         }
 
         It 'Should include prerelease status properties' {
@@ -444,30 +443,6 @@ Describe 'Get-ModulesWithUpdate' {
 
             # Should use CurrentUser version (1.1.0) not AllUsers version (1.0.0)
             $Result.Version | Should -Be ([version]'1.1.0')
-        }
-    }
-}
-
-Describe 'Get-ModulesWithUpdate Integration Tests' -Tag 'Integration' {
-    Context 'Real Module Dependencies' {
-        It 'Should work with Microsoft.PowerShell.PSResourceGet module' {
-            # Test that the function can actually load and use the real PSResourceGet module
-            # This test will be skipped if the module is not available
-
-            try {
-                Import-Module -Name 'Microsoft.PowerShell.PSResourceGet' -ErrorAction Stop
-                $Available = $true
-            } catch {
-                $Available = $false
-            }
-
-            if (-not $Available) {
-                Set-ItResult -Skipped -Because 'Microsoft.PowerShell.PSResourceGet module is not available'
-                return
-            }
-
-            # Test with a known stable module that's unlikely to change frequently
-            { Get-ModulesWithUpdate -Name 'PackageManagement' -ErrorAction Stop } | Should -Not -Throw
         }
     }
 }

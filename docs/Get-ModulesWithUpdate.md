@@ -91,7 +91,8 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 
 ## OUTPUTS
 
-### System.Object[]
+### System.Management.Automation.PSObject
+### Microsoft.PowerShell.PSResourceGet.UtilClasses.PSResourceInfo[]
 ## NOTES
 This function uses Microsoft.PowerShell.PSResourceGet cmdlets for improved performance and functionality over the
 PowerShellGet module's cmdlets.
