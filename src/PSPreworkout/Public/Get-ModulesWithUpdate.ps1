@@ -47,7 +47,7 @@
 
     #>
     [CmdletBinding()]
-    [OutputType([System.Object[]])]
+    [OutputType([Microsoft.PowerShell.PSResourceGet.UtilClasses.PSResourceInfo[]],[PSPreworkout.ModuleUpdateInfo[]])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '', Justification = 'Making it pretty.')]
     param(
         # List of modules to check for updates. This parameter accepts wildcards and checks all modules by default.
@@ -91,24 +91,34 @@
         # Get the AllUsers scope path[s] from PSModulePath. (Re-test on non-Windows platforms.) Ignores blank entries.
         [string[]] $AllUsersModulePaths = @(
             [System.Environment]::GetEnvironmentVariable('PSModulePath', [System.EnvironmentVariableTarget]::Machine) -split [System.IO.Path]::PathSeparator |
-                Where-Object { $_ }
+            Where-Object { $_ }
         )
         Write-Debug "AllUsers module paths: $($AllUsersModulePaths -join '; ')"
 
-        # A lookup variable function to see if the installed module location is in an AllUsers path.
-        $IsAllUsersPath = {
-            param ($ModuleLocation)
+        function Test-IsAllUsersPath {
+            # Check if the installed module location is in an AllUsers path.
+            param (
+                # The ModuleLocation (installation path) of the module to check.
+                [Parameter(Mandatory = $true)]
+                [string] $ModuleLocation
+            )
+
+            # Loop through all AllUsers paths and check if the module location starts with any of them (case-insensitive).
             foreach ($Path in $AllUsersModulePaths) {
                 if ($ModuleLocation.StartsWith($Path, [System.StringComparison]::OrdinalIgnoreCase)) {
                     return $true
                 }
             }
             return $false
-        } # end IsAllUsersPath function
+        } # end Test-IsAllUsersPath function
 
-        # Function to select the best module version with scope and version priority.
-        $SelectBestModuleVersion = {
-            param ($ModuleGroup)
+        function Select-ModuleVersion {
+            # Take a group of module installations (grouped by name) and select the relevant module version.
+            param (
+                # A group object containing multiple installations of the same module.
+                [Parameter(Mandatory = $true)]
+                $ModuleGroup
+            )
 
             # For each module name, prioritize CurrentUser scope over AllUsers scope.
             $CurrentUserModules = @()
@@ -116,7 +126,7 @@
 
             # Categorize each installed instance of the module by scope (installation location).
             foreach ($Module in $ModuleGroup.Group) {
-                if (& $IsAllUsersPath $Module.InstalledLocation) {
+                if (Test-IsAllUsersPath $Module.InstalledLocation) {
                     $AllUsersModules += $Module
                 } else {
                     $CurrentUserModules += $Module
@@ -146,25 +156,26 @@
             }
         } # end SelectBestModuleVersion function
 
-        # Function to detect if a module is prerelease.
-        $IsModulePrerelease = {
+        function Test-IsModulePrerelease {
+            # Check if an installed module version is a prerelease version.
             param ($Module, $VersionString)
 
-            # Check multiple properties for prerelease status. Validate this logic before publishing.
+            # Return true if the IsPrerelease property is true or if the Prerelease property is not empty
+            # or if the version string contains a prerelease identifier.
             if ($Module.PSObject.Properties['IsPrerelease']) {
                 return $Module.IsPrerelease -or
                 (-not [string]::IsNullOrWhiteSpace($Module.Prerelease)) -or
-                ($VersionString -match '-') -or
                 ($VersionString -match 'alpha|beta|prerelease|preview|rc')
+                #-or ($VersionString -match '-')
             } else {
-                # For online modules: more reliable IsPrerelease property
-                return $Module.IsPrerelease -or
-                (-not [string]::IsNullOrWhiteSpace($Module.Prerelease))
+                # Return true if the IsPrerelease property is true or if the Prerelease property is not empty.
+                return $Module.IsPrerelease -or (-not [string]::IsNullOrWhiteSpace($Module.Prerelease))
             }
         } # end IsModulePrerelease function
 
         # Initialize a list to hold modules with updates.
         [System.Collections.Generic.List[PSCustomObject]] $ModulesWithUpdates = @()
+
     } # end begin block
 
     process {
@@ -178,8 +189,8 @@
                 # Use a wildcard search to get modules and determine if they are installed in an AllUsers or CurrentUser location.
                 [System.Collections.Generic.List[PSObject]] $Modules = Get-InstalledPSResource -Name $Name -Verbose:$false |
                     Where-Object { $_.Type -eq 'Module' } | Group-Object -Property 'Name' | ForEach-Object {
-                        & $SelectBestModuleVersion $_
-                    } | Sort-Object Name
+                    Select-ModuleVersion $_
+                } | Sort-Object Name
             } else {
                 # Check each individually for better performance when not using wildcards.
                 Write-Host "Searching for specific installed modules: $($Name -join ', ')" -ForegroundColor Cyan
@@ -198,13 +209,13 @@
 
                 # Group by module name only and select the best version with scope priority
                 [System.Collections.Generic.List[PSObject]] $Modules = $AllModules | Group-Object Name |
-                    ForEach-Object { & $SelectBestModuleVersion $_ } | Sort-Object Name
+                    ForEach-Object { Select-ModuleVersion $_ } | Sort-Object Name
             } # end if-else for wildcard check vs explicit name check
         } catch {
             throw $_
         }
 
-        # End if no modules were found.
+        # Stop if no modules were found.
         if (-not $Modules -or $Modules.Count -eq 0) {
             Write-Warning 'No matching modules were found.'
             return
@@ -214,16 +225,14 @@
         #endregion Get installed modules
 
         #region Check for updates
-        Write-Host 'Checking the repository for newer versions of the modules...' -ForegroundColor Cyan
+        Write-Host 'Checking the source repository for newer versions of the modules...' -ForegroundColor Cyan
         foreach ($Module in $Modules) {
 
             #region Get module information
             # Check installed [version] and prerelease status [boolean].
             $InstalledVersion = $Module.Version
             $InstalledVersionString = $InstalledVersion.ToString()
-
-            # Comprehensive prerelease detection for installed modules
-            $IsPrerelease = & $IsModulePrerelease $Module $InstalledVersionString
+            $IsPrerelease = Test-IsModulePrerelease $Module $InstalledVersionString
 
             # Determine which repository to check based on the module's data.
             $Repository = $null
@@ -260,6 +269,7 @@
                     }
                 }
 
+                # If no online module was found, skip to the next module.
                 if (-not $OnlineModule) {
                     Write-Warning "No online version found for module '$($Module.Name)' (Prerelease:$IsPrerelease)."
                     continue
@@ -270,9 +280,10 @@
                 Write-Verbose "$($Module.Name) $InstalledVersion (Installed)"
                 Write-Verbose "$($Module.Name) $OnlineVersion (Online)`n"
 
-                # Normalize version objects for accurate comparison.
-                # PowerShell treats [version]"1.0.0" (Revision=-1) differently from [version]"1.0.0.0" (Revision=0).
-                # We need to normalize them by ensuring both have explicit 4-part notation.
+                <# Normalize version objects for accurate comparison:
+                    PowerShell treats [version]"1.0.0" (Revision=-1) differently from [version]"1.0.0.0" (Revision=0).
+                    We need to normalize them by ensuring both have explicit 4-part notation.
+                #>
 
                 # Extract the base version without a prerelease suffix (handle both string and version object types).
                 $OnlineVersionString = $OnlineVersion.ToString()
@@ -298,34 +309,30 @@
                     $InstalledVersionObj = [version]$InstalledVersionBase
 
                     # Build normalized version strings with proper handling of unspecified components.
-                    $OnlineBuild = if ($OnlineVersionObj.Build -eq -1) { 0 } else { $OnlineVersionObj.Build }
-                    $OnlineRevision = if ($OnlineVersionObj.Revision -eq -1) { 0 } else { $OnlineVersionObj.Revision }
-                    $InstalledBuild = if ($InstalledVersionObj.Build -eq -1) { 0 } else { $InstalledVersionObj.Build }
+                    $OnlineBuild       = if ($OnlineVersionObj.Build       -eq -1) { 0 } else { $OnlineVersionObj.Build }
+                    $OnlineRevision    = if ($OnlineVersionObj.Revision    -eq -1) { 0 } else { $OnlineVersionObj.Revision }
+                    $InstalledBuild    = if ($InstalledVersionObj.Build    -eq -1) { 0 } else { $InstalledVersionObj.Build }
                     $InstalledRevision = if ($InstalledVersionObj.Revision -eq -1) { 0 } else { $InstalledVersionObj.Revision }
 
-                    # Create fully normalized 4-part version objects for accurate comparison
-                    $OnlineVersionNormalized    = [version]"$($OnlineVersionObj.Major).$($OnlineVersionObj.Minor).$OnlineBuild.$OnlineRevision"
-                    $InstalledVersionNormalized = [version]"$($InstalledVersionObj.Major).$($InstalledVersionObj.Minor).$InstalledBuild.$InstalledRevision"
+                    # Create fully normalized 4-part version objects for accurate comparison.
+                    #$OnlineVersionNormalized    = [version]"$($OnlineVersionObj.Major).$($OnlineVersionObj.Minor).$OnlineBuild.$OnlineRevision"
+                    #$InstalledVersionNormalized = [version]"$($InstalledVersionObj.Major).$($InstalledVersionObj.Minor).$InstalledBuild.$InstalledRevision"
+                    $OnlineVersionNormalized    = [version]"{0}.{1}.{2}.{3}" -f $OnlineVersionObj.Major, $OnlineVersionObj.Minor, $OnlineBuild, $OnlineRevision
+                    $InstalledVersionNormalized = [version]"{0}.{1}.{2}.{3}" -f $InstalledVersionObj.Major, $InstalledVersionObj.Minor, $InstalledBuild, $InstalledRevision
                 } catch {
                     Write-Warning "Error parsing version for module '$($Module.Name)': Installed='$InstalledVersionString', Online='$OnlineVersionString'. Error: $($_.Exception.Message)"
                     continue
                 }
 
-                # Determine if online version is prerelease using reliable properties. Online modules have a more reliable IsPrerelease property than installed modules.
-                $OnlineIsPrerelease = & $IsModulePrerelease $OnlineModule
-
+                # Check if the online module is a prerelease version.
+                $OnlineIsPrerelease = Test-IsModulePrerelease $OnlineModule $OnlineVersion.ToString()
                 Write-Verbose "Normalized versions: Installed=$InstalledVersionNormalized, Online=$OnlineVersionNormalized"
                 Write-Verbose "Prerelease status: Installed=$IsPrerelease, Online=$OnlineIsPrerelease"
 
                 # If a newer version is available, create a custom object with the PSPreworkout.ModuleInfo type.
-                if (
+                if ( $OnlineVersionNormalized -gt $InstalledVersionNormalized  -or
                     (
-                        # Compare the normalized version objects directly for newer versions
-                        $OnlineVersionNormalized -gt $InstalledVersionNormalized
-                    ) -or
-                    (
-                        # Allow updates from prerelease to stable versions with same or higher base version
-                        # This allows upgrading from "1.0.0-beta" to "1.0.0" (stable release)
+                        # Allow updates from prerelease to stable versions with same or higher base version. This allows upgrading from "1.0.0-beta" to "1.0.0" (stable release).
                         ($OnlineVersionNormalized -ge $InstalledVersionNormalized) -and
                         ($IsPrerelease -and -not $OnlineIsPrerelease)
                     )
