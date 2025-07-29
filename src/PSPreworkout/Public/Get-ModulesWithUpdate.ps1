@@ -47,7 +47,7 @@
 
     #>
     [CmdletBinding()]
-    [OutputType([PSCustomObject], [PSPreworkout.ModuleUpdateInfo[]], [Microsoft.PowerShell.PSResourceGet.UtilClasses.PSResourceInfo[]])]
+    [OutputType([PSCustomObject], [Microsoft.PowerShell.PSResourceGet.UtilClasses.PSResourceInfo[]])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '', Justification = 'Making it pretty.')]
     param(
         # List of modules to check for updates. This parameter accepts wildcards and checks all modules by default.
@@ -91,15 +91,28 @@
         # Get the AllUsers scope path[s] from PSModulePath. (Re-test on non-Windows platforms.) Ignores blank entries.
         [string[]] $AllUsersModulePaths = @(
             [System.Environment]::GetEnvironmentVariable('PSModulePath', [System.EnvironmentVariableTarget]::Machine) -split [System.IO.Path]::PathSeparator |
-            Where-Object { $_ }
+                Where-Object { $_ }
         )
         Write-Debug "AllUsers module paths: $($AllUsersModulePaths -join '; ')"
 
         function Test-IsAllUsersPath {
-            # Check if the installed module location is in an AllUsers path.
+            <#
+            .SYNOPSIS
+            Check if a module installation path is in an AllUsers scope.
+            .DESCRIPTION
+            This function checks if the provided module installation path is located in an AllUsers scope by comparing it
+            against the known AllUsers module paths. It returns true if the path starts with any of the AllUsers paths,
+            indicating that the module is installed for all users on the system.
+            .PARAMETER ModuleLocation
+            The ModuleLocation (installation path) of the module to check.
+            .OUTPUTS
+            [bool] Returns true if the module is installed in an AllUsers scope, otherwise false.
+            .EXAMPLE
+            Test-IsAllUsersPath -ModuleLocation 'C:\Program Files\WindowsPowerShell\Modules\MyModule'
+            This command checks if the specified module location is in an AllUsers scope and returns true or false.
+            #>
             param (
                 # The ModuleLocation (installation path) of the module to check.
-                [Parameter(Mandatory = $true)]
                 [string] $ModuleLocation
             )
 
@@ -113,10 +126,22 @@
         } # end Test-IsAllUsersPath function
 
         function Select-ModuleVersion {
-            # Take a group of module installations (grouped by name) and select the relevant module version.
+            <#
+            .SYNOPSIS
+            Select the appropriate module version from a group of installations of the same module.
+            .DESCRIPTION
+            This function takes a group of a module with multiple installations and selects the relevant module version.
+            .PARAMETER ModuleGroup
+            A group object containing multiple installations of the same module.
+            .OUTPUTS
+            [PSObject] Returns the selected module version object.
+            .EXAMPLE
+            $ModuleGroup = Get-InstalledPSResource -Name 'MyModule' | Group-Object -Property 'Name'
+            $SelectedModule = Select-ModuleVersion -ModuleGroup $ModuleGroup
+            This command selects the best version of 'MyModule' from the group of installations, prioritizing CurrentUser scope over AllUsers scope.
+            #>
             param (
                 # A group object containing multiple installations of the same module.
-                [Parameter(Mandatory = $true)]
                 $ModuleGroup
             )
 
@@ -157,7 +182,22 @@
         } # end SelectBestModuleVersion function
 
         function Test-IsModulePrerelease {
-            # Check if an installed module version is a prerelease version.
+            <#
+            .SYNOPSIS
+            Check if a a prerelease version of a module is installed.
+            .DESCRIPTION
+            This function checks if an installed module version is a prerelease version.
+            .PARAMETER Module
+            The module object to check.
+            .PARAMETER VersionString
+            The version string of the module.
+            .OUTPUTS
+            [bool] Returns true if the module is a prerelease version; otherwise, false.
+            .EXAMPLE
+            $Module = Get-InstalledPSResource -Name 'MyModule' | Select-Object -First 1
+            $IsPrerelease = Test-IsModulePrerelease -Module $Module -VersionString $Module.Version.ToString()
+            This command checks if the specified module is a prerelease version and returns true or false.
+            #>
             param ($Module, $VersionString)
 
             # Return true if the IsPrerelease property is true or if the Prerelease property is not empty
@@ -189,8 +229,8 @@
                 # Use a wildcard search to get modules and determine if they are installed in an AllUsers or CurrentUser location.
                 [System.Collections.Generic.List[PSObject]] $Modules = Get-InstalledPSResource -Name $Name -Verbose:$false |
                     Where-Object { $_.Type -eq 'Module' } | Group-Object -Property 'Name' | ForEach-Object {
-                    Select-ModuleVersion $_
-                } | Sort-Object Name
+                        Select-ModuleVersion $_
+                    } | Sort-Object Name
             } else {
                 # Check each individually for better performance when not using wildcards.
                 Write-Host "Searching for specific installed modules: $($Name -join ', ')" -ForegroundColor Cyan
@@ -256,12 +296,12 @@
                     }
                 } catch {
                     # If the specific repository fails, try without specifying repository.
-                        Write-Verbose "Repository-specific search failed for module '$($Module.Name)', trying all repositories with Prerelease:$IsPrerelease"
-                        try {
-                            $OnlineModule = Find-PSResource -Name $Module.Name -Prerelease:$IsPrerelease
-                        } catch {
-                            Write-Verbose "All-repository search also failed for '$($Module.Name)'"
-                        }
+                    Write-Verbose "Repository-specific search failed for module '$($Module.Name)', trying all repositories with Prerelease:$IsPrerelease"
+                    try {
+                        $OnlineModule = Find-PSResource -Name $Module.Name -Prerelease:$IsPrerelease
+                    } catch {
+                        Write-Verbose "All-repository search also failed for '$($Module.Name)'"
+                    }
 
                     # If still no result, re-throw the original error to be handled by the outer catch.
                     if (-not $OnlineModule) {
@@ -315,10 +355,8 @@
                     $InstalledRevision = if ($InstalledVersionObj.Revision -eq -1) { 0 } else { $InstalledVersionObj.Revision }
 
                     # Create fully normalized 4-part version objects for accurate comparison.
-                    #$OnlineVersionNormalized    = [version]"$($OnlineVersionObj.Major).$($OnlineVersionObj.Minor).$OnlineBuild.$OnlineRevision"
-                    #$InstalledVersionNormalized = [version]"$($InstalledVersionObj.Major).$($InstalledVersionObj.Minor).$InstalledBuild.$InstalledRevision"
-                    $OnlineVersionNormalized    = [version]"{0}.{1}.{2}.{3}" -f $OnlineVersionObj.Major, $OnlineVersionObj.Minor, $OnlineBuild, $OnlineRevision
-                    $InstalledVersionNormalized = [version]"{0}.{1}.{2}.{3}" -f $InstalledVersionObj.Major, $InstalledVersionObj.Minor, $InstalledBuild, $InstalledRevision
+                    $OnlineVersionNormalized    = [version]"$($OnlineVersionObj.Major).$($OnlineVersionObj.Minor).$OnlineBuild.$OnlineRevision"
+                    $InstalledVersionNormalized = [version]"$($InstalledVersionObj.Major).$($InstalledVersionObj.Minor).$InstalledBuild.$InstalledRevision"
                 } catch {
                     Write-Warning "Error parsing version for module '$($Module.Name)': Installed='$InstalledVersionString', Online='$OnlineVersionString'. Error: $($_.Exception.Message)"
                     continue
