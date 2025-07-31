@@ -13,6 +13,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [1.9.11] - 2025-07-31
+
+This release fixes a bug in `Get-ModulesWithUpdate`.
+
+### Fixed
+
+- Remove 'PSResourceInfo' from the OutputType property because of a bootstrap condition it creates if the Microsoft.PowerShell.PSResource module has not already been imported.
+
+[*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v1.9.10...v1.9.11)
+
 ## [1.9.10] - 2025-07-29
 
 This release includes a major refactor of `Get-ModulesWithUpdate` to better handle prerelease versions and improve performance.
@@ -400,3 +410,4 @@ This release is focused on enhancements that make the existing functions more us
 [1.9.6]: https://github.com/SamErde/PSPreworkout/tag/v1.9.6
 [1.9.7]: https://github.com/SamErde/PSPreworkout/tag/v1.9.7
 [1.9.10]: https://github.com/SamErde/PSPreworkout/tag/v1.9.10
+[1.9.11]: https://github.com/SamErde/PSPreworkout/tag/v1.9.11
