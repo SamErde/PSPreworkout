@@ -163,20 +163,20 @@
                 $SelectedModule = $CurrentUserModules | Sort-Object Version -Descending | Select-Object -First 1
                 if ($AllUsersModules) {
                     $HighestAllUsers = $AllUsersModules | Sort-Object Version -Descending | Select-Object -First 1
-                    Write-Verbose "Module '$($ModuleGroup.Name)': Using CurrentUser version $($SelectedModule.Version) (AllUsers has $($HighestAllUsers.Version))."
+                    "`n`tModule     : $($ModuleGroup.Name)`n`tCurrentUser: $($SelectedModule.Version)`n`tAllUsers: $($HighestAllUsers.Version)" | Write-Debug
                 } else {
-                    Write-Verbose "Module '$($ModuleGroup.Name)': Using CurrentUser version $($SelectedModule.Version)."
+                    "`n`tModule     : $($ModuleGroup.Name)`n`tCurrentUser: $($SelectedModule.Version)" | Write-Debug
                 }
                 return $SelectedModule
             } elseif ($AllUsersModules) {
                 # If only in AllUsers scope, use the highest version from AllUsers.
                 $SelectedModule = $AllUsersModules | Sort-Object Version -Descending | Select-Object -First 1
-                Write-Verbose "Module '$($ModuleGroup.Name)': Using AllUsers version $($SelectedModule.Version) (no CurrentUser installation found)."
+                Write-Verbose "              Module '$($ModuleGroup.Name)': Using AllUsers version $($SelectedModule.Version) (no CurrentUser installation found)."
                 return $SelectedModule
             } else {
                 # Fallback: If we can't determine scope, just use the highest version.
                 $SelectedModule = $ModuleGroup.Group | Sort-Object Version -Descending | Select-Object -First 1
-                Write-Verbose "Module '$($ModuleGroup.Name)': Using highest version $($SelectedModule.Version) (scope undetermined)."
+                Write-Verbose "               Module '$($ModuleGroup.Name)': Using highest version $($SelectedModule.Version) (scope undetermined)."
                 return $SelectedModule
             }
         } # end SelectBestModuleVersion function
@@ -236,14 +236,14 @@
                 Write-Host "Searching for specific installed modules: $($Name -join ', ')" -ForegroundColor Cyan
                 $AllModules = @()
                 foreach ($ModuleName in $Name) {
-                    Write-Verbose "Looking for installed module: $ModuleName"
+                    Write-Debug "Looking for installed module: $ModuleName"
                     $ModuleResults = Get-InstalledPSResource -Name $ModuleName -ErrorAction SilentlyContinue -Verbose:$false |
                         Where-Object { $_.Type -eq 'Module' }
                     if ($ModuleResults) {
-                        Write-Verbose "Found $($ModuleResults.Count) installation(s) of module '$ModuleName'."
+                        Write-Verbose "Found $($ModuleResults.Count) installation(s) of '$ModuleName'"
                         $AllModules += $ModuleResults
                     } else {
-                        Write-Verbose "Module '$ModuleName' not found in installed modules."
+                        Write-Verbose "'$ModuleName' was not found in installed modules."
                     }
                 }
 
@@ -317,8 +317,8 @@
 
                 $OnlineVersion = $OnlineModule.Version
 
-                Write-Verbose "$($Module.Name) $InstalledVersion (Installed)"
-                Write-Verbose "$($Module.Name) $OnlineVersion (Online)`n"
+                Write-Debug "$($Module.Name) $InstalledVersion (Installed)"
+                Write-Debug "$($Module.Name) $OnlineVersion (Online)`n"
 
                 <# Normalize version objects for accurate comparison:
                     PowerShell treats [version]"1.0.0" (Revision=-1) differently from [version]"1.0.0.0" (Revision=0).
@@ -364,8 +364,8 @@
 
                 # Check if the online module is a prerelease version.
                 $OnlineIsPrerelease = Test-IsModulePrerelease $OnlineModule $OnlineVersion.ToString()
-                Write-Verbose "Normalized versions: Installed=$InstalledVersionNormalized, Online=$OnlineVersionNormalized"
-                Write-Verbose "Prerelease status: Installed=$IsPrerelease, Online=$OnlineIsPrerelease"
+                Write-Debug "Normalized versions: Installed=$InstalledVersionNormalized, Online=$OnlineVersionNormalized"
+                Write-Debug "Prerelease status: Installed=$IsPrerelease, Online=$OnlineIsPrerelease"
 
                 # If a newer version is available, create a custom object with the PSPreworkout.ModuleInfo type.
                 if ( $OnlineVersionNormalized -gt $InstalledVersionNormalized  -or
@@ -375,8 +375,6 @@
                         ($IsPrerelease -and -not $OnlineIsPrerelease)
                     )
                 ) {
-                    Write-Verbose "$($Module.Name) $($InstalledVersion) --> $($OnlineVersion) 🆕`n"
-
                     # Create a custom object with PSPreworkout.ModuleInfo type
                     $ModuleInfo = [PSCustomObject]@{
                         PSTypeName            = 'PSPreworkout.ModuleInfo'
@@ -401,7 +399,7 @@
                     if ($PassThru) {
                         $InstalledVersionDisplay = if ($IsPrerelease) { "$($InstalledVersion) (prerelease)" } else { $InstalledVersion }
                         $OnlineVersionDisplay = if ($OnlineIsPrerelease) { "$($OnlineVersion) (prerelease)" } else { $OnlineVersion }
-                        Write-Host "$($Module.Name): $InstalledVersionDisplay → $OnlineVersionDisplay" -ForegroundColor Green
+                        Write-Host "$($Module.Name): $InstalledVersionDisplay → $OnlineVersionDisplay 🆕" -ForegroundColor Green
                     }
                 }
             } catch {
