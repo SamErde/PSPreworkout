@@ -1,0 +1,27 @@
+name: 🖼️ Format Markdown
+
+on:
+  push:
+    paths:
+      - 'docs/**.md'
+  workflow_dispatch:
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          # This is necessary to commit changes back to the branch
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Format Markdown files
+        uses: creyD/prettier_action@v4.3
+        with:
+          # Options for prettier
+          prettier_options: "--write docs/**/*.md"
+          # Commit message for the formatting changes
+          commit_message: "docs: format markdown files"
+          git_user_name: "Sam Erde"
+          git_identity: author
