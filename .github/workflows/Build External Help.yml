@@ -37,8 +37,8 @@ jobs:
           Install-Module -Name PlatyPS -Scope CurrentUser -Force
           Import-Module -Name PlatyPS
           $params = @{
-              CabFilesFolder  = ".\src\Artifacts\en-US"        # Source XML folder.
-              LandingPagePath = ".\docs\PSPreworkout.md" # Path to the landing page.
-              OutputFolder    = ".\docs\en-US"           # Actual output folder.
+              CabFilesFolder  = "/src/Artifacts/en-US"  # Source XML folder.
+              LandingPagePath = "/docs/PSPreworkout.md" # Path to the landing page.
+              OutputFolder    = "/docs/en-US"           # Actual output folder.
           }
           New-ExternalHelpCab @params
