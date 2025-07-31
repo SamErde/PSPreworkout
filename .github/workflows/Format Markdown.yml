@@ -21,7 +21,5 @@ jobs:
         with:
           # Options for prettier
           prettier_options: "--write docs/**/*.md"
-          # Commit message for the formatting changes
           commit_message: "docs: format markdown files"
-          git_user_name: "Sam Erde"
           git_identity: author
