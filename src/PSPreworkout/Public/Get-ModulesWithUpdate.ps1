@@ -47,7 +47,7 @@
 
     #>
     [CmdletBinding()]
-    [OutputType([PSCustomObject], [Microsoft.PowerShell.PSResourceGet.UtilClasses.PSResourceInfo[]])]
+    [OutputType([PSCustomObject])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '', Justification = 'Making it pretty.')]
     param(
         # List of modules to check for updates. This parameter accepts wildcards and checks all modules by default.
