@@ -62,37 +62,37 @@ function Get-CommandHistory {
     )
 
     begin {
-        # Initialize variables.
-        [string[]]$IgnoreCommands = @()
-        [string]$CommandFilter = $null
-
+        # Initialize variables
         if (-not $All.IsPresent) {
-            # Set the default list of commands to ignore as a regex pattern of strings.
+            # Set the default list of commands to ignore as a regex pattern of strings
             [string]$DefaultIgnoreCommands = 'Get-History|Invoke-CommandHistory|Get-CommandHistory|clear'
 
-            # Add the default ignore commands to the list of ignored commands as long as the All switch is not present.
-            $IgnoreCommands = $DefaultIgnoreCommands.Clone()
+            # Build initial filter conditions to get completed commands.
+            # TO DO: Create a switch parameter to include incomplete commands.
+            [string[]]$FilterConditions = @('$_.ExecutionStatus -eq "Completed"')
 
-            # Filter words to exclude.
+            # Filter words to exclude
             if ($Exclude.Length -gt 0) {
-                $IgnoreCommands = "$DefaultIgnoreCommands|$($Exclude -join '|')"
-                [scriptblock]$CommandExclude = { -and $_.CommandLine -notmatch $IgnoreCommands }
+                [string]$IgnorePattern = "$DefaultIgnoreCommands|$($Exclude -join '|')"
+                $FilterConditions += "`$_.CommandLine -notmatch '$IgnorePattern'"
+            } else {
+                $FilterConditions += "`$_.CommandLine -notmatch '$DefaultIgnoreCommands'"
             }
 
-            # Filter words to include.
+            # Filter words to include
             if ($Filter -and $Filter.Length -gt 0) {
-                # Additional check to ensure we have non-empty filter strings.
+                # Additional check to ensure we have non-empty filter strings
                 [string[]]$NonEmptyFilters = $Filter | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
                 if ($NonEmptyFilters.Length -gt 0) {
-                    # Create the regex string pattern and add it to the CommandFilter.
-                    [string]$MatchFilter = ($NonEmptyFilters -join '|').Trim()
-                    [scriptblock]$CommandFilter = { -and $_.CommandLine -match $MatchFilter }
+                    # Create the regex string pattern
+                    [string]$MatchPattern = ($NonEmptyFilters -join '|').Trim()
+                    $FilterConditions += "`$_.CommandLine -match '$MatchPattern'"
                 }
             }
 
-            # Combine the include and exclude filters.
-            [scriptblock]$DefaultFilter = { $_.ExecutionStatus -eq 'Completed' }
-            $WhereFilter = [scriptblock]::Create("$DefaultFilter $CommandFilter $CommandExclude")
+            # Combine all filter conditions with -and
+            [string]$FilterExpression = $FilterConditions -join ' -and '
+            [scriptblock]$WhereFilter = [scriptblock]::Create($FilterExpression)
         } else {
             # If the All switch is present, do not filter anything out.
             [scriptblock]$WhereFilter = { $true }
@@ -100,7 +100,7 @@ function Get-CommandHistory {
     }
 
     process {
-        Get-History | Where-Object { $WhereFilter } |
+        Get-History | Where-Object -FilterScript $WhereFilter |
             Sort-Object -Property CommandLine -Unique | Sort-Object -Property Id
     }
 
