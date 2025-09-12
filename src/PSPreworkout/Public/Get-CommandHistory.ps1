@@ -1,32 +1,32 @@
 function Get-CommandHistory {
     <#
         .SYNOPSIS
-        Get a filtered list of commands from your history.
+        Get a filtered and de-duplicated list of commands from your history.
 
         .DESCRIPTION
         This function filters the output of Get-History to exclude a list of ignored commands and any commands that are
         less than 4 characters long. It can also be used to find all commands that match a given pattern. It is useful
-        for quickly finding commands from your history that you want to document or re-invoke.
+        for quickly finding things from your history that you want to document or re-invoke.
 
         .PARAMETER All
         Show all command history without filtering anything out.
 
-        .PARAMETER FilterWords
-        A string or array of strings to filter out (ignore) in the command history list. The default ignored commands
-        are: Get-History|Invoke-CommandHistory|Get-CommandHistory|clear
+        .PARAMETER Exclude
+        A string or array of strings to exclude. Commands that have these words in them will be excluded from the
+        history output. The default ignored commands are: Get-History, Invoke-CommandHistory, Get-CommandHistory, clear.
 
-        .PARAMETER Pattern
-        A string or regex pattern to match against the command history. This is useful for finding specific commands
-        that you have run in the past. The pattern is passed to the -match operator, so it can be a simple string or a
-        more complex regex pattern. If this parameter is used, the FilterWords parameter is ignored.
+        .PARAMETER Filter
+        A string or regex pattern to find in the command history. Commands that contain this pattern will be returned.
+
+        The Filter is passed to the -match operator, so it can be a simple string or a more complex regex pattern.
 
         .EXAMPLE
-        Get-CommandHistory -Pattern 'Disk'
+        Get-CommandHistory -Filter 'Disk'
 
         This will return all commands from your history that contain the word 'Disk'.
 
         .EXAMPLE
-        Get-CommandHistory -FilterWords 'Get-Service', 'Get-Process'
+        Get-CommandHistory -Exclude 'Get-Service', 'Get-Process'
 
         This will return all commands from your history that do not contain the words 'Get-Service' or 'Get-Process'
         (while also still filtering out the default ignore list).
@@ -38,8 +38,8 @@ function Get-CommandHistory {
 
         .NOTES
         Author: Sam Erde
-        Version: 1.0.0
-        Modified: 2025-03-25
+        Version: 2.0.0
+        Modified: 2025-09-08
     #>
 
     [CmdletBinding(DefaultParameterSetName = 'BasicFilter')]
@@ -47,59 +47,57 @@ function Get-CommandHistory {
     [OutputType([Microsoft.PowerShell.Commands.HistoryInfo[]])]
     param (
         # Show all command history without filtering anything out.
-        [Parameter(ParameterSetName = 'All')]
+        [Parameter(ParameterSetName = 'NoFilter')]
         [switch] $All,
 
-        # A string or array of strings to filter out (ignore) in the command history list.
-        [Parameter(ParameterSetName = 'BasicFilter')]
+        # A string or array of strings to exclude from the command history list.
+        [Parameter()]
         [ValidateNotNullOrEmpty()]
-        [string[]] $FilterWords,
+        [string[]] $Exclude,
 
-        # A string or regex pattern to search for matches in the command history.
-        [Parameter(ParameterSetName = 'PatternSearch', Mandatory, Position = 0)]
+        # A string or regex Filter to search for matches in the command history.
+        [Parameter()]
         [ValidateNotNullOrEmpty()]
-        [string] $Pattern
+        [string[]] $Filter
     )
 
-    process {
-        Get-History | Where-Object {
-            $_.ExecutionStatus -eq 'Completed' -and ($_.CommandLine.Length -gt 3) -and $CommandFilter.Invoke()
-        }
-    }
-
     begin {
+        # Initialize variables
         [string[]]$IgnoreCommands = @()
         [string]$CommandFilter = $null
 
-        # Set the filter to ignore a default list of command unless (-All is present).
-        [string]$DefaultIgnoreCommands = 'Get-History|Invoke-CommandHistory|Get-CommandHistory|clear'
-
-        # Add optional filter words to exclude per the FilterWords parameter.
-        if ($FilterWords) {
-            # $FilterWords = '|' + $($FilterWords -join '|')
-            $IgnoreCommands += $FilterWords
-        }
-
-        # Add the default ignore commands to the list of ignored commands as long as the All switch is not present.
         if (-not $All.IsPresent) {
-            $IgnoreCommands += $DefaultIgnoreCommands
-        }
+            # Set the default list of commands to ignore as a regex pattern of strings.
+            [string]$DefaultIgnoreCommands = 'Get-History|Invoke-CommandHistory|Get-CommandHistory|clear'
 
-        # Create the filter. If the Pattern parameter is used, override the filter to match the pattern.
-        if ($Pattern) {
-            [string]$Pattern = ($Pattern -join '|').Trim()
-            [scriptblock]$CommandFilter = { $_.CommandLine -match $Pattern }
+            # Add the default ignore commands to the list of ignored commands as long as the All switch is not present.
+            $IgnoreCommands = $DefaultIgnoreCommands.Clone()
 
-        } elseif ($All) {
-            [scriptblock]$CommandFilter = { $true }
+            # Filter words to exclude
+            if ($Exclude.Length -gt 0) {
+                $IgnoreCommands = "$DefaultIgnoreCommands|$($Exclude -join '|')"
+                [scriptblock]$CommandExclude = { -and $_.CommandLine -notmatch $IgnoreCommands }
+            }
 
+            # Filter words to include
+            if ($Filter) {
+                [string]$MatchFilter = ($Filter -join '|').Trim()
+                [scriptblock]$CommandFilter = { -and $_.CommandLine -match $MatchFilter }
+            }
+
+            # Combine the include and exclude filters
+            [scriptblock]$DefaultFilter = { $_.ExecutionStatus -eq 'Completed' }
+            $WhereFilter = [scriptblock]::Create("$DefaultFilter $CommandFilter $CommandExclude")
         } else {
-            $IgnoreCommands = $IgnoreCommands -join '|'
-            [scriptblock]$CommandFilter = { $_.CommandLine -notmatch $IgnoreCommands }
+            # If the All switch is present, do not filter anything out.
+            [scriptblock]$WhereFilter = { $true }
         }
     }
 
-    end {
-        Remove-Variable DefaultIgnoreCommands, FilterWords, IgnoreCommands, CommandFilter -ErrorAction SilentlyContinue
+    process {
+        Get-History | Where-Object {
+            $WhereFilter
+        } | Sort-Object -Property CommandLine -Unique | Sort-Object -Property Id
     }
+
 } # end function Get-CommandHistory
