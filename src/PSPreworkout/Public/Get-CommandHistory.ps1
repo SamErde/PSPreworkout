@@ -62,7 +62,7 @@ function Get-CommandHistory {
     )
 
     begin {
-        # Initialize variables
+        # Initialize variables.
         [string[]]$IgnoreCommands = @()
         [string]$CommandFilter = $null
 
@@ -73,19 +73,24 @@ function Get-CommandHistory {
             # Add the default ignore commands to the list of ignored commands as long as the All switch is not present.
             $IgnoreCommands = $DefaultIgnoreCommands.Clone()
 
-            # Filter words to exclude
+            # Filter words to exclude.
             if ($Exclude.Length -gt 0) {
                 $IgnoreCommands = "$DefaultIgnoreCommands|$($Exclude -join '|')"
                 [scriptblock]$CommandExclude = { -and $_.CommandLine -notmatch $IgnoreCommands }
             }
 
-            # Filter words to include
-            if ($Filter) {
-                [string]$MatchFilter = ($Filter -join '|').Trim()
-                [scriptblock]$CommandFilter = { -and $_.CommandLine -match $MatchFilter }
+            # Filter words to include.
+            if ($Filter -and $Filter.Length -gt 0) {
+                # Additional check to ensure we have non-empty filter strings.
+                [string[]]$NonEmptyFilters = $Filter | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
+                if ($NonEmptyFilters.Length -gt 0) {
+                    # Create the regex string pattern and add it to the CommandFilter.
+                    [string]$MatchFilter = ($NonEmptyFilters -join '|').Trim()
+                    [scriptblock]$CommandFilter = { -and $_.CommandLine -match $MatchFilter }
+                }
             }
 
-            # Combine the include and exclude filters
+            # Combine the include and exclude filters.
             [scriptblock]$DefaultFilter = { $_.ExecutionStatus -eq 'Completed' }
             $WhereFilter = [scriptblock]::Create("$DefaultFilter $CommandFilter $CommandExclude")
         } else {
@@ -95,9 +100,8 @@ function Get-CommandHistory {
     }
 
     process {
-        Get-History | Where-Object {
-            $WhereFilter
-        } | Sort-Object -Property CommandLine -Unique | Sort-Object -Property Id
+        Get-History | Where-Object { $WhereFilter } |
+            Sort-Object -Property CommandLine -Unique | Sort-Object -Property Id
     }
 
 } # end function Get-CommandHistory
