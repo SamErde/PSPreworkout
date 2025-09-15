@@ -4,7 +4,7 @@
     RootModule           = 'PSPreworkout.psm1'
 
     # Version number of this module.
-    ModuleVersion        = '1.10.0'
+    ModuleVersion        = '2.0.0'
 
     # Supported PSEditions = @('Desktop', 'Core')
     CompatiblePSEditions = @('Core', 'Desktop')
@@ -43,7 +43,6 @@
         'Install-OhMyPosh',
         'Install-PowerShellISE',
         'Install-WinGet',
-        'New-Credential',
         'New-ScriptFromTemplate',
         'Out-JsonFile',
         'Set-ConsoleFont',
@@ -117,7 +116,7 @@
             ReleaseNotes = 'See <https://github.com/SamErde/PSPreworkout/CHANGELOG.md> for more information.'
 
             # Prerelease string of this module
-            # Prerelease   = ''
+            Prerelease   = '-preview'
 
         } # End of PSData hashtable
 
