@@ -56,6 +56,9 @@ function Install-WinGet {
     )
 
     begin {
+        # Send non-identifying usage statistics to PostHog.
+        Write-PSPreworkoutTelemetry -EventName $MyInvocation.MyCommand.Name -ParameterNamesOnly $MyInvocation.BoundParameters.Keys
+
         $StartTime = Get-Date
 
         if ($PSBoundParameters.ContainsKey('DownloadPath')) {

@@ -23,6 +23,9 @@ function Set-DefaultTerminal {
     )
 
     begin {
+        # Send non-identifying usage statistics to PostHog.
+        Write-PSPreworkoutTelemetry -EventName $MyInvocation.MyCommand.Name -ParameterNamesOnly $MyInvocation.BoundParameters.Keys
+
         $KeyPath = 'HKCU:\Console\%%Startup'
         if (-not (Test-Path -Path $keyPath)) {
             try {

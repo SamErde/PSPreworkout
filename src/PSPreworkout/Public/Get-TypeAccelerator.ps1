@@ -19,10 +19,6 @@ function Get-TypeAccelerator {
     Get all type accelerators that begin with the string "ps".
 
     .NOTES
-    Author: Sam Erde
-    Version: 0.0.3
-    Modified: 2024/10/29
-
     Thanks to Jeff Hicks (@JDHITSolutions) for helpful suggestions and improvements on this output!
 
     #>
@@ -37,6 +33,9 @@ function Get-TypeAccelerator {
         [string]
         $Name = '*'
     )
+
+    # Send non-identifying usage statistics to PostHog.
+    Write-PSPreworkoutTelemetry -EventName $MyInvocation.MyCommand.Name -ParameterNamesOnly $MyInvocation.BoundParameters.Keys
 
     Write-Debug "Getting type accelerators with the name: $Name"
     $TypeAccelerators = ([PSObject].Assembly.GetType('System.Management.Automation.TypeAccelerators')::Get).GetEnumerator() |

@@ -19,6 +19,9 @@ function Install-CommandNotFoundUtility {
     )
 
     begin {
+        # Send non-identifying usage statistics to PostHog.
+        Write-PSPreworkoutTelemetry -EventName $MyInvocation.MyCommand.Name -ParameterNamesOnly $MyInvocation.BoundParameters.Keys
+
         if ($PSVersionTable.PSVersion -lt [version]'7.4.0') {
             throw 'The CommandNotFoundUtility module requires PowerShell 7.4 or higher.'
         }

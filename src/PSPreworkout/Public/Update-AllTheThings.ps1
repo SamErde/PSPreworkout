@@ -28,8 +28,7 @@ function Update-AllTheThings {
 
     .NOTES
     Author: Sam Erde
-    Version: 0.5.9
-    Modified: 2024-10-23
+    Version: 0.5.10
     #>
 
     [CmdletBinding(
@@ -68,6 +67,9 @@ function Update-AllTheThings {
     )
 
     begin {
+        # Send non-identifying usage statistics to PostHog.
+        Write-PSPreworkoutTelemetry -EventName $MyInvocation.MyCommand.Name -ParameterNamesOnly $MyInvocation.BoundParameters.Keys
+
         # Spacing to get host output from script, winget, and choco all below the progress bar.
         $Banner = @"
   __  __        __     __         ___   ____

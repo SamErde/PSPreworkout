@@ -15,6 +15,9 @@ function New-Credential {
     [OutputType([System.Management.Automation.PSCredential])]
     param ()
 
+    # Send non-identifying usage statistics to PostHog.
+    Write-PSPreworkoutTelemetry -EventName $MyInvocation.MyCommand.Name -ParameterNamesOnly $MyInvocation.BoundParameters.Keys
+
     Write-Host 'Create a Credential'
     $User = Read-Host -Prompt 'User'
     $Password = Read-Host "Password for user $User" -AsSecureString

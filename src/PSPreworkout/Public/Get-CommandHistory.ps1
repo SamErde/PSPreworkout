@@ -62,6 +62,9 @@ function Get-CommandHistory {
     )
 
     begin {
+        # Send non-identifying usage statistics to PostHog.
+        Write-PSPreworkoutTelemetry -EventName $MyInvocation.MyCommand.Name -ParameterNamesOnly $MyInvocation.BoundParameters.Keys
+
         # Initialize variables
         if (-not $All.IsPresent) {
             # Set the default list of commands to ignore as a regex pattern of strings

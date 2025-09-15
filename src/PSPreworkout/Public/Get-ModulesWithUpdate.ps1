@@ -67,6 +67,9 @@
     )
 
     begin {
+        # Send non-identifying usage statistics to PostHog.
+        Write-PSPreworkoutTelemetry -EventName $MyInvocation.MyCommand.Name -ParameterNamesOnly $MyInvocation.BoundParameters.Keys
+
         # Check for required modules and attempt to install if missing.
         try {
             if (-not (Get-Command -Name 'Get-InstalledPSResource' -ErrorAction SilentlyContinue)) {

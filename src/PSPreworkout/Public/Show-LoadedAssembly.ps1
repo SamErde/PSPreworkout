@@ -32,6 +32,9 @@ function Show-LoadedAssembly {
         $GridView
     )
 
+    # Send non-identifying usage statistics to PostHog.
+    Write-PSPreworkoutTelemetry -EventName $MyInvocation.MyCommand.Name -ParameterNamesOnly $MyInvocation.BoundParameters.Keys
+
     $LoadedAssemblies = Get-LoadedAssembly | Select-Object -Property FullName, Location, GlobalAssemblyCache, IsFullyTrusted |
         ForEach-Object {
             # Create a custom object to split out the details of each assembly

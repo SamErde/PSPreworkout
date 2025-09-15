@@ -54,6 +54,9 @@ function Install-OhMyPosh {
         [string]$Font = 'Default'
     )
 
+    # Send non-identifying usage statistics to PostHog.
+    Write-PSPreworkoutTelemetry -EventName $MyInvocation.MyCommand.Name -ParameterNamesOnly $MyInvocation.BoundParameters.Keys
+
     switch ($Method) {
         chocolatey {
             if (choco.exe) {

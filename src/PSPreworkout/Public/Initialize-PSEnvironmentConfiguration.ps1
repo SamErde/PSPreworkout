@@ -124,9 +124,11 @@ function Initialize-PSEnvironmentConfiguration {
     )
 
     begin {
+        # Send non-identifying usage statistics to PostHog.
+        Write-PSPreworkoutTelemetry -EventName $MyInvocation.MyCommand.Name -ParameterNamesOnly $MyInvocation.BoundParameters.Keys
+
         # Suppress PSScriptAnalyzer Errors
         $commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameter | Out-Null
-
     }
 
     process {

@@ -14,6 +14,9 @@ function Edit-WingetSettingsFile {
         # To Do: Add parameters to choose an editor
     )
 
+    # Send non-identifying usage statistics to PostHog.
+    Write-PSPreworkoutTelemetry -EventName $MyInvocation.MyCommand.Name -ParameterNamesOnly $MyInvocation.BoundParameters.Keys
+
     try {
         winget settings
     } catch {

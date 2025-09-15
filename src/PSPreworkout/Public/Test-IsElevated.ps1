@@ -11,16 +11,14 @@ function Test-IsElevated {
 
     .OUTPUTS
     Boolean
-
-    .NOTES
-    Author: Sam Erde
-    Version: 1.1.0
-    Modified: 2025-06-28
     #>
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Test-IsElevated')]
     [Alias('isadmin', 'isroot')]
     [OutputType([bool])]
     param ()
+
+    # Send non-identifying usage statistics to PostHog.
+    Write-PSPreworkoutTelemetry -EventName $MyInvocation.MyCommand.Name -ParameterNamesOnly $MyInvocation.BoundParameters.Keys
 
     if (($PSVersionTable.PSVersion.Major -le 5) -or $IsWindows) {
         $CurrentUser = [Security.Principal.WindowsPrincipal]([Security.Principal.WindowsIdentity]::GetCurrent())

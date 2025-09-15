@@ -10,17 +10,13 @@ function Install-PowerShellISE {
 
     .EXAMPLE
     Install-PowerShellISE
-
-    .NOTES
-    Author: Sam Erde
-    Version: 1.0.0
-    Modified: 2025-01-07
-
-    To Do: Add parameter to make the Windows Update registry change optional.
     #>
 
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Install-PowerShellISE')]
     param ()
+
+    # Send non-identifying usage statistics to PostHog.
+    Write-PSPreworkoutTelemetry -EventName $MyInvocation.MyCommand.Name -ParameterNamesOnly $MyInvocation.BoundParameters.Keys
 
     # Check if running as admin
     if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {

@@ -16,11 +16,6 @@ function Get-PowerShellPortable {
     Get-PowerShellPortable -Path $HOME -Extract
 
     Download the latest ZIP/TAR of PowerShell to your $HOME folder. It will be extracted into a folder that matches the filename of the compressed archive.
-
-    .NOTES
-    Author: Sam Erde
-    Version: 0.1.0
-    Modified: 2024/10/12
     #>
 
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Get-PowerShellPortable')]
@@ -36,6 +31,9 @@ function Get-PowerShellPortable {
         [switch]
         $Extract
     )
+
+    # Send non-identifying usage statistics to PostHog.
+    Write-PSPreworkoutTelemetry -EventName $MyInvocation.MyCommand.Name -ParameterNamesOnly $MyInvocation.BoundParameters.Keys
 
     #region Determine Download Uri
     $DownloadLinks = (Invoke-RestMethod -Uri 'https://api.github.com/repos/PowerShell/PowerShell/releases/latest').assets.browser_download_url

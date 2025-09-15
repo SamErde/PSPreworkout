@@ -15,21 +15,27 @@ function Edit-PSReadLineHistoryFile {
     [Alias('Edit-HistoryFile')]
     param ( )
 
-    $HistoryFilePath = (Get-PSReadLineOption).HistorySavePath
-    if ((Get-Command code)) {
-        # Open the file in Visual Studio Code if code found
-        try {
-            code $HistoryFilePath
-        } catch {
-            throw "Failed to open history file in VS Code: $_"
-        }
-    } else {
-        # Open the text file with the default file handler if VS Code is not found.
-        try {
-            Start-Process $HistoryFilePath
-        } catch {
-            throw "Failed to open history file with default handler: $_"
-        }
+    begin {
+        # Send non-identifying usage statistics to PostHog.
+        Write-PSPreworkoutTelemetry -EventName $MyInvocation.MyCommand.Name -ParameterNamesOnly $MyInvocation.BoundParameters.Keys
     }
 
-} # end function Edit-PSreadLineHistoryFile
+    process {
+        $HistoryFilePath = (Get-PSReadLineOption).HistorySavePath
+        if ((Get-Command code)) {
+            # Open the file in Visual Studio Code if code found
+            try {
+                code $HistoryFilePath
+            } catch {
+                throw "Failed to open history file in VS Code: $_"
+            }
+        } else {
+            # Open the text file with the default file handler if VS Code is not found.
+            try {
+                Start-Process $HistoryFilePath
+            } catch {
+                throw "Failed to open history file with default handler: $_"
+            }
+        }
+    }
+} # end function Edit-PSReadLineHistoryFile

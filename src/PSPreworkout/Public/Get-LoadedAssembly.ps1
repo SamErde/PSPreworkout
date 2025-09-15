@@ -13,16 +13,15 @@ function Get-LoadedAssembly {
 
     .NOTES
     To Do: Add -Name parameter to get a specific one.
-
-    Author: Sam Erde
-    Version: 0.0.2
-    Modified: 2024/10/12
     #>
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Get-LoadedAssembly')]
     [OutputType('Object[]')]
 
     [Alias('Get-Assembly')]
     param ()
+
+    # Send non-identifying usage statistics to PostHog.
+    Write-PSPreworkoutTelemetry -EventName $MyInvocation.MyCommand.Name -ParameterNamesOnly $MyInvocation.BoundParameters.Keys
 
     [System.AppDomain]::CurrentDomain.GetAssemblies() | Where-Object -FilterScript { $_.Location } | Sort-Object -Property FullName
 }

@@ -53,6 +53,9 @@ function Out-JsonFile {
     )
 
     begin {
+        # Send non-identifying usage statistics to PostHog.
+        Write-PSPreworkoutTelemetry -EventName $MyInvocation.MyCommand.Name -ParameterNamesOnly $MyInvocation.BoundParameters.Keys
+
         # Validate the file path and extension.
         if ($FilePath) {
             # Ensure that a working directory is included in filepath.
@@ -86,7 +89,4 @@ function Out-JsonFile {
         }
     } # end process block
 
-    end {
-        Remove-Variable Object, FilePath, Path, OutFile -ErrorAction SilentlyContinue
-    } # end end block
 }

@@ -81,6 +81,11 @@ function Get-HashtableValueType {
         [string]$Key
     )
 
+    begin {
+        # Send non-identifying usage statistics to PostHog.
+        Write-PSPreworkoutTelemetry -EventName $MyInvocation.MyCommand.Name -ParameterNamesOnly $MyInvocation.BoundParameters.Keys
+    }
+
     process {
         # Filter hashtable entries based on Key parameter if specified
         $EntriesToProcess = if ($PSBoundParameters.ContainsKey('Key')) {

@@ -38,6 +38,11 @@ function Set-EnvironmentVariable {
         $Target
     )
 
+    begin {
+        # Send non-identifying usage statistics to PostHog.
+        Write-PSPreworkoutTelemetry -EventName $MyInvocation.MyCommand.Name -ParameterNamesOnly $MyInvocation.BoundParameters.Keys
+    }
+
     process {
         try {
             [Environment]::SetEnvironmentVariable($Name, $Value, $Target)
