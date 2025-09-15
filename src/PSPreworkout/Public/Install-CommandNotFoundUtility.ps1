@@ -8,11 +8,6 @@ function Install-CommandNotFoundUtility {
 
     .EXAMPLE
     Install-CommandNotFoundUtility
-
-    .NOTES
-    Author: Sam Erde
-    Version: 0.1.1
-    Modified: 2025-02-08
     #>
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Install-CommandNotFoundUtility')]
     param (
@@ -41,8 +36,8 @@ function Install-CommandNotFoundUtility {
         } # end try/catch block
 
         # To Do: Check if already enabled:
-        Enable-ExperimentalFeature -Name 'PSFeedbackProvider'
-        Enable-ExperimentalFeature -Name 'PSCommandNotFoundSuggestion'
+        Enable-ExperimentalFeature -Name 'PSFeedbackProvider' -ErrorAction SilentlyContinue
+        Enable-ExperimentalFeature -Name 'PSCommandNotFoundSuggestion' -ErrorAction SilentlyContinue
     } # end process block
 
     end {
