@@ -116,7 +116,7 @@
             ReleaseNotes = 'See <https://github.com/SamErde/PSPreworkout/CHANGELOG.md> for more information.'
 
             # Prerelease string of this module
-            Prerelease   = '-preview'
+            Prerelease   = 'preview'
 
         } # End of PSData hashtable
 
