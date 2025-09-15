@@ -90,7 +90,7 @@ function Get-EnvironmentVariable {
 
     begin {
         # Send non-identifying usage statistics to PostHog.
-        Write-PSPreworkoutTelemetry -EventName $MyInvocation.MyCommand.Name -ParameterNamesOnly $MyInvocation.BoundParameters.Keys
+        # Write-PSPreworkoutTelemetry -EventName $MyInvocation.MyCommand.Name -ParameterNamesOnly $MyInvocation.BoundParameters.Keys
 
         # Initialize the collection of environment variables that will be returned to the pipeline at the end.
         [System.Collections.Generic.List[PSObject]]$EnvironmentVariables = @()
