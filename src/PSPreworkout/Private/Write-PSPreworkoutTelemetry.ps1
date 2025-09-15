@@ -1,24 +1,24 @@
 ﻿function Write-PSPreworkoutTelemetry {
-<#
-.SYNOPSIS
-    Keep track of how often each PSPreworkout command is used. No identifying information is sent.
+    <#
+    .SYNOPSIS
+        Keep track of how often each PSPreworkout command is used. No identifying information is sent.
 
-.DESCRIPTION
-    This function sends anonymous statistics to the PostHog analytics service to help improve the PSPreworkout module.
-    It sends the command being run, module version, PowerShell version, and OS version.
+    .DESCRIPTION
+        This function sends anonymous statistics to the PostHog analytics service to help improve the PSPreworkout module.
+        It sends the command being run, module version, PowerShell version, and OS version.
 
-.PARAMETER EventName
-    The name of the telemetry event to record. Most likely a function name.
+    .PARAMETER EventName
+        The name of the telemetry event to record. Most likely a function name.
 
-.EXAMPLE
-    Write-PSPreworkoutTelemetry -EventName "Get-EnvironmentVariable"
+    .EXAMPLE
+        Write-PSPreworkoutTelemetry -EventName "Get-EnvironmentVariable"
 
-.EXAMPLE
-    Write-PSPreworkoutTelemetry -EventName "Get-ModulesWithUpdate"
+    .EXAMPLE
+        Write-PSPreworkoutTelemetry -EventName "Get-ModulesWithUpdate"
 
-.NOTES
-    This function requires an internet connection to send telemetry data.
-#>
+    .NOTES
+        This function requires an internet connection to send telemetry data.
+    #>
     [CmdletBinding()]
     param (
         # Event Name: The name of the function that was invoked.
@@ -39,7 +39,7 @@
         Write-Debug "The PSPreworkout module is not imported. $_"
     }
 
-        Write-Verbose "Sending anonymous PowerShell and module version information to PostHog."
+    Write-Verbose "Sending anonymous PowerShell and module version information to PostHog."
 
     # Define the JSON data
     $JsonData = @{
