@@ -9,9 +9,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 <!-- Show the history of all changes since the last release. -->
+
 [*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/latest...HEAD)
 
 ---
+
+## [2.0.0-preview] - 2025-09-15
+
+### Removed
+
+- Removed the redundant `New-Credential` function, which behaves the same as `Get-Credential`.
+
+### Added
+
+- **Telemetry System**: Added anonymous usage analytics to help improve the module.
+  - New `Write-PSPreworkoutTelemetry` private function for statistics about how often functions are used.
+  - Added usage statistics for all 24 functions except for `Get-EnvironmentVariable`.
+  - Tracks function usage, parameter names (not values), PowerShell version details, and OS.
+  - Privacy-focused design: no personally identifiable information or parameter values are collected.
+  - Data sent to PostHog analytics service to understand usage patterns and guide development priorities.
 
 ## [1.9.11] - 2025-07-31
 
@@ -411,3 +427,4 @@ This release is focused on enhancements that make the existing functions more us
 [1.9.7]: https://github.com/SamErde/PSPreworkout/tag/v1.9.7
 [1.9.10]: https://github.com/SamErde/PSPreworkout/tag/v1.9.10
 [1.9.11]: https://github.com/SamErde/PSPreworkout/tag/v1.9.11
+[2.0.0-preview]: https://github.com/SamErde/PSPreworkout/tag/v2.0.0-preview
