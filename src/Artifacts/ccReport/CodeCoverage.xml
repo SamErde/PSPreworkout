@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE report PUBLIC "-//JACOCO//DTD Report 1.1//EN" "report.dtd"[]>
-<report name="Pester (09/15/2025 10:18:00)">
-  <sessioninfo id="this" start="1757931457678" dump="1757931480922" />
+<report name="Pester (09/15/2025 10:22:44)">
+  <sessioninfo id="this" start="1757931749701" dump="1757931764510" />
   <package name="PSPreworkout/Private">
     <class name="PSPreworkout/Private/Write-PSPreworkoutTelemetry" sourcefilename="Private/Write-PSPreworkoutTelemetry.ps1">
       <method name="Write-PSPreworkoutTelemetry" desc="()" line="36">
@@ -94,13 +94,13 @@
       <counter type="CLASS" missed="1" covered="0" />
     </class>
     <class name="PSPreworkout/Public/Get-EnvironmentVariable" sourcefilename="Public/Get-EnvironmentVariable.ps1">
-      <method name="Get-EnvironmentVariable" desc="()" line="93">
-        <counter type="INSTRUCTION" missed="0" covered="31" />
-        <counter type="LINE" missed="0" covered="20" />
+      <method name="Get-EnvironmentVariable" desc="()" line="96">
+        <counter type="INSTRUCTION" missed="0" covered="30" />
+        <counter type="LINE" missed="0" covered="19" />
         <counter type="METHOD" missed="0" covered="1" />
       </method>
-      <counter type="INSTRUCTION" missed="0" covered="31" />
-      <counter type="LINE" missed="0" covered="20" />
+      <counter type="INSTRUCTION" missed="0" covered="30" />
+      <counter type="LINE" missed="0" covered="19" />
       <counter type="METHOD" missed="0" covered="1" />
       <counter type="CLASS" missed="0" covered="1" />
     </class>
@@ -385,7 +385,6 @@
       <counter type="CLASS" missed="1" covered="0" />
     </sourcefile>
     <sourcefile name="Public/Get-EnvironmentVariable.ps1">
-      <line nr="93" mi="0" ci="1" mb="0" cb="0" />
       <line nr="96" mi="0" ci="1" mb="0" cb="0" />
       <line nr="99" mi="0" ci="1" mb="0" cb="0" />
       <line nr="100" mi="0" ci="2" mb="0" cb="0" />
@@ -405,8 +404,8 @@
       <line nr="126" mi="0" ci="1" mb="0" cb="0" />
       <line nr="127" mi="0" ci="1" mb="0" cb="0" />
       <line nr="135" mi="0" ci="1" mb="0" cb="0" />
-      <counter type="INSTRUCTION" missed="0" covered="31" />
-      <counter type="LINE" missed="0" covered="20" />
+      <counter type="INSTRUCTION" missed="0" covered="30" />
+      <counter type="LINE" missed="0" covered="19" />
       <counter type="METHOD" missed="0" covered="1" />
       <counter type="CLASS" missed="0" covered="1" />
     </sourcefile>
@@ -1200,13 +1199,13 @@
       <counter type="METHOD" missed="1" covered="0" />
       <counter type="CLASS" missed="1" covered="0" />
     </sourcefile>
-    <counter type="INSTRUCTION" missed="720" covered="216" />
-    <counter type="LINE" missed="571" covered="153" />
+    <counter type="INSTRUCTION" missed="720" covered="215" />
+    <counter type="LINE" missed="571" covered="152" />
     <counter type="METHOD" missed="19" covered="9" />
     <counter type="CLASS" missed="19" covered="4" />
   </package>
-  <counter type="INSTRUCTION" missed="721" covered="261" />
-  <counter type="LINE" missed="572" covered="186" />
+  <counter type="INSTRUCTION" missed="721" covered="260" />
+  <counter type="LINE" missed="572" covered="185" />
   <counter type="METHOD" missed="19" covered="10" />
   <counter type="CLASS" missed="19" covered="5" />
 </report>
