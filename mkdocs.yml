@@ -118,3 +118,10 @@ nav:
       - Show-WithoutEmptyProperty: "Show-WithoutEmptyProperty.md"
       - Get-ModulesWithUpdate: "Get-ModulesWithUpdate.md"
       - Get-PowerShellPortable: "Get-PowerShellPortable.md"
+
+markdown_extensions:
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
