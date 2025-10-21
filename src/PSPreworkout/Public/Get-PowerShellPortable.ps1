@@ -23,6 +23,7 @@ function Get-PowerShellPortable {
     param (
         # The directory path to download the PowerShell zip or tar.gz file into. Do not include a filename for the download.
         [Parameter()]
+        [ValidateScript({ Test-Path -Path $_ -PathType Container })]
         [string]
         $Path,
 
