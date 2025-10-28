@@ -1,0 +1,65 @@
+name: 📚 Update MkDocs Navigation
+
+on:
+  # Trigger when the module manifest is updated on the main branch
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/PSPreworkout/PSPreworkout.psd1'
+
+  # Allow manual triggering
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-navigation:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: false
+
+    steps:
+      - name: ✅ Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🔧 Update MkDocs Navigation
+        shell: pwsh
+        run: |
+          Write-Host "Running Update-MkDocsNavigation script..."
+          ./Scripts/Update-MkDocsNavigation.ps1 -Verbose
+
+      - name: 📝 Check for Changes
+        id: check_changes
+        run: |
+          if git diff --quiet mkdocs.yml; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "No changes detected in mkdocs.yml"
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "Changes detected in mkdocs.yml"
+          fi
+
+      - name: 💾 Commit and Push Changes
+        if: steps.check_changes.outputs.changed == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add mkdocs.yml
+          git commit -m "📚 docs: update MkDocs navigation based on module manifest
+
+          Automatically updated by Update-MkDocsNavigation workflow"
+          git push
+
+      - name: ✅ Summary
+        run: |
+          if [ "${{ steps.check_changes.outputs.changed }}" == "true" ]; then
+            echo "✅ MkDocs navigation has been updated and committed."
+          else
+            echo "ℹ️ No changes were needed to MkDocs navigation."
+          fi
