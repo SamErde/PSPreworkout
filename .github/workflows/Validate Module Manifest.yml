@@ -1,0 +1,205 @@
+name: 🔍 Validate Module Manifest
+
+on:
+  pull_request:
+    branches:
+      - main
+      - prerelease
+    paths:
+      - 'src/PSPreworkout/Public/**'
+      - 'src/PSPreworkout/PSPreworkout.psd1'
+  push:
+    branches:
+      - main
+      - prerelease
+    paths:
+      - 'src/PSPreworkout/Public/**'
+      - 'src/PSPreworkout/PSPreworkout.psd1'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  validate-manifest:
+    name: 🧪 Validate and Update Manifest
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ✅ Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🔍 Check Module Manifest
+        id: check
+        shell: pwsh
+        run: |
+          $ModuleSourcePath = "${{ github.workspace }}/src/PSPreworkout"
+          
+          Write-Host "Analyzing public functions and aliases..." -ForegroundColor Cyan
+          
+          # Get all public functions
+          $publicFunctions = Get-ChildItem -Path "$ModuleSourcePath/Public/*.ps1" -ErrorAction SilentlyContinue | 
+              ForEach-Object {
+                  $content = Get-Content -Path $_.FullName -Raw
+                  if ($content -match 'function\s+([a-zA-Z][\w-]*)\s*\{') {
+                      $matches[1]
+                  }
+              } | Sort-Object
+
+          if (-not $publicFunctions) {
+              Write-Host "No public functions found." -ForegroundColor Yellow
+              exit 0
+          }
+
+          Write-Host "Found $($publicFunctions.Count) public functions" -ForegroundColor Green
+          
+          # Get all aliases from public functions
+          $aliases = Get-ChildItem -Path "$ModuleSourcePath/Public/*.ps1" -ErrorAction SilentlyContinue | 
+              ForEach-Object {
+                  $lines = Get-Content -Path $_.FullName
+                  $foundAliases = @()
+                  
+                  foreach ($line in $lines) {
+                      if ($line -match '^\s*#' -or $line -match '=.*\[Alias') {
+                          continue
+                      }
+                      
+                      if ($line -match '^\s*\[Alias\((.*?)\)\]') {
+                          $aliasString = $matches[1]
+                          $lineAliases = $aliasString -split ',' | ForEach-Object {
+                              $cleaned = $_.Trim().Trim("'").Trim('"').Trim()
+                              if ($cleaned -and $cleaned -notmatch '^\$' -and $cleaned -notmatch '__') {
+                                  $cleaned
+                              }
+                          } | Where-Object { $_ }
+                          
+                          $foundAliases += $lineAliases
+                      }
+                  }
+                  
+                  $foundAliases
+              } | Sort-Object -Unique
+
+          Write-Host "Found $($aliases.Count) unique aliases" -ForegroundColor Green
+          
+          # Check current manifest
+          $manifestPath = "$ModuleSourcePath/PSPreworkout.psd1"
+          $manifestData = Import-PowerShellDataFile -Path $manifestPath
+          
+          # Compare - check if functions are in FunctionsToExport
+          $missingFunctions = $publicFunctions | Where-Object { $_ -notin $manifestData.FunctionsToExport }
+          
+          # Check if aliases are in both FunctionsToExport and AliasesToExport (per module convention)
+          $missingFromFunctionsExport = $aliases | Where-Object { $_ -notin $manifestData.FunctionsToExport }
+          $missingFromAliasesExport = $aliases | Where-Object { $_ -notin $manifestData.AliasesToExport }
+          
+          $needsUpdate = $false
+          
+          if ($missingFunctions) {
+              Write-Host "Missing functions in FunctionsToExport:" -ForegroundColor Red
+              $missingFunctions | ForEach-Object { Write-Host "  - $_" }
+              $needsUpdate = $true
+          }
+          
+          if ($missingFromFunctionsExport) {
+              Write-Host "Missing aliases in FunctionsToExport:" -ForegroundColor Red
+              $missingFromFunctionsExport | ForEach-Object { Write-Host "  - $_" }
+              $needsUpdate = $true
+          }
+          
+          if ($missingFromAliasesExport) {
+              Write-Host "Missing aliases in AliasesToExport:" -ForegroundColor Red
+              $missingFromAliasesExport | ForEach-Object { Write-Host "  - $_" }
+              $needsUpdate = $true
+          }
+          
+          if ($needsUpdate) {
+              Write-Host "::set-output name=needs_update::true"
+              echo "needs_update=true" >> $env:GITHUB_OUTPUT
+              Write-Host "Manifest needs to be updated!" -ForegroundColor Yellow
+              exit 1
+          } else {
+              Write-Host "Manifest is up to date!" -ForegroundColor Green
+              echo "needs_update=false" >> $env:GITHUB_OUTPUT
+              exit 0
+          }
+
+      - name: 🔧 Update Module Manifest
+        if: failure() && steps.check.outputs.needs_update == 'true'
+        shell: pwsh
+        run: |
+          Write-Host "Updating module manifest..." -ForegroundColor Cyan
+          
+          $ModuleSourcePath = "${{ github.workspace }}/src/PSPreworkout"
+          $manifestPath = "$ModuleSourcePath/PSPreworkout.psd1"
+          
+          # Get all public functions
+          $publicFunctions = Get-ChildItem -Path "$ModuleSourcePath/Public/*.ps1" -ErrorAction SilentlyContinue | 
+              ForEach-Object {
+                  $content = Get-Content -Path $_.FullName -Raw
+                  if ($content -match 'function\s+([a-zA-Z][\w-]*)\s*\{') {
+                      $matches[1]
+                  }
+              } | Sort-Object
+          
+          # Get all aliases
+          $aliases = Get-ChildItem -Path "$ModuleSourcePath/Public/*.ps1" -ErrorAction SilentlyContinue | 
+              ForEach-Object {
+                  $lines = Get-Content -Path $_.FullName
+                  $foundAliases = @()
+                  
+                  foreach ($line in $lines) {
+                      if ($line -match '^\s*#' -or $line -match '=.*\[Alias') {
+                          continue
+                      }
+                      
+                      if ($line -match '^\s*\[Alias\((.*?)\)\]') {
+                          $aliasString = $matches[1]
+                          $lineAliases = $aliasString -split ',' | ForEach-Object {
+                              $cleaned = $_.Trim().Trim("'").Trim('"').Trim()
+                              if ($cleaned -and $cleaned -notmatch '^\$' -and $cleaned -notmatch '__') {
+                                  $cleaned
+                              }
+                          } | Where-Object { $_ }
+                          
+                          $foundAliases += $lineAliases
+                      }
+                  }
+                  
+                  $foundAliases
+              } | Sort-Object -Unique
+          
+          # Read manifest
+          $manifestContent = Get-Content -Path $manifestPath -Raw
+          
+          # Update FunctionsToExport (functions + aliases per module convention)
+          $allExports = @($publicFunctions)
+          if ($aliases) {
+              $allExports += $aliases
+          }
+          $allExportsArray = ($allExports | Sort-Object -Unique | ForEach-Object { "'$_'" }) -join ",`n        "
+          $functionsToExportPattern = '(?ms)(FunctionsToExport\s*=\s*@\().*?(\s*\))'
+          $newFunctionsToExport = "`$1`n        $allExportsArray`n    `$2"
+          $manifestContent = $manifestContent -replace $functionsToExportPattern, $newFunctionsToExport
+          
+          # Update AliasesToExport
+          if ($aliases) {
+              $aliasesArray = ($aliases | ForEach-Object { "'$_'" }) -join ",`n        "
+              $aliasesToExportPattern = '(?ms)(AliasesToExport\s*=\s*@\().*?(\s*\))'
+              $newAliasesToExport = "`$1`n        $aliasesArray`n    `$2"
+              $manifestContent = $manifestContent -replace $aliasesToExportPattern, $newAliasesToExport
+          }
+          
+          # Write updated manifest
+          $manifestContent | Out-File -FilePath $manifestPath -Encoding utf8 -NoNewline
+          
+          Write-Host "Manifest updated successfully!" -ForegroundColor Green
+
+      - name: 💾 Commit Changes
+        if: failure() && steps.check.outputs.needs_update == 'true'
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "🤖 Auto-update module manifest with new functions and aliases"
+          file_pattern: "src/PSPreworkout/PSPreworkout.psd1"
