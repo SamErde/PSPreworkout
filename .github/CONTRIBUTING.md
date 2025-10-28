@@ -49,7 +49,7 @@ No manual manifest editing required! The automation will detect `Get-MyNewFuncti
 
 ## Contributing via Pull Requests
 
-Please do not submit changes directory to the main branch. Create a fork of the project and use the `prerelease` branch as your target when submitting a pull request. If you have questions about how to do that, I would be more than happy to walk you through the steps over in the [discussions](https://github.com/SamErde/PSPreworkout/discussions)!
+Please do not submit changes directly to the main branch. Create a fork of the project and use the `prerelease` branch as your target when submitting a pull request. If you have questions about how to do that, I would be more than happy to walk you through the steps over in the [discussions](https://github.com/SamErde/PSPreworkout/discussions)!
 
 ## Code of Conduct
 
