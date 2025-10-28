@@ -21,10 +21,18 @@ function Update-AllTheThings {
     .PARAMETER IncludeChocolatey
     Include Chocolatey package updates.
 
+    .PARAMETER AcceptPrompts
+    Automatically accept prompts to install updates in Linux (apt, dnf).
+
     .EXAMPLE
     Update-AllTheThings
 
     Updates all of the things it can!
+
+    .EXAMPLE
+    Update-AllTheThings -AcceptPrompts
+
+    Updates all of the things and automatically accepts Linux package upgrade prompts.
 
     .NOTES
     Author: Sam Erde
@@ -63,7 +71,12 @@ function Update-AllTheThings {
         [Parameter()]
         [Alias('Skip-Choco')]
         [switch]
-        $IncludeChocolatey
+        $IncludeChocolatey,
+
+        # Automatically accept prompts to install updates in Linux
+        [Parameter()]
+        [switch]
+        $AcceptPrompts
     )
 
     begin {
@@ -261,11 +274,19 @@ function Update-AllTheThings {
             if (Get-Command apt -ErrorAction SilentlyContinue) {
                 Write-Host '[5] Updating apt packages.'
                 sudo apt update
-                sudo apt upgrade
+                if ($AcceptPrompts) {
+                    sudo apt upgrade -y
+                } else {
+                    sudo apt upgrade
+                }
             }
             if (Get-Command dnf -ErrorAction SilentlyContinue) {
                 Write-Host '[5] Updating dnf packages.'
-                sudo update
+                if ($AcceptPrompts) {
+                    sudo dnf update -y
+                } else {
+                    sudo dnf update
+                }
             }
         } else {
             Write-Verbose '[5] Not Linux. Skipping section.'
