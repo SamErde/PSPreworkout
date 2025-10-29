@@ -61,7 +61,7 @@ function Update-AllTheThings {
 
         # Skip the step that updates Chocolatey packages
         [Parameter()]
-        [Alias('Skip-Choco')]
+        [Alias('SkipChoco')]
         [switch]
         $IncludeChocolatey
     )
