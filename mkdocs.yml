@@ -33,13 +33,13 @@ markdown_extensions:
   #- pymdownx.blocks.caption
   #- pymdownx.blocks.details
   #- pymdownx.blocks.tab
-  - pymdownx.highlight:
-      use_pygments: true
-      anchor_linenums: true
-  - pymdownx.keys
-  - pymdownx.inlinehilite
-  - pymdownx.smartsymbols
-  - pymdownx.snippets
+  #- pymdownx.highlight:
+  #    use_pygments: true
+  #    anchor_linenums: true
+  #- pymdownx.keys
+  #- pymdownx.inlinehilite
+  #- pymdownx.smartsymbols
+  #- pymdownx.snippets
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
