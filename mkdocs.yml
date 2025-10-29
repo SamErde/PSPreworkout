@@ -72,13 +72,14 @@ theme:
   language: en
   # custom_dir: overrides
   features:
-    - navigation.tabs
-    - navigation.tabs.sticky
+    #- navigation.tabs
+    #- navigation.tabs.sticky
     - navigation.path
     - navigation.instant
     - navigation.instant.prefetch
     - navigation.tracking
     - navigation.sections
+    - navigation.expand
     - navigation.top
     - toc.follow
     - toc.integrate
