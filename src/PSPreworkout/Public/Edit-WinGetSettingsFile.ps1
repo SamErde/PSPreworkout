@@ -1,4 +1,4 @@
-function Edit-WingetSettingsFile {
+function Edit-WinGetSettingsFile {
     <#
     .SYNOPSIS
     Edit the WinGet settings file.

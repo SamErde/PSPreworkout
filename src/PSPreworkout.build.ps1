@@ -130,6 +130,93 @@ Add-BuildTask ValidateRequirements {
 # Updates the array for FunctionsToExport in the module manifest
 # <https://github.com/techthoughts2/Catesta/issues/97>
 
+# Synopsis: Update module manifest with public functions and aliases
+Add-BuildTask UpdateManifest -Before TestModuleManifest {
+    Write-Build White '      Updating module manifest with public functions and aliases...'
+
+    # Get all public functions
+    $publicFunctions = Get-ChildItem -Path "$script:ModuleSourcePath\Public\*.ps1" -ErrorAction SilentlyContinue | 
+        ForEach-Object {
+            $content = Get-Content -Path $_.FullName -Raw
+            # Extract function name from 'function FunctionName {' pattern
+            if ($content -match 'function\s+([a-zA-Z][\w-]*)\s*\{') {
+                $matches[1]
+            }
+        } | Sort-Object
+
+    if (-not $publicFunctions) {
+        Write-Build Yellow '      No public functions found in Public folder.'
+        return
+    }
+
+    Write-Build Gray "      Found $($publicFunctions.Count) public functions"
+
+    # Get all aliases from public functions - improved detection
+    $aliases = Get-ChildItem -Path "$script:ModuleSourcePath\Public\*.ps1" -ErrorAction SilentlyContinue | 
+        ForEach-Object {
+            # Read line by line to better understand context and avoid string literals
+            $lines = Get-Content -Path $_.FullName
+            $foundAliases = @()
+            
+            foreach ($line in $lines) {
+                # Skip lines that are clearly in strings or variable assignments
+                if ($line -match '^\s*#' -or $line -match '=.*\[Alias') {
+                    continue
+                }
+                
+                # Match [Alias(...)] attribute declarations
+                if ($line -match '^\s*\[Alias\((.*?)\)\]') {
+                    $aliasString = $matches[1]
+                    # Split by comma and clean up each alias
+                    $lineAliases = $aliasString -split ',' | ForEach-Object {
+                        $cleaned = $_.Trim().Trim("'").Trim('"').Trim()
+                        # Filter out variables, template placeholders, and empty strings
+                        if ($cleaned -and $cleaned -notmatch '^\$' -and $cleaned -notmatch '__') {
+                            $cleaned
+                        }
+                    } | Where-Object { $_ }
+                    
+                    $foundAliases += $lineAliases
+                }
+            }
+            
+            $foundAliases
+        } | Sort-Object -Unique
+
+    Write-Build Gray "      Found $($aliases.Count) unique aliases in public functions"
+
+    # Read the manifest file
+    $manifestPath = $script:ModuleManifestFile
+    $manifestContent = Get-Content -Path $manifestPath -Raw
+    
+    # Update FunctionsToExport
+    $functionsArray = ($publicFunctions | ForEach-Object { "'$_'" }) -join ",`n        "
+    $functionsToExportPattern = '(?ms)(FunctionsToExport\s*=\s*@\().*?(\s*\))'
+    
+    # Build complete export list: functions first, then aliases that should be exported as functions
+    $allExports = @($publicFunctions)
+    if ($aliases) {
+        $allExports += $aliases
+    }
+    $allExportsArray = ($allExports | Sort-Object -Unique | ForEach-Object { "'$_'" }) -join ",`n        "
+    
+    $newFunctionsToExport = "`$1`n        $allExportsArray`n    `$2"
+    $manifestContent = $manifestContent -replace $functionsToExportPattern, $newFunctionsToExport
+
+    # Update AliasesToExport
+    if ($aliases) {
+        $aliasesArray = ($aliases | ForEach-Object { "'$_'" }) -join ",`n        "
+        $aliasesToExportPattern = '(?ms)(AliasesToExport\s*=\s*@\().*?(\s*\))'
+        $newAliasesToExport = "`$1`n        $aliasesArray`n    `$2"
+        $manifestContent = $manifestContent -replace $aliasesToExportPattern, $newAliasesToExport
+    }
+
+    # Write the updated manifest
+    $manifestContent | Out-File -FilePath $manifestPath -Encoding utf8 -NoNewline
+
+    Write-Build Green '      ...Module manifest updated successfully!'
+}
+
 # Synopsis: Import the current module manifest file for processing
 Add-BuildTask TestModuleManifest -Before ImportModuleManifest {
     Write-Build White '      Running module manifest tests...'
