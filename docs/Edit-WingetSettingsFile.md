@@ -5,7 +5,7 @@ online version:
 schema: 2.0.0
 ---
 
-# Edit-WingetSettingsFile
+# Edit-WinGetSettingsFile
 
 ## SYNOPSIS
 
@@ -14,7 +14,7 @@ Edit the WinGet settings file.
 ## SYNTAX
 
 ```
-Edit-WingetSettingsFile [<CommonParameters>]
+Edit-WinGetSettingsFile [<CommonParameters>]
 ```
 
 ## DESCRIPTION

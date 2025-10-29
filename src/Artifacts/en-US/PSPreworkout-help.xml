@@ -38,9 +38,9 @@
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
-      <command:name>Edit-WingetSettingsFile</command:name>
+      <command:name>Edit-WinGetSettingsFile</command:name>
       <command:verb>Edit</command:verb>
-      <command:noun>WingetSettingsFile</command:noun>
+      <command:noun>WinGetSettingsFile</command:noun>
       <maml:description>
         <maml:para>Edit the WinGet settings file.</maml:para>
       </maml:description>
@@ -50,7 +50,7 @@
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
-        <maml:name>Edit-WingetSettingsFile</maml:name>
+        <maml:name>Edit-WinGetSettingsFile</maml:name>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters />
@@ -710,7 +710,7 @@ results to Update-PSResource.</dev:code>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>This function helps you download a zipped version of PowerShell 7.x that can be run anywhere without needing to install it.</maml:para>
+      <maml:para>This function helps you download a zipped copy of the latest version of PowerShell that can be run without needing to install it.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -718,7 +718,7 @@ results to Update-PSResource.</dev:code>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>Path</maml:name>
           <maml:Description>
-            <maml:para>The path (directory) to download the PowerShell zip or tar.gz file into. Do not include a filename for the download.</maml:para>
+            <maml:para>The directory path to download the PowerShell zip or tar.gz file into. Do not include a filename for the download.</maml:para>
           </maml:Description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -730,7 +730,7 @@ results to Update-PSResource.</dev:code>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Extract</maml:name>
           <maml:Description>
-            <maml:para>Extract the downloaded file.</maml:para>
+            <maml:para>Extract the file after downloading.</maml:para>
           </maml:Description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -744,7 +744,7 @@ results to Update-PSResource.</dev:code>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>Path</maml:name>
         <maml:Description>
-          <maml:para>The path (directory) to download the PowerShell zip or tar.gz file into. Do not include a filename for the download.</maml:para>
+          <maml:para>The directory path to download the PowerShell zip or tar.gz file into. Do not include a filename for the download.</maml:para>
         </maml:Description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -756,7 +756,7 @@ results to Update-PSResource.</dev:code>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Extract</maml:name>
         <maml:Description>
-          <maml:para>Extract the downloaded file.</maml:para>
+          <maml:para>Extract the file after downloading.</maml:para>
         </maml:Description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -2425,7 +2425,7 @@ Show-WithoutEmptyProperty -Object $Object</dev:code>
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="Skip-Choco">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="SkipChoco">
           <maml:name>IncludeChocolatey</maml:name>
           <maml:Description>
             <maml:para>Include Chocolatey package updates.</maml:para>
@@ -2509,7 +2509,7 @@ Show-WithoutEmptyProperty -Object $Object</dev:code>
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="Skip-Choco">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="SkipChoco">
         <maml:name>IncludeChocolatey</maml:name>
         <maml:Description>
           <maml:para>Include Chocolatey package updates.</maml:para>

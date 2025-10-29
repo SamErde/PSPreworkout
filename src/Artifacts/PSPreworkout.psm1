@@ -138,7 +138,7 @@ function Edit-PSReadLineHistoryFile {
 
 
 
-function Edit-WingetSettingsFile {
+function Edit-WinGetSettingsFile {
     <#
 .EXTERNALHELP PSPreworkout-help.xml
 #>
@@ -660,12 +660,13 @@ function Get-PowerShellPortable {
     [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Get-PowerShellPortable')]
     [Alias('Get-PSPortable')]
     param (
-        # Path to download and extract PowerShell to
+        # The directory path to download the PowerShell zip or tar.gz file into. Do not include a filename for the download.
         [Parameter()]
+        [ValidateScript({ Test-Path -Path $_ -PathType Container })]
         [string]
         $Path,
 
-        # Extract the file after downloading
+        # Extract the file after downloading.
         [Parameter()]
         [switch]
         $Extract
@@ -677,21 +678,24 @@ function Get-PowerShellPortable {
     #region Determine Download Uri
     $DownloadLinks = (Invoke-RestMethod -Uri 'https://api.github.com/repos/PowerShell/PowerShell/releases/latest').assets.browser_download_url
 
+    # Can use [System.Runtime.InteropServices.RuntimeInformation]::RuntimeIdentifier for simpler platform targeting, but it may not be available in older PowerShell versions.
     # Determine the platform and architecture
+    $RuntimeInfo = [System.Runtime.InteropServices.RuntimeInformation]
+
     $Architecture = [System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture
     # OSArchitecture isn't present in older versions of .NET Framework, so use the environment variable as a fallback for Windows.
     if (-not $Architecture) { $Architecture = $([System.Environment]::GetEnvironmentVariable('PROCESSOR_ARCHITECTURE')).Replace('AMD64', 'X64') }
 
     # Set the pattern for the ZIP file based on the OS and architecture
     $FilePattern =
-    if ( [System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform([System.Runtime.InteropServices.OSPlatform]::Windows) ) {
+    if ( $RuntimeInfo::IsOSPlatform([System.Runtime.InteropServices.OSPlatform]::Windows) ) {
         "win-$Architecture.zip"
-    } elseif ( [System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform([System.Runtime.InteropServices.OSPlatform]::Linux) ) {
+    } elseif ( $RuntimeInfo::IsOSPlatform([System.Runtime.InteropServices.OSPlatform]::Linux) ) {
         "linux-$Architecture.tar.gz"
-    } elseif ( [System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform([System.Runtime.InteropServices.OSPlatform]::OSX) ) {
+    } elseif ( $RuntimeInfo::IsOSPlatform([System.Runtime.InteropServices.OSPlatform]::OSX) ) {
         "osx-$Architecture.tar.gz"
     } else {
-        throw "Operating system unknown: $($PSVersionTable.OS)."
+        Write-Error "Operating system unknown: $($PSVersionTable.OS)."
         return
     }
 
@@ -706,7 +710,7 @@ function Get-PowerShellPortable {
     }
 
     $OutFilePath = [System.IO.Path]::Combine($Path, $FileName)
-    $PwshDirectory = "$([System.IO.Path]::GetFileNameWithoutExtension($OutFilePath) -replace [Regex]'\.zip$|\.tar.gz$|\.gz$|\.tar$', '')"
+    $PwshDirectory = "$([System.IO.Path]::GetFileNameWithoutExtension($OutFilePath) -replace '\.tar$', '')"
     if (-not (Test-Path (Join-Path -Path $Path -ChildPath $PwshDirectory))) {
         try {
             New-Item -Name $PwshDirectory -Path $Path -ItemType Directory
@@ -720,7 +724,7 @@ function Get-PowerShellPortable {
     #region Download PowerShell
     try {
         Invoke-WebRequest -Uri $DownloadUrl -OutFile $OutFilePath
-        Write-Output "PowerShell has been downloaded to $OutFilePath."
+        Write-Information -MessageData "PowerShell has been downloaded to $OutFilePath."
     } catch {
         Write-Error "Failed to download $DownloadUrl to $Path."
         $_
@@ -728,39 +732,32 @@ function Get-PowerShellPortable {
     }
     #endregion Download PowerShell
 
-    Unblock-File -Path $OutFilePath
+    if ($IsWindows -or (-not $IsLinux -and -not $IsMacOS)) {
+        Unblock-File -Path $OutFilePath
+    }
 
     #region Extract PowerShell
     if ($PSBoundParameters.ContainsKey('Extract')) {
 
-        if ($IsLinux) {
+        if ($IsLinux -or $IsMacOS) {
             # Decompress the GZip file
             $GZipFile = $OutFilePath
             $TarFile = $GZipFile -replace '\.gz$', ''
-            [System.IO.Compression.GzipStream]::new(
-                [System.IO.FileStream]::new($GZipFile, [System.IO.FileMode]::Open),
-                [System.IO.Compression.CompressionMode]::Decompress
-            ).CopyTo(
-                [System.IO.FileStream]::new($TarFile, [System.IO.FileMode]::Create)
-            )
-            # Use tar command to extract the .tar file
-            tar -xf $tarFile -C $PwshPath
-            Write-Output "PowerShell has been extracted to $PwshPath."
-        }
 
-        if ($IsMacOS) {
-            # Decompress the tar and GZip file
-            $GZipFile = $OutFilePath
-            $TarFile = $GZipFile -replace '\.gz$', ''
-            [System.IO.Compression.GzipStream]::new(
-                [System.IO.FileStream]::new($GZipFile, [System.IO.FileMode]::Open),
-                [System.IO.Compression.CompressionMode]::Decompress
-            ).CopyTo(
-                [System.IO.FileStream]::new($TarFile, [System.IO.FileMode]::Create)
-            )
+            $SourceStream = [System.IO.FileStream]::new($GZipFile, [System.IO.FileMode]::Open)
+            $TargetStream = [System.IO.FileStream]::new($TarFile, [System.IO.FileMode]::Create)
+            try {
+                $GZipStream = [System.IO.Compression.GzipStream]::new($SourceStream, [System.IO.Compression.CompressionMode]::Decompress)
+                $GZipStream.CopyTo($TargetStream)
+            } finally {
+                $GZipStream?.Dispose()
+                $TargetStream?.Dispose()
+                $SourceStream?.Dispose()
+            }
+
             # Use tar command to extract the .tar file
-            tar -xzf $GzipFile -C $PwshPath
-            Write-Output "PowerShell has been extracted to $PwshPath."
+            tar -xf $TarFile -C $PwshPath
+            Write-Information -MessageData "PowerShell has been extracted to $PwshPath." -InformationAction Continue
         }
 
         if (-not $IsLinux -and -not $IsMacOS) {
@@ -1934,7 +1931,7 @@ function Update-AllTheThings {
 
         # Skip the step that updates Chocolatey packages
         [Parameter()]
-        [Alias('Skip-Choco')]
+        [Alias('SkipChoco')]
         [switch]
         $IncludeChocolatey
     )

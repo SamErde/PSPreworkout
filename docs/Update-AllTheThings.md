@@ -105,7 +105,7 @@ Include Chocolatey package updates.
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
-Aliases: Skip-Choco
+Aliases: SkipChoco
 
 Required: False
 Position: Named

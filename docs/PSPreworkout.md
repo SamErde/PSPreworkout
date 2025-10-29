@@ -18,7 +18,7 @@ A special mix of tools to help jump start your PowerShell session!
 
 Edit the PSReadLine History File
 
-### [Edit-WingetSettingsFile](Edit-WingetSettingsFile.md)
+### [Edit-WinGetSettingsFile](Edit-WinGetSettingsFile.md)
 
 Edit the WinGet settings file.
 

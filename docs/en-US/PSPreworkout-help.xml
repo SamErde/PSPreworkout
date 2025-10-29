@@ -2079,7 +2079,7 @@ Show-WithoutEmptyProperty -Object $Object</dev:code>
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="Skip-Choco">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="SkipChoco">
           <maml:name>IncludeChocolatey</maml:name>
           <maml:Description>
             <maml:para>Include Chocolatey package updates.</maml:para>
@@ -2163,7 +2163,7 @@ Show-WithoutEmptyProperty -Object $Object</dev:code>
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="Skip-Choco">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="SkipChoco">
         <maml:name>IncludeChocolatey</maml:name>
         <maml:Description>
           <maml:para>Include Chocolatey package updates.</maml:para>
