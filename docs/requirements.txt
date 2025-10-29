@@ -2,5 +2,6 @@
 # requirements.txt
 jinja2==3.1.6  #https://pypi.org/project/Jinja2/
 mkdocs>=1.6.1  #https://github.com/mkdocs/mkdocs
-mkdocs-material==9.6.22  #https://github.com/squidfunk/mkdocs-material
-pygments>=2.19.2  #https://pypi.org/project/Pygments/
+mkdocs-material>=9.0  #https://github.com/squidfunk/mkdocs-material
+pygments>=2.18  #https://pypi.org/project/Pygments/
+pymdown-extensions
