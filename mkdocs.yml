@@ -25,11 +25,10 @@ docs_dir: "docs"
 # extra_javascript:
 
 markdown_extensions:
-#  Python Markdown
   - smarty
   - admonition
   - toc:
-    permalink: true
+      permalink: true
   - pymdownx.blocks.caption
   - pymdownx.blocks.details
   - pymdownx.blocks.tab
