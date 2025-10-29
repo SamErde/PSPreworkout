@@ -23,9 +23,11 @@
 [CmdletBinding()]
 param (
     [Parameter()]
+    [ValidateNotNullOrWhiteSpace()]
     [string]$ManifestPath = "./src/PSPreworkout/PSPreworkout.psd1",
 
     [Parameter()]
+    [ValidateNotNullOrWhiteSpace()]
     [string]$MkDocsPath = "./mkdocs.yml"
 )
 
@@ -38,9 +40,10 @@ function Get-FunctionCategory {
 
     .DESCRIPTION
         Categorizes functions based on their naming patterns and purpose:
-        - Customize: Functions for configuring PowerShell environment
+
+        - Customize: Functions for customizing your PowerShell environment
         - Develop: Functions for PowerShell development tasks
-        - Daily Functions: General utility functions for daily operations
+        - Daily Functions: General utility functions for everyday use
     #>
     [CmdletBinding()]
     param (
