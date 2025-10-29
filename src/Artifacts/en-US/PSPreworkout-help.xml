@@ -38,9 +38,9 @@
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
-      <command:name>Edit-WingetSettingsFile</command:name>
+      <command:name>Edit-WinGetSettingsFile</command:name>
       <command:verb>Edit</command:verb>
-      <command:noun>WingetSettingsFile</command:noun>
+      <command:noun>WinGetSettingsFile</command:noun>
       <maml:description>
         <maml:para>Edit the WinGet settings file.</maml:para>
       </maml:description>
@@ -50,7 +50,7 @@
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
-        <maml:name>Edit-WingetSettingsFile</maml:name>
+        <maml:name>Edit-WinGetSettingsFile</maml:name>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters />
@@ -2425,7 +2425,7 @@ Show-WithoutEmptyProperty -Object $Object</dev:code>
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="Skip-Choco">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="SkipChoco">
           <maml:name>IncludeChocolatey</maml:name>
           <maml:Description>
             <maml:para>Include Chocolatey package updates.</maml:para>
@@ -2509,7 +2509,7 @@ Show-WithoutEmptyProperty -Object $Object</dev:code>
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="Skip-Choco">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="SkipChoco">
         <maml:name>IncludeChocolatey</maml:name>
         <maml:Description>
           <maml:para>Include Chocolatey package updates.</maml:para>

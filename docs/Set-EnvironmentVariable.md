@@ -8,7 +8,6 @@ schema: 2.0.0
 # Set-EnvironmentVariable
 
 ## SYNOPSIS
-
 Set environment variables.
 
 ## SYNTAX
@@ -19,13 +18,11 @@ Set-EnvironmentVariable [-Name] <String> [-Value] <String> [-Target] <Environmen
 ```
 
 ## DESCRIPTION
-
 Set environment variables in any OS using .NET types.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
-
 ```
 Set-EnvironmentVariable -Name 'FavoriteDrink' -Value 'Coffee' -Target 'User'
 ```
@@ -33,7 +30,6 @@ Set-EnvironmentVariable -Name 'FavoriteDrink' -Value 'Coffee' -Target 'User'
 ## PARAMETERS
 
 ### -Name
-
 Parameter description
 
 ```yaml
@@ -49,7 +45,6 @@ Accept wildcard characters: False
 ```
 
 ### -Value
-
 Parameter description
 
 ```yaml
@@ -65,7 +60,6 @@ Accept wildcard characters: False
 ```
 
 ### -Target
-
 Parameter description
 
 ```yaml
@@ -82,8 +76,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
-
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -Verbose, -WarningAction, -WarningVariable, and -ProgressAction.
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -Verbose, -WarningAction, -WarningVariable, and -ProgressAction. 
 For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
