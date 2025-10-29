@@ -30,9 +30,9 @@ markdown_extensions:
   - admonition
   - toc:
     permalink: true
-  - pymdownx.blocks.caption
-  - pymdownx.blocks.details
-  - pymdownx.blocks.tab
+  #- pymdownx.blocks.caption
+  #- pymdownx.blocks.details
+  #- pymdownx.blocks.tab
   - pymdownx.highlight:
       use_pygments: true
       anchor_linenums: true
