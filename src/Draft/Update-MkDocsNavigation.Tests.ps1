@@ -1,11 +1,7 @@
 BeforeAll {
-    #-------------------------------------------------------------------------
-    Set-Location -Path $PSScriptRoot
-    #-------------------------------------------------------------------------
     $ScriptPath = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, '..', '..', '..', 'Scripts', 'Update-MkDocsNavigation.ps1'))
     $ManifestPath = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, '..', '..', 'PSPreworkout', 'PSPreworkout.psd1'))
     $MkDocsPath = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, '..', '..', '..', 'mkdocs.yml'))
-    #-------------------------------------------------------------------------
 
     # Source the script to get access to its functions
     . $ScriptPath
