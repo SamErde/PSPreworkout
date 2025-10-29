@@ -97,7 +97,7 @@ theme:
 
 nav:
   - Home: "index.md"
-  - 🧑‍💻: "index.md"
+  - 🧑‍💻: "#"
   - Functions - Customize:
       - Edit-PSReadLineHistoryFile: "Edit-PSReadLineHistoryFile.md"
       - Edit-WinGetSettingsFile: "Edit-WinGetSettingsFile.md"
