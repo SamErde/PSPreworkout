@@ -61,10 +61,11 @@
         'Show-LoadedAssemblies',
         'Show-LoadedAssembly',
         'Show-WithoutEmptyProperty',
-        'Skip-Choco',
+        'SkipChoco',
         'Test-IsElevated',
         'uatt',
         'Update-AllTheThings'
+    
     
     )
 
@@ -87,8 +88,9 @@
         'New-Script',
         'sev',
         'Show-LoadedAssemblies',
-        'Skip-Choco',
+        'SkipChoco',
         'uatt'
+    
     
     )
 
