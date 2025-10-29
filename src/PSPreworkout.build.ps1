@@ -90,7 +90,7 @@ Enter-Build {
     $script:BuildModuleRootFile = Join-Path -Path $script:ArtifactsPath -ChildPath "$($script:ModuleName).psm1"
 
     # Ensure our builds fail until if below a minimum defined code test coverage threshold
-    $script:coverageThreshold = 2 # Default 30
+    $script:coverageThreshold = 5 # Default 30
 
     [version]$script:MinPesterVersion = '5.2.2'
     [version]$script:MaxPesterVersion = '5.99.99'
@@ -135,7 +135,7 @@ Add-BuildTask UpdateManifest -Before TestModuleManifest {
     Write-Build White '      Updating module manifest with public functions and aliases...'
 
     # Get all public functions
-    $publicFunctions = Get-ChildItem -Path "$script:ModuleSourcePath\Public\*.ps1" -ErrorAction SilentlyContinue | 
+    $publicFunctions = Get-ChildItem -Path "$script:ModuleSourcePath\Public\*.ps1" -ErrorAction SilentlyContinue |
         ForEach-Object {
             $content = Get-Content -Path $_.FullName -Raw
             # Extract function name from 'function FunctionName {' pattern
@@ -152,18 +152,18 @@ Add-BuildTask UpdateManifest -Before TestModuleManifest {
     Write-Build Gray "      Found $($publicFunctions.Count) public functions"
 
     # Get all aliases from public functions - improved detection
-    $aliases = Get-ChildItem -Path "$script:ModuleSourcePath\Public\*.ps1" -ErrorAction SilentlyContinue | 
+    $aliases = Get-ChildItem -Path "$script:ModuleSourcePath\Public\*.ps1" -ErrorAction SilentlyContinue |
         ForEach-Object {
             # Read line by line to better understand context and avoid string literals
             $lines = Get-Content -Path $_.FullName
             $foundAliases = @()
-            
+
             foreach ($line in $lines) {
                 # Skip lines that are clearly in strings or variable assignments
                 if ($line -match '^\s*#' -or $line -match '=.*\[Alias') {
                     continue
                 }
-                
+
                 # Match [Alias(...)] attribute declarations
                 if ($line -match '^\s*\[Alias\((.*?)\)\]') {
                     $aliasString = $matches[1]
@@ -175,11 +175,11 @@ Add-BuildTask UpdateManifest -Before TestModuleManifest {
                             $cleaned
                         }
                     } | Where-Object { $_ }
-                    
+
                     $foundAliases += $lineAliases
                 }
             }
-            
+
             $foundAliases
         } | Sort-Object -Unique
 
@@ -188,18 +188,18 @@ Add-BuildTask UpdateManifest -Before TestModuleManifest {
     # Read the manifest file
     $manifestPath = $script:ModuleManifestFile
     $manifestContent = Get-Content -Path $manifestPath -Raw
-    
+
     # Update FunctionsToExport
     $functionsArray = ($publicFunctions | ForEach-Object { "'$_'" }) -join ",`n        "
     $functionsToExportPattern = '(?ms)(FunctionsToExport\s*=\s*@\().*?(\s*\))'
-    
+
     # Build complete export list: functions first, then aliases that should be exported as functions
     $allExports = @($publicFunctions)
     if ($aliases) {
-        $allExports += $aliases
+        $allExports += @($aliases -match '\w-\w')
     }
     $allExportsArray = ($allExports | Sort-Object -Unique | ForEach-Object { "'$_'" }) -join ",`n        "
-    
+
     $newFunctionsToExport = "`$1`n        $allExportsArray`n    `$2"
     $manifestContent = $manifestContent -replace $functionsToExportPattern, $newFunctionsToExport
 
