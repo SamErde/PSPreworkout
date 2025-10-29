@@ -14,7 +14,7 @@ repo_url: "https://github.com/SamErde/PSPreworkout"
 repo_name: "SamErde/PSPreworkout"
 # edit_uri: edit/main/docs/
 # edit_uri_template:
-site_description: "PowerShell Preworkout: a mix of tools to help jump start your PowerShell session!" # meta tag to the generated HTML header
+site_description: "PowerShell Preworkout - Documentation for the PSPreworkout PowerShell module." # meta tag to the generated HTML header
 site_author: "Sam Erde" # meta tag to the generated HTML header
 copyright: "(c) 2025 Sam Erde"
 # remote_branch:
@@ -23,24 +23,28 @@ docs_dir: "docs"
 # site_dir:
 # extra_css:
 # extra_javascript:
-# markdown_extensions:
-# Python Markdown
-# - admonition
-# - toc:
-#     permalink: true
-# code highlighting
-# - pymdownx.highlight:
-#     use_pygments: true
-# - pymdownx.highlight:
-#     anchor_linenums: true
-# - pymdownx.inlinehilite
-# - pymdownx.snippets
-# - pymdownx.superfences
 
-# extra_templates:
-# extra:
-# plugins:
-#  - social
+markdown_extensions:
+#  Python Markdown
+  - smarty
+  - admonition
+  - toc:
+    permalink: true
+  - pymdownx.blocks.caption
+  - pymdownx.blocks.details
+  - pymdownx.blocks.tab
+  - pymdownx.highlight:
+      use_pygments: true
+      anchor_linenums: true
+  - pymdownx.keys
+  - pymdownx.inlinehilite
+  - pymdownx.smartsymbols
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
 
 theme:
   name: material
@@ -83,6 +87,7 @@ theme:
     - navigation.top
     - toc.follow
     - toc.integrate
+
   # favicon:
   # icon:
   #   repo:
@@ -118,10 +123,3 @@ nav:
       - Show-WithoutEmptyProperty: "Show-WithoutEmptyProperty.md"
       - Test-IsElevated: "Test-IsElevated.md"
       - Update-AllTheThings: "Update-AllTheThings.md"
-
-markdown_extensions:
-  - pymdownx.superfences:
-      custom_fences:
-        - name: mermaid
-          class: mermaid
-          format: !!python/name:pymdownx.superfences.fence_code_format
