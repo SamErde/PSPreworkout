@@ -21,6 +21,7 @@ A special mix of tools to help jump start your PowerShell session!
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/SamErde/PSPreworkout/.github%2Fworkflows%2FBuild%20Module.yml)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/SamErde/PSPreworkout/.github%2Fworkflows%2FDeploy%20MkDocs.yml?label=MkDocs)
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/11404/badge)](https://www.bestpractices.dev/projects/11404)
+
 <!-- badges-end -->
 
 &nbsp;
