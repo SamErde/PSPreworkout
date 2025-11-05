@@ -5,28 +5,27 @@ online version:
 schema: 2.0.0
 ---
 
-# Get-LoadedAssembly
+# Edit-WinGetSettingsFile
 
 ## SYNOPSIS
-Get all assemblies loaded in PowerShell.
+Edit the WinGet settings file.
 
 ## SYNTAX
 
 ```
-Get-LoadedAssembly [<CommonParameters>]
+Edit-WinGetSettingsFile [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Get all assemblies loaded in PowerShell.
+A shortcut to edit the WinGet settings file.
+This will create one if it does not already exist.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Get-LoadedAssembly
+Edit-WinGetSettingsFile
 ```
-
-Returns a list of all loaded assemblies.
 
 ## PARAMETERS
 
@@ -38,8 +37,6 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 
 ## OUTPUTS
 
-### Object[]
 ## NOTES
-To Do: Add -Name parameter to get a specific one.
 
 ## RELATED LINKS
