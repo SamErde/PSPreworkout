@@ -4,6 +4,9 @@ on:
     types: [opened]
   pull_request:
     types: [opened]
+permissions:
+  contents: read
+
 jobs:
   run:
     runs-on: ubuntu-latest
@@ -11,15 +14,20 @@ jobs:
       issues: write
       pull-requests: write
     steps:
+    - name: Harden the runner (Audit all outbound calls)
+      uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
+      with:
+        egress-policy: audit
+
     - name: '👷‍♂️ Auto-assign Issue'
-      uses: pozil/auto-assign-issue@v2
+      uses: pozil/auto-assign-issue@21ffb634481e75f2557e5f507e359cba97bbc42b # v2
       with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           numOfAssignee: 1
           assignees: ${{ vars.DEFAULT_ISSUE_ASSIGNEE }}
           allowSelfAssign: true
     - name: '👷‍♂️ Auto-assign PR'
-      uses: pozil/auto-assign-issue@v2
+      uses: pozil/auto-assign-issue@21ffb634481e75f2557e5f507e359cba97bbc42b # v2
       with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           numOfAssignee: 1

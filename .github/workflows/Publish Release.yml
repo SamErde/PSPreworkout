@@ -30,12 +30,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
+        with:
+          egress-policy: audit
+
       - name: ✅ Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
 
       - name: 📦 Create GitHub Release
         # Creates a new release from a changelog section that matches a commit tag (eg: v1.2.5)
-        uses: docker://antonyurchenko/git-release:latest
+        uses: docker://antonyurchenko/git-release:latest@sha256:499561e8dc416d976f1b130584f3bdb9ba2129c9c871449b007a3c4dd7a5eb08
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         with:

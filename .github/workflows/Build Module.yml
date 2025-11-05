@@ -26,8 +26,13 @@ jobs:
     #  fail-fast: false
 
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
+        with:
+          egress-policy: audit
+
       - name: ✅ Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
 
       - name: 📁 Display the Path
         shell: pwsh
@@ -44,14 +49,14 @@ jobs:
         run: Invoke-Build -File .\src\PSPreworkout.build.ps1
 
       - name: 🧪 Upload Pester Results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: pester-results
           path: .\src\Artifacts\testOutput
           if-no-files-found: warn
 
       - name: 📦 Upload Build
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: zip-archive
           path: .\src\Archive
@@ -59,6 +64,6 @@ jobs:
           # git-auto-commit-action only runs on Linux-based platforms.
 
       - name: 💾 Commit Changes
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@b863ae1933cb653a53c021fe36dbb774e1fb9403 # v5.2.0
         with:
           commit_message: "Commit Build"
