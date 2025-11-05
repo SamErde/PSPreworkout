@@ -29,8 +29,13 @@ jobs:
       cancel-in-progress: false
 
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
+        with:
+          egress-policy: audit
+
       - name: ✅ Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -276,7 +281,7 @@ jobs:
 
       - name: 💾 Commit Changes
         if: steps.check.outputs.needs_update == 'true'
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@b863ae1933cb653a53c021fe36dbb774e1fb9403 # v5.2.0
         with:
           commit_message: "🤖 Auto-update module manifest with new functions and aliases"
           file_pattern: "src/PSPreworkout/PSPreworkout.psd1"
