@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE report PUBLIC "-//JACOCO//DTD Report 1.1//EN" "report.dtd"[]>
-<report name="Pester (10/29/2025 16:49:06)">
-  <sessioninfo id="this" start="1761756522099" dump="1761756546799" />
+<report name="Pester (11/05/2025 02:51:19)">
+  <sessioninfo id="this" start="1762311071045" dump="1762311079871" />
   <package name="PSPreworkout/Private">
     <class name="PSPreworkout/Private/Write-PSPreworkoutTelemetry" sourcefilename="Private/Write-PSPreworkoutTelemetry.ps1">
       <method name="Write-PSPreworkoutTelemetry" desc="()" line="36">
@@ -95,11 +95,11 @@
     </class>
     <class name="PSPreworkout/Public/Get-EnvironmentVariable" sourcefilename="Public/Get-EnvironmentVariable.ps1">
       <method name="Get-EnvironmentVariable" desc="()" line="96">
-        <counter type="INSTRUCTION" missed="0" covered="30" />
+        <counter type="INSTRUCTION" missed="2" covered="28" />
         <counter type="LINE" missed="0" covered="19" />
         <counter type="METHOD" missed="0" covered="1" />
       </method>
-      <counter type="INSTRUCTION" missed="0" covered="30" />
+      <counter type="INSTRUCTION" missed="2" covered="28" />
       <counter type="LINE" missed="0" covered="19" />
       <counter type="METHOD" missed="0" covered="1" />
       <counter type="CLASS" missed="0" covered="1" />
@@ -133,8 +133,8 @@
         <counter type="METHOD" missed="0" covered="1" />
       </method>
       <method name="Test-IsAllUsersPath" desc="()" line="123">
-        <counter type="INSTRUCTION" missed="1" covered="3" />
-        <counter type="LINE" missed="1" covered="3" />
+        <counter type="INSTRUCTION" missed="2" covered="2" />
+        <counter type="LINE" missed="2" covered="2" />
         <counter type="METHOD" missed="0" covered="1" />
       </method>
       <method name="Select-ModuleVersion" desc="()" line="152">
@@ -147,8 +147,8 @@
         <counter type="LINE" missed="1" covered="4" />
         <counter type="METHOD" missed="0" covered="1" />
       </method>
-      <counter type="INSTRUCTION" missed="55" covered="165" />
-      <counter type="LINE" missed="29" covered="118" />
+      <counter type="INSTRUCTION" missed="56" covered="164" />
+      <counter type="LINE" missed="30" covered="117" />
       <counter type="METHOD" missed="0" covered="4" />
       <counter type="CLASS" missed="0" covered="1" />
     </class>
@@ -399,12 +399,12 @@
       <line nr="120" mi="0" ci="1" mb="0" cb="0" />
       <line nr="121" mi="0" ci="1" mb="0" cb="0" />
       <line nr="122" mi="0" ci="1" mb="0" cb="0" />
-      <line nr="123" mi="0" ci="3" mb="0" cb="0" />
-      <line nr="124" mi="0" ci="4" mb="0" cb="0" />
+      <line nr="123" mi="1" ci="2" mb="0" cb="0" />
+      <line nr="124" mi="1" ci="3" mb="0" cb="0" />
       <line nr="126" mi="0" ci="1" mb="0" cb="0" />
       <line nr="127" mi="0" ci="1" mb="0" cb="0" />
       <line nr="135" mi="0" ci="1" mb="0" cb="0" />
-      <counter type="INSTRUCTION" missed="0" covered="30" />
+      <counter type="INSTRUCTION" missed="2" covered="28" />
       <counter type="LINE" missed="0" covered="19" />
       <counter type="METHOD" missed="0" covered="1" />
       <counter type="CLASS" missed="0" covered="1" />
@@ -465,7 +465,7 @@
       <line nr="97" mi="0" ci="2" mb="0" cb="0" />
       <line nr="99" mi="0" ci="2" mb="0" cb="0" />
       <line nr="123" mi="0" ci="1" mb="0" cb="0" />
-      <line nr="124" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="124" mi="1" ci="0" mb="0" cb="0" />
       <line nr="125" mi="1" ci="0" mb="0" cb="0" />
       <line nr="128" mi="0" ci="1" mb="0" cb="0" />
       <line nr="152" mi="0" ci="1" mb="0" cb="0" />
@@ -596,8 +596,8 @@
       <line nr="427" mi="0" ci="1" mb="0" cb="0" />
       <line nr="431" mi="0" ci="2" mb="0" cb="0" />
       <line nr="432" mi="0" ci="1" mb="0" cb="0" />
-      <counter type="INSTRUCTION" missed="55" covered="165" />
-      <counter type="LINE" missed="29" covered="118" />
+      <counter type="INSTRUCTION" missed="56" covered="164" />
+      <counter type="LINE" missed="30" covered="117" />
       <counter type="METHOD" missed="0" covered="4" />
       <counter type="CLASS" missed="0" covered="1" />
     </sourcefile>
@@ -1202,13 +1202,13 @@
       <counter type="METHOD" missed="1" covered="0" />
       <counter type="CLASS" missed="1" covered="0" />
     </sourcefile>
-    <counter type="INSTRUCTION" missed="724" covered="215" />
-    <counter type="LINE" missed="574" covered="152" />
+    <counter type="INSTRUCTION" missed="727" covered="212" />
+    <counter type="LINE" missed="575" covered="151" />
     <counter type="METHOD" missed="19" covered="9" />
     <counter type="CLASS" missed="19" covered="4" />
   </package>
-  <counter type="INSTRUCTION" missed="725" covered="260" />
-  <counter type="LINE" missed="575" covered="185" />
+  <counter type="INSTRUCTION" missed="728" covered="257" />
+  <counter type="LINE" missed="576" covered="184" />
   <counter type="METHOD" missed="19" covered="10" />
   <counter type="CLASS" missed="19" covered="5" />
 </report>
