@@ -97,8 +97,7 @@ theme:
 
 nav:
   - Home: "index.md"
-  - 🧑‍💻: "#"
-  - 𝗙𝘂𝗻𝗰𝘁𝗶𝗼𝗻𝘀 - 𝗦𝗲𝘁𝘂𝗽 𝗘𝗻𝘃𝗶𝗿𝗼𝗻𝗺𝗲𝗻𝘁:
+  - Customize:
       - Edit-PSReadLineHistoryFile: "Edit-PSReadLineHistoryFile.md"
       - Edit-WinGetSettingsFile: "Edit-WinGetSettingsFile.md"
       - Initialize-PSEnvironmentConfiguration: "Initialize-PSEnvironmentConfiguration.md"
@@ -108,12 +107,12 @@ nav:
       - Install-WinGet: "Install-WinGet.md"
       - Set-ConsoleFont: "Set-ConsoleFont.md"
       - Set-DefaultTerminal: "Set-DefaultTerminal.md"
-  - 𝗙𝘂𝗻𝗰𝘁𝗶𝗼𝗻𝘀 - 𝗗𝗲𝘃𝗲𝗹𝗼𝗽:
+  - Develop:
       - Get-LoadedAssembly: "Get-LoadedAssembly.md"
       - Get-TypeAccelerator: "Get-TypeAccelerator.md"
       - New-ScriptFromTemplate: "New-ScriptFromTemplate.md"
       - Show-LoadedAssembly: "Show-LoadedAssembly.md"
-  - 𝗙𝘂𝗻𝗰𝘁𝗶𝗼𝗻𝘀 - 𝗘𝘃𝗲𝗿𝘆𝗱𝗮𝘆:
+  - Daily Functions:
       - Get-CommandHistory: "Get-CommandHistory.md"
       - Get-EnvironmentVariable: "Get-EnvironmentVariable.md"
       - Get-HashtableValueType: "Get-HashtableValueType.md"
