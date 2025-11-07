@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE report PUBLIC "-//JACOCO//DTD Report 1.1//EN" "report.dtd"[]>
-<report name="Pester (11/05/2025 02:51:13)">
-  <sessioninfo id="this" start="1762311064564" dump="1762311073235" />
+<report name="Pester (11/07/2025 16:18:06)">
+  <sessioninfo id="this" start="1762532273924" dump="1762532286883" />
   <package name="PSPreworkout/Private">
     <class name="PSPreworkout/Private/Write-PSPreworkoutTelemetry" sourcefilename="Private/Write-PSPreworkoutTelemetry.ps1">
       <method name="Write-PSPreworkoutTelemetry" desc="()" line="36">
