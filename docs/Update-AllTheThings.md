@@ -8,6 +8,7 @@ schema: 2.0.0
 # Update-AllTheThings
 
 ## SYNOPSIS
+
 Update all the things!
 
 ## SYNTAX
@@ -18,11 +19,13 @@ Update-AllTheThings [-SkipModules] [-SkipScripts] [-SkipHelp] [-SkipWinGet] [-In
 ```
 
 ## DESCRIPTION
+
 A script to automatically update all PowerShell modules, PowerShell Help, and packages (apt, brew, chocolately, winget).
 
 ## EXAMPLES
 
 ### EXAMPLE 1
+
 ```
 Update-AllTheThings
 ```
@@ -32,6 +35,7 @@ Updates all of the things it can!
 ## PARAMETERS
 
 ### -SkipModules
+
 Skip the step that updates PowerShell modules.
 
 ```yaml
@@ -47,6 +51,7 @@ Accept wildcard characters: False
 ```
 
 ### -SkipScripts
+
 Skip the step that updates PowerShell scripts.
 
 ```yaml
@@ -62,6 +67,7 @@ Accept wildcard characters: False
 ```
 
 ### -SkipHelp
+
 Skip the step that updates PowerShell help.
 
 ```yaml
@@ -77,6 +83,7 @@ Accept wildcard characters: False
 ```
 
 ### -SkipWinGet
+
 Skip the step the updates WinGet packages.
 
 ```yaml
@@ -92,6 +99,7 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeChocolatey
+
 Include Chocolatey package updates.
 
 ```yaml
@@ -107,6 +115,7 @@ Accept wildcard characters: False
 ```
 
 ### -WhatIf
+
 Shows what would happen if the cmdlet runs.
 The cmdlet is not run.
 
@@ -123,6 +132,7 @@ Accept wildcard characters: False
 ```
 
 ### -Confirm
+
 Prompts you for confirmation before running the cmdlet.
 
 ```yaml
@@ -138,7 +148,8 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -Verbose, -WarningAction, -WarningVariable, and -ProgressAction. 
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -Verbose, -WarningAction, -WarningVariable, and -ProgressAction.
 For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
@@ -146,6 +157,7 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## OUTPUTS
 
 ## NOTES
+
 Author: Sam Erde
 Version: 0.5.10
 
