@@ -8,6 +8,7 @@ schema: 2.0.0
 # Initialize-PSEnvironmentConfiguration
 
 ## SYNOPSIS
+
 Initialize configuration your PowerShell environment and git.
 
 ## SYNTAX
@@ -19,11 +20,13 @@ Initialize-PSEnvironmentConfiguration [-Name] <String> [-Email] <String> [[-Font
 ```
 
 ## DESCRIPTION
+
 Install supporting packages, configure git, and set your console font with this function.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
+
 ```
 Initialize the PowerShell working environment with a custom font, and set my name and email address for Git commits.
 ```
@@ -33,6 +36,7 @@ Initialize-PSEnvironmentConfiguration -Name 'Sam Erde' -Email 'sam@example.local
 ## PARAMETERS
 
 ### -Name
+
 Your name to be used for git commits.
 
 ```yaml
@@ -48,6 +52,7 @@ Accept wildcard characters: False
 ```
 
 ### -Email
+
 Your email to be used for git commits.
 
 ```yaml
@@ -63,6 +68,7 @@ Accept wildcard characters: False
 ```
 
 ### -Font
+
 The font to use for your consoles (PowerShell, Windows PowerShell, git bash, etc.)
 
 ```yaml
@@ -78,6 +84,7 @@ Accept wildcard characters: False
 ```
 
 ### -Packages
+
 Packages to install with winget.
 
 ```yaml
@@ -93,6 +100,7 @@ Accept wildcard characters: False
 ```
 
 ### -SkipPackages
+
 Option to skip installation of default packages.
 
 ```yaml
@@ -108,6 +116,7 @@ Accept wildcard characters: False
 ```
 
 ### -Modules
+
 PowerShell modules to install.
 
 ```yaml
@@ -123,6 +132,7 @@ Accept wildcard characters: False
 ```
 
 ### -SkipModules
+
 Option to skip installation of default modules.
 
 ```yaml
@@ -138,7 +148,8 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -Verbose, -WarningAction, -WarningVariable, and -ProgressAction. 
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -Verbose, -WarningAction, -WarningVariable, and -ProgressAction.
 For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
@@ -146,17 +157,18 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## OUTPUTS
 
 ## NOTES
+
 Author: Sam Erde
 Version: 0.0.3
 Modified: 2024/11/08
 
 To Do
-    Add status/verbose output of changes being made
-    Create basic starter profile if none exist
-    Create dot-sourced profile
-    Create interactive picker for packages and modules (separate functions)
-    Bootstrap Out-GridView or Out-ConsoleGridView for the interactive picker
-    Do not install already installed packages
-    Do not install ConsoleGuiTools in Windows PowerShell
+Add status/verbose output of changes being made
+Create basic starter profile if none exist
+Create dot-sourced profile
+Create interactive picker for packages and modules (separate functions)
+Bootstrap Out-GridView or Out-ConsoleGridView for the interactive picker
+Do not install already installed packages
+Do not install ConsoleGuiTools in Windows PowerShell
 
 ## RELATED LINKS
