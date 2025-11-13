@@ -8,23 +8,27 @@ schema: 2.0.0
 # Get-EnvironmentVariable
 
 ## SYNOPSIS
+
 Retrieves the value of an environment variable.
 
 ## SYNTAX
 
 ### LookupByName (Default)
+
 ```
 Get-EnvironmentVariable [[-Name] <String>] [-Target <EnvironmentVariableTarget[]>] [-All]
  [<CommonParameters>]
 ```
 
 ### LookupByRegexPattern
+
 ```
 Get-EnvironmentVariable [[-Pattern] <String>] [-Target <EnvironmentVariableTarget[]>] [-All]
  [<CommonParameters>]
 ```
 
 ## DESCRIPTION
+
 The Get-EnvironmentVariable function retrieves the value of the specified environment variable or displays all
 environment variables.
 It is capable of finding variables by an exact name match or by using a regex pattern match.
@@ -35,6 +39,7 @@ all environment variables are returned from all targets.
 ## EXAMPLES
 
 ### EXAMPLE 1
+
 ```
 Get-EnvironmentVariable -Name 'UserName' -Target 'User'
 ```
@@ -42,6 +47,7 @@ Get-EnvironmentVariable -Name 'UserName' -Target 'User'
 Retrieves the value of the "UserName" environment variable from the process target.
 
 ### EXAMPLE 2
+
 ```
 Get-EnvironmentVariable -Name 'Path' -Target 'Machine'
 ```
@@ -49,6 +55,7 @@ Get-EnvironmentVariable -Name 'Path' -Target 'Machine'
 Retrieves the value of the PATH environment variable from the machine target.
 
 ### EXAMPLE 3
+
 ```
 Get-EnvironmentVariable -Pattern '^u'
 ```
@@ -58,6 +65,7 @@ Get environment variables with names that begin with the letter "u" in any targe
 ## PARAMETERS
 
 ### -Name
+
 The name of the environment variable to retrieve.
 
 ```yaml
@@ -73,6 +81,7 @@ Accept wildcard characters: False
 ```
 
 ### -Pattern
+
 A regex pattern to find matching environment variable names.
 
 ```yaml
@@ -88,6 +97,7 @@ Accept wildcard characters: False
 ```
 
 ### -Target
+
 The target (Process, Machine, User) to pull environment variables from.
 Multiple targets may be specified.
 
@@ -105,6 +115,7 @@ Accept wildcard characters: False
 ```
 
 ### -All
+
 Optionally get all environment variables from all targets or all environment variables from one specified target.
 Process ID and process name will be included for process environment variables.
 
@@ -121,7 +132,8 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -Verbose, -WarningAction, -WarningVariable, and -ProgressAction. 
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -Verbose, -WarningAction, -WarningVariable, and -ProgressAction.
 For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
@@ -129,7 +141,9 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## OUTPUTS
 
 ### System.Object[]
+
 ## NOTES
+
 Author: Sam Erde
 Version: 1.0.0
 Modified: 2025/03/05
@@ -151,6 +165,7 @@ the calling process), whereas Target={User,Machine} causes a registry lookup aga
 data in either HKCU or HKLM.
 
 The relevant sources for the User and Machine targets are in the registry at:
+
 - HKEY_CURRENT_USER\Environment
 - HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment
 
