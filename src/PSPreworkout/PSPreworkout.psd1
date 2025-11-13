@@ -32,6 +32,7 @@
         'Edit-HistoryFile',
         'Edit-PSReadLineHistoryFile',
         'Edit-WinGetSettingsFile',
+        'gch',
         'Get-Assembly',
         'Get-CommandHistory',
         'Get-EnvironmentVariable',
@@ -41,23 +42,30 @@
         'Get-PowerShellPortable',
         'Get-PSPortable',
         'Get-TypeAccelerator',
+        'gev',
         'Init-PSEnvConfig',
         'Initialize-PSEnvironmentConfiguration',
         'Install-CommandNotFoundUtility',
         'Install-OhMyPosh',
         'Install-PowerShellISE',
         'Install-WinGet',
+        'isadmin',
+        'isroot',
         'New-Script',
         'New-ScriptFromTemplate',
         'Out-JsonFile',
         'Set-ConsoleFont',
         'Set-DefaultTerminal',
         'Set-EnvironmentVariable',
+        'sev',
         'Show-LoadedAssemblies',
         'Show-LoadedAssembly',
         'Show-WithoutEmptyProperty',
+        'SkipChoco',
         'Test-IsElevated',
+        'uatt',
         'Update-AllTheThings'
+    
     
     
     
@@ -89,6 +97,7 @@
         'Show-LoadedAssemblies',
         'SkipChoco',
         'uatt'
+    
     
     
     
