@@ -36,7 +36,7 @@ jobs:
           egress-policy: audit
 
       - name: ✅ Checkout
-        uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
 
       - name: 📦 Create GitHub Release
         # Creates a new release from a changelog section that matches a commit tag (eg: v1.2.5)
