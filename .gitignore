@@ -29,7 +29,3 @@ Thumbs.db
 
 #Ignore vscode AI rules
 .github\instructions\codacy.instructions.md
-
-# Problematic file
-Edit-WinGetSettingsFile.md
-docs/Edit-WingetSettingsFile.md
