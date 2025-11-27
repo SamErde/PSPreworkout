@@ -30,10 +30,10 @@ function New-ScriptFromTemplate {
         Optionally skip validation of the script.
 
         .EXAMPLE
-        New-ScriptFromTemplate -Name 'Get-Demo' -Synopsis 'Get a demo.' -Description 'This function gets a demo.' -Alias 'Get-Sample' -Parameter 'SerialNumber'
+        New-ScriptFromTemplate -Name 'Get-Demo' -Synopsis 'Get a demo.' -Description 'This function gets a demo.' -Alias 'Get-Sample'
 
         .EXAMPLE
-        New-ScriptFromTemplate -Verb Get -Noun Something -Author 'Sam Erde' -Parameter @('Name','Age')
+        New-ScriptFromTemplate -Verb Get -Noun Something -Author 'Sam Erde'
 
     #>
 
