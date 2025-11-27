@@ -14,20 +14,37 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
-## [2.0.0-preview] - 2025-09-15
+## [2.0.0] - 2025-11-26
 
 ### Removed
 
-- Removed the redundant `New-Credential` function, which behaves the same as `Get-Credential`.
+- `New-Credential` - Removed the redundant function which behaves the same as `Get-Credential`.
 
 ### Added
 
-- **Telemetry System**: Added anonymous usage analytics to help improve the module.
-  - New `Write-PSPreworkoutTelemetry` private function for statistics about how often functions are used.
+- Telemetry: Added very basic, anonymous usage statistics to help improve the module.
+  - `Write-PSPreworkoutTelemetry` - New private function for statistics about how often functions are used.
   - Added usage statistics for all 24 functions except for `Get-EnvironmentVariable`.
   - Tracks function usage, parameter names (not values), PowerShell version details, and OS.
   - Privacy-focused design: no personally identifiable information or parameter values are collected.
   - Data sent to PostHog analytics service to understand usage patterns and guide development priorities.
+
+### Fixed
+- `New-ScriptFromTemplate` - (Thanks to @jdhitsolutions for finding these issues!)
+  - Fix 'Author' parameter that was incorrectly referencing $Name variable.
+  - Fix examples that referenced non-existent 'Parameter' parameter.
+- `Update-AllTheThings` - SkipChoco alias issue in module manifest.
+
+### Security and Quality
+- `Get-PowerShellPortable` - Refactor to be cleaner, more efficient, and better documented.
+- `Get-CommandHistory` - Refactor for improved command filtering.
+- Codebase readability improvements.
+- Error handling standardization across experimental features.
+- StepSecurity hardening for GitHub Actions.
+- Dependency review integration and multiple version updates.
+- Supply-chain security workflows: Scorecard, CodeQL, Codacy, and others.
+
+[*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v1.9.11...v2.0.0)
 
 ## [1.9.11] - 2025-07-31
 
@@ -427,4 +444,4 @@ This release is focused on enhancements that make the existing functions more us
 [1.9.7]: https://github.com/SamErde/PSPreworkout/tag/v1.9.7
 [1.9.10]: https://github.com/SamErde/PSPreworkout/tag/v1.9.10
 [1.9.11]: https://github.com/SamErde/PSPreworkout/tag/v1.9.11
-[2.0.0-preview]: https://github.com/SamErde/PSPreworkout/tag/v2.0.0-preview
+[2.0.0]: https://github.com/SamErde/PSPreworkout/tag/v2.0.0
