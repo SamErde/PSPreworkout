@@ -30,10 +30,10 @@ function New-ScriptFromTemplate {
         Optionally skip validation of the script.
 
         .EXAMPLE
-        New-ScriptFromTemplate -Name 'Get-Demo' -Synopsis 'Get a demo.' -Description 'This function gets a demo.' -Alias 'Get-Sample' -Parameter 'SerialNumber'
+        New-ScriptFromTemplate -Name 'Get-Demo' -Synopsis 'Get a demo.' -Description 'This function gets a demo.' -Alias 'Get-Sample'
 
         .EXAMPLE
-        New-ScriptFromTemplate -Verb Get -Noun Something -Author 'Sam Erde' -Parameter @('Name','Age')
+        New-ScriptFromTemplate -Verb Get -Noun Something -Author 'Sam Erde'
 
     #>
 
@@ -127,13 +127,13 @@ function New-ScriptFromTemplate {
     }
 
     # Attempt to set the author name from the user's Git config or from the identity of the currently logged in user.
-    if (-not $PSBoundParameters.ContainsKey('Name') ) {
-        $Name = if ( (git config user.name).Length -gt 0 ) {
+    if (-not $PSBoundParameters.ContainsKey('Author') ) {
+        $Author = if ( (git config user.name).Length -gt 0 ) {
             git config user.name
         } else {
             [System.Environment]::UserName
         }
-        Write-Verbose "Using author name: $Name"
+        Write-Verbose "Using author name: $Author"
     }
 
     # Create the function builder string builder and function body string.

@@ -22,11 +22,11 @@ jobs:
           egress-policy: audit
 
       - name: Checkout repository
-        uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
 
       - name: Run AI inference
         id: inference
-        uses: actions/ai-inference@b81b2afb8390ee6839b494a404766bef6493c7d9 # v1.2.8
+        uses: actions/ai-inference@5022b33bc1431add9b2831934daf8147a2ad9331 # v2.0.2
         with:
           prompt: |
             Summarize the following GitHub issue in one paragraph:
