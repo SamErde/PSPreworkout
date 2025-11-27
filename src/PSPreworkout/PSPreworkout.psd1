@@ -4,7 +4,7 @@
     RootModule           = 'PSPreworkout.psm1'
 
     # Version number of this module.
-    ModuleVersion        = '2.0.0'
+    ModuleVersion        = '2.0.0.1126'
 
     # Supported PSEditions = @('Desktop', 'Core')
     CompatiblePSEditions = @('Core', 'Desktop')
