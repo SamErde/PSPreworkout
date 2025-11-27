@@ -32,7 +32,6 @@
         'Edit-HistoryFile',
         'Edit-PSReadLineHistoryFile',
         'Edit-WinGetSettingsFile',
-        'gch',
         'Get-Assembly',
         'Get-CommandHistory',
         'Get-EnvironmentVariable',
@@ -42,38 +41,23 @@
         'Get-PowerShellPortable',
         'Get-PSPortable',
         'Get-TypeAccelerator',
-        'gev',
         'Init-PSEnvConfig',
         'Initialize-PSEnvironmentConfiguration',
         'Install-CommandNotFoundUtility',
         'Install-OhMyPosh',
         'Install-PowerShellISE',
         'Install-WinGet',
-        'isadmin',
-        'isroot',
         'New-Script',
         'New-ScriptFromTemplate',
         'Out-JsonFile',
         'Set-ConsoleFont',
         'Set-DefaultTerminal',
         'Set-EnvironmentVariable',
-        'sev',
         'Show-LoadedAssemblies',
         'Show-LoadedAssembly',
         'Show-WithoutEmptyProperty',
-        'SkipChoco',
         'Test-IsElevated',
-        'uatt',
         'Update-AllTheThings'
-    
-    
-    
-    
-    
-
-
-
-
     )
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
@@ -97,15 +81,6 @@
         'Show-LoadedAssemblies',
         'SkipChoco',
         'uatt'
-    
-    
-    
-    
-    
-
-
-
-
     )
 
     # List of all files packaged with this module
@@ -140,7 +115,7 @@
             ReleaseNotes = 'See <https://github.com/SamErde/PSPreworkout/CHANGELOG.md> for more information.'
 
             # Prerelease string of this module
-            Prerelease   = 'preview'
+            # Prerelease   = 'preview'
 
         } # End of PSData hashtable
 
