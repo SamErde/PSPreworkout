@@ -2,9 +2,6 @@
 name: 🖼️ Format Markdown
 
 on:
-  push:
-    paths:
-      - "docs/**.md"
   workflow_dispatch:
 
 permissions:
