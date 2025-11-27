@@ -1718,14 +1718,14 @@ results to Update-PSResource.</dev:code>
     <command:examples>
       <command:example>
         <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
-        <dev:code>New-ScriptFromTemplate -Name 'Get-Demo' -Synopsis 'Get a demo.' -Description 'This function gets a demo.' -Alias 'Get-Sample' -Parameter 'SerialNumber'</dev:code>
+        <dev:code>New-ScriptFromTemplate -Name 'Get-Demo' -Synopsis 'Get a demo.' -Description 'This function gets a demo.' -Alias 'Get-Sample'</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
         <maml:title>-------------------------- EXAMPLE 2 --------------------------</maml:title>
-        <dev:code>New-ScriptFromTemplate -Verb Get -Noun Something -Author 'Sam Erde' -Parameter @('Name','Age')</dev:code>
+        <dev:code>New-ScriptFromTemplate -Verb Get -Noun Something -Author 'Sam Erde'</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
