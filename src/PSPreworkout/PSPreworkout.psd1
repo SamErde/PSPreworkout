@@ -29,36 +29,42 @@
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
     FunctionsToExport    = @(
+        'Edit-HistoryFile',
         'Edit-PSReadLineHistoryFile',
         'Edit-WinGetSettingsFile',
+        'gch',
+        'Get-Assembly',
         'Get-CommandHistory',
         'Get-EnvironmentVariable',
         'Get-HashtableValueType',
         'Get-LoadedAssembly',
         'Get-ModulesWithUpdate',
         'Get-PowerShellPortable',
+        'Get-PSPortable',
         'Get-TypeAccelerator',
+        'gev',
+        'Init-PSEnvConfig',
         'Initialize-PSEnvironmentConfiguration',
         'Install-CommandNotFoundUtility',
         'Install-OhMyPosh',
         'Install-PowerShellISE',
         'Install-WinGet',
+        'isadmin',
+        'isroot',
+        'New-Script',
         'New-ScriptFromTemplate',
         'Out-JsonFile',
         'Set-ConsoleFont',
         'Set-DefaultTerminal',
         'Set-EnvironmentVariable',
+        'sev',
+        'Show-LoadedAssemblies',
         'Show-LoadedAssembly',
         'Show-WithoutEmptyProperty',
+        'Skip-Choco',
         'Test-IsElevated',
-        'Update-AllTheThings',
-        # Aliases
-        'Edit-HistoryFile',
-        'Get-Assembly',
-        'Get-PSPortable',
-        'Init-PSEnvConfig',
-        'New-Script',
-        'Show-LoadedAssemblies'
+        'uatt',
+        'Update-AllTheThings'
     )
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
@@ -69,19 +75,19 @@
 
     # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
     AliasesToExport      = @(
-        'IsAdmin',
-        'IsRoot',
-        'UaTT',
-        'Skip-Choco',
         'Edit-HistoryFile',
         'gch',
-        'gev',
         'Get-Assembly',
         'Get-PSPortable',
+        'gev',
         'Init-PSEnvConfig',
+        'isadmin',
+        'isroot',
         'New-Script',
         'sev',
-        'Show-LoadedAssemblies'
+        'Show-LoadedAssemblies',
+        'Skip-Choco',
+        'uatt'
     )
 
     # List of all files packaged with this module
