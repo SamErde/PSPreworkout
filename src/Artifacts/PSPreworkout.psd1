@@ -4,7 +4,7 @@
     RootModule           = 'PSPreworkout.psm1'
 
     # Version number of this module.
-    ModuleVersion        = '2.0.0.1126'
+    ModuleVersion        = '2.0.0'
 
     # Supported PSEditions = @('Desktop', 'Core')
     CompatiblePSEditions = @('Core', 'Desktop')
@@ -59,16 +59,6 @@
         'Test-IsElevated',
         'Update-AllTheThings'
     
-    
-    
-    
-    
-    
-    
-
-
-
-
     )
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
@@ -93,16 +83,6 @@
         'SkipChoco',
         'uatt'
     
-    
-    
-    
-    
-    
-    
-
-
-
-
     )
 
     # List of all files packaged with this module
@@ -137,7 +117,7 @@
             ReleaseNotes = 'See <https://github.com/SamErde/PSPreworkout/CHANGELOG.md> for more information.'
 
             # Prerelease string of this module
-            Prerelease   = 'preview'
+            # Prerelease   = 'preview'
 
         } # End of PSData hashtable
 
