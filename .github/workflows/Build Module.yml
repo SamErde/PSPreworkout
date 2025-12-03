@@ -4,10 +4,13 @@ on:
     branches:
       - main
       - prerelease
-    paths-ignore:
-      - "**.md"
-      - "docs/**"
-      - "src/Drafts/**"
+    paths:
+      - "src/PSPreworkout"
+
+    #paths-ignore:
+    #  - "**.md"
+    #  - "docs/**"
+    #  - "src/Drafts/**"
 
   workflow_dispatch:
 
