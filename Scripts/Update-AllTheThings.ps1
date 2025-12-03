@@ -58,10 +58,18 @@ function Update-AllTheThings {
     .PARAMETER IncludeChocolatey
     Include Chocolatey package updates.
 
+    .PARAMETER AcceptPrompts
+    Automatically accept prompts to install updates in Linux (apt, dnf).
+
     .EXAMPLE
     Update-AllTheThings
 
     Updates all of the things it can!
+
+    .EXAMPLE
+    Update-AllTheThings -AcceptPrompts
+
+    Updates all of the things and automatically accepts Linux package upgrade prompts.
     #>
 
     [CmdletBinding(SupportsShouldProcess)]
@@ -93,7 +101,12 @@ function Update-AllTheThings {
         [Parameter()]
         [Alias('SkipChoco')]
         [switch]
-        $IncludeChocolatey
+        $IncludeChocolatey,
+
+        # Automatically accept prompts to install updates in Linux
+        [Parameter()]
+        [switch]
+        $AcceptPrompts
     )
 
     begin {
@@ -285,14 +298,25 @@ function Update-AllTheThings {
         #region UpdateLinuxPackages
         # Early testing. No progress bar yet. Need to check for admin, different distros, and different package managers.
         if ($IsLinux) {
+            # Determine if we need sudo (not needed if already root)
+            $SudoPrefix = if ((id -u) -eq 0) { '' } else { 'sudo ' }
+
             if (Get-Command apt -ErrorAction SilentlyContinue) {
                 Write-Host '[5] Updating apt packages.'
-                sudo apt update
-                sudo apt upgrade
+                Invoke-Expression "${SudoPrefix}apt update"
+                if ($AcceptPrompts) {
+                    Invoke-Expression "${SudoPrefix}apt upgrade -y"
+                } else {
+                    Invoke-Expression "${SudoPrefix}apt upgrade"
+                }
             }
             if (Get-Command dnf -ErrorAction SilentlyContinue) {
                 Write-Host '[5] Updating dnf packages.'
-                sudo update
+                if ($AcceptPrompts) {
+                    Invoke-Expression "${SudoPrefix}dnf update -y"
+                } else {
+                    Invoke-Expression "${SudoPrefix}dnf update"
+                }
             }
         } else {
             Write-Verbose '[5] Not Linux. Skipping section.'

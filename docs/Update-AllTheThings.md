@@ -14,7 +14,7 @@ Update all the things!
 
 ```
 Update-AllTheThings [-SkipModules] [-SkipScripts] [-SkipHelp] [-SkipWinGet] [-IncludeChocolatey]
- [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-AcceptPrompts] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -28,6 +28,13 @@ Update-AllTheThings
 ```
 
 Updates all of the things it can!
+
+### EXAMPLE 2
+```
+Update-AllTheThings -AcceptPrompts
+```
+
+Updates all of the things and automatically accepts Linux package upgrade prompts.
 
 ## PARAMETERS
 
@@ -98,6 +105,21 @@ Include Chocolatey package updates.
 Type: SwitchParameter
 Parameter Sets: (All)
 Aliases: SkipChoco
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -AcceptPrompts
+Automatically accept prompts to install updates in Linux (apt, dnf).
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
 
 Required: False
 Position: Named
