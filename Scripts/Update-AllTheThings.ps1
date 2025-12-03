@@ -299,23 +299,40 @@ function Update-AllTheThings {
         # Early testing. No progress bar yet. Need to check for admin, different distros, and different package managers.
         if ($IsLinux) {
             # Determine if we need sudo (not needed if already root)
-            $SudoPrefix = if ((id -u) -eq 0) { '' } else { 'sudo ' }
+            $NeedsSudo = -not (Test-IsElevated)
 
             if (Get-Command apt -ErrorAction SilentlyContinue) {
                 Write-Host '[5] Updating apt packages.'
-                Invoke-Expression "${SudoPrefix}apt update"
-                if ($AcceptPrompts) {
-                    Invoke-Expression "${SudoPrefix}apt upgrade -y"
+                if ($NeedsSudo) {
+                    & sudo apt update
+                    if ($AcceptPrompts) {
+                        & sudo apt upgrade -y
+                    } else {
+                        & sudo apt upgrade
+                    }
                 } else {
-                    Invoke-Expression "${SudoPrefix}apt upgrade"
+                    & apt update
+                    if ($AcceptPrompts) {
+                        & apt upgrade -y
+                    } else {
+                        & apt upgrade
+                    }
                 }
             }
             if (Get-Command dnf -ErrorAction SilentlyContinue) {
                 Write-Host '[5] Updating dnf packages.'
-                if ($AcceptPrompts) {
-                    Invoke-Expression "${SudoPrefix}dnf update -y"
+                if ($NeedsSudo) {
+                    if ($AcceptPrompts) {
+                        & sudo dnf update -y
+                    } else {
+                        & sudo dnf update
+                    }
                 } else {
-                    Invoke-Expression "${SudoPrefix}dnf update"
+                    if ($AcceptPrompts) {
+                        & dnf update -y
+                    } else {
+                        & dnf update
+                    }
                 }
             }
         } else {
@@ -357,7 +374,7 @@ function Update-AllTheThings {
                 choco feature enable -n=allowGlobalConfirmation
                 choco feature disable --name=showNonElevatedWarnings
             } else {
-                Write-Verbose "Run once as an administrator to disable Chocoately's showNonElevatedWarnings." -Verbose
+                Write-Verbose "Run once as an administrator to disable Chocolately's showNonElevatedWarnings." -Verbose
             }
             choco upgrade chocolatey -y --limit-output --accept-license --no-color
             choco upgrade all -y --limit-output --accept-license --no-color

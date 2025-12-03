@@ -272,7 +272,7 @@ function Update-AllTheThings {
         # Early testing. No progress bar yet. Need to check for admin, different distros, and different package managers.
         if ($IsLinux) {
             # Determine if we need sudo (not needed if already root)
-            $NeedsSudo = (id -u) -ne 0
+            $NeedsSudo = -not (Test-IsElevated)
 
             if (Get-Command apt -ErrorAction SilentlyContinue) {
                 Write-Host '[5] Updating apt packages.'
