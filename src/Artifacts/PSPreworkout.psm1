@@ -4,7 +4,7 @@
 
 # region Script Variables
 # $script:resourcePath = "$PSScriptRoot\Resources"
-Export-ModuleMember -Alias *
+# Export-ModuleMember -Alias *
 
 
 function Edit-PSReadLineHistoryFile {
