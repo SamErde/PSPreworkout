@@ -19,12 +19,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Added
 
 - `Update-AllTheThings`
-  - Add the **AcceptPrompts** to automatically accept prompts to continue when updating packages in Linux, by @jorgeasaurus
+  - Add the **AcceptPrompts** to automatically accept prompts to continue when updating packages in Linux, by [@jorgeasaurus](https://github.com/jorgeasaurus)
   - Add unit tests for the script, by @jorgeasaurus
 
 ### Fixed
 
-- `Update-AllTheThings` - Fix typo in "Chocolatey," by @jorgeasaurus
+- `Update-AllTheThings` - Fix typo in "Chocolatey," by [@jorgeasaurus](https://github.com/jorgeasaurus)
 &nbsp;  
 
 > [!NOTE]
