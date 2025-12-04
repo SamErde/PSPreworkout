@@ -14,6 +14,38 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [2.1.0] - 2025-12-04
+
+### Added
+
+- `Update-AllTheThings`
+  - Add the **AcceptPrompts** to automatically accept prompts to continue when updating packages in Linux, by @jorgeasaurus
+  - Add unit tests for the script, by @jorgeasaurus
+
+### Fixed
+
+- `Update-AllTheThings` - Fix typo in "Chocolatey," by @jorgeasaurus
+&nbsp;  
+
+> [!NOTE]
+> Thanks to [Jorge Suarez](https://github.com/jorgeasaurus) for contributing this version, which adds improvements to `Update-AllTheThings`! Be sure to check out his featured projects:
+> 
+> ### Intune Hydration Kit
+> 
+> PowerShell module that bootstraps Microsoft Intune tenants with boilerplate configurations. .
+> 
+> ### 📸 Intune-Snapshot-Recovery
+> 
+> Automated backup and restore toolkit for Microsoft Intune tenant configurations using GitHub Actions.
+> 
+> ### 🍎 PsJamfBackupRestore
+> 
+> PowerShell-based solution for backing up and restoring Jamf Pro configurations, ensuring business continuity for macOS management.
+> 
+> ### 💻 MgConsoleGuiGraphSearch
+> 
+> Interactive Microsoft Graph search tool using console GUI for various Microsoft 365 and Azure AD object types.
+
 ## [2.0.0] - 2025-11-26
 
 ### Removed
@@ -445,3 +477,4 @@ This release is focused on enhancements that make the existing functions more us
 [1.9.10]: https://github.com/SamErde/PSPreworkout/tag/v1.9.10
 [1.9.11]: https://github.com/SamErde/PSPreworkout/tag/v1.9.11
 [2.0.0]: https://github.com/SamErde/PSPreworkout/tag/v2.0.0
+[2.1.0]: https://github.com/SamErde/PSPreworkout/tag/v2.1.0
