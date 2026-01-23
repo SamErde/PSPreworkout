@@ -1,32 +1,44 @@
 ---
-external help file: PSPreworkout-help.xml
+document type: cmdlet
+external help file: PSPreworkout-Help.xml
+HelpUri: https://day3bits.com/PSPreworkout/New-ScriptFromTemplate
+Locale: en-US
 Module Name: PSPreworkout
-online version:
-schema: 2.0.0
+ms.date: 01/23/2026
+PlatyPS schema version: 2024-05-01
+title: New-ScriptFromTemplate
 ---
 
 # New-ScriptFromTemplate
 
 ## SYNOPSIS
+
 Create a new advanced function from a template.
 
 ## SYNTAX
 
 ### Named
+
 ```
-New-ScriptFromTemplate [-Name] <String> [-Synopsis <String>] [-Description <String>] [-Alias <String>]
- [-Author <String>] [-Path <String>] [-SkipValidation]
- [<CommonParameters>]
+New-ScriptFromTemplate [-Name] <string> [-Synopsis <string>] [-Description <string>]
+ [-Alias <string>] [-Author <string>] [-Path <string>] [-SkipValidation] [<CommonParameters>]
 ```
 
 ### VerbNoun
+
 ```
-New-ScriptFromTemplate [-Verb] <String> [-Noun] <String> [-Synopsis <String>] [-Description <String>]
- [-Alias <String>] [-Author <String>] [-Path <String>] [-SkipValidation]
+New-ScriptFromTemplate [-Verb] <string> [-Noun] <string> [-Synopsis <string>]
+ [-Description <string>] [-Alias <string>] [-Author <string>] [-Path <string>] [-SkipValidation]
  [<CommonParameters>]
 ```
 
+## ALIASES
+
+This cmdlet has the following aliases,
+  {{Insert list of aliases}}
+
 ## DESCRIPTION
+
 This function creates a new function from a template and saves it to a file with the name of the function.
 It takes values for the function's synopsis, description, and alias as parameters and populates comment-
 based help for the new function automatically.
@@ -34,157 +46,212 @@ based help for the new function automatically.
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+
 New-ScriptFromTemplate -Name 'Get-Demo' -Synopsis 'Get a demo.' -Description 'This function gets a demo.' -Alias 'Get-Sample'
-```
 
 ### EXAMPLE 2
-```
+
 New-ScriptFromTemplate -Verb Get -Noun Something -Author 'Sam Erde'
-```
 
 ## PARAMETERS
 
-### -Name
-The name of the new function to create.
-It is recommended to use ApprovedVerb-Noun for names.
-
-```yaml
-Type: String
-Parameter Sets: Named
-Aliases:
-
-Required: True
-Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Verb
-The verb to use for the function name.
-
-```yaml
-Type: String
-Parameter Sets: VerbNoun
-Aliases:
-
-Required: True
-Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Noun
-The noun to use for the function name.
-
-```yaml
-Type: String
-Parameter Sets: VerbNoun
-Aliases:
-
-Required: True
-Position: 2
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Synopsis
-A synopsis of the new function.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Description
-A description of the new function.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -Alias
+
 Optionally define an alias for the new function.
 
 ```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Author
+
 Name of the author of the script.
 Attempts to default to the 'FullName' property of the currently logged in user.
 
 ```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
 
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+### -Description
+
+A description of the new function.
+
+```yaml
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -Name
+
+The name of the new function to create.
+It is recommended to use ApprovedVerb-Noun for names.
+
+```yaml
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Named
+  Position: 0
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -Noun
+
+The noun to use for the function name.
+
+```yaml
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: VerbNoun
+  Position: 1
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Path
+
 The path of the directory to save the new script in.
 
 ```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -SkipValidation
+
 Optionally skip validation of the script.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
 
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
+### -Synopsis
+
+A synopsis of the new function.
+
+```yaml
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -Verb
+
+The verb to use for the function name.
+
+```yaml
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: VerbNoun
+  Position: 0
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -Verbose, -WarningAction, -WarningVariable, and -ProgressAction. 
-For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
@@ -193,3 +260,6 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## NOTES
 
 ## RELATED LINKS
+
+{{ Fill in the related links here }}
+

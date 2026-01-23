@@ -1,151 +1,209 @@
 ---
-external help file: PSPreworkout-help.xml
+document type: cmdlet
+external help file: PSPreworkout-Help.xml
+HelpUri: https://day3bits.com/PSPreworkout/Initialize-PSEnvironmentConfiguration
+Locale: en-US
 Module Name: PSPreworkout
-online version:
-schema: 2.0.0
+ms.date: 01/23/2026
+PlatyPS schema version: 2024-05-01
+title: Initialize-PSEnvironmentConfiguration
 ---
 
 # Initialize-PSEnvironmentConfiguration
 
 ## SYNOPSIS
+
 Initialize configuration your PowerShell environment and git.
 
 ## SYNTAX
 
+### __AllParameterSets
+
 ```
-Initialize-PSEnvironmentConfiguration [-Name] <String> [-Email] <String> [[-Font] <String>]
- [[-Packages] <String[]>] [-SkipPackages] [[-Modules] <String[]>] [-SkipModules]
+Initialize-PSEnvironmentConfiguration [-Name] <string> [-Email] <string> [[-Font] <string>]
+ [[-Packages] <string[]>] [[-Modules] <string[]>] [-SkipPackages] [-SkipModules]
  [<CommonParameters>]
 ```
 
+## ALIASES
+
+This cmdlet has the following aliases,
+  {{Insert list of aliases}}
+
 ## DESCRIPTION
+
 Install supporting packages, configure git, and set your console font with this function.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+
 Initialize the PowerShell working environment with a custom font, and set my name and email address for Git commits.
-```
 
 Initialize-PSEnvironmentConfiguration -Name 'Sam Erde' -Email 'sam@example.local' -ConsoleFont 'FiraCode Nerd Font'
 
 ## PARAMETERS
 
-### -Name
-Your name to be used for git commits.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -Email
+
 Your email to be used for git commits.
 
 ```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 2
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 1
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Font
+
 The font to use for your consoles (PowerShell, Windows PowerShell, git bash, etc.)
 
 ```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 3
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Packages
-Packages to install with winget.
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 4
-Default value: @('Microsoft.WindowsTerminal', 'git.git', 'JanDeDobbeleer.OhMyPosh')
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -SkipPackages
-Option to skip installation of default packages.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Modules
+
 PowerShell modules to install.
 
 ```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
+Type: System.String[]
+DefaultValue: "@('CompletionPredictor', 'Microsoft.PowerShell.ConsoleGuiTools', 'Microsoft.PowerShell.PSResourceGet', 'posh-git', 'PowerShellForGitHub', 'Terminal-Icons', 'PSReadLine', 'PowerShellGet')"
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 4
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
 
-Required: False
-Position: 5
-Default value: @('CompletionPredictor', 'Microsoft.PowerShell.ConsoleGuiTools', 'Microsoft.PowerShell.PSResourceGet', 'posh-git', 'PowerShellForGitHub', 'Terminal-Icons', 'PSReadLine', 'PowerShellGet')
-Accept pipeline input: False
-Accept wildcard characters: False
+### -Name
+
+Your name to be used for git commits.
+
+```yaml
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 0
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -Packages
+
+Packages to install with winget.
+
+```yaml
+Type: System.String[]
+DefaultValue: "@('Microsoft.WindowsTerminal', 'git.git', 'JanDeDobbeleer.OhMyPosh')"
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 3
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -SkipModules
+
 Option to skip installation of default modules.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
 
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
+### -SkipPackages
+
+Option to skip installation of default packages.
+
+```yaml
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -Verbose, -WarningAction, -WarningVariable, and -ProgressAction. 
-For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
 ## OUTPUTS
 
 ## NOTES
+
 Author: Sam Erde
 Version: 0.0.3
 Modified: 2024/11/08
@@ -159,4 +217,8 @@ To Do
     Do not install already installed packages
     Do not install ConsoleGuiTools in Windows PowerShell
 
+
 ## RELATED LINKS
+
+{{ Fill in the related links here }}
+

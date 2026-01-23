@@ -1,23 +1,35 @@
 ---
-external help file: PSPreworkout-help.xml
+document type: cmdlet
+external help file: PSPreworkout-Help.xml
+HelpUri: https://day3bits.com/PSPreworkout/Install-WinGet
+Locale: en-US
 Module Name: PSPreworkout
-online version:
-schema: 2.0.0
+ms.date: 01/23/2026
+PlatyPS schema version: 2024-05-01
+title: Install-WinGet
 ---
 
 # Install-WinGet
 
 ## SYNOPSIS
+
 Install Winget (beta)
 
 ## SYNTAX
 
+### __AllParameterSets
+
 ```
-Install-WinGet [[-DownloadPath] <String>] [-DownloadOnly] [-KeepDownload]
- [<CommonParameters>]
+Install-WinGet [[-DownloadPath] <string>] [-DownloadOnly] [-KeepDownload] [<CommonParameters>]
 ```
 
+## ALIASES
+
+This cmdlet has the following aliases,
+  {{Insert list of aliases}}
+
 ## DESCRIPTION
+
 Install WinGet on Windows Sandbox (or on builds of Windows 10 prior to build 1709 that did not ship with it
 preinstalled).
 This script exists mostly as an exercise, as there are already many ways to install WinGet.
@@ -25,73 +37,93 @@ This script exists mostly as an exercise, as there are already many ways to inst
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+
 Install-WinGet
-```
 
 ### EXAMPLE 2
-```
+
 Install-WinGet -KeepDownload
-```
 
 Installs WinGet and keeps the downloaded AppX packages.
 
 ## PARAMETERS
 
-### -DownloadPath
-Path of the directory to save the downloaded packages in (optional).
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -DownloadOnly
+
 Download the packages without installing them (optional).
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
 
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
+### -DownloadPath
+
+Path of the directory to save the downloaded packages in (optional).
+
+```yaml
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 0
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -KeepDownload
+
 Keep the downloaded packages (optional).
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -Verbose, -WarningAction, -WarningVariable, and -ProgressAction. 
-For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
 ## OUTPUTS
 
 ## NOTES
+
 Author: Sam Erde
 Version: 0.1.0
 Modified: 2024-10-23
@@ -101,4 +133,8 @@ To Do:
 - Error handling
 - Create the target folder if it does not already exist
 
+
 ## RELATED LINKS
+
+{{ Fill in the related links here }}
+
