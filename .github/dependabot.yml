@@ -1,11 +1,29 @@
+# To get started with Dependabot version updates, you'll need to specify which
+# package ecosystems to update and where the package manifests are located.
+# Please see the documentation for all configuration options:
+# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+# https://devblogs.microsoft.com/dotnet/using-dependabot-to-manage-dotnet-sdk-updates/
+# https://learn.microsoft.com/en-us/dotnet/core/tools/global-json
+
 version: 2
 updates:
+  - package-ecosystem: docker
+    directory: /.devcontainer
+    schedule:
+      interval: weekly
+
   - package-ecosystem: github-actions
     directory: /
     schedule:
-      interval: daily
+      interval: weekly
+    commit-message:
+      prefix: "ci"
+      prefix-development: "ci"
 
   - package-ecosystem: pip
-    directory: /docs
+    directory: /docs/
     schedule:
-      interval: daily
+      interval: weekly
+    commit-message:
+      prefix: "docs"
+      prefix-development: "docs"
