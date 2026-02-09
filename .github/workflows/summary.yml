@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
+        uses: step-security/harden-runner@e3f713f2d8f53843e71c69a996d56f51aa9adfb9 # v2.14.1
         with:
           egress-policy: audit
 
@@ -26,7 +26,7 @@ jobs:
 
       - name: Run AI inference
         id: inference
-        uses: actions/ai-inference@a6101c89c6feaecc585efdd8d461f18bb7896f20 # v2.0.5
+        uses: actions/ai-inference@a380166897b5408b8fb7dddd148142794cb5624a # v2.0.6
         with:
           prompt: |
             Summarize the following GitHub issue in one paragraph:
