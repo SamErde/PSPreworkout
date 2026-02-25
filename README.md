@@ -34,6 +34,8 @@ Install-Module -Name PSPreworkout -Scope CurrentUser
 Get-Command -Module PSPreworkout
 ```
 
+Want to understand more about this project? Try asking DeepWiki! [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/SamErde/PSPreworkout)
+
 ## Contributing
 
 Please feel free submit an issue or a PR to report bugs, suggest improvements, or add new ideas to the module!
