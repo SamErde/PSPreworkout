@@ -20,14 +20,14 @@ jobs:
         egress-policy: audit
 
     - name: '👷‍♂️ Auto-assign Issue'
-      uses: pozil/auto-assign-issue@21ffb634481e75f2557e5f507e359cba97bbc42b # v2
+      uses: pozil/auto-assign-issue@7bf9d82c77d45976224660b873fc83e60576c5aa # v2
       with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           numOfAssignee: 1
           assignees: ${{ vars.DEFAULT_ISSUE_ASSIGNEE }}
           allowSelfAssign: true
     - name: '👷‍♂️ Auto-assign PR'
-      uses: pozil/auto-assign-issue@21ffb634481e75f2557e5f507e359cba97bbc42b # v2
+      uses: pozil/auto-assign-issue@7bf9d82c77d45976224660b873fc83e60576c5aa # v2
       with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           numOfAssignee: 1
