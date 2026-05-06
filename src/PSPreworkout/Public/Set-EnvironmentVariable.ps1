@@ -47,7 +47,7 @@ function Set-EnvironmentVariable {
             try {
                 [Environment]::SetEnvironmentVariable($Name, $Value, $Target)
             } catch {
-                throw "Failed to set environment variable '$Name' with value '$Value' for target '$Target': $_"
+                throw "Failed to set environment variable '$Name' for target '$Target': $_"
             }
         }
     }

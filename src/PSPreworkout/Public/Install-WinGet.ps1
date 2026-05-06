@@ -99,7 +99,7 @@ function Install-WinGet {
         }
 
         if ($KeepDownload.IsPresent -or $DownloadOnly.IsPresent) {
-            Write-Output "The DesktopAppInstaller, VCLibs, and XML packages have been downloaded to $DownloadPath."
+            Write-Output "The DesktopAppInstaller, VCLibs, and Xaml packages have been downloaded to $Path."
         } else {
             Remove-Item -Path $DesktopAppInstallerPackage -ErrorAction SilentlyContinue
             Remove-Item -Path $VCLibsPackage -ErrorAction SilentlyContinue
