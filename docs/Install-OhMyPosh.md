@@ -13,7 +13,7 @@ title: Install-OhMyPosh
 
 ## SYNOPSIS
 
-Install Oh My Posh and add it to your profile.
+Install Oh My Posh and display instructions for adding it to your profile.
 
 ## SYNTAX
 
