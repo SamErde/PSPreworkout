@@ -25,8 +25,9 @@ Get-LoadedAssembly [<CommonParameters>]
 
 ## ALIASES
 
-This cmdlet has the following aliases,
-  {{Insert list of aliases}}
+This cmdlet has the following aliases:
+
+- `Get-Assembly`
 
 ## DESCRIPTION
 

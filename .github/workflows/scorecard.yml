@@ -2,7 +2,7 @@
 # by a third-party and are governed by separate terms of service, privacy
 # policy, and support documentation.
 
-name: Scorecard supply-chain security
+name: Scorecard Supply-Chain Security
 on:
   # For Branch-Protection check. Only the default branch is supported. See
   # https://github.com/ossf/scorecard/blob/main/docs/checks.md#branch-protection
@@ -10,7 +10,7 @@ on:
   # To guarantee Maintained check is occasionally updated. See
   # https://github.com/ossf/scorecard/blob/main/docs/checks.md#maintained
   schedule:
-    - cron: '33 17 * * 2'
+    - cron: '00 2 * * *'
   push:
     branches: [ "main" ]
 
@@ -28,9 +28,13 @@ jobs:
       security-events: write
       # Needed to publish results and get a badge (see publish_results below).
       id-token: write
-      # Uncomment the permissions below if installing in a private repository.
-      # contents: read
-      # actions: read
+      contents: read
+      actions: read
+      # To allow GraphQL ListCommits to work.
+      issues: read
+      pull-requests: read
+      # To detect SAST tools.
+      checks: read
 
     steps:
       - name: Harden the runner (Audit all outbound calls)

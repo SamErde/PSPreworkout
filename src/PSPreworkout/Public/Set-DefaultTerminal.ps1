@@ -15,7 +15,6 @@ function Set-DefaultTerminal {
     #>
 
     [CmdletBinding(SupportsShouldProcess)]
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'OK')]
     param (
         # The name of the application to use as the default terminal in Windows.
         [Parameter(Mandatory = $false)]
@@ -26,10 +25,16 @@ function Set-DefaultTerminal {
         # Send non-identifying usage statistics to PostHog.
         Write-PSPreworkoutTelemetry -EventName $MyInvocation.MyCommand.Name -ParameterNamesOnly $MyInvocation.BoundParameters.Keys
 
+        if ($IsLinux -or $IsMacOS) {
+            throw 'Set-DefaultTerminal is only supported on Windows.'
+        }
+
         $KeyPath = 'HKCU:\Console\%%Startup'
-        if (-not (Test-Path -Path $keyPath)) {
+        if (-not (Test-Path -Path $KeyPath)) {
             try {
-                New-Item -Path $KeyPath >$null
+                if ($PSCmdlet.ShouldProcess($KeyPath, 'Create registry key')) {
+                    New-Item -Path $KeyPath >$null
+                }
             } catch {
                 throw "Failed to create registry key: $_"
             }
@@ -42,8 +47,10 @@ function Set-DefaultTerminal {
         switch ($Name) {
             'WindowsTerminal' {
                 try {
-                    New-ItemProperty -Path 'HKCU:\Console\%%Startup' -Name 'DelegationConsole' -Value '{2EACA947-7F5F-4CFA-BA87-8F7FBEEFBE69}' -Force >$null
-                    New-ItemProperty -Path 'HKCU:\Console\%%Startup' -Name 'DelegationTerminal' -Value '{E12CFF52-A866-4C77-9A90-F570A7AA2C6B}' -Force >$null
+                    if ($PSCmdlet.ShouldProcess($KeyPath, "Set default terminal to $Name")) {
+                        New-ItemProperty -Path $KeyPath -Name 'DelegationConsole' -Value '{2EACA947-7F5F-4CFA-BA87-8F7FBEEFBE69}' -Force >$null
+                        New-ItemProperty -Path $KeyPath -Name 'DelegationTerminal' -Value '{E12CFF52-A866-4C77-9A90-F570A7AA2C6B}' -Force >$null
+                    }
                 } catch {
                     throw "Failed to set default terminal: $_"
                 }

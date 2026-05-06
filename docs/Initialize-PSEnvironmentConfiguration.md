@@ -22,13 +22,14 @@ Initialize configuration your PowerShell environment and git.
 ```
 Initialize-PSEnvironmentConfiguration [-Name] <string> [-Email] <string> [[-Font] <string>]
  [[-Packages] <string[]>] [[-Modules] <string[]>] [-SkipPackages] [-SkipModules]
- [<CommonParameters>]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## ALIASES
 
-This cmdlet has the following aliases,
-  {{Insert list of aliases}}
+This cmdlet has the following aliases:
+
+- `Init-PSEnvConfig`
 
 ## DESCRIPTION
 
@@ -40,7 +41,7 @@ Install supporting packages, configure git, and set your console font with this 
 
 Initialize the PowerShell working environment with a custom font, and set my name and email address for Git commits.
 
-Initialize-PSEnvironmentConfiguration -Name 'Sam Erde' -Email 'sam@example.local' -ConsoleFont 'FiraCode Nerd Font'
+Initialize-PSEnvironmentConfiguration -Name 'Sam Erde' -Email 'sam@example.local' -Font 'FiraCode Nerd Font'
 
 ## PARAMETERS
 

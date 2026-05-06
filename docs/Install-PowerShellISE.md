@@ -20,13 +20,12 @@ Install the Windows PowerShell ISE
 ### __AllParameterSets
 
 ```
-Install-PowerShellISE [<CommonParameters>]
+Install-PowerShellISE [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## ALIASES
 
-This cmdlet has the following aliases,
-  {{Insert list of aliases}}
+This cmdlet has no aliases.
 
 ## DESCRIPTION
 

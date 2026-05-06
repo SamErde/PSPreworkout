@@ -31,8 +31,9 @@ Get-CommandHistory [-All] [-Exclude <string[]>] [-Filter <string[]>] [<CommonPar
 
 ## ALIASES
 
-This cmdlet has the following aliases,
-  {{Insert list of aliases}}
+This cmdlet has the following aliases:
+
+- `gch`
 
 ## DESCRIPTION
 

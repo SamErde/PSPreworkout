@@ -1,7 +1,12 @@
 # Project Files #
 Archive
-# Artifacts/
-# **/Artifacts/
+Artifacts/
+**/Artifacts/
+docs/en-US/*.cab
+docs/en-US/*.zip
+docs/en-US/*HelpContent*.xml
+docs/en-US/*HelpInfo*.xml
+docs/en-US/*-help.xml
 cov.xml
 coverage.xml
 Output/**/**

@@ -35,7 +35,7 @@ function Install-WinGet {
     - Create the target folder if it does not already exist
 #>
 
-    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Install-WinGet')]
+    [CmdletBinding(SupportsShouldProcess, HelpUri = 'https://day3bits.com/PSPreworkout/Install-WinGet')]
     param (
 
         # Path to download the packages to (directory must already exist)
@@ -59,6 +59,10 @@ function Install-WinGet {
         # Send non-identifying usage statistics to PostHog.
         Write-PSPreworkoutTelemetry -EventName $MyInvocation.MyCommand.Name -ParameterNamesOnly $MyInvocation.BoundParameters.Keys
 
+        if ($IsLinux -or $IsMacOS) {
+            throw 'Install-WinGet is only supported on Windows.'
+        }
+
         $StartTime = Get-Date
 
         if ($PSBoundParameters.ContainsKey('DownloadPath')) {
@@ -76,26 +80,30 @@ function Install-WinGet {
         $progressPreference = 'silentlyContinue'
         Write-Information 'Downloading WinGet and its dependencies...'
         Write-Verbose 'Downloading packages...'
-        Invoke-WebRequest -Uri https://aka.ms/getwinget -OutFile $DesktopAppInstallerPackage
-        Invoke-WebRequest -Uri https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx -OutFile $VCLibsPackage
-        Invoke-WebRequest -Uri https://github.com/microsoft/microsoft-ui-xaml/releases/download/v2.8.6/Microsoft.UI.Xaml.2.8.x64.appx -OutFile $XamlPackage
+        if ($PSCmdlet.ShouldProcess($Path, 'Download WinGet package dependencies')) {
+            Invoke-WebRequest -Uri https://aka.ms/getwinget -OutFile $DesktopAppInstallerPackage -ErrorAction Stop
+            Invoke-WebRequest -Uri https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx -OutFile $VCLibsPackage -ErrorAction Stop
+            Invoke-WebRequest -Uri https://github.com/microsoft/microsoft-ui-xaml/releases/download/v2.8.6/Microsoft.UI.Xaml.2.8.x64.appx -OutFile $XamlPackage -ErrorAction Stop
+        }
 
         if ($DownloadOnly.IsPresent) {
             Write-Output "WinGet package dependencies were downloaded in $([math]::Ceiling(((Get-Date) - $StartTime).TotalSeconds)) seconds."
         } else {
             Write-Verbose 'Installing packages...'
-            Add-AppxPackage $XamlPackage
-            Add-AppxPackage $VCLibsPackage
-            Add-AppxPackage $DesktopAppInstallerPackage
-            Write-Output "WinGet $(winget -v) is installed."
+            if ($PSCmdlet.ShouldProcess('WinGet package dependencies', 'Install AppX packages')) {
+                Add-AppxPackage $XamlPackage -ErrorAction Stop
+                Add-AppxPackage $VCLibsPackage -ErrorAction Stop
+                Add-AppxPackage $DesktopAppInstallerPackage -ErrorAction Stop
+                Write-Output "WinGet $(winget -v) is installed."
+            }
         }
 
         if ($KeepDownload.IsPresent -or $DownloadOnly.IsPresent) {
-            Write-Output "The DesktopAppInstaller, VCLibs, and XML packages have been downloaded to $DownloadPath."
+            Write-Output "The DesktopAppInstaller, VCLibs, and Xaml packages have been downloaded to $Path."
         } else {
-            Remove-Item -Path $DesktopAppInstallerPackage
-            Remove-Item -Path $VCLibsPackage
-            Remove-Item -Path $XamlPackage
+            Remove-Item -Path $DesktopAppInstallerPackage -ErrorAction SilentlyContinue
+            Remove-Item -Path $VCLibsPackage -ErrorAction SilentlyContinue
+            Remove-Item -Path $XamlPackage -ErrorAction SilentlyContinue
         }
     }
 

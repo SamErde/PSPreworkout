@@ -41,9 +41,16 @@ Install-Module -Name PSPreworkout -Scope CurrentUser
 Get-Command -Module PSPreworkout
 ```
 
+## Telemetry
+
+PSPreworkout sends non-identifying command usage telemetry to PostHog to help improve the module.
+Telemetry includes the command name, module version, PowerShell version, host, execution policy, language mode, OS details, timezone, and parameter names, but not parameter values.
+
+To disable telemetry, set `PSPREWORKOUT_DISABLE_TELEMETRY` to `1`, `true`, or `yes` in your environment.
+
 ## Contributing
 
-Please feel free submit an issue or a PR to report bugs, suggest improvements, or add new ideas to the module!
+Please feel free to submit an issue or a PR to report bugs, suggest improvements, or add new ideas to the module!
 
 ## Presentations
 

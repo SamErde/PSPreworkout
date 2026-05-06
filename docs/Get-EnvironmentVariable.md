@@ -33,8 +33,9 @@ Get-EnvironmentVariable [[-Pattern] <string>] [-Target <EnvironmentVariableTarge
 
 ## ALIASES
 
-This cmdlet has the following aliases,
-  {{Insert list of aliases}}
+This cmdlet has the following aliases:
+
+- `gev`
 
 ## DESCRIPTION
 

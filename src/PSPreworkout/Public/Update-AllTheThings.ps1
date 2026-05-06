@@ -4,7 +4,7 @@ function Update-AllTheThings {
     Update all the things!
 
     .DESCRIPTION
-    A script to automatically update all PowerShell modules, PowerShell Help, and packages (apt, brew, chocolately, winget).
+    A script to automatically update all PowerShell modules, PowerShell Help, and packages (apt, brew, Chocolatey, winget).
 
     .PARAMETER SkipModules
     Skip the step that updates PowerShell modules.
@@ -101,9 +101,13 @@ function Update-AllTheThings {
 
     process {
         Write-Verbose 'Set the PowerShell Gallery as a trusted installation source.'
-        Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
+        if ($PSCmdlet.ShouldProcess('PSGallery', 'Set PowerShellGet repository as trusted')) {
+            Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
+        }
         if (Get-Command -Name Set-PSResourceRepository -ErrorAction SilentlyContinue) {
-            Set-PSResourceRepository -Name 'PSGallery' -Trusted
+            if ($PSCmdlet.ShouldProcess('PSGallery', 'Set PSResourceGet repository as trusted')) {
+                Set-PSResourceRepository -Name 'PSGallery' -Trusted
+            }
         }
 
         #region UpdatePowerShell
@@ -170,7 +174,9 @@ function Update-AllTheThings {
 
             # Finally update the current module
             try {
-                Update-Module $module.Name
+                if ($PSCmdlet.ShouldProcess($module.Name, 'Update PowerShell module')) {
+                    Update-Module $module.Name
+                }
             } catch [Microsoft.PowerShell.Commands.WriteErrorException] {
                 # Add a catch for mismatched certificates between module versions.
                 Write-Verbose $_
@@ -180,7 +186,9 @@ function Update-AllTheThings {
         # ##### Add a section for installed scripts +++++
         if (-not $SkipScripts) {
             Write-Host '[2] Updating PowerShell Scripts'
-            Update-Script
+            if ($PSCmdlet.ShouldProcess('Installed PowerShell scripts', 'Update scripts')) {
+                Update-Script
+            }
         } else {
             Write-Host '[2] Skipping PowerShell Scripts'
         }
@@ -206,10 +214,12 @@ function Update-AllTheThings {
         if (-not $SkipHelp) {
             Write-Host '[3] Updating PowerShell Help'
             # Fixes error with culture ID 127 (Invariant Country), which is not associated with any language
-            if ((Get-Culture).LCID -eq 127) {
-                Update-Help -UICulture en-US -ErrorAction SilentlyContinue
-            } else {
-                Update-Help -ErrorAction SilentlyContinue
+            if ($PSCmdlet.ShouldProcess('PowerShell help files', 'Update help')) {
+                if ((Get-Culture).LCID -eq 127) {
+                    Update-Help -UICulture en-US -ErrorAction SilentlyContinue
+                } else {
+                    Update-Help -ErrorAction SilentlyContinue
+                }
             }
         } else {
             Write-Host '[3] Skipping PowerShell Help'
@@ -255,7 +265,9 @@ function Update-AllTheThings {
                 }
                 Write-Progress @ProgressParamOuter
                 if (Get-Command winget -ErrorAction SilentlyContinue) {
-                    winget upgrade --silent --scope user --accept-package-agreements --accept-source-agreements --all
+                    if ($PSCmdlet.ShouldProcess('WinGet packages', 'Upgrade all user-scoped packages')) {
+                        winget upgrade --silent --scope user --accept-package-agreements --accept-source-agreements --all
+                    }
                 } else {
                     Write-Host '[4] WinGet was not found. Skipping WinGet update.'
                 }
@@ -276,35 +288,39 @@ function Update-AllTheThings {
 
             if (Get-Command apt -ErrorAction SilentlyContinue) {
                 Write-Host '[5] Updating apt packages.'
-                if ($NeedsSudo) {
-                    & sudo apt update
-                    if ($AcceptPrompts) {
-                        & sudo apt upgrade -y
+                if ($PSCmdlet.ShouldProcess('apt packages', 'Update and upgrade packages')) {
+                    if ($NeedsSudo) {
+                        & sudo apt update
+                        if ($AcceptPrompts) {
+                            & sudo apt upgrade -y
+                        } else {
+                            & sudo apt upgrade
+                        }
                     } else {
-                        & sudo apt upgrade
-                    }
-                } else {
-                    & apt update
-                    if ($AcceptPrompts) {
-                        & apt upgrade -y
-                    } else {
-                        & apt upgrade
+                        & apt update
+                        if ($AcceptPrompts) {
+                            & apt upgrade -y
+                        } else {
+                            & apt upgrade
+                        }
                     }
                 }
             }
             if (Get-Command dnf -ErrorAction SilentlyContinue) {
                 Write-Host '[5] Updating dnf packages.'
-                if ($NeedsSudo) {
-                    if ($AcceptPrompts) {
-                        & sudo dnf update -y
+                if ($PSCmdlet.ShouldProcess('dnf packages', 'Update packages')) {
+                    if ($NeedsSudo) {
+                        if ($AcceptPrompts) {
+                            & sudo dnf update -y
+                        } else {
+                            & sudo dnf update
+                        }
                     } else {
-                        & sudo dnf update
-                    }
-                } else {
-                    if ($AcceptPrompts) {
-                        & dnf update -y
-                    } else {
-                        & dnf update
+                        if ($AcceptPrompts) {
+                            & dnf update -y
+                        } else {
+                            & dnf update
+                        }
                     }
                 }
             }
@@ -316,11 +332,15 @@ function Update-AllTheThings {
         #region UpdateMacOS
         # Early testing. No progress bar yet. Need to check for admin and different package managers.
         if ($IsMacOS) {
-            softwareupdate -l
+            if ($PSCmdlet.ShouldProcess('macOS software updates', 'List available updates')) {
+                softwareupdate -l
+            }
             if (Get-Command brew -ErrorAction SilentlyContinue) {
                 Write-Host '[6] Updating brew packages.'
-                brew update
-                brew upgrade
+                if ($PSCmdlet.ShouldProcess('Homebrew packages', 'Update and upgrade packages')) {
+                    brew update
+                    brew upgrade
+                }
             }
         } else {
             Write-Verbose '[6] Not macOS. Skipping section.'
@@ -344,13 +364,17 @@ function Update-AllTheThings {
             # Add a function/parameter to run these two feature configuration options, which requires admin to set.
             if (Test-IsElevated) {
                 # Oops, this depends on PSPreworkout being installed or that function otherwise being available.
-                choco feature enable -n=allowGlobalConfirmation
-                choco feature disable --name=showNonElevatedWarnings
+                if ($PSCmdlet.ShouldProcess('Chocolatey features', 'Enable global confirmation and disable non-elevated warnings')) {
+                    choco feature enable -n=allowGlobalConfirmation
+                    choco feature disable --name=showNonElevatedWarnings
+                }
             } else {
-                Write-Verbose "Run once as an administrator to disable Chocolately's showNonElevatedWarnings." -Verbose
+                Write-Verbose "Run once as an administrator to disable Chocolatey's showNonElevatedWarnings." -Verbose
             }
-            choco upgrade chocolatey -y --limit-output --accept-license --no-color
-            choco upgrade all -y --limit-output --accept-license --no-color
+            if ($PSCmdlet.ShouldProcess('Chocolatey packages', 'Upgrade Chocolatey and all packages')) {
+                choco upgrade chocolatey -y --limit-output --accept-license --no-color
+                choco upgrade all -y --limit-output --accept-license --no-color
+            }
             # Padding to reset host before updating the progress bar.
             Write-Host ' '
         } else {

@@ -21,13 +21,14 @@ Set environment variables.
 
 ```
 Set-EnvironmentVariable [-Name] <string> [-Value] <string> [-Target] <EnvironmentVariableTarget>
- [<CommonParameters>]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## ALIASES
 
-This cmdlet has the following aliases,
-  {{Insert list of aliases}}
+This cmdlet has the following aliases:
+
+- `sev`
 
 ## DESCRIPTION
 
@@ -43,7 +44,7 @@ Set-EnvironmentVariable -Name 'FavoriteDrink' -Value 'Coffee' -Target 'User'
 
 ### -Name
 
-Parameter description
+The name of the environment variable to set.
 
 ```yaml
 Type: System.String
@@ -64,7 +65,7 @@ HelpMessage: ''
 
 ### -Target
 
-Parameter description
+The environment variable scope to update: Process, User, or Machine.
 
 ```yaml
 Type: System.EnvironmentVariableTarget
@@ -85,7 +86,7 @@ HelpMessage: ''
 
 ### -Value
 
-Parameter description
+The value to assign to the environment variable.
 
 ```yaml
 Type: System.String

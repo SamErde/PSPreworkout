@@ -25,8 +25,7 @@ Out-JsonFile [-Object] <Object> [[-FilePath] <string>] [-Depth <int>] [<CommonPa
 
 ## ALIASES
 
-This cmdlet has the following aliases,
-  {{Insert list of aliases}}
+This cmdlet has no aliases.
 
 ## DESCRIPTION
 

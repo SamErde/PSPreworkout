@@ -90,7 +90,7 @@ Enter-Build {
     $script:BuildModuleRootFile = Join-Path -Path $script:ArtifactsPath -ChildPath "$($script:ModuleName).psm1"
 
     # Ensure our builds fail until if below a minimum defined code test coverage threshold
-    $script:coverageThreshold = 5 # Default 30
+    $script:coverageThreshold = 30
 
     [version]$script:MinPesterVersion = '5.2.2'
     [version]$script:MaxPesterVersion = '5.99.99'
@@ -123,7 +123,7 @@ Set-BuildFooter {
 Add-BuildTask ValidateRequirements {
     # this setting comes from the *.Settings.ps1
     Write-Build White "      Verifying at least PowerShell $script:requiredPSVersion..."
-    Assert-Build ($PSVersionTable.PSVersion -ge $script:requiredPSVersion) "At least Powershell $script:requiredPSVersion is required for this build to function properly"
+    Assert-Build ($PSVersionTable.PSVersion -ge $script:requiredPSVersion) "At least PowerShell $script:requiredPSVersion is required for this build to function properly"
     Write-Build Green '      ...Verification Complete!'
 } #ValidateRequirements
 
@@ -188,6 +188,7 @@ Add-BuildTask UpdateManifest -Before TestModuleManifest {
     # Read the manifest file
     $manifestPath = $script:ModuleManifestFile
     $manifestContent = Get-Content -Path $manifestPath -Raw
+    $originalManifestContent = $manifestContent
 
     # Update FunctionsToExport
     $functionsArray = ($publicFunctions | ForEach-Object { "'$_'" }) -join ",`n        "
@@ -200,21 +201,24 @@ Add-BuildTask UpdateManifest -Before TestModuleManifest {
     }
     $allExportsArray = ($allExports | Sort-Object -Unique | ForEach-Object { "'$_'" }) -join ",`n        "
 
-    $newFunctionsToExport = "`$1`n        $allExportsArray`n    `$2"
+    $newFunctionsToExport = "`$1`n        $allExportsArray`n    )"
     $manifestContent = $manifestContent -replace $functionsToExportPattern, $newFunctionsToExport
 
     # Update AliasesToExport
     if ($aliases) {
         $aliasesArray = ($aliases | ForEach-Object { "'$_'" }) -join ",`n        "
         $aliasesToExportPattern = '(?ms)(AliasesToExport\s*=\s*@\().*?(\s*\))'
-        $newAliasesToExport = "`$1`n        $aliasesArray`n    `$2"
+        $newAliasesToExport = "`$1`n        $aliasesArray`n    )"
         $manifestContent = $manifestContent -replace $aliasesToExportPattern, $newAliasesToExport
     }
 
-    # Write the updated manifest
-    $manifestContent | Out-File -FilePath $manifestPath -Encoding utf8 -NoNewline
-
-    Write-Build Green '      ...Module manifest updated successfully!'
+    if ($manifestContent -ne $originalManifestContent) {
+        # Write the updated manifest
+        $manifestContent | Out-File -FilePath $manifestPath -Encoding utf8 -NoNewline
+        Write-Build Green '      ...Module manifest updated successfully!'
+    } else {
+        Write-Build Green '      ...Module manifest already up to date!'
+    }
 }
 
 # Synopsis: Import the current module manifest file for processing

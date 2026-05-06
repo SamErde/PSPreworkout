@@ -18,13 +18,15 @@ on:
   #    - "src/PSPreworkout/PSPreworkout.psd1"
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
 
 jobs:
   validate-manifest:
     name: 🧪 Validate and Update Manifest
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     concurrency:
       group: manifest-validation-${{ github.ref }}
       cancel-in-progress: false
@@ -37,8 +39,6 @@ jobs:
 
       - name: ✅ Checkout Repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 🔍 Check Module Manifest
         id: check
@@ -252,6 +252,8 @@ jobs:
               exit 1
           }
 
+          $originalManifestContent = $manifestContent
+
           # Update FunctionsToExport (functions + aliases per module convention)
           $allExports = @($publicFunctions)
           if ($aliases) {
@@ -259,15 +261,20 @@ jobs:
           }
           $allExportsArray = ($allExports | Sort-Object -Unique | ForEach-Object { "'$_'" }) -join ",`n        "
           $functionsToExportPattern = '(?ms)(FunctionsToExport\s*=\s*@\().*?(\s*\))'
-          $newFunctionsToExport = "`$1`n        $allExportsArray`n    `$2"
+          $newFunctionsToExport = "`$1`n        $allExportsArray`n    )"
           $manifestContent = $manifestContent -replace $functionsToExportPattern, $newFunctionsToExport
 
           # Update AliasesToExport
           if ($aliases) {
               $aliasesArray = ($aliases | ForEach-Object { "'$_'" }) -join ",`n        "
               $aliasesToExportPattern = '(?ms)(AliasesToExport\s*=\s*@\().*?(\s*\))'
-              $newAliasesToExport = "`$1`n        $aliasesArray`n    `$2"
+              $newAliasesToExport = "`$1`n        $aliasesArray`n    )"
               $manifestContent = $manifestContent -replace $aliasesToExportPattern, $newAliasesToExport
+          }
+
+          if ($manifestContent -eq $originalManifestContent) {
+              Write-Host "Manifest already matches public functions and aliases." -ForegroundColor Green
+              exit 0
           }
 
           # Write updated manifest with UTF-8 BOM-less encoding
