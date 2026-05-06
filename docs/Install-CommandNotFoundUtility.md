@@ -20,13 +20,12 @@ Install and setup the WinGetCommandNotFound utility from Microsoft PowerToys.
 ### __AllParameterSets
 
 ```
-Install-CommandNotFoundUtility [<CommonParameters>]
+Install-CommandNotFoundUtility [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## ALIASES
 
-This cmdlet has the following aliases,
-  {{Insert list of aliases}}
+This cmdlet has no aliases.
 
 ## DESCRIPTION
 

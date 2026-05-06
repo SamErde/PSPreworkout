@@ -21,7 +21,8 @@ Create a new advanced function from a template.
 
 ```
 New-ScriptFromTemplate [-Name] <string> [-Synopsis <string>] [-Description <string>]
- [-Alias <string>] [-Author <string>] [-Path <string>] [-SkipValidation] [<CommonParameters>]
+ [-Alias <string>] [-Author <string>] [-Path <string>] [-SkipValidation] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ### VerbNoun
@@ -29,13 +30,14 @@ New-ScriptFromTemplate [-Name] <string> [-Synopsis <string>] [-Description <stri
 ```
 New-ScriptFromTemplate [-Verb] <string> [-Noun] <string> [-Synopsis <string>]
  [-Description <string>] [-Alias <string>] [-Author <string>] [-Path <string>] [-SkipValidation]
- [<CommonParameters>]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## ALIASES
 
-This cmdlet has the following aliases,
-  {{Insert list of aliases}}
+This cmdlet has the following aliases:
+
+- `New-Script`
 
 ## DESCRIPTION
 

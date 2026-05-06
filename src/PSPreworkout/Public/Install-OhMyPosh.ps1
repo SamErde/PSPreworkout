@@ -37,8 +37,7 @@ function Install-OhMyPosh {
     Version: 0.1.0
     Modified: 2024-10-23
 #>
-    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Install-OhMyPosh')]
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingInvokeExpression', '', Justification = 'Invoke-Expression is used for online OMP installer.')]
+    [CmdletBinding(SupportsShouldProcess, HelpUri = 'https://day3bits.com/PSPreworkout/Install-OhMyPosh')]
     param (
         [Parameter()]
         [ValidateSet('winget', 'msstore')]
@@ -59,46 +58,41 @@ function Install-OhMyPosh {
 
     switch ($Method) {
         chocolatey {
-            if (choco.exe) {
-                choco install oh-my-posh
+            if (Get-Command choco.exe -ErrorAction SilentlyContinue) {
+                if ($PSCmdlet.ShouldProcess('Oh My Posh', 'Install with Chocolatey')) {
+                    choco install oh-my-posh
+                }
             } else {
                 Write-Error -Message 'Chocolatey was not found. Please install it or try another method.' -ErrorAction Stop
             }
         }
         winget {
             # Install Oh My Posh using Winget
-            if (winget.exe) {
-                winget install --id JanDeDobbeleer.OhMyPosh --source $WingetSource
-            } else {
-                $Response = Read-Host -Prompt 'Winget was not found. Would you like to try to install it?'
-                if ($Response -eq 'y' -or $Response -eq 'yes') {
-                    try {
-                        $progressPreference = 'silentlyContinue'
-                        Write-Information 'Downloading WinGet and its dependencies...'
-                        Invoke-WebRequest -Uri https://aka.ms/getwinget -OutFile Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
-                        Invoke-WebRequest -Uri https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx -OutFile Microsoft.VCLibs.x64.14.00.Desktop.appx
-                        Invoke-WebRequest -Uri https://github.com/microsoft/microsoft-ui-xaml/releases/download/v2.7.3/Microsoft.UI.Xaml.2.7.x64.appx -OutFile Microsoft.UI.Xaml.2.7.x64.appx
-                        Add-AppxPackage Microsoft.VCLibs.x64.14.00.Desktop.appx
-                        Add-AppxPackage Microsoft.UI.Xaml.2.7.x64.appx
-                        Add-AppxPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
-
-                        if (winget.exe) {
-                            winget install --id JanDeDobbeleer.OhMyPosh --source $WingetSource
-                        }
-                    } catch {
-                        Write-Error -Message 'Sorry, we failed to download and install winget. Please refer to https://learn.microsoft.com/en-us/windows/package-manager/winget/#install-winget.'
-                    }
+            if (Get-Command winget.exe -ErrorAction SilentlyContinue) {
+                if ($PSCmdlet.ShouldProcess('Oh My Posh', "Install with WinGet from $WingetSource")) {
+                    winget install --id JanDeDobbeleer.OhMyPosh --source $WingetSource
                 }
+            } else {
+                throw 'WinGet was not found. Install WinGet first or choose another installation method.'
             }
         }
         scoop {
             # Install Oh My Posh using Scoop
-            scoop install https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/oh-my-posh.json
+            if ($PSCmdlet.ShouldProcess('Oh My Posh', 'Install with Scoop')) {
+                scoop install https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/oh-my-posh.json
+            }
         }
         direct {
             # Download and run the Oh My Posh install script directly from ohmyposh.dev
-            Set-ExecutionPolicy Bypass -Scope Process -Force
-            Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://ohmyposh.dev/install.ps1'))
+            if ($PSCmdlet.ShouldProcess('Oh My Posh install script', 'Download and execute')) {
+                $InstallerPath = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath 'oh-my-posh-install.ps1'
+                try {
+                    Invoke-RestMethod -Uri 'https://ohmyposh.dev/install.ps1' -OutFile $InstallerPath -ErrorAction Stop
+                    & $InstallerPath
+                } finally {
+                    Remove-Item -Path $InstallerPath -ErrorAction SilentlyContinue
+                }
+            }
         }
     }
 
@@ -107,14 +101,16 @@ function Install-OhMyPosh {
             Write-Debug 'Not installing a nerd fonts'
         }
         True {
-            if ($Font -eq 'Default' -or $Fond -eq 'Meslo') {
+            if ($Font -eq 'Default' -or $Font -eq 'Meslo') {
                 $FontName = 'Meslo'
             } else {
                 $FontName = $null
             }
 
             Write-Information -MessageData "Installing as current user to avoid requiring local admin rights. Please see notes at https://ohmyposh.dev/docs/installation/fonts. `n" -InformationAction Continue
-            oh-my-posh font install $FontName --user
+            if ($PSCmdlet.ShouldProcess("Oh My Posh font '$FontName'", 'Install for current user')) {
+                oh-my-posh font install $FontName --user
+            }
             # To Do: Script the configuration of Windows Terminal, VS Code, and default shell font in Windows registry.
             Write-Information -MessageData 'Please be sure to configure your shell to use the new font. See https://ohmyposh.dev/docs/installation/fonts.'
         }
@@ -138,6 +134,4 @@ Once added, reload your profile by running:
 
 '@
     Write-Information -MessageData $ProfileInstructions -InformationAction Continue
-
-    oh-my-posh init pwsh | Invoke-Expression
 }

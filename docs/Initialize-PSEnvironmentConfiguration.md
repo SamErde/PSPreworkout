@@ -22,13 +22,14 @@ Initialize configuration your PowerShell environment and git.
 ```
 Initialize-PSEnvironmentConfiguration [-Name] <string> [-Email] <string> [[-Font] <string>]
  [[-Packages] <string[]>] [[-Modules] <string[]>] [-SkipPackages] [-SkipModules]
- [<CommonParameters>]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## ALIASES
 
-This cmdlet has the following aliases,
-  {{Insert list of aliases}}
+This cmdlet has the following aliases:
+
+- `Init-PSEnvConfig`
 
 ## DESCRIPTION
 

@@ -6,17 +6,16 @@ on:
       - prerelease
     paths:
       - "src/PSPreworkout/**"
-
-    #paths-ignore:
-    #  - "**.md"
-    #  - "docs/**"
-    #  - "src/Drafts/**"
+      - "src/Tests/**"
+      - "src/PSPreworkout.build.ps1"
+      - "src/PSPreworkout.Settings.ps1"
+      - "src/PSScriptAnalyzerSettings.psd1"
+      - ".github/workflows/Build Module.yml"
 
   workflow_dispatch:
 
 permissions:
-  contents: write # Required to read and write the repository contents
-  packages: write # Required to create and update package help files
+  contents: read
 
 jobs:
   test:
@@ -36,12 +35,6 @@ jobs:
 
       - name: ✅ Checkout Repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-
-      - name: 📁 Display the Path
-        shell: pwsh
-        run: |
-          Write-Host "Current Directory: $PWD" -ForegroundColor Cyan
-          (Get-ChildItem env:*).GetEnumerator() | Sort-Object Name | Out-String
 
       - name: 🥾 Bootstrap
         shell: pwsh
@@ -64,9 +57,3 @@ jobs:
           name: zip-archive
           path: .\src\Archive
           if-no-files-found: warn
-          # git-auto-commit-action only runs on Linux-based platforms.
-
-      - name: 💾 Commit Changes
-        uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0
-        with:
-          commit_message: "Commit Build"

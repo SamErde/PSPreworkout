@@ -26,12 +26,13 @@ Update-AllTheThings [-SkipModules] [-SkipScripts] [-SkipHelp] [-SkipWinGet] [-In
 
 ## ALIASES
 
-This cmdlet has the following aliases,
-  {{Insert list of aliases}}
+This cmdlet has the following aliases:
+
+- `uatt`
 
 ## DESCRIPTION
 
-A script to automatically update all PowerShell modules, PowerShell Help, and packages (apt, brew, chocolately, winget).
+A script to automatically update all PowerShell modules, PowerShell Help, and packages (apt, brew, Chocolatey, winget).
 
 ## EXAMPLES
 

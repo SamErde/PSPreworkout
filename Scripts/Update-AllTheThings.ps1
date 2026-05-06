@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.DESCRIPTION A script to automatically update all PowerShell modules, PowerShell Help, and packages (apt, brew, chocolately, winget).
+.DESCRIPTION A script to automatically update all PowerShell modules, PowerShell Help, and packages (apt, brew, Chocolatey, winget).
 .VERSION 0.5.8
 .GUID 3a1a1ec9-0ef6-4f84-963d-be1505dab6a8
 .AUTHOR Sam Erde
@@ -41,7 +41,7 @@ function Update-AllTheThings {
     Update all the things!
 
     .DESCRIPTION
-    A script to automatically update all PowerShell modules, PowerShell Help, and packages (apt, brew, chocolately, winget).
+    A script to automatically update all PowerShell modules, PowerShell Help, and packages (apt, brew, Chocolatey, winget).
 
     .PARAMETER SkipModules
     Skip the step that updates PowerShell modules.
@@ -374,7 +374,7 @@ function Update-AllTheThings {
                 choco feature enable -n=allowGlobalConfirmation
                 choco feature disable --name=showNonElevatedWarnings
             } else {
-                Write-Verbose "Run once as an administrator to disable Chocolately's showNonElevatedWarnings." -Verbose
+                Write-Verbose "Run once as an administrator to disable Chocolatey's showNonElevatedWarnings." -Verbose
             }
             choco upgrade chocolatey -y --limit-output --accept-license --no-color
             choco upgrade all -y --limit-output --accept-license --no-color

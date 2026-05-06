@@ -25,8 +25,9 @@ Get-PowerShellPortable [[-Path] <string>] [-Extract] [<CommonParameters>]
 
 ## ALIASES
 
-This cmdlet has the following aliases,
-  {{Insert list of aliases}}
+This cmdlet has the following aliases:
+
+- `Get-PSPortable`
 
 ## DESCRIPTION
 

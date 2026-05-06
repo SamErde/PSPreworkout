@@ -25,8 +25,7 @@ Get-HashtableValueType [-Hashtable] <hashtable> [-Key <string>] [<CommonParamete
 
 ## ALIASES
 
-This cmdlet has the following aliases,
-  {{Insert list of aliases}}
+This cmdlet has no aliases.
 
 ## DESCRIPTION
 

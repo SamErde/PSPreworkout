@@ -21,13 +21,12 @@ Install Oh My Posh and add it to your profile.
 
 ```
 Install-OhMyPosh [-WingetSource <string>] [-Method <string>] [-InstallNerdFont] [-Font <string>]
- [<CommonParameters>]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## ALIASES
 
-This cmdlet has the following aliases,
-  {{Insert list of aliases}}
+This cmdlet has no aliases.
 
 ## DESCRIPTION
 

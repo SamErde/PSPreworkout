@@ -7,21 +7,20 @@ function Set-EnvironmentVariable {
     Set environment variables in any OS using .NET types.
 
     .PARAMETER Name
-    Parameter description
+    The name of the environment variable to set.
 
     .PARAMETER Value
-    Parameter description
+    The value to assign to the environment variable.
 
     .PARAMETER Target
-    Parameter description
+    The environment variable scope to update: Process, User, or Machine.
 
     .EXAMPLE
     Set-EnvironmentVariable -Name 'FavoriteDrink' -Value 'Coffee' -Target 'User'
 
     #>
     [Alias('sev')]
-    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Set-EnvironmentVariable')]
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'OK')]
+    [CmdletBinding(SupportsShouldProcess, HelpUri = 'https://day3bits.com/PSPreworkout/Set-EnvironmentVariable')]
     param (
         # The name of the environment variable to set.
         [Parameter(Mandatory, Position = 0)]
@@ -44,10 +43,12 @@ function Set-EnvironmentVariable {
     }
 
     process {
-        try {
-            [Environment]::SetEnvironmentVariable($Name, $Value, $Target)
-        } catch {
-            throw "Failed to set environment variable '$Name' with value '$Value' for target '$Target': $_"
+        if ($PSCmdlet.ShouldProcess("$Target environment variable '$Name'", 'Set environment variable value')) {
+            try {
+                [Environment]::SetEnvironmentVariable($Name, $Value, $Target)
+            } catch {
+                throw "Failed to set environment variable '$Name' with value '$Value' for target '$Target': $_"
+            }
         }
     }
 }

@@ -37,8 +37,7 @@ function New-ScriptFromTemplate {
 
     #>
 
-    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/New-ScriptFromTemplate')]
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'OK')]
+    [CmdletBinding(SupportsShouldProcess, HelpUri = 'https://day3bits.com/PSPreworkout/New-ScriptFromTemplate')]
     #[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '', Justification = 'Making it pretty.')]
     [Alias('New-Script')]
     param (
@@ -170,11 +169,13 @@ function New-ScriptFromTemplate {
     }
 
     # Create the new file.
-    try {
-        $FunctionBuilder.ToString() | Out-File -FilePath $ScriptPath -Encoding utf8 -Force -ErrorAction Stop
-        Write-Verbose "Script created successfully: $ScriptPath"
-    } catch {
-        throw "Failed to create script file '$ScriptPath': $_"
+    if ($PSCmdlet.ShouldProcess($ScriptPath, 'Create script from template')) {
+        try {
+            $FunctionBuilder.ToString() | Out-File -FilePath $ScriptPath -Encoding utf8 -Force -ErrorAction Stop
+            Write-Verbose "Script created successfully: $ScriptPath"
+        } catch {
+            throw "Failed to create script file '$ScriptPath': $_"
+        }
     }
 
 } # end function New-ScriptFromTemplate

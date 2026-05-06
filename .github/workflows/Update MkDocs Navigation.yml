@@ -14,12 +14,13 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write # Required for pushing changes
-  # Removed: pull-requests: write - not needed for this workflow
+  contents: read
 
 jobs:
   update-navigation:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
       cancel-in-progress: false

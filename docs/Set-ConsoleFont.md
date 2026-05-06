@@ -20,13 +20,12 @@ Set the font for your consoles in Windows.
 ### __AllParameterSets
 
 ```
-Set-ConsoleFont [-Font] <string> [<CommonParameters>]
+Set-ConsoleFont [-Font] <string> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## ALIASES
 
-This cmdlet has the following aliases,
-  {{Insert list of aliases}}
+This cmdlet has no aliases.
 
 ## DESCRIPTION
 

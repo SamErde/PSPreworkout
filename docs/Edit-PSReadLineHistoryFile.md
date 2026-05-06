@@ -25,8 +25,9 @@ Edit-PSReadLineHistoryFile [<CommonParameters>]
 
 ## ALIASES
 
-This cmdlet has the following aliases,
-  {{Insert list of aliases}}
+This cmdlet has the following aliases:
+
+- `Edit-HistoryFile`
 
 ## DESCRIPTION
 

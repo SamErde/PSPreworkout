@@ -12,11 +12,15 @@ function Install-PowerShellISE {
     Install-PowerShellISE
     #>
 
-    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Install-PowerShellISE')]
+    [CmdletBinding(SupportsShouldProcess, HelpUri = 'https://day3bits.com/PSPreworkout/Install-PowerShellISE')]
     param ()
 
     # Send non-identifying usage statistics to PostHog.
     Write-PSPreworkoutTelemetry -EventName $MyInvocation.MyCommand.Name -ParameterNamesOnly $MyInvocation.BoundParameters.Keys
+
+    if ($IsLinux -or $IsMacOS) {
+        throw 'Install-PowerShellISE is only supported on Windows.'
+    }
 
     # Check if running as admin
     if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
@@ -39,8 +43,10 @@ function Install-PowerShellISE {
         if ((Get-WindowsFeature -Name PowerShell-ISE -ErrorAction SilentlyContinue).Installed) {
             Write-Output 'The Windows PowerShell ISE is already installed on this Windows Server.'
         } else {
-            Import-Module ServerManager
-            Add-WindowsFeature PowerShell-ISE
+            if ($PSCmdlet.ShouldProcess('Windows Server', 'Install PowerShell ISE Windows feature')) {
+                Import-Module ServerManager
+                Add-WindowsFeature PowerShell-ISE
+            }
         }
 
     } else {
@@ -50,18 +56,26 @@ function Install-PowerShellISE {
             Write-Output 'The Windows PowerShell ISE is already installed.'
         } else {
             # Resetting the Windows Update source sometimes resolves errors when trying to add Windows capabilities
-            $CurrentWUServer = Get-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU' -Name 'UseWUServer' | Select-Object -ExpandProperty UseWUServer
-            Set-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU' -Name 'UseWUServer' -Value 0
-            Restart-Service wuauserv
+            $RegistryPath = 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU'
+            $CurrentWUServer = Get-ItemProperty -Path $RegistryPath -Name 'UseWUServer' | Select-Object -ExpandProperty UseWUServer
 
             try {
-                Get-WindowsCapability -Name Microsoft.Windows.PowerShell.ISE~~~~0.0.1.0 -Online | Add-WindowsCapability -Online -Verbose
+                if ($PSCmdlet.ShouldProcess($RegistryPath, 'Temporarily use Windows Update as capability source')) {
+                    Set-ItemProperty -Path $RegistryPath -Name 'UseWUServer' -Value 0
+                    Restart-Service wuauserv
+                }
+
+                if ($PSCmdlet.ShouldProcess('Windows client', 'Install PowerShell ISE Windows capability')) {
+                    Get-WindowsCapability -Name Microsoft.Windows.PowerShell.ISE~~~~0.0.1.0 -Online | Add-WindowsCapability -Online -Verbose
+                }
             } catch {
                 Write-Error "There was a problem adding the Windows PowerShell ISE: $error"
+            } finally {
+                if ($null -ne $CurrentWUServer -and $PSCmdlet.ShouldProcess($RegistryPath, 'Restore Windows Update server source')) {
+                    Set-ItemProperty -Path $RegistryPath -Name 'UseWUServer' -Value $CurrentWUServer
+                    Restart-Service wuauserv
+                }
             }
-
-            Set-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU' -Name 'UseWUServer' -Value $CurrentWUServer
-            Restart-Service wuauserv
         }
     } # end OS type check
 

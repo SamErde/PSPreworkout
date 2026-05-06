@@ -20,13 +20,13 @@ Install Winget (beta)
 ### __AllParameterSets
 
 ```
-Install-WinGet [[-DownloadPath] <string>] [-DownloadOnly] [-KeepDownload] [<CommonParameters>]
+Install-WinGet [[-DownloadPath] <string>] [-DownloadOnly] [-KeepDownload] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ## ALIASES
 
-This cmdlet has the following aliases,
-  {{Insert list of aliases}}
+This cmdlet has no aliases.
 
 ## DESCRIPTION
 
