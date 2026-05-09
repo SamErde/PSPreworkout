@@ -109,8 +109,8 @@ function Get-PowerShellPortable {
             $TargetStream = $null
             $GZipStream = $null
             try {
-                $SourceStream = [System.IO.FileStream]::new($GZipFile, [System.IO.FileMode]::Open)
-                $TargetStream = [System.IO.FileStream]::new($TarFile, [System.IO.FileMode]::Create)
+                $SourceStream = [System.IO.FileStream]::new($GZipFile, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, [System.IO.FileShare]::Read)
+                $TargetStream = [System.IO.FileStream]::new($TarFile, [System.IO.FileMode]::Create, [System.IO.FileAccess]::Write, [System.IO.FileShare]::None)
                 $GZipStream = [System.IO.Compression.GzipStream]::new($SourceStream, [System.IO.Compression.CompressionMode]::Decompress)
                 $GZipStream.CopyTo($TargetStream)
             } finally {
