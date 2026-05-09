@@ -1,0 +1,101 @@
+name: 📚 Update MkDocs Navigation
+
+on:
+  # Trigger when the module manifest is updated on the main branch
+  # Note: Monitors entire manifest file as GitHub Actions doesn't support
+  # content-specific triggers (only FunctionsToExport changes are relevant)
+  push:
+    branches:
+      - main
+    paths:
+      - "src/PSPreworkout/PSPreworkout.psd1"
+
+  # Allow manual triggering
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  update-navigation:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: false
+
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@a5ad31d6a139d249332a2605b85202e8c0b78450 # v2.19.1
+        with:
+          egress-policy: audit
+
+      - name: ✅ Checkout Repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 1 # Shallow clone for faster checkout
+
+      - name: 🔧 Update MkDocs Navigation
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          Write-Host "Running Update-MkDocsNavigation script..."
+          try {
+            ./Scripts/Update-MkDocsNavigation.ps1 -Verbose
+            Write-Host "✅ Script completed successfully"
+          } catch {
+            Write-Error "❌ Failed to update navigation: $_"
+            exit 1
+          }
+
+      - name: 📦 Upload Updated Navigation (for debugging)
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: mkdocs-navigation
+          path: mkdocs.yml
+          retention-days: 7
+
+      - name: 📝 Check for Changes
+        id: check_changes
+        run: |
+          if git diff --quiet mkdocs.yml; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "ℹ️ No changes detected in mkdocs.yml"
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "✅ Changes detected in mkdocs.yml"
+          fi
+
+      - name: ✅ Validate MkDocs Configuration
+        if: steps.check_changes.outputs.changed == 'true'
+        run: |
+          echo "Validating YAML syntax..."
+          python -c "import yaml; yaml.safe_load(open('mkdocs.yml'))" || {
+            echo "❌ Invalid YAML syntax in mkdocs.yml"
+            exit 1
+          }
+          echo "✅ YAML validation passed"
+
+      - name: 💾 Commit and Push Changes
+        if: steps.check_changes.outputs.changed == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add mkdocs.yml
+          git commit -m "📚 docs: update MkDocs navigation based on FunctionsToExport in the module manifest
+
+          Automatically updated by Update-MkDocsNavigation workflow"
+          git push
+
+      - name: ✅ Summary
+        if: always()
+        run: |
+          if [ "${{ steps.check_changes.outputs.changed }}" == "true" ]; then
+            echo "### ✅ MkDocs Navigation Updated" >> $GITHUB_STEP_SUMMARY
+            echo "The MkDocs navigation has been automatically updated and committed." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "### ℹ️ No Changes Required" >> $GITHUB_STEP_SUMMARY
+            echo "The MkDocs navigation is already up to date." >> $GITHUB_STEP_SUMMARY
+          fi

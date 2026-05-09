@@ -5,15 +5,14 @@ A special mix of tools to help jump start your PowerShell session!
 
 <!-- badges-start -->
 [![GitHub stars](https://img.shields.io/github/stars/samerde/PSPreworkout?cacheSeconds=3600)](https://github.com/samerde/PSPreworkout/stargazers/)
+![GitHub top language](https://img.shields.io/github/languages/top/SamErde/PSPreworkout)
 [![PowerShell Gallery Version](https://img.shields.io/powershellgallery/v/PSPreworkout?include_prereleases)](https://powershellgallery.com/packages/PSPreworkout)
 [![PowerShell Gallery Downloads](https://img.shields.io/powershellgallery/dt/PSPreworkout)](https://powershellgallery.com/packages/PSPreworkout)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
-[![GitHub contributors](https://img.shields.io/github/contributors/samerde/PSPreworkout.svg)](https://github.com/samerde/PSPreworkout/graphs/contributors/)
 
-![GitHub top language](https://img.shields.io/github/languages/top/SamErde/PSPreworkout)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/ae92f0d929de494690e712b68fb3b52c)](https://app.codacy.com/gh/SamErde/PSPreworkout/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/SamErde/PSPreworkout/.github%2Fworkflows%2FBuild%20Module.yml)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/SamErde/PSPreworkout/.github%2Fworkflows%2FDeploy%20MkDocs.yml?label=MkDocs)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/11404/badge)](https://www.bestpractices.dev/projects/11404)
 <!-- badges-end -->
 
 &nbsp;
@@ -33,9 +32,19 @@ Install-Module -Name PSPreworkout -Scope CurrentUser
 Get-Command -Module PSPreworkout
 ```
 
+## Telemetry
+
+PSPreworkout sends non-identifying command usage telemetry to PostHog to help improve the module.
+Telemetry includes the command name, module version, PowerShell version, host, execution policy, language mode, OS details, timezone, and parameter names, but not parameter values.
+
+To disable telemetry, set `PSPREWORKOUT_DISABLE_TELEMETRY` to `1`, `true`, or `yes` in your environment.
+
+Want to understand more about this project? Try asking DeepWiki!  
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/SamErde/PSPreworkout)
+
 ## Contributing
 
-Please feel free submit an issue or a PR to report bugs, suggest improvements, or add new ideas to the module!
+Please feel free to submit an issue or a PR to report bugs, suggest improvements, or add new ideas to the module!
 
 ## Presentations
 

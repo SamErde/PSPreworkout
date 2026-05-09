@@ -4,6 +4,9 @@ on:
     types: [opened]
   pull_request:
     types: [opened]
+permissions:  # added using https://github.com/step-security/secure-repo
+  contents: read
+
 jobs:
   run:
     runs-on: ubuntu-latest
@@ -11,15 +14,20 @@ jobs:
       issues: write
       pull-requests: write
     steps:
+    - name: Harden the runner (Audit all outbound calls)
+      uses: step-security/harden-runner@a5ad31d6a139d249332a2605b85202e8c0b78450 # v2.19.1
+      with:
+        egress-policy: audit
+
     - name: '👷‍♂️ Auto-assign Issue'
-      uses: pozil/auto-assign-issue@v2
+      uses: pozil/auto-assign-issue@7bf9d82c77d45976224660b873fc83e60576c5aa # v2
       with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           numOfAssignee: 1
           assignees: ${{ vars.DEFAULT_ISSUE_ASSIGNEE }}
           allowSelfAssign: true
     - name: '👷‍♂️ Auto-assign PR'
-      uses: pozil/auto-assign-issue@v2
+      uses: pozil/auto-assign-issue@7bf9d82c77d45976224660b873fc83e60576c5aa # v2
       with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           numOfAssignee: 1

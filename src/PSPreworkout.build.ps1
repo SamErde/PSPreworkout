@@ -90,7 +90,7 @@ Enter-Build {
     $script:BuildModuleRootFile = Join-Path -Path $script:ArtifactsPath -ChildPath "$($script:ModuleName).psm1"
 
     # Ensure our builds fail until if below a minimum defined code test coverage threshold
-    $script:coverageThreshold = 2 # Default 30
+    $script:coverageThreshold = 30
 
     [version]$script:MinPesterVersion = '5.2.2'
     [version]$script:MaxPesterVersion = '5.99.99'
@@ -123,12 +123,103 @@ Set-BuildFooter {
 Add-BuildTask ValidateRequirements {
     # this setting comes from the *.Settings.ps1
     Write-Build White "      Verifying at least PowerShell $script:requiredPSVersion..."
-    Assert-Build ($PSVersionTable.PSVersion -ge $script:requiredPSVersion) "At least Powershell $script:requiredPSVersion is required for this build to function properly"
+    Assert-Build ($PSVersionTable.PSVersion -ge $script:requiredPSVersion) "At least PowerShell $script:requiredPSVersion is required for this build to function properly"
     Write-Build Green '      ...Verification Complete!'
 } #ValidateRequirements
 
 # Updates the array for FunctionsToExport in the module manifest
 # <https://github.com/techthoughts2/Catesta/issues/97>
+
+# Synopsis: Update module manifest with public functions and aliases
+Add-BuildTask UpdateManifest -Before TestModuleManifest {
+    Write-Build White '      Updating module manifest with public functions and aliases...'
+
+    # Get all public functions
+    $publicFunctions = Get-ChildItem -Path "$script:ModuleSourcePath\Public\*.ps1" -ErrorAction SilentlyContinue |
+        ForEach-Object {
+            $content = Get-Content -Path $_.FullName -Raw
+            # Extract function name from 'function FunctionName {' pattern
+            if ($content -match 'function\s+([a-zA-Z][\w-]*)\s*\{') {
+                $matches[1]
+            }
+        } | Sort-Object
+
+    if (-not $publicFunctions) {
+        Write-Build Yellow '      No public functions found in Public folder.'
+        return
+    }
+
+    Write-Build Gray "      Found $($publicFunctions.Count) public functions"
+
+    # Get all aliases from public functions - improved detection
+    $aliases = Get-ChildItem -Path "$script:ModuleSourcePath\Public\*.ps1" -ErrorAction SilentlyContinue |
+        ForEach-Object {
+            # Read line by line to better understand context and avoid string literals
+            $lines = Get-Content -Path $_.FullName
+            $foundAliases = @()
+
+            foreach ($line in $lines) {
+                # Skip lines that are clearly in strings or variable assignments
+                if ($line -match '^\s*#' -or $line -match '=.*\[Alias') {
+                    continue
+                }
+
+                # Match [Alias(...)] attribute declarations
+                if ($line -match '^\s*\[Alias\((.*?)\)\]') {
+                    $aliasString = $matches[1]
+                    # Split by comma and clean up each alias
+                    $lineAliases = $aliasString -split ',' | ForEach-Object {
+                        $cleaned = $_.Trim().Trim("'").Trim('"').Trim()
+                        # Filter out variables, template placeholders, and empty strings
+                        if ($cleaned -and $cleaned -notmatch '^\$' -and $cleaned -notmatch '__') {
+                            $cleaned
+                        }
+                    } | Where-Object { $_ }
+
+                    $foundAliases += $lineAliases
+                }
+            }
+
+            $foundAliases
+        } | Sort-Object -Unique
+
+    Write-Build Gray "      Found $($aliases.Count) unique aliases in public functions"
+
+    # Read the manifest file
+    $manifestPath = $script:ModuleManifestFile
+    $manifestContent = Get-Content -Path $manifestPath -Raw
+    $originalManifestContent = $manifestContent
+
+    # Update FunctionsToExport
+    $functionsArray = ($publicFunctions | ForEach-Object { "'$_'" }) -join ",`n        "
+    $functionsToExportPattern = '(?ms)(FunctionsToExport\s*=\s*@\().*?(\s*\))'
+
+    # Build complete export list: functions first, then aliases that should be exported as functions
+    $allExports = @($publicFunctions)
+    if ($aliases) {
+        $allExports += @($aliases -match '\w-\w')
+    }
+    $allExportsArray = ($allExports | Sort-Object -Unique | ForEach-Object { "'$_'" }) -join ",`n        "
+
+    $newFunctionsToExport = "`$1`n        $allExportsArray`n    )"
+    $manifestContent = $manifestContent -replace $functionsToExportPattern, $newFunctionsToExport
+
+    # Update AliasesToExport
+    if ($aliases) {
+        $aliasesArray = ($aliases | ForEach-Object { "'$_'" }) -join ",`n        "
+        $aliasesToExportPattern = '(?ms)(AliasesToExport\s*=\s*@\().*?(\s*\))'
+        $newAliasesToExport = "`$1`n        $aliasesArray`n    )"
+        $manifestContent = $manifestContent -replace $aliasesToExportPattern, $newAliasesToExport
+    }
+
+    if ($manifestContent -ne $originalManifestContent) {
+        # Write the updated manifest
+        $manifestContent | Out-File -FilePath $manifestPath -Encoding utf8 -NoNewline
+        Write-Build Green '      ...Module manifest updated successfully!'
+    } else {
+        Write-Build Green '      ...Module manifest already up to date!'
+    }
+}
 
 # Synopsis: Import the current module manifest file for processing
 Add-BuildTask TestModuleManifest -Before ImportModuleManifest {

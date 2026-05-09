@@ -1,4 +1,4 @@
-﻿function Write-PSPreworkoutTelemetry {
+function Write-PSPreworkoutTelemetry {
     <#
     .SYNOPSIS
         Keep track of how often each PSPreworkout command is used. No identifying information is sent.
@@ -6,6 +6,7 @@
     .DESCRIPTION
         This function sends anonymous statistics to the PostHog analytics service to help improve the PSPreworkout module.
         It sends the command being run, module version, PowerShell version, and OS version.
+        Set PSPREWORKOUT_DISABLE_TELEMETRY to 1, true, or yes to disable telemetry for the current environment.
 
     .PARAMETER EventName
         The name of the telemetry event to record. Most likely a function name.
@@ -30,6 +31,12 @@
         [Parameter(Mandatory = $false, HelpMessage = 'The parameters passed to the function that was invoked.')]
         [string[]] $ParameterNamesOnly = @()
     )
+
+    $TelemetryDisabled = [System.Environment]::GetEnvironmentVariable('PSPREWORKOUT_DISABLE_TELEMETRY')
+    if ($TelemetryDisabled -match '^(1|true|yes)$') {
+        Write-Verbose 'PSPreworkout telemetry is disabled by PSPREWORKOUT_DISABLE_TELEMETRY.'
+        return
+    }
 
     # Check which version of PSPreworkout is being used.
     try {
@@ -81,7 +88,7 @@
         Method      = 'Post'
         ContentType = 'application/json'
         Body        = $JsonData | ConvertTo-Json -Depth 3
-        Timeout     = 10
+        TimeoutSec  = 2
         ErrorAction = 'Stop'
     }
 

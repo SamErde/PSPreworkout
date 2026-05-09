@@ -1,8 +1,12 @@
 ---
-external help file: PSPreworkout-help.xml
+document type: cmdlet
+external help file: PSPreworkout-Help.xml
+HelpUri: https://day3bits.com/PSPreworkout/Install-PowerShellISE
+Locale: en-US
 Module Name: PSPreworkout
-online version:
-schema: 2.0.0
+ms.date: 01/23/2026
+PlatyPS schema version: 2024-05-01
+title: Install-PowerShellISE
 ---
 
 # Install-PowerShellISE
@@ -13,9 +17,15 @@ Install the Windows PowerShell ISE
 
 ## SYNTAX
 
+### __AllParameterSets
+
 ```
-Install-PowerShellISE [<CommonParameters>]
+Install-PowerShellISE [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
+
+## ALIASES
+
+This cmdlet has no aliases.
 
 ## DESCRIPTION
 
@@ -28,16 +38,16 @@ systems experience while trying to add Windows Capabilities.
 
 ### EXAMPLE 1
 
-```
 Install-PowerShellISE
-```
 
 ## PARAMETERS
 
 ### CommonParameters
 
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -Verbose, -WarningAction, -WarningVariable, and -ProgressAction.
-For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
@@ -46,3 +56,6 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## NOTES
 
 ## RELATED LINKS
+
+{{ Fill in the related links here }}
+
