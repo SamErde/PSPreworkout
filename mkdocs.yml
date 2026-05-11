@@ -25,14 +25,13 @@ docs_dir: "docs"
 # extra_javascript:
 
 markdown_extensions:
-#  Python Markdown
   - smarty
   - admonition
   - toc:
-    permalink: true
-  #- pymdownx.blocks.caption
-  #- pymdownx.blocks.details
-  #- pymdownx.blocks.tab
+      permalink: true
+  - pymdownx.blocks.caption
+  - pymdownx.blocks.details
+  - pymdownx.blocks.tab
   - pymdownx.highlight:
       use_pygments: true
       anchor_linenums: true
@@ -44,7 +43,8 @@ markdown_extensions:
       custom_fences:
         - name: mermaid
           class: mermaid
-          format: !!python/name:pymdownx.superfences.fence_code_format
+          # Use a plain string for format (avoid python YAML tags)
+          format: "pymdownx.superfences.fence_code_format"
 
 theme:
   name: material

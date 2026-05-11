@@ -14,10 +14,9 @@ function Set-ConsoleFont {
     .EXAMPLE
     Set-ConsoleFont -Font 'FiraCode Nerd Font'
     #>
-    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Set-ConsoleFont')]
+    [CmdletBinding(SupportsShouldProcess, HelpUri = 'https://day3bits.com/PSPreworkout/Set-ConsoleFont')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'Argument completers are weird.')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]
     param (
         [Parameter(Mandatory = $true)]
@@ -46,7 +45,10 @@ function Set-ConsoleFont {
 
     try {
         Get-ChildItem -Path 'HKCU:\Console' | ForEach-Object {
-            Set-ItemProperty -Path (($_.Name).Replace('HKEY_CURRENT_USER', 'HKCU:')) -Name 'FaceName' -Value $Font
+            $ConsolePath = (($_.Name).Replace('HKEY_CURRENT_USER', 'HKCU:'))
+            if ($PSCmdlet.ShouldProcess($ConsolePath, "Set console font to $Font")) {
+                Set-ItemProperty -Path $ConsolePath -Name 'FaceName' -Value $Font
+            }
         }
     } catch {
         throw "Failed to set console font: $_"
@@ -57,7 +59,6 @@ function Set-ConsoleFont {
 Register-ArgumentCompleter -CommandName Set-ConsoleFont -ParameterName Font -ScriptBlock {
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseConsistentIndentation', '', Justification = 'Argument completers are weird.')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]
     param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameter)
     [System.Drawing.Text.InstalledFontCollection]::new().Families |

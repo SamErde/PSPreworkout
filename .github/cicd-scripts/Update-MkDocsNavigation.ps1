@@ -3,7 +3,7 @@
     Updates the navigation section in mkdocs.yml based on functions exported from the PowerShell module manifest.
 
 .DESCRIPTION
-    This script reads the FunctionsToExport from the PowerShell module manifest, categorizes them
+    This script reads FunctionsToExport from the PowerShell module manifest, categorizes them
     into three groups (Customize, Develop, Daily Functions), and updates the nav section in mkdocs.yml.
     It preserves all other content in mkdocs.yml while only updating the navigation structure.
 
@@ -14,10 +14,10 @@
     Path to the mkdocs.yml configuration file.
 
 .EXAMPLE
-    .\Update-MkDocsNavigation.ps1
+    .\.github\cicd-scripts\Update-MkDocsNavigation.ps1
 
 .EXAMPLE
-    .\Update-MkDocsNavigation.ps1 -ManifestPath "./src/PSPreworkout/PSPreworkout.psd1" -MkDocsPath "./mkdocs.yml"
+    .\.github\cicd-scripts\Update-MkDocsNavigation.ps1 -ManifestPath "./src/PSPreworkout/PSPreworkout.psd1" -MkDocsPath "./mkdocs.yml"
 #>
 
 [CmdletBinding()]
@@ -81,14 +81,15 @@ function Get-FunctionCategory {
     }
 }
 
-function Get-CategorizedFunctions {
+function Get-CategorizedFunction {
     <#
     .SYNOPSIS
         Reads functions from manifest and categorizes them.
 
     .DESCRIPTION
-        Imports the PowerShell module manifest, filters out aliases, and categorizes
-        the remaining functions into their respective groups.
+        Imports the PowerShell module manifest and categorizes exported functions into
+        their respective groups. Aliases are expected to be exported only through
+        AliasesToExport and are not included in FunctionsToExport.
     #>
     [CmdletBinding()]
     param (
@@ -103,17 +104,7 @@ function Get-CategorizedFunctions {
     Write-Verbose "Reading manifest from: $ManifestPath"
     $manifest = Import-PowerShellDataFile -Path $ManifestPath
 
-    # Filter out aliases - these are shorter versions of function names
-    $aliases = @(
-        'Edit-HistoryFile',
-        'Get-Assembly',
-        'Get-PSPortable',
-        'Init-PSEnvConfig',
-        'New-Script',
-        'Show-LoadedAssemblies'
-    )
-
-    $functions = $manifest.FunctionsToExport | Where-Object { $_ -notin $aliases } | Sort-Object
+    $functions = $manifest.FunctionsToExport | Sort-Object
 
     $categorized = @{
         Customize       = @()
@@ -130,13 +121,13 @@ function Get-CategorizedFunctions {
     return $categorized
 }
 
-function New-NavigationYaml {
+function ConvertTo-NavigationYaml {
     <#
     .SYNOPSIS
         Generates the nav section YAML content.
 
     .DESCRIPTION
-        Creates the YAML structure for the nav section based on categorized functions.
+        Converts categorized functions into YAML structure for the nav section.
     #>
     [CmdletBinding()]
     param (
@@ -184,7 +175,7 @@ function Update-MkDocsYaml {
         Reads the existing mkdocs.yml, replaces the nav section with the updated version,
         and writes it back to the file.
     #>
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param (
         [Parameter(Mandatory)]
         [string]$MkDocsPath,
@@ -244,46 +235,51 @@ function Update-MkDocsYaml {
         $newContent += $lines[($navEndIndex + 1)..($lines.Count - 1)]
     }
 
-    Write-Verbose "Writing updated mkdocs.yml with $($newContent.Count) lines"
-    $newContent | Set-Content -Path $MkDocsPath
+    if ($PSCmdlet.ShouldProcess($MkDocsPath, 'Update MkDocs navigation')) {
+        Write-Verbose "Writing updated mkdocs.yml with $($newContent.Count) lines"
+        $newContent | Set-Content -Path $MkDocsPath
+        return $true
+    }
 
-    return $true
+    return $false
 }
 
 #endregion Helper Functions
 
-#region Main Script
+if ($MyInvocation.InvocationName -ne '.') {
+    #region Main Script
 
-try {
-    Write-Host "🔍 Analyzing PowerShell module manifest..." -ForegroundColor Cyan
+    try {
+        Write-Information "Analyzing PowerShell module manifest..." -InformationAction Continue
 
-    # Get categorized functions from manifest
-    $categorizedFunctions = Get-CategorizedFunctions -ManifestPath $ManifestPath
+        # Get categorized functions from manifest
+        $categorizedFunctions = Get-CategorizedFunction -ManifestPath $ManifestPath
 
-    Write-Host "📊 Function counts:" -ForegroundColor Cyan
-    Write-Host "   Customize: $($categorizedFunctions['Customize'].Count)" -ForegroundColor Green
-    Write-Host "   Develop: $($categorizedFunctions['Develop'].Count)" -ForegroundColor Green
-    Write-Host "   Daily Functions: $($categorizedFunctions['Daily Functions'].Count)" -ForegroundColor Green
+        Write-Information "Function counts:" -InformationAction Continue
+        Write-Information "   Customize: $($categorizedFunctions['Customize'].Count)" -InformationAction Continue
+        Write-Information "   Develop: $($categorizedFunctions['Develop'].Count)" -InformationAction Continue
+        Write-Information "   Daily Functions: $($categorizedFunctions['Daily Functions'].Count)" -InformationAction Continue
 
-    # Generate new navigation YAML
-    Write-Host "`n📝 Generating navigation structure..." -ForegroundColor Cyan
-    $newNavLines = New-NavigationYaml -CategorizedFunctions $categorizedFunctions
+        # Generate new navigation YAML
+        Write-Information "`nGenerating navigation structure..." -InformationAction Continue
+        $newNavLines = ConvertTo-NavigationYaml -CategorizedFunctions $categorizedFunctions
 
-    # Update mkdocs.yml
-    Write-Host "📄 Updating mkdocs.yml..." -ForegroundColor Cyan
-    $updated = Update-MkDocsYaml -MkDocsPath $MkDocsPath -NewNavLines $newNavLines
+        # Update mkdocs.yml
+        Write-Information "Updating mkdocs.yml..." -InformationAction Continue
+        $updated = Update-MkDocsYaml -MkDocsPath $MkDocsPath -NewNavLines $newNavLines
 
-    if ($updated) {
-        Write-Host "✅ Successfully updated mkdocs.yml navigation!" -ForegroundColor Green
-        exit 0
-    } else {
-        Write-Host "❌ Failed to update mkdocs.yml" -ForegroundColor Red
+        if ($updated) {
+            Write-Information "Successfully updated mkdocs.yml navigation." -InformationAction Continue
+            exit 0
+        } else {
+            Write-Error "Failed to update mkdocs.yml."
+            exit 1
+        }
+    } catch {
+        Write-Error "Error: $_"
+        Write-Error $_.ScriptStackTrace
         exit 1
     }
-} catch {
-    Write-Host "❌ Error: $_" -ForegroundColor Red
-    Write-Host $_.ScriptStackTrace -ForegroundColor Red
-    exit 1
-}
 
-#endregion Main Script
+    #endregion Main Script
+}

@@ -14,20 +14,69 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
-## [2.0.0-preview] - 2025-09-15
-
-### Removed
-
-- Removed the redundant `New-Credential` function, which behaves the same as `Get-Credential`.
+## [2.1.0] - 2025-12-04
 
 ### Added
 
-- **Telemetry System**: Added anonymous usage analytics to help improve the module.
-  - New `Write-PSPreworkoutTelemetry` private function for statistics about how often functions are used.
+- `Update-AllTheThings`
+  - Add the **AcceptPrompts** to automatically accept prompts to continue when updating packages in Linux, by [@jorgeasaurus](https://github.com/jorgeasaurus)
+  - Add unit tests for the script, by @jorgeasaurus
+
+### Fixed
+
+- `Update-AllTheThings` - Fix typo in "Chocolatey," by [@jorgeasaurus](https://github.com/jorgeasaurus)
+&nbsp;  
+
+> [!NOTE]
+> Thanks to [Jorge Suarez](https://github.com/jorgeasaurus) for contributing this version, which adds improvements to `Update-AllTheThings`! Be sure to check out his featured projects:
+> 
+> ### Intune Hydration Kit
+> 
+> PowerShell module that bootstraps Microsoft Intune tenants with boilerplate configurations. .
+> 
+> ### 📸 Intune-Snapshot-Recovery
+> 
+> Automated backup and restore toolkit for Microsoft Intune tenant configurations using GitHub Actions.
+> 
+> ### 🍎 PsJamfBackupRestore
+> 
+> PowerShell-based solution for backing up and restoring Jamf Pro configurations, ensuring business continuity for macOS management.
+> 
+> ### 💻 MgConsoleGuiGraphSearch
+> 
+> Interactive Microsoft Graph search tool using console GUI for various Microsoft 365 and Azure AD object types.
+
+## [2.0.0] - 2025-11-26
+
+### Removed
+
+- `New-Credential` - Removed the redundant function which behaves the same as `Get-Credential`.
+
+### Added
+
+- Telemetry: Added very basic, anonymous usage statistics to help improve the module.
+  - `Write-PSPreworkoutTelemetry` - New private function for statistics about how often functions are used.
   - Added usage statistics for all 24 functions except for `Get-EnvironmentVariable`.
   - Tracks function usage, parameter names (not values), PowerShell version details, and OS.
   - Privacy-focused design: no personally identifiable information or parameter values are collected.
   - Data sent to PostHog analytics service to understand usage patterns and guide development priorities.
+
+### Fixed
+- `New-ScriptFromTemplate` - (Thanks to @jdhitsolutions for finding these issues!)
+  - Fix 'Author' parameter that was incorrectly referencing $Name variable.
+  - Fix examples that referenced non-existent 'Parameter' parameter.
+- `Update-AllTheThings` - SkipChoco alias issue in module manifest.
+
+### Security and Quality
+- `Get-PowerShellPortable` - Refactor to be cleaner, more efficient, and better documented.
+- `Get-CommandHistory` - Refactor for improved command filtering.
+- Codebase readability improvements.
+- Error handling standardization across experimental features.
+- StepSecurity hardening for GitHub Actions.
+- Dependency review integration and multiple version updates.
+- Supply-chain security workflows: Scorecard, CodeQL, Codacy, and others.
+
+[*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v1.9.11...v2.0.0)
 
 ## [1.9.11] - 2025-07-31
 
@@ -427,4 +476,5 @@ This release is focused on enhancements that make the existing functions more us
 [1.9.7]: https://github.com/SamErde/PSPreworkout/tag/v1.9.7
 [1.9.10]: https://github.com/SamErde/PSPreworkout/tag/v1.9.10
 [1.9.11]: https://github.com/SamErde/PSPreworkout/tag/v1.9.11
-[2.0.0-preview]: https://github.com/SamErde/PSPreworkout/tag/v2.0.0-preview
+[2.0.0]: https://github.com/SamErde/PSPreworkout/tag/v2.0.0
+[2.1.0]: https://github.com/SamErde/PSPreworkout/tag/v2.1.0

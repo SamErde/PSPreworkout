@@ -9,7 +9,7 @@ function Install-CommandNotFoundUtility {
     .EXAMPLE
     Install-CommandNotFoundUtility
     #>
-    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Install-CommandNotFoundUtility')]
+    [CmdletBinding(SupportsShouldProcess, HelpUri = 'https://day3bits.com/PSPreworkout/Install-CommandNotFoundUtility')]
     param (
     )
 
@@ -23,21 +23,25 @@ function Install-CommandNotFoundUtility {
     } # end begin block
 
     process {
-        try {
-            Install-Module -Name Microsoft.WinGet.CommandNotFound -Scope CurrentUser -Force
-        } catch {
-            throw $_
+        if ($PSCmdlet.ShouldProcess('Microsoft.WinGet.CommandNotFound', 'Install module for current user')) {
+            try {
+                Install-Module -Name Microsoft.WinGet.CommandNotFound -Scope CurrentUser -Force
+            } catch {
+                throw $_
+            }
+            try {
+                # Might need to  remove this to avoid errors during PSPreworkout installation.
+                Import-Module -Name Microsoft.WinGet.CommandNotFound -ErrorAction SilentlyContinue
+            } catch [System.InvalidOperationException] {
+                Write-Warning -Message "Received the error `"$_`" while importing the 'Microsoft.WinGet.CommandNotFound module. The module may have already been installed and imported in the current session. This can usually be ignored.`n"
+            } # end try/catch block
         }
-        try {
-            # Might need to  remove this to avoid errors during PSPreworkout installation.
-            Import-Module -Name Microsoft.WinGet.CommandNotFound -ErrorAction SilentlyContinue
-        } catch [System.InvalidOperationException] {
-            Write-Warning -Message "Received the error `"$_`" while importing the 'Microsoft.WinGet.CommandNotFound module. The module may have already been installed and imported in the current session. This can usually be ignored.`n"
-        } # end try/catch block
 
         # To Do: Check if already enabled:
-        Enable-ExperimentalFeature -Name 'PSFeedbackProvider' -ErrorAction SilentlyContinue
-        Enable-ExperimentalFeature -Name 'PSCommandNotFoundSuggestion' -ErrorAction SilentlyContinue
+        if ($PSCmdlet.ShouldProcess('PowerShell experimental features', 'Enable command-not-found suggestions')) {
+            Enable-ExperimentalFeature -Name 'PSFeedbackProvider' -ErrorAction SilentlyContinue
+            Enable-ExperimentalFeature -Name 'PSCommandNotFoundSuggestion' -ErrorAction SilentlyContinue
+        }
     } # end process block
 
     end {

@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.DESCRIPTION A script to automatically update all PowerShell modules, PowerShell Help, and packages (apt, brew, chocolately, winget).
+.DESCRIPTION A script to automatically update all PowerShell modules, PowerShell Help, and packages (apt, brew, Chocolatey, winget).
 .VERSION 0.5.8
 .GUID 3a1a1ec9-0ef6-4f84-963d-be1505dab6a8
 .AUTHOR Sam Erde
@@ -41,7 +41,7 @@ function Update-AllTheThings {
     Update all the things!
 
     .DESCRIPTION
-    A script to automatically update all PowerShell modules, PowerShell Help, and packages (apt, brew, chocolately, winget).
+    A script to automatically update all PowerShell modules, PowerShell Help, and packages (apt, brew, Chocolatey, winget).
 
     .PARAMETER SkipModules
     Skip the step that updates PowerShell modules.
@@ -58,10 +58,18 @@ function Update-AllTheThings {
     .PARAMETER IncludeChocolatey
     Include Chocolatey package updates.
 
+    .PARAMETER AcceptPrompts
+    Automatically accept prompts to install updates in Linux (apt, dnf).
+
     .EXAMPLE
     Update-AllTheThings
 
     Updates all of the things it can!
+
+    .EXAMPLE
+    Update-AllTheThings -AcceptPrompts
+
+    Updates all of the things and automatically accepts Linux package upgrade prompts.
     #>
 
     [CmdletBinding(SupportsShouldProcess)]
@@ -91,9 +99,14 @@ function Update-AllTheThings {
 
         # Skip the step that updates Chocolatey packages
         [Parameter()]
-        [Alias('Skip-Choco')]
+        [Alias('SkipChoco')]
         [switch]
-        $IncludeChocolatey
+        $IncludeChocolatey,
+
+        # Automatically accept prompts to install updates in Linux
+        [Parameter()]
+        [switch]
+        $AcceptPrompts
     )
 
     begin {
@@ -285,14 +298,42 @@ function Update-AllTheThings {
         #region UpdateLinuxPackages
         # Early testing. No progress bar yet. Need to check for admin, different distros, and different package managers.
         if ($IsLinux) {
+            # Determine if we need sudo (not needed if already root)
+            $NeedsSudo = -not (Test-IsElevated)
+
             if (Get-Command apt -ErrorAction SilentlyContinue) {
                 Write-Host '[5] Updating apt packages.'
-                sudo apt update
-                sudo apt upgrade
+                if ($NeedsSudo) {
+                    & sudo apt update
+                    if ($AcceptPrompts) {
+                        & sudo apt upgrade -y
+                    } else {
+                        & sudo apt upgrade
+                    }
+                } else {
+                    & apt update
+                    if ($AcceptPrompts) {
+                        & apt upgrade -y
+                    } else {
+                        & apt upgrade
+                    }
+                }
             }
             if (Get-Command dnf -ErrorAction SilentlyContinue) {
                 Write-Host '[5] Updating dnf packages.'
-                sudo update
+                if ($NeedsSudo) {
+                    if ($AcceptPrompts) {
+                        & sudo dnf update -y
+                    } else {
+                        & sudo dnf update
+                    }
+                } else {
+                    if ($AcceptPrompts) {
+                        & dnf update -y
+                    } else {
+                        & dnf update
+                    }
+                }
             }
         } else {
             Write-Verbose '[5] Not Linux. Skipping section.'
@@ -333,7 +374,7 @@ function Update-AllTheThings {
                 choco feature enable -n=allowGlobalConfirmation
                 choco feature disable --name=showNonElevatedWarnings
             } else {
-                Write-Verbose "Run once as an administrator to disable Chocoately's showNonElevatedWarnings." -Verbose
+                Write-Verbose "Run once as an administrator to disable Chocolatey's showNonElevatedWarnings." -Verbose
             }
             choco upgrade chocolatey -y --limit-output --accept-license --no-color
             choco upgrade all -y --limit-output --accept-license --no-color

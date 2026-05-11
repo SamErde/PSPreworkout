@@ -30,15 +30,14 @@ function New-ScriptFromTemplate {
         Optionally skip validation of the script.
 
         .EXAMPLE
-        New-ScriptFromTemplate -Name 'Get-Demo' -Synopsis 'Get a demo.' -Description 'This function gets a demo.' -Alias 'Get-Sample' -Parameter 'SerialNumber'
+        New-ScriptFromTemplate -Name 'Get-Demo' -Synopsis 'Get a demo.' -Description 'This function gets a demo.' -Alias 'Get-Sample'
 
         .EXAMPLE
-        New-ScriptFromTemplate -Verb Get -Noun Something -Author 'Sam Erde' -Parameter @('Name','Age')
+        New-ScriptFromTemplate -Verb Get -Noun Something -Author 'Sam Erde'
 
     #>
 
-    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/New-ScriptFromTemplate')]
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'OK')]
+    [CmdletBinding(SupportsShouldProcess, HelpUri = 'https://day3bits.com/PSPreworkout/New-ScriptFromTemplate')]
     #[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '', Justification = 'Making it pretty.')]
     [Alias('New-Script')]
     param (
@@ -127,13 +126,13 @@ function New-ScriptFromTemplate {
     }
 
     # Attempt to set the author name from the user's Git config or from the identity of the currently logged in user.
-    if (-not $PSBoundParameters.ContainsKey('Name') ) {
-        $Name = if ( (git config user.name).Length -gt 0 ) {
+    if (-not $PSBoundParameters.ContainsKey('Author') ) {
+        $Author = if ( (git config user.name).Length -gt 0 ) {
             git config user.name
         } else {
             [System.Environment]::UserName
         }
-        Write-Verbose "Using author name: $Name"
+        Write-Verbose "Using author name: $Author"
     }
 
     # Create the function builder string builder and function body string.
@@ -170,11 +169,13 @@ function New-ScriptFromTemplate {
     }
 
     # Create the new file.
-    try {
-        $FunctionBuilder.ToString() | Out-File -FilePath $ScriptPath -Encoding utf8 -Force -ErrorAction Stop
-        Write-Verbose "Script created successfully: $ScriptPath"
-    } catch {
-        throw "Failed to create script file '$ScriptPath': $_"
+    if ($PSCmdlet.ShouldProcess($ScriptPath, 'Create script from template')) {
+        try {
+            $FunctionBuilder.ToString() | Out-File -FilePath $ScriptPath -Encoding utf8 -Force -ErrorAction Stop
+            Write-Verbose "Script created successfully: $ScriptPath"
+        } catch {
+            throw "Failed to create script file '$ScriptPath': $_"
+        }
     }
 
 } # end function New-ScriptFromTemplate

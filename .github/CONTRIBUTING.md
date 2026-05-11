@@ -10,7 +10,7 @@ Please note there is a code of conduct, please follow it in all your interaction
 
 ## Code Style and Standards Conventions
 
-This repository follows best practices and style guidelines that are commonly accepted by the core PowerShell project and by the community at large. We follow the "One True Brace Style" (OTBS) and other practices thare are spelled out in detail in [The PowerShell Best Practices and Style Guide](https://github.com/PoshCode/PowerShellPracticeAndStyle). You may also refer to the PowerShell team's [guide to contributing](https://learn.microsoft.com/en-us/powershell/scripting/community/contributing/overview).
+This repository follows best practices and style guidelines that are commonly accepted by the core PowerShell project and by the community at large. We follow the "One True Brace Style" (OTBS) and other practices that are spelled out in detail in [The PowerShell Best Practices and Style Guide](https://github.com/PoshCode/PowerShellPracticeAndStyle). You may also refer to the PowerShell team's [guide to contributing](https://learn.microsoft.com/en-us/powershell/scripting/community/contributing/overview).
 
 Additional details are described well in this project's [PowerShell instructions](instructions/powershell.instructions.md) file.
 
@@ -20,7 +20,8 @@ When you add a new public function to the module, the build process and GitHub A
 
 - The function name in `FunctionsToExport`
 - Any aliases defined with `[Alias()]` attributes in `AliasesToExport`
-- Aliases are also added to `FunctionsToExport` per this module's convention
+
+Aliases should not be added to `FunctionsToExport`.
 
 ### How It Works
 
@@ -40,7 +41,7 @@ function Get-MyNewFunction {
     [CmdletBinding()]
     [Alias('gmf', 'Get-MyFunc')]
     param()
-    
+
     # Your function code here
 }
 ```

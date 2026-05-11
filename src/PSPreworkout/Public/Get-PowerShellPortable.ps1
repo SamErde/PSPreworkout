@@ -105,15 +105,18 @@ function Get-PowerShellPortable {
             $GZipFile = $OutFilePath
             $TarFile = $GZipFile -replace '\.gz$', ''
 
-            $SourceStream = [System.IO.FileStream]::new($GZipFile, [System.IO.FileMode]::Open)
-            $TargetStream = [System.IO.FileStream]::new($TarFile, [System.IO.FileMode]::Create)
+            $SourceStream = $null
+            $TargetStream = $null
+            $GZipStream = $null
             try {
+                $SourceStream = [System.IO.FileStream]::new($GZipFile, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, [System.IO.FileShare]::Read)
+                $TargetStream = [System.IO.FileStream]::new($TarFile, [System.IO.FileMode]::Create, [System.IO.FileAccess]::Write, [System.IO.FileShare]::None)
                 $GZipStream = [System.IO.Compression.GzipStream]::new($SourceStream, [System.IO.Compression.CompressionMode]::Decompress)
                 $GZipStream.CopyTo($TargetStream)
             } finally {
-                $GZipStream?.Dispose()
-                $TargetStream?.Dispose()
-                $SourceStream?.Dispose()
+                if ($GZipStream) { $GZipStream.Dispose() }
+                if ($TargetStream) { $TargetStream.Dispose() }
+                if ($SourceStream) { $SourceStream.Dispose() }
             }
 
             # Use tar command to extract the .tar file

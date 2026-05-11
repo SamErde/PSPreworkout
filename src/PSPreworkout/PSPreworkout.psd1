@@ -1,10 +1,9 @@
 @{
-
     # Script module or binary module file associated with this manifest.
     RootModule           = 'PSPreworkout.psm1'
 
     # Version number of this module.
-    ModuleVersion        = '2.0.0'
+    ModuleVersion        = '2.1.0'
 
     # Supported PSEditions = @('Desktop', 'Core')
     CompatiblePSEditions = @('Core', 'Desktop')
@@ -29,41 +28,28 @@
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
     FunctionsToExport    = @(
-        'Edit-HistoryFile',
         'Edit-PSReadLineHistoryFile',
         'Edit-WinGetSettingsFile',
-        'gch',
-        'Get-Assembly',
         'Get-CommandHistory',
         'Get-EnvironmentVariable',
         'Get-HashtableValueType',
         'Get-LoadedAssembly',
         'Get-ModulesWithUpdate',
         'Get-PowerShellPortable',
-        'Get-PSPortable',
         'Get-TypeAccelerator',
-        'gev',
-        'Init-PSEnvConfig',
         'Initialize-PSEnvironmentConfiguration',
         'Install-CommandNotFoundUtility',
         'Install-OhMyPosh',
         'Install-PowerShellISE',
         'Install-WinGet',
-        'isadmin',
-        'isroot',
-        'New-Script',
         'New-ScriptFromTemplate',
         'Out-JsonFile',
         'Set-ConsoleFont',
         'Set-DefaultTerminal',
         'Set-EnvironmentVariable',
-        'sev',
-        'Show-LoadedAssemblies',
         'Show-LoadedAssembly',
         'Show-WithoutEmptyProperty',
-        'Skip-Choco',
         'Test-IsElevated',
-        'uatt',
         'Update-AllTheThings'
     )
 
@@ -86,15 +72,11 @@
         'New-Script',
         'sev',
         'Show-LoadedAssemblies',
-        'Skip-Choco',
         'uatt'
     )
 
     # List of all files packaged with this module
-    FileList             = @(
-        'Resources/ScriptTemplate.txt',
-        'PSPreworkout.Format.ps1xml'
-    )
+    FileList             = @()
 
     # Formats to process when this module is imported
     FormatsToProcess     = @(
@@ -103,9 +85,7 @@
 
     # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
     PrivateData          = @{
-
         PSData = @{
-
             # Tags applied to this module. These help with module discovery in online galleries.
             Tags         = 'PowerShell', 'Utilities', 'Tools', 'Windows', 'Linux', 'macOS'
 
@@ -122,13 +102,11 @@
             ReleaseNotes = 'See <https://github.com/SamErde/PSPreworkout/CHANGELOG.md> for more information.'
 
             # Prerelease string of this module
-            Prerelease   = 'preview'
+            # Prerelease   = 'preview'
 
         } # End of PSData hashtable
-
     } # End of PrivateData hashtable
 
     # HelpInfo URI of this module
-    HelpInfoURI          = 'https://raw.githubusercontent.com/SamErde/PSPreworkout/main/docs'
-
+    HelpInfoURI          = 'https://day3bits.com/PSPreworkout/'
 }

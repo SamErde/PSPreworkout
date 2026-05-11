@@ -4,16 +4,18 @@ on:
     branches:
       - main
       - prerelease
-    paths-ignore:
-      - "**.md"
-      - "docs/**"
-      - "src/Drafts/**"
+    paths:
+      - "src/PSPreworkout/**"
+      - "src/Tests/**"
+      - "src/PSPreworkout.build.ps1"
+      - "src/PSPreworkout.Settings.ps1"
+      - "src/PSScriptAnalyzerSettings.psd1"
+      - ".github/workflows/Build Module.yml"
 
   workflow_dispatch:
 
 permissions:
-  contents: write # Required to read and write the repository contents
-  packages: write # Required to create and update package help files
+  contents: read
 
 jobs:
   test:
@@ -26,14 +28,13 @@ jobs:
     #  fail-fast: false
 
     steps:
-      - name: ✅ Checkout Repository
-        uses: actions/checkout@v4
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@a5ad31d6a139d249332a2605b85202e8c0b78450 # v2.19.1
+        with:
+          egress-policy: audit
 
-      - name: 📁 Display the Path
-        shell: pwsh
-        run: |
-          Write-Host "Current Directory: $PWD" -ForegroundColor Cyan
-          (Get-ChildItem env:*).GetEnumerator() | Sort-Object Name | Out-String
+      - name: ✅ Checkout Repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: 🥾 Bootstrap
         shell: pwsh
@@ -44,21 +45,15 @@ jobs:
         run: Invoke-Build -File .\src\PSPreworkout.build.ps1
 
       - name: 🧪 Upload Pester Results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: pester-results
           path: .\src\Artifacts\testOutput
           if-no-files-found: warn
 
       - name: 📦 Upload Build
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: zip-archive
           path: .\src\Archive
           if-no-files-found: warn
-          # git-auto-commit-action only runs on Linux-based platforms.
-
-      - name: 💾 Commit Changes
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "Commit Build"

@@ -1,45 +1,42 @@
 ---
 document type: cmdlet
 external help file: PSPreworkout-Help.xml
-HelpUri: https://day3bits.com/PSPreworkout/Edit-PSReadLineHistoryFile
+HelpUri: https://day3bits.com/PSPreworkout/Edit-WinGetSettingsFile
 Locale: en-US
 Module Name: PSPreworkout
 ms.date: 01/23/2026
 PlatyPS schema version: 2024-05-01
-title: Edit-PSReadLineHistoryFile
+title: Edit-WinGetSettingsFile
 ---
 
-# Edit-PSReadLineHistoryFile
+# Edit-WinGetSettingsFile
 
 ## SYNOPSIS
 
-Edit the PSReadLine History File
+Edit the WinGet settings file.
 
 ## SYNTAX
 
 ### __AllParameterSets
 
 ```
-Edit-PSReadLineHistoryFile [<CommonParameters>]
+Edit-WinGetSettingsFile [<CommonParameters>]
 ```
 
 ## ALIASES
 
-This cmdlet has the following aliases:
-
-- `Edit-HistoryFile`
+This cmdlet has no aliases.
 
 ## DESCRIPTION
 
-Use this function to edit the PSReadLine history file.
-This may be useful if you want to reset some of your
-autocomplete suggestions or remove commands that did not work.
+A shortcut to edit the WinGet settings file.
+This will create one if it does not already exist.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 
-Edit-PSReadLineHistoryFile
+Edit-WinGetSettingsFile
 
 ## PARAMETERS
 
