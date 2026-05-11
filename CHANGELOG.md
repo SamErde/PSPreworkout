@@ -25,6 +25,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Harden command safety across module operations to reduce risky execution paths.
 
 [*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v2.1.0...v2.1.1)
+
 ## [2.1.0] - 2025-12-04
 
 ### Added
