@@ -23,6 +23,7 @@ permissions:
 
 jobs:
   package_help:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     # The New-ExternalHelpCab cmdlet uses makecab, which depends on Windows.
     runs-on: windows-latest
     steps:
