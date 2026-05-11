@@ -71,7 +71,6 @@ jobs:
           Write-Host "${{ github.event.repository.name }}" -ForegroundColor Green
           Write-Host "Current Directory: $PWD" -ForegroundColor Cyan
 
-          Install-Module -Name PlatyPS -Scope CurrentUser -Force
           Import-Module -Name PlatyPS
 
           $params = @{
