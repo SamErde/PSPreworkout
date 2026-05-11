@@ -5,16 +5,22 @@ BeforeAll {
     Get-Module $ModuleName -ErrorAction SilentlyContinue | Remove-Module -Force
     Import-Module $PathToManifest -Force
     $manifestContent = Test-ModuleManifest -Path $PathToManifest
-    $moduleExported = Get-Command -Module $ModuleName | Select-Object -ExpandProperty Name
-    $manifestExported = ($manifestContent.ExportedFunctions).Keys
+    $moduleCommands = Get-Command -Module $ModuleName
+    $moduleExportedFunctions = $moduleCommands | Where-Object CommandType -EQ 'Function' | Select-Object -ExpandProperty Name
+    $manifestExportedFunctions = ($manifestContent.ExportedFunctions).Keys
+    $manifestExportedAliases = ($manifestContent.ExportedAliases).Keys
 }
 BeforeDiscovery {
     Set-Location -Path $PSScriptRoot
     $ModuleName = 'PSPreworkout'
     $PathToManifest = [System.IO.Path]::Combine('..', '..', $ModuleName, "$ModuleName.psd1")
+    Get-Module $ModuleName -ErrorAction SilentlyContinue | Remove-Module -Force
+    Import-Module $PathToManifest -Force
     $manifestContent = Test-ModuleManifest -Path $PathToManifest
-    $moduleExported = Get-Command -Module $ModuleName | Select-Object -ExpandProperty Name
-    $manifestExported = ($manifestContent.ExportedFunctions).Keys
+    $moduleCommands = Get-Command -Module $ModuleName
+    $moduleExportedFunctions = $moduleCommands | Where-Object CommandType -EQ 'Function' | Select-Object -ExpandProperty Name
+    $manifestExportedFunctions = ($manifestContent.ExportedFunctions).Keys
+    $manifestExportedAliases = ($manifestContent.ExportedAliases).Keys
 }
 Describe $ModuleName {
 
@@ -23,22 +29,33 @@ Describe $ModuleName {
         Context 'Number of commands' -Fixture {
 
             It 'Exports the same number of public functions as what is listed in the Module Manifest' {
-                $manifestExported.Count | Should -BeExactly $moduleExported.Count
+                $manifestExportedFunctions.Count | Should -BeExactly $moduleExportedFunctions.Count
             }
 
         }
 
         Context 'Explicitly exported commands' {
 
-            It 'Includes <_> in the Module Manifest ExportedFunctions' -ForEach $moduleExported {
-                $manifestExported -contains $_ | Should -BeTrue
+            It 'Includes <_> in the Module Manifest ExportedFunctions' -ForEach $moduleExportedFunctions {
+                $manifestExportedFunctions -contains $_ | Should -BeTrue
+            }
+
+            It 'Does not include alias <_> in the Module Manifest ExportedFunctions' -ForEach $manifestExportedAliases {
+                $manifestExportedFunctions -contains $_ | Should -BeFalse
+            }
+
+            It 'Resolves alias <_> to a module command' -ForEach $manifestExportedAliases {
+                $alias = Get-Alias -Name $_ -ErrorAction Stop
+
+                $alias.Source | Should -BeExactly $ModuleName
+                $manifestExportedFunctions -contains $alias.ResolvedCommandName | Should -BeTrue
             }
 
         }
     } #context_ExportedCommands
 
     Context 'Command Help' -Fixture {
-        Context '<_>' -Foreach $moduleExported {
+        Context '<_>' -Foreach $moduleCommands.Name {
 
             BeforeEach {
                 $help = Get-Help -Name $_ -Full

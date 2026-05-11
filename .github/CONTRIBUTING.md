@@ -20,7 +20,8 @@ When you add a new public function to the module, the build process and GitHub A
 
 - The function name in `FunctionsToExport`
 - Any aliases defined with `[Alias()]` attributes in `AliasesToExport`
-- Aliases are also added to `FunctionsToExport` per this module's convention
+
+Aliases should not be added to `FunctionsToExport`.
 
 ### How It Works
 

@@ -42,7 +42,7 @@ jobs:
           $ErrorActionPreference = 'Stop'
           Write-Host "Running Update-MkDocsNavigation script..."
           try {
-            ./Scripts/Update-MkDocsNavigation.ps1 -Verbose
+            ./.github/cicd-scripts/Update-MkDocsNavigation.ps1 -Verbose
             Write-Host "✅ Script completed successfully"
           } catch {
             Write-Error "❌ Failed to update navigation: $_"

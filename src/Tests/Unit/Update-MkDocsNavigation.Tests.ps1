@@ -1,28 +1,26 @@
 BeforeAll {
-    $ScriptPath = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, '..', '..', '..', 'Scripts', 'Update-MkDocsNavigation.ps1'))
-    $ManifestPath = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, '..', '..', 'PSPreworkout', 'PSPreworkout.psd1'))
-    $MkDocsPath = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, '..', '..', '..', 'mkdocs.yml'))
-
+    $NavigationScriptPath = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, '..', '..', '..', '.github', 'cicd-scripts', 'Update-MkDocsNavigation.ps1'))
+    $ModuleManifestPath = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, '..', '..', 'PSPreworkout', 'PSPreworkout.psd1'))
     # Source the script to get access to its functions
-    . $ScriptPath
+    . $NavigationScriptPath
 }
 
 Describe 'Update-MkDocsNavigation Script Tests' -Tag Unit {
     Context 'Script File Tests' {
         It 'Update-MkDocsNavigation.ps1 should exist' {
-            $ScriptPath | Should -Exist
+            $NavigationScriptPath | Should -Exist
         }
 
         It 'should have valid PowerShell syntax' {
             $errors = $null
-            $null = [System.Management.Automation.PSParser]::Tokenize((Get-Content -Path $ScriptPath -Raw), [ref]$errors)
+            $null = [System.Management.Automation.PSParser]::Tokenize((Get-Content -Path $NavigationScriptPath -Raw), [ref]$errors)
             $errors.Count | Should -Be 0
         }
 
         It 'should have comment-based help' {
-            $ScriptPath | Should -FileContentMatch '\.SYNOPSIS'
-            $ScriptPath | Should -FileContentMatch '\.DESCRIPTION'
-            $ScriptPath | Should -FileContentMatch '\.EXAMPLE'
+            $NavigationScriptPath | Should -FileContentMatch '\.SYNOPSIS'
+            $NavigationScriptPath | Should -FileContentMatch '\.DESCRIPTION'
+            $NavigationScriptPath | Should -FileContentMatch '\.EXAMPLE'
         }
     }
 
@@ -76,12 +74,12 @@ Describe 'Update-MkDocsNavigation Script Tests' -Tag Unit {
         }
     }
 
-    Context 'Get-CategorizedFunctions Tests' {
+    Context 'Get-CategorizedFunction Tests' {
         BeforeAll {
-            if (Test-Path $ManifestPath) {
-                $categorized = Get-CategorizedFunctions -ManifestPath $ManifestPath
+            if (Test-Path $ModuleManifestPath) {
+                $categorized = Get-CategorizedFunction -ManifestPath $ModuleManifestPath
             } else {
-                Write-Warning "Manifest not found at: $ManifestPath"
+                Write-Warning "Manifest not found at: $ModuleManifestPath"
                 $categorized = $null
             }
         }
@@ -122,7 +120,7 @@ Describe 'Update-MkDocsNavigation Script Tests' -Tag Unit {
             $categorized['Daily Functions'].Count | Should -BeGreaterThan 0
         }
 
-        It 'should exclude known aliases from categorization' {
+        It 'should not categorize aliases from AliasesToExport' {
             if ($null -eq $categorized) {
                 Set-ItResult -Skipped -Because "Manifest file not accessible in test environment"
                 return
@@ -152,14 +150,14 @@ Describe 'Update-MkDocsNavigation Script Tests' -Tag Unit {
         }
     }
 
-    Context 'New-NavigationYaml Tests' {
+    Context 'ConvertTo-NavigationYaml Tests' {
         BeforeAll {
             $testCategories = @{
                 Customize       = @('Function1', 'Function2')
                 Develop         = @('DevFunction1')
                 'Daily Functions' = @('DailyFunction1', 'DailyFunction2', 'DailyFunction3')
             }
-            $navLines = New-NavigationYaml -CategorizedFunctions $testCategories
+            $navLines = ConvertTo-NavigationYaml -CategorizedFunctions $testCategories
         }
 
         It 'should return an array of strings' {
@@ -209,8 +207,9 @@ Describe 'Update-MkDocsNavigation Script Tests' -Tag Unit {
         'Install-CommandNotFoundUtility',
         'New-ScriptFromTemplate',
         'Get-CommandHistory',
-        'Test-IsElevated',
-        # Aliases (should be filtered out)
+        'Test-IsElevated'
+    )
+    AliasesToExport = @(
         'Edit-HistoryFile',
         'Get-Assembly',
         'New-Script'
@@ -237,8 +236,8 @@ markdown_extensions:
         }
 
         It 'should successfully update a test mkdocs.yml file' {
-            $categorized = Get-CategorizedFunctions -ManifestPath $testManifest
-            $navLines = New-NavigationYaml -CategorizedFunctions $categorized
+            $categorized = Get-CategorizedFunction -ManifestPath $testManifest
+            $navLines = ConvertTo-NavigationYaml -CategorizedFunctions $categorized
             $result = Update-MkDocsYaml -MkDocsPath $testMkDocs -NewNavLines $navLines
 
             $result | Should -BeTrue
