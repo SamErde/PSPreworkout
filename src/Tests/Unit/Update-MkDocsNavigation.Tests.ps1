@@ -1,28 +1,26 @@
 BeforeAll {
-    $ScriptPath = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, '..', '..', '.github', 'cicd-scripts', 'Update-MkDocsNavigation.ps1'))
-    $ManifestPath = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, '..', '..', 'PSPreworkout', 'PSPreworkout.psd1'))
-    $MkDocsPath = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, '..', '..', '..', 'mkdocs.yml'))
-
+    $NavigationScriptPath = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, '..', '..', '..', '.github', 'cicd-scripts', 'Update-MkDocsNavigation.ps1'))
+    $ModuleManifestPath = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, '..', '..', 'PSPreworkout', 'PSPreworkout.psd1'))
     # Source the script to get access to its functions
-    . $ScriptPath
+    . $NavigationScriptPath
 }
 
 Describe 'Update-MkDocsNavigation Script Tests' -Tag Unit {
     Context 'Script File Tests' {
         It 'Update-MkDocsNavigation.ps1 should exist' {
-            $ScriptPath | Should -Exist
+            $NavigationScriptPath | Should -Exist
         }
 
         It 'should have valid PowerShell syntax' {
             $errors = $null
-            $null = [System.Management.Automation.PSParser]::Tokenize((Get-Content -Path $ScriptPath -Raw), [ref]$errors)
+            $null = [System.Management.Automation.PSParser]::Tokenize((Get-Content -Path $NavigationScriptPath -Raw), [ref]$errors)
             $errors.Count | Should -Be 0
         }
 
         It 'should have comment-based help' {
-            $ScriptPath | Should -FileContentMatch '\.SYNOPSIS'
-            $ScriptPath | Should -FileContentMatch '\.DESCRIPTION'
-            $ScriptPath | Should -FileContentMatch '\.EXAMPLE'
+            $NavigationScriptPath | Should -FileContentMatch '\.SYNOPSIS'
+            $NavigationScriptPath | Should -FileContentMatch '\.DESCRIPTION'
+            $NavigationScriptPath | Should -FileContentMatch '\.EXAMPLE'
         }
     }
 
@@ -78,10 +76,10 @@ Describe 'Update-MkDocsNavigation Script Tests' -Tag Unit {
 
     Context 'Get-CategorizedFunctions Tests' {
         BeforeAll {
-            if (Test-Path $ManifestPath) {
-                $categorized = Get-CategorizedFunctions -ManifestPath $ManifestPath
+            if (Test-Path $ModuleManifestPath) {
+                $categorized = Get-CategorizedFunctions -ManifestPath $ModuleManifestPath
             } else {
-                Write-Warning "Manifest not found at: $ManifestPath"
+                Write-Warning "Manifest not found at: $ModuleManifestPath"
                 $categorized = $null
             }
         }

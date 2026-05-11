@@ -243,38 +243,40 @@ function Update-MkDocsYaml {
 
 #endregion Helper Functions
 
-#region Main Script
+if ($MyInvocation.InvocationName -ne '.') {
+    #region Main Script
 
-try {
-    Write-Host "🔍 Analyzing PowerShell module manifest..." -ForegroundColor Cyan
+    try {
+        Write-Host "🔍 Analyzing PowerShell module manifest..." -ForegroundColor Cyan
 
-    # Get categorized functions from manifest
-    $categorizedFunctions = Get-CategorizedFunctions -ManifestPath $ManifestPath
+        # Get categorized functions from manifest
+        $categorizedFunctions = Get-CategorizedFunctions -ManifestPath $ManifestPath
 
-    Write-Host "📊 Function counts:" -ForegroundColor Cyan
-    Write-Host "   Customize: $($categorizedFunctions['Customize'].Count)" -ForegroundColor Green
-    Write-Host "   Develop: $($categorizedFunctions['Develop'].Count)" -ForegroundColor Green
-    Write-Host "   Daily Functions: $($categorizedFunctions['Daily Functions'].Count)" -ForegroundColor Green
+        Write-Host "📊 Function counts:" -ForegroundColor Cyan
+        Write-Host "   Customize: $($categorizedFunctions['Customize'].Count)" -ForegroundColor Green
+        Write-Host "   Develop: $($categorizedFunctions['Develop'].Count)" -ForegroundColor Green
+        Write-Host "   Daily Functions: $($categorizedFunctions['Daily Functions'].Count)" -ForegroundColor Green
 
-    # Generate new navigation YAML
-    Write-Host "`n📝 Generating navigation structure..." -ForegroundColor Cyan
-    $newNavLines = New-NavigationYaml -CategorizedFunctions $categorizedFunctions
+        # Generate new navigation YAML
+        Write-Host "`n📝 Generating navigation structure..." -ForegroundColor Cyan
+        $newNavLines = New-NavigationYaml -CategorizedFunctions $categorizedFunctions
 
-    # Update mkdocs.yml
-    Write-Host "📄 Updating mkdocs.yml..." -ForegroundColor Cyan
-    $updated = Update-MkDocsYaml -MkDocsPath $MkDocsPath -NewNavLines $newNavLines
+        # Update mkdocs.yml
+        Write-Host "📄 Updating mkdocs.yml..." -ForegroundColor Cyan
+        $updated = Update-MkDocsYaml -MkDocsPath $MkDocsPath -NewNavLines $newNavLines
 
-    if ($updated) {
-        Write-Host "✅ Successfully updated mkdocs.yml navigation!" -ForegroundColor Green
-        exit 0
-    } else {
-        Write-Host "❌ Failed to update mkdocs.yml" -ForegroundColor Red
+        if ($updated) {
+            Write-Host "✅ Successfully updated mkdocs.yml navigation!" -ForegroundColor Green
+            exit 0
+        } else {
+            Write-Host "❌ Failed to update mkdocs.yml" -ForegroundColor Red
+            exit 1
+        }
+    } catch {
+        Write-Host "❌ Error: $_" -ForegroundColor Red
+        Write-Host $_.ScriptStackTrace -ForegroundColor Red
         exit 1
     }
-} catch {
-    Write-Host "❌ Error: $_" -ForegroundColor Red
-    Write-Host $_.ScriptStackTrace -ForegroundColor Red
-    exit 1
-}
 
-#endregion Main Script
+    #endregion Main Script
+}
