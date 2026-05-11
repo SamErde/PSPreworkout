@@ -81,7 +81,7 @@ function Get-FunctionCategory {
     }
 }
 
-function Get-CategorizedFunctions {
+function Get-CategorizedFunction {
     <#
     .SYNOPSIS
         Reads functions from manifest and categorizes them.
@@ -121,13 +121,13 @@ function Get-CategorizedFunctions {
     return $categorized
 }
 
-function New-NavigationYaml {
+function ConvertTo-NavigationYaml {
     <#
     .SYNOPSIS
         Generates the nav section YAML content.
 
     .DESCRIPTION
-        Creates the YAML structure for the nav section based on categorized functions.
+        Converts categorized functions into YAML structure for the nav section.
     #>
     [CmdletBinding()]
     param (
@@ -175,7 +175,7 @@ function Update-MkDocsYaml {
         Reads the existing mkdocs.yml, replaces the nav section with the updated version,
         and writes it back to the file.
     #>
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param (
         [Parameter(Mandatory)]
         [string]$MkDocsPath,
@@ -235,10 +235,13 @@ function Update-MkDocsYaml {
         $newContent += $lines[($navEndIndex + 1)..($lines.Count - 1)]
     }
 
-    Write-Verbose "Writing updated mkdocs.yml with $($newContent.Count) lines"
-    $newContent | Set-Content -Path $MkDocsPath
+    if ($PSCmdlet.ShouldProcess($MkDocsPath, 'Update MkDocs navigation')) {
+        Write-Verbose "Writing updated mkdocs.yml with $($newContent.Count) lines"
+        $newContent | Set-Content -Path $MkDocsPath
+        return $true
+    }
 
-    return $true
+    return $false
 }
 
 #endregion Helper Functions
@@ -247,34 +250,34 @@ if ($MyInvocation.InvocationName -ne '.') {
     #region Main Script
 
     try {
-        Write-Host "🔍 Analyzing PowerShell module manifest..." -ForegroundColor Cyan
+        Write-Information "Analyzing PowerShell module manifest..." -InformationAction Continue
 
         # Get categorized functions from manifest
-        $categorizedFunctions = Get-CategorizedFunctions -ManifestPath $ManifestPath
+        $categorizedFunctions = Get-CategorizedFunction -ManifestPath $ManifestPath
 
-        Write-Host "📊 Function counts:" -ForegroundColor Cyan
-        Write-Host "   Customize: $($categorizedFunctions['Customize'].Count)" -ForegroundColor Green
-        Write-Host "   Develop: $($categorizedFunctions['Develop'].Count)" -ForegroundColor Green
-        Write-Host "   Daily Functions: $($categorizedFunctions['Daily Functions'].Count)" -ForegroundColor Green
+        Write-Information "Function counts:" -InformationAction Continue
+        Write-Information "   Customize: $($categorizedFunctions['Customize'].Count)" -InformationAction Continue
+        Write-Information "   Develop: $($categorizedFunctions['Develop'].Count)" -InformationAction Continue
+        Write-Information "   Daily Functions: $($categorizedFunctions['Daily Functions'].Count)" -InformationAction Continue
 
         # Generate new navigation YAML
-        Write-Host "`n📝 Generating navigation structure..." -ForegroundColor Cyan
-        $newNavLines = New-NavigationYaml -CategorizedFunctions $categorizedFunctions
+        Write-Information "`nGenerating navigation structure..." -InformationAction Continue
+        $newNavLines = ConvertTo-NavigationYaml -CategorizedFunctions $categorizedFunctions
 
         # Update mkdocs.yml
-        Write-Host "📄 Updating mkdocs.yml..." -ForegroundColor Cyan
+        Write-Information "Updating mkdocs.yml..." -InformationAction Continue
         $updated = Update-MkDocsYaml -MkDocsPath $MkDocsPath -NewNavLines $newNavLines
 
         if ($updated) {
-            Write-Host "✅ Successfully updated mkdocs.yml navigation!" -ForegroundColor Green
+            Write-Information "Successfully updated mkdocs.yml navigation." -InformationAction Continue
             exit 0
         } else {
-            Write-Host "❌ Failed to update mkdocs.yml" -ForegroundColor Red
+            Write-Error "Failed to update mkdocs.yml."
             exit 1
         }
     } catch {
-        Write-Host "❌ Error: $_" -ForegroundColor Red
-        Write-Host $_.ScriptStackTrace -ForegroundColor Red
+        Write-Error "Error: $_"
+        Write-Error $_.ScriptStackTrace
         exit 1
     }
 

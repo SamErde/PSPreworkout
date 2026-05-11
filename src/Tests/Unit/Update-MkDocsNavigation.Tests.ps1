@@ -74,10 +74,10 @@ Describe 'Update-MkDocsNavigation Script Tests' -Tag Unit {
         }
     }
 
-    Context 'Get-CategorizedFunctions Tests' {
+    Context 'Get-CategorizedFunction Tests' {
         BeforeAll {
             if (Test-Path $ModuleManifestPath) {
-                $categorized = Get-CategorizedFunctions -ManifestPath $ModuleManifestPath
+                $categorized = Get-CategorizedFunction -ManifestPath $ModuleManifestPath
             } else {
                 Write-Warning "Manifest not found at: $ModuleManifestPath"
                 $categorized = $null
@@ -150,14 +150,14 @@ Describe 'Update-MkDocsNavigation Script Tests' -Tag Unit {
         }
     }
 
-    Context 'New-NavigationYaml Tests' {
+    Context 'ConvertTo-NavigationYaml Tests' {
         BeforeAll {
             $testCategories = @{
                 Customize       = @('Function1', 'Function2')
                 Develop         = @('DevFunction1')
                 'Daily Functions' = @('DailyFunction1', 'DailyFunction2', 'DailyFunction3')
             }
-            $navLines = New-NavigationYaml -CategorizedFunctions $testCategories
+            $navLines = ConvertTo-NavigationYaml -CategorizedFunctions $testCategories
         }
 
         It 'should return an array of strings' {
@@ -236,8 +236,8 @@ markdown_extensions:
         }
 
         It 'should successfully update a test mkdocs.yml file' {
-            $categorized = Get-CategorizedFunctions -ManifestPath $testManifest
-            $navLines = New-NavigationYaml -CategorizedFunctions $categorized
+            $categorized = Get-CategorizedFunction -ManifestPath $testManifest
+            $navLines = ConvertTo-NavigationYaml -CategorizedFunctions $categorized
             $result = Update-MkDocsYaml -MkDocsPath $testMkDocs -NewNavLines $navLines
 
             $result | Should -BeTrue
