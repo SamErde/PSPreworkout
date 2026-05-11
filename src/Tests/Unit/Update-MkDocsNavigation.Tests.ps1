@@ -1,6 +1,5 @@
 BeforeAll {
     $NavigationScriptPath = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, '..', '..', '..', '.github', 'cicd-scripts', 'Update-MkDocsNavigation.ps1'))
-    $ModuleManifestPath = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, '..', '..', 'PSPreworkout', 'PSPreworkout.psd1'))
     # Source the script to get access to its functions
     . $NavigationScriptPath
 }
@@ -76,56 +75,58 @@ Describe 'Update-MkDocsNavigation Script Tests' -Tag Unit {
 
     Context 'Get-CategorizedFunction Tests' {
         BeforeAll {
+            $ModuleManifestPath = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, '..', '..', 'PSPreworkout', 'PSPreworkout.psd1'))
+
             if (Test-Path $ModuleManifestPath) {
-                $categorized = Get-CategorizedFunction -ManifestPath $ModuleManifestPath
+                $script:CategorizedFunctions = Get-CategorizedFunction -ManifestPath $ModuleManifestPath
             } else {
                 Write-Warning "Manifest not found at: $ModuleManifestPath"
-                $categorized = $null
+                $script:CategorizedFunctions = $null
             }
         }
 
         It 'should return a hashtable with three categories' {
-            if ($null -eq $categorized) {
+            if ($null -eq $script:CategorizedFunctions) {
                 Set-ItResult -Skipped -Because "Manifest file not accessible in test environment"
                 return
             }
-            $categorized | Should -BeOfType [hashtable]
-            $categorized.Keys.Count | Should -Be 3
-            $categorized.Keys | Should -Contain 'Customize'
-            $categorized.Keys | Should -Contain 'Develop'
-            $categorized.Keys | Should -Contain 'Daily Functions'
+            $script:CategorizedFunctions | Should -BeOfType [hashtable]
+            $script:CategorizedFunctions.Keys.Count | Should -Be 3
+            $script:CategorizedFunctions.Keys | Should -Contain 'Customize'
+            $script:CategorizedFunctions.Keys | Should -Contain 'Develop'
+            $script:CategorizedFunctions.Keys | Should -Contain 'Daily Functions'
         }
 
         It 'should have functions in Customize category' {
-            if ($null -eq $categorized) {
+            if ($null -eq $script:CategorizedFunctions) {
                 Set-ItResult -Skipped -Because "Manifest file not accessible in test environment"
                 return
             }
-            $categorized['Customize'].Count | Should -BeGreaterThan 0
+            $script:CategorizedFunctions['Customize'].Count | Should -BeGreaterThan 0
         }
 
         It 'should have functions in Develop category' {
-            if ($null -eq $categorized) {
+            if ($null -eq $script:CategorizedFunctions) {
                 Set-ItResult -Skipped -Because "Manifest file not accessible in test environment"
                 return
             }
-            $categorized['Develop'].Count | Should -BeGreaterThan 0
+            $script:CategorizedFunctions['Develop'].Count | Should -BeGreaterThan 0
         }
 
         It 'should have functions in Daily Functions category' {
-            if ($null -eq $categorized) {
+            if ($null -eq $script:CategorizedFunctions) {
                 Set-ItResult -Skipped -Because "Manifest file not accessible in test environment"
                 return
             }
-            $categorized['Daily Functions'].Count | Should -BeGreaterThan 0
+            $script:CategorizedFunctions['Daily Functions'].Count | Should -BeGreaterThan 0
         }
 
         It 'should not categorize aliases from AliasesToExport' {
-            if ($null -eq $categorized) {
+            if ($null -eq $script:CategorizedFunctions) {
                 Set-ItResult -Skipped -Because "Manifest file not accessible in test environment"
                 return
             }
-            $allFunctions = $categorized['Customize'] + $categorized['Develop'] + $categorized['Daily Functions']
+            $allFunctions = $script:CategorizedFunctions['Customize'] + $script:CategorizedFunctions['Develop'] + $script:CategorizedFunctions['Daily Functions']
             $allFunctions | Should -Not -Contain 'Edit-HistoryFile'
             $allFunctions | Should -Not -Contain 'Get-Assembly'
             $allFunctions | Should -Not -Contain 'Get-PSPortable'
@@ -135,18 +136,18 @@ Describe 'Update-MkDocsNavigation Script Tests' -Tag Unit {
         }
 
         It 'should have sorted function names within each category' {
-            if ($null -eq $categorized) {
+            if ($null -eq $script:CategorizedFunctions) {
                 Set-ItResult -Skipped -Because "Manifest file not accessible in test environment"
                 return
             }
-            $customizeSorted = $categorized['Customize'] | Sort-Object
-            $categorized['Customize'] | Should -Be $customizeSorted
+            $customizeSorted = $script:CategorizedFunctions['Customize'] | Sort-Object
+            $script:CategorizedFunctions['Customize'] | Should -Be $customizeSorted
 
-            $developSorted = $categorized['Develop'] | Sort-Object
-            $categorized['Develop'] | Should -Be $developSorted
+            $developSorted = $script:CategorizedFunctions['Develop'] | Sort-Object
+            $script:CategorizedFunctions['Develop'] | Should -Be $developSorted
 
-            $dailySorted = $categorized['Daily Functions'] | Sort-Object
-            $categorized['Daily Functions'] | Should -Be $dailySorted
+            $dailySorted = $script:CategorizedFunctions['Daily Functions'] | Sort-Object
+            $script:CategorizedFunctions['Daily Functions'] | Should -Be $dailySorted
         }
     }
 
@@ -157,38 +158,38 @@ Describe 'Update-MkDocsNavigation Script Tests' -Tag Unit {
                 Develop         = @('DevFunction1')
                 'Daily Functions' = @('DailyFunction1', 'DailyFunction2', 'DailyFunction3')
             }
-            $navLines = ConvertTo-NavigationYaml -CategorizedFunctions $testCategories
+            $script:NavigationLines = ConvertTo-NavigationYaml -CategorizedFunctions $testCategories
         }
 
         It 'should return an array of strings' {
-            $navLines | Should -HaveCount 11
-            $navLines | ForEach-Object { $_ | Should -BeOfType [string] }
+            $script:NavigationLines | Should -HaveCount 11
+            $script:NavigationLines | ForEach-Object { $_ | Should -BeOfType [string] }
         }
 
         It 'should start with nav: line' {
-            $navLines[0] | Should -Be 'nav:'
+            $script:NavigationLines[0] | Should -Be 'nav:'
         }
 
         It 'should include Home entry' {
-            $navLines | Should -Contain '  - Home: "index.md"'
+            $script:NavigationLines | Should -Contain '  - Home: "index.md"'
         }
 
         It 'should include Customize category header' {
-            $navLines | Should -Contain '  - Customize:'
+            $script:NavigationLines | Should -Contain '  - Customize:'
         }
 
         It 'should include Develop category header' {
-            $navLines | Should -Contain '  - Develop:'
+            $script:NavigationLines | Should -Contain '  - Develop:'
         }
 
         It 'should include Daily Functions category header' {
-            $navLines | Should -Contain '  - Daily Functions:'
+            $script:NavigationLines | Should -Contain '  - Daily Functions:'
         }
 
         It 'should format function entries correctly' {
-            $navLines | Should -Contain '      - Function1: "Function1.md"'
-            $navLines | Should -Contain '      - DevFunction1: "DevFunction1.md"'
-            $navLines | Should -Contain '      - DailyFunction1: "DailyFunction1.md"'
+            $script:NavigationLines | Should -Contain '      - Function1: "Function1.md"'
+            $script:NavigationLines | Should -Contain '      - DevFunction1: "DevFunction1.md"'
+            $script:NavigationLines | Should -Contain '      - DailyFunction1: "DailyFunction1.md"'
         }
     }
 
