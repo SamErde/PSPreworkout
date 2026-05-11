@@ -28,31 +28,25 @@
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
     FunctionsToExport    = @(
-        'Edit-HistoryFile',
         'Edit-PSReadLineHistoryFile',
         'Edit-WinGetSettingsFile',
-        'Get-Assembly',
         'Get-CommandHistory',
         'Get-EnvironmentVariable',
         'Get-HashtableValueType',
         'Get-LoadedAssembly',
         'Get-ModulesWithUpdate',
         'Get-PowerShellPortable',
-        'Get-PSPortable',
         'Get-TypeAccelerator',
-        'Init-PSEnvConfig',
         'Initialize-PSEnvironmentConfiguration',
         'Install-CommandNotFoundUtility',
         'Install-OhMyPosh',
         'Install-PowerShellISE',
         'Install-WinGet',
-        'New-Script',
         'New-ScriptFromTemplate',
         'Out-JsonFile',
         'Set-ConsoleFont',
         'Set-DefaultTerminal',
         'Set-EnvironmentVariable',
-        'Show-LoadedAssemblies',
         'Show-LoadedAssembly',
         'Show-WithoutEmptyProperty',
         'Test-IsElevated',
@@ -78,7 +72,6 @@
         'New-Script',
         'sev',
         'Show-LoadedAssemblies',
-        'SkipChoco',
         'uatt'
     )
 

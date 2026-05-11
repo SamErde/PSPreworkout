@@ -17,15 +17,15 @@ Previously, the `nav` section in `mkdocs.yml` had to be manually maintained when
 
 An automated system that:
 
-1. Reads the `FunctionsToExport` from the module manifest (`PSPreworkout.psd1`)
-2. Filters out aliases to include only actual functions
+1. Reads `FunctionsToExport` from the module manifest (`PSPreworkout.psd1`)
+2. Relies on aliases being exported only through `AliasesToExport`
 3. Categorizes functions into three logical groups
 4. Updates the `mkdocs.yml` navigation section automatically
 5. Triggers whenever the module manifest is updated on the main branch
 
 ## Components
 
-### 1. PowerShell Script (`Scripts/Update-MkDocsNavigation.ps1`)
+### 1. PowerShell Script (`.github/cicd-scripts/Update-MkDocsNavigation.ps1`)
 
 **Purpose**: Updates the navigation section in mkdocs.yml based on the module manifest.
 
@@ -98,13 +98,13 @@ Run the script directly:
 
 ```powershell
 # From repository root
-.\Scripts\Update-MkDocsNavigation.ps1
+.\.github\cicd-scripts\Update-MkDocsNavigation.ps1
 
 # With verbose output
-.\Scripts\Update-MkDocsNavigation.ps1 -Verbose
+.\.github\cicd-scripts\Update-MkDocsNavigation.ps1 -Verbose
 
 # With custom paths
-.\Scripts\Update-MkDocsNavigation.ps1 -ManifestPath "path/to/manifest.psd1" -MkDocsPath "path/to/mkdocs.yml"
+.\.github\cicd-scripts\Update-MkDocsNavigation.ps1 -ManifestPath "path/to/manifest.psd1" -MkDocsPath "path/to/mkdocs.yml"
 ```
 
 ## Benefits
@@ -128,7 +128,7 @@ Run the script directly:
 
 To change which category a function belongs to:
 
-1. Edit the `Get-FunctionCategory` function in `Scripts/Update-MkDocsNavigation.ps1`
+1. Edit the `Get-FunctionCategory` function in `.github/cicd-scripts/Update-MkDocsNavigation.ps1`
 2. Update the `$developFunctions` or `$customizeFunctions` arrays
 3. Run the script manually or push changes to trigger the workflow
 
@@ -142,10 +142,10 @@ Invoke-Pester -Path ./src/Tests/Unit/Update-MkDocsNavigation.Tests.ps1
 
 ## Files Modified
 
-- ✅ `Scripts/Update-MkDocsNavigation.ps1` - Created
+- ✅ `.github/cicd-scripts/Update-MkDocsNavigation.ps1` - Created
 - ✅ `.github/workflows/Update MkDocs Navigation.yml` - Created
 - ✅ `src/Tests/Unit/Update-MkDocsNavigation.Tests.ps1` - Created
-- ✅ `Scripts/README.md` - Updated with documentation
+- ✅ `docs/MKDOCS-NAVIGATION-AUTOMATION.md` - Updated with documentation
 - ✅ `mkdocs.yml` - Fixed navigation (removed duplicates, corrected typos, added missing functions)
 
 ## Example: Before and After

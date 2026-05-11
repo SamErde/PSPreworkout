@@ -76,36 +76,37 @@ jobs:
               return $functions
           }
 
-          # Function to extract aliases
+          # Function to extract function-level command aliases
           function Get-PublicAliases {
               param($Path)
 
               $aliases = Get-ChildItem -Path "$Path/Public/*.ps1" -ErrorAction SilentlyContinue |
                   ForEach-Object {
                       try {
-                          $lines = Get-Content -Path $_.FullName -ErrorAction Stop
-                          $foundAliases = @()
-
-                          foreach ($line in $lines) {
-                              # Skip comments and variable assignments
-                              if ($line -match '^\s*#' -or $line -match '=.*\[Alias') {
-                                  continue
-                              }
-
-                              if ($line -match '^\s*\[Alias\((.*?)\)\]') {
-                                  $aliasString = $matches[1]
-                                  $lineAliases = $aliasString -split ',' | ForEach-Object {
-                                      $cleaned = $_.Trim().Trim("'").Trim('"').Trim()
-                                      if ($cleaned -and $cleaned -notmatch '^\$' -and $cleaned -notmatch '__') {
-                                          $cleaned
-                                      }
-                                  } | Where-Object { $_ }
-
-                                  $foundAliases += $lineAliases
-                              }
+                          $tokens = $null
+                          $parseErrors = $null
+                          $ast = [System.Management.Automation.Language.Parser]::ParseFile($_.FullName, [ref]$tokens, [ref]$parseErrors)
+                          if ($parseErrors) {
+                              Write-Host "::warning::Failed to parse aliases from $($_.Name): $($parseErrors[0].Message)"
+                              return
                           }
 
-                          $foundAliases
+                          $functionAsts = $ast.FindAll({
+                                  param($Node)
+                                  $Node -is [System.Management.Automation.Language.FunctionDefinitionAst]
+                              }, $true)
+
+                          foreach ($functionAst in $functionAsts) {
+                              foreach ($attribute in $functionAst.Body.ParamBlock.Attributes) {
+                                  if ($attribute.TypeName.FullName -eq 'Alias') {
+                                      foreach ($argument in $attribute.PositionalArguments) {
+                                          if ($argument -is [System.Management.Automation.Language.StringConstantExpressionAst]) {
+                                              $argument.Value
+                                          }
+                                      }
+                                  }
+                              }
+                          }
                       } catch {
                           Write-Host "::warning::Failed to parse aliases from $($_.Name): $_"
                       }
@@ -138,9 +139,9 @@ jobs:
           # Compare - check if functions are in FunctionsToExport
           $missingFunctions = $publicFunctions | Where-Object { $_ -notin $manifestData.FunctionsToExport }
 
-          # Check if aliases are in both FunctionsToExport and AliasesToExport (per module convention)
-          $missingFromFunctionsExport = $aliases | Where-Object { $_ -notin $manifestData.FunctionsToExport }
+          # Aliases are exported only through AliasesToExport.
           $missingFromAliasesExport = $aliases | Where-Object { $_ -notin $manifestData.AliasesToExport }
+          $aliasesInFunctionsExport = $aliases | Where-Object { $_ -in $manifestData.FunctionsToExport }
 
           $needsUpdate = $false
 
@@ -150,15 +151,15 @@ jobs:
               $needsUpdate = $true
           }
 
-          if ($missingFromFunctionsExport) {
-              Write-Host "Missing aliases in FunctionsToExport:" -ForegroundColor Red
-              $missingFromFunctionsExport | ForEach-Object { Write-Host "  - $_" }
-              $needsUpdate = $true
-          }
-
           if ($missingFromAliasesExport) {
               Write-Host "Missing aliases in AliasesToExport:" -ForegroundColor Red
               $missingFromAliasesExport | ForEach-Object { Write-Host "  - $_" }
+              $needsUpdate = $true
+          }
+
+          if ($aliasesInFunctionsExport) {
+              Write-Host "Aliases should not be listed in FunctionsToExport:" -ForegroundColor Red
+              $aliasesInFunctionsExport | ForEach-Object { Write-Host "  - $_" }
               $needsUpdate = $true
           }
 
@@ -202,36 +203,37 @@ jobs:
               return $functions
           }
 
-          # Function to extract aliases
+          # Function to extract function-level command aliases
           function Get-PublicAliases {
               param($Path)
 
               $aliases = Get-ChildItem -Path "$Path/Public/*.ps1" -ErrorAction SilentlyContinue |
                   ForEach-Object {
                       try {
-                          $lines = Get-Content -Path $_.FullName -ErrorAction Stop
-                          $foundAliases = @()
-
-                          foreach ($line in $lines) {
-                              # Skip comments and variable assignments
-                              if ($line -match '^\s*#' -or $line -match '=.*\[Alias') {
-                                  continue
-                              }
-
-                              if ($line -match '^\s*\[Alias\((.*?)\)\]') {
-                                  $aliasString = $matches[1]
-                                  $lineAliases = $aliasString -split ',' | ForEach-Object {
-                                      $cleaned = $_.Trim().Trim("'").Trim('"').Trim()
-                                      if ($cleaned -and $cleaned -notmatch '^\$' -and $cleaned -notmatch '__') {
-                                          $cleaned
-                                      }
-                                  } | Where-Object { $_ }
-
-                                  $foundAliases += $lineAliases
-                              }
+                          $tokens = $null
+                          $parseErrors = $null
+                          $ast = [System.Management.Automation.Language.Parser]::ParseFile($_.FullName, [ref]$tokens, [ref]$parseErrors)
+                          if ($parseErrors) {
+                              Write-Host "::warning::Failed to parse aliases from $($_.Name): $($parseErrors[0].Message)"
+                              return
                           }
 
-                          $foundAliases
+                          $functionAsts = $ast.FindAll({
+                                  param($Node)
+                                  $Node -is [System.Management.Automation.Language.FunctionDefinitionAst]
+                              }, $true)
+
+                          foreach ($functionAst in $functionAsts) {
+                              foreach ($attribute in $functionAst.Body.ParamBlock.Attributes) {
+                                  if ($attribute.TypeName.FullName -eq 'Alias') {
+                                      foreach ($argument in $attribute.PositionalArguments) {
+                                          if ($argument -is [System.Management.Automation.Language.StringConstantExpressionAst]) {
+                                              $argument.Value
+                                          }
+                                      }
+                                  }
+                              }
+                          }
                       } catch {
                           Write-Host "::warning::Failed to parse aliases from $($_.Name): $_"
                       }
@@ -254,14 +256,10 @@ jobs:
 
           $originalManifestContent = $manifestContent
 
-          # Update FunctionsToExport (functions + aliases per module convention)
-          $allExports = @($publicFunctions)
-          if ($aliases) {
-              $allExports += $aliases
-          }
-          $allExportsArray = ($allExports | Sort-Object -Unique | ForEach-Object { "'$_'" }) -join ",`n        "
+          # Update FunctionsToExport with command functions only. Aliases belong in AliasesToExport.
+          $functionsToExportArray = ($publicFunctions | Sort-Object -Unique | ForEach-Object { "'$_'" }) -join ",`n        "
           $functionsToExportPattern = '(?ms)(FunctionsToExport\s*=\s*@\().*?(\s*\))'
-          $newFunctionsToExport = "`$1`n        $allExportsArray`n    )"
+          $newFunctionsToExport = "`$1`n        $functionsToExportArray`n    )"
           $manifestContent = $manifestContent -replace $functionsToExportPattern, $newFunctionsToExport
 
           # Update AliasesToExport

@@ -151,36 +151,32 @@ Add-BuildTask UpdateManifest -Before TestModuleManifest {
 
     Write-Build Gray "      Found $($publicFunctions.Count) public functions"
 
-    # Get all aliases from public functions - improved detection
+    # Get command aliases declared on public functions. Parameter aliases are not module aliases.
     $aliases = Get-ChildItem -Path "$script:ModuleSourcePath\Public\*.ps1" -ErrorAction SilentlyContinue |
         ForEach-Object {
-            # Read line by line to better understand context and avoid string literals
-            $lines = Get-Content -Path $_.FullName
-            $foundAliases = @()
-
-            foreach ($line in $lines) {
-                # Skip lines that are clearly in strings or variable assignments
-                if ($line -match '^\s*#' -or $line -match '=.*\[Alias') {
-                    continue
-                }
-
-                # Match [Alias(...)] attribute declarations
-                if ($line -match '^\s*\[Alias\((.*?)\)\]') {
-                    $aliasString = $matches[1]
-                    # Split by comma and clean up each alias
-                    $lineAliases = $aliasString -split ',' | ForEach-Object {
-                        $cleaned = $_.Trim().Trim("'").Trim('"').Trim()
-                        # Filter out variables, template placeholders, and empty strings
-                        if ($cleaned -and $cleaned -notmatch '^\$' -and $cleaned -notmatch '__') {
-                            $cleaned
-                        }
-                    } | Where-Object { $_ }
-
-                    $foundAliases += $lineAliases
-                }
+            $tokens = $null
+            $parseErrors = $null
+            $ast = [System.Management.Automation.Language.Parser]::ParseFile($_.FullName, [ref]$tokens, [ref]$parseErrors)
+            if ($parseErrors) {
+                throw "Unable to parse $($_.FullName): $($parseErrors[0].Message)"
             }
 
-            $foundAliases
+            $functionAsts = $ast.FindAll({
+                    param($Node)
+                    $Node -is [System.Management.Automation.Language.FunctionDefinitionAst]
+                }, $true)
+
+            foreach ($functionAst in $functionAsts) {
+                foreach ($attribute in $functionAst.Body.ParamBlock.Attributes) {
+                    if ($attribute.TypeName.FullName -eq 'Alias') {
+                        foreach ($argument in $attribute.PositionalArguments) {
+                            if ($argument -is [System.Management.Automation.Language.StringConstantExpressionAst]) {
+                                $argument.Value
+                            }
+                        }
+                    }
+                }
+            }
         } | Sort-Object -Unique
 
     Write-Build Gray "      Found $($aliases.Count) unique aliases in public functions"
@@ -190,18 +186,10 @@ Add-BuildTask UpdateManifest -Before TestModuleManifest {
     $manifestContent = Get-Content -Path $manifestPath -Raw
     $originalManifestContent = $manifestContent
 
-    # Update FunctionsToExport
-    $functionsArray = ($publicFunctions | ForEach-Object { "'$_'" }) -join ",`n        "
+    # Update FunctionsToExport with command functions only. Aliases belong in AliasesToExport.
     $functionsToExportPattern = '(?ms)(FunctionsToExport\s*=\s*@\().*?(\s*\))'
-
-    # Build complete export list: functions first, then aliases that should be exported as functions
-    $allExports = @($publicFunctions)
-    if ($aliases) {
-        $allExports += @($aliases -match '\w-\w')
-    }
-    $allExportsArray = ($allExports | Sort-Object -Unique | ForEach-Object { "'$_'" }) -join ",`n        "
-
-    $newFunctionsToExport = "`$1`n        $allExportsArray`n    )"
+    $functionsToExportArray = ($publicFunctions | Sort-Object -Unique | ForEach-Object { "'$_'" }) -join ",`n        "
+    $newFunctionsToExport = "`$1`n        $functionsToExportArray`n    )"
     $manifestContent = $manifestContent -replace $functionsToExportPattern, $newFunctionsToExport
 
     # Update AliasesToExport

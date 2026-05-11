@@ -1,5 +1,5 @@
 BeforeAll {
-    $ScriptPath = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, '..', '..', '..', 'Scripts', 'Update-MkDocsNavigation.ps1'))
+    $ScriptPath = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, '..', '..', '.github', 'cicd-scripts', 'Update-MkDocsNavigation.ps1'))
     $ManifestPath = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, '..', '..', 'PSPreworkout', 'PSPreworkout.psd1'))
     $MkDocsPath = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, '..', '..', '..', 'mkdocs.yml'))
 
@@ -122,7 +122,7 @@ Describe 'Update-MkDocsNavigation Script Tests' -Tag Unit {
             $categorized['Daily Functions'].Count | Should -BeGreaterThan 0
         }
 
-        It 'should exclude known aliases from categorization' {
+        It 'should not categorize aliases from AliasesToExport' {
             if ($null -eq $categorized) {
                 Set-ItResult -Skipped -Because "Manifest file not accessible in test environment"
                 return
@@ -209,8 +209,9 @@ Describe 'Update-MkDocsNavigation Script Tests' -Tag Unit {
         'Install-CommandNotFoundUtility',
         'New-ScriptFromTemplate',
         'Get-CommandHistory',
-        'Test-IsElevated',
-        # Aliases (should be filtered out)
+        'Test-IsElevated'
+    )
+    AliasesToExport = @(
         'Edit-HistoryFile',
         'Get-Assembly',
         'New-Script'
