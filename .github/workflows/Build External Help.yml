@@ -19,10 +19,10 @@ on:
 
 permissions:
   contents: read # Required to read the repository contents
-  packages: write # Required to create and update package help files
 
 jobs:
   package_help:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     # The New-ExternalHelpCab cmdlet uses makecab, which depends on Windows.
     runs-on: windows-latest
     steps:
@@ -34,13 +34,45 @@ jobs:
       - name: ✅ Checkout Repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - name: 📖 Create and Package External PowerShell Help
+      - name: 📖 Generate External Help XML
+        shell: pwsh
+        run: |
+          Install-Module -Name PlatyPS -Scope CurrentUser -Force
+          Import-Module -Name PlatyPS
+
+          $moduleName = "PSPreworkout"
+          $moduleManifestPath = ".\src\PSPreworkout\PSPreworkout.psd1"
+          $moduleManifest = Test-ModuleManifest -Path $moduleManifestPath -ErrorAction Stop
+
+          Import-Module -Name $moduleManifestPath -Force
+
+          $markdownOutputFolder = ".\src\Artifacts\docs"
+          $externalHelpOutputFolder = ".\src\Artifacts\en-US"
+
+          New-Item -Path $markdownOutputFolder -ItemType Directory -Force | Out-Null
+          New-Item -Path $externalHelpOutputFolder -ItemType Directory -Force | Out-Null
+
+          $markdownParams = @{
+              Module         = $moduleName
+              OutputFolder   = $markdownOutputFolder
+              Force          = $true
+              WithModulePage = $true
+              Locale         = "en-US"
+              FwLink         = "NA"
+              HelpVersion    = $moduleManifest.Version.ToString()
+          }
+
+          New-MarkdownHelp @markdownParams
+          New-ExternalHelp -Path $markdownOutputFolder -OutputPath $externalHelpOutputFolder -Force
+
+      - name: 📦 Package External Help
         shell: pwsh
         run: |
           Write-Host "${{ github.event.repository.name }}" -ForegroundColor Green
           Write-Host "Current Directory: $PWD" -ForegroundColor Cyan
-          Install-Module -Name PlatyPS -Scope CurrentUser -Force
+
           Import-Module -Name PlatyPS
+
           $params = @{
               CabFilesFolder  = ".\src\Artifacts\en-US"  # Source XML folder.
               LandingPagePath = ".\docs\PSPreworkout.md" # Path to the landing page.
