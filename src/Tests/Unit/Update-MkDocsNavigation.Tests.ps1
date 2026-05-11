@@ -78,55 +78,55 @@ Describe 'Update-MkDocsNavigation Script Tests' -Tag Unit {
             $ModuleManifestPath = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, '..', '..', 'PSPreworkout', 'PSPreworkout.psd1'))
 
             if (Test-Path $ModuleManifestPath) {
-                $script:CategorizedFunction = Get-CategorizedFunction -ManifestPath $ModuleManifestPath
+                $script:CategorizedFunctions = Get-CategorizedFunction -ManifestPath $ModuleManifestPath
             } else {
                 Write-Warning "Manifest not found at: $ModuleManifestPath"
-                $script:CategorizedFunction = $null
+                $script:CategorizedFunctions = $null
             }
         }
 
         It 'should return a hashtable with three categories' {
-            if ($null -eq $script:CategorizedFunction) {
+            if ($null -eq $script:CategorizedFunctions) {
                 Set-ItResult -Skipped -Because "Manifest file not accessible in test environment"
                 return
             }
-            $script:CategorizedFunction | Should -BeOfType [hashtable]
-            $script:CategorizedFunction.Keys.Count | Should -Be 3
-            $script:CategorizedFunction.Keys | Should -Contain 'Customize'
-            $script:CategorizedFunction.Keys | Should -Contain 'Develop'
-            $script:CategorizedFunction.Keys | Should -Contain 'Daily Functions'
+            $script:CategorizedFunctions | Should -BeOfType [hashtable]
+            $script:CategorizedFunctions.Keys.Count | Should -Be 3
+            $script:CategorizedFunctions.Keys | Should -Contain 'Customize'
+            $script:CategorizedFunctions.Keys | Should -Contain 'Develop'
+            $script:CategorizedFunctions.Keys | Should -Contain 'Daily Functions'
         }
 
         It 'should have functions in Customize category' {
-            if ($null -eq $script:CategorizedFunction) {
+            if ($null -eq $script:CategorizedFunctions) {
                 Set-ItResult -Skipped -Because "Manifest file not accessible in test environment"
                 return
             }
-            $script:CategorizedFunction['Customize'].Count | Should -BeGreaterThan 0
+            $script:CategorizedFunctions['Customize'].Count | Should -BeGreaterThan 0
         }
 
         It 'should have functions in Develop category' {
-            if ($null -eq $script:CategorizedFunction) {
+            if ($null -eq $script:CategorizedFunctions) {
                 Set-ItResult -Skipped -Because "Manifest file not accessible in test environment"
                 return
             }
-            $script:CategorizedFunction['Develop'].Count | Should -BeGreaterThan 0
+            $script:CategorizedFunctions['Develop'].Count | Should -BeGreaterThan 0
         }
 
         It 'should have functions in Daily Functions category' {
-            if ($null -eq $script:CategorizedFunction) {
+            if ($null -eq $script:CategorizedFunctions) {
                 Set-ItResult -Skipped -Because "Manifest file not accessible in test environment"
                 return
             }
-            $script:CategorizedFunction['Daily Functions'].Count | Should -BeGreaterThan 0
+            $script:CategorizedFunctions['Daily Functions'].Count | Should -BeGreaterThan 0
         }
 
         It 'should not categorize aliases from AliasesToExport' {
-            if ($null -eq $script:CategorizedFunction) {
+            if ($null -eq $script:CategorizedFunctions) {
                 Set-ItResult -Skipped -Because "Manifest file not accessible in test environment"
                 return
             }
-            $allFunctions = $script:CategorizedFunction['Customize'] + $script:CategorizedFunction['Develop'] + $script:CategorizedFunction['Daily Functions']
+            $allFunctions = $script:CategorizedFunctions['Customize'] + $script:CategorizedFunctions['Develop'] + $script:CategorizedFunctions['Daily Functions']
             $allFunctions | Should -Not -Contain 'Edit-HistoryFile'
             $allFunctions | Should -Not -Contain 'Get-Assembly'
             $allFunctions | Should -Not -Contain 'Get-PSPortable'
@@ -136,18 +136,18 @@ Describe 'Update-MkDocsNavigation Script Tests' -Tag Unit {
         }
 
         It 'should have sorted function names within each category' {
-            if ($null -eq $script:CategorizedFunction) {
+            if ($null -eq $script:CategorizedFunctions) {
                 Set-ItResult -Skipped -Because "Manifest file not accessible in test environment"
                 return
             }
-            $customizeSorted = $script:CategorizedFunction['Customize'] | Sort-Object
-            $script:CategorizedFunction['Customize'] | Should -Be $customizeSorted
+            $customizeSorted = $script:CategorizedFunctions['Customize'] | Sort-Object
+            $script:CategorizedFunctions['Customize'] | Should -Be $customizeSorted
 
-            $developSorted = $script:CategorizedFunction['Develop'] | Sort-Object
-            $script:CategorizedFunction['Develop'] | Should -Be $developSorted
+            $developSorted = $script:CategorizedFunctions['Develop'] | Sort-Object
+            $script:CategorizedFunctions['Develop'] | Should -Be $developSorted
 
-            $dailySorted = $script:CategorizedFunction['Daily Functions'] | Sort-Object
-            $script:CategorizedFunction['Daily Functions'] | Should -Be $dailySorted
+            $dailySorted = $script:CategorizedFunctions['Daily Functions'] | Sort-Object
+            $script:CategorizedFunctions['Daily Functions'] | Should -Be $dailySorted
         }
     }
 
