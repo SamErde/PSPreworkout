@@ -18,7 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
-- `Get-PowerShellPortable` - Improve PowerShell 5.1 compatibility and safer stream handling.
+- `Get-PowerShellPortable` - Improve PowerShell 5.1 compatibility and make stream handling safer.
 
 ### Security
 
