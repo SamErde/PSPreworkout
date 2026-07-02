@@ -352,7 +352,7 @@ Add-BuildTask Test {
             }
         }
 
-        $numberFails = $testResults.FailedCount
+        $numberFails = ($testResults.FailedCount + $testResults.FailedBlocksCount + $testResults.FailedContainersCount)
         Assert-Build($numberFails -eq 0) ('Failed "{0}" unit tests.' -f $numberFails)
 
         Write-Build Gray ('      ...CODE COVERAGE - CommandsExecutedCount: {0}' -f $testResults.CodeCoverage.CommandsExecutedCount)
@@ -601,7 +601,7 @@ Add-BuildTask IntegrationTest {
             }
         }
 
-        $numberFails = $testResults.FailedCount
+        $numberFails = ($testResults.FailedCount + $testResults.FailedBlocksCount + $testResults.FailedContainersCount)
         Assert-Build($numberFails -eq 0) ('Failed "{0}" unit tests.' -f $numberFails)
         Write-Build Green '      ...Pester Integration Tests Complete!'
     }
