@@ -374,6 +374,29 @@ Describe 'Update-AllTheThings' {
             Should -Invoke winget -Exactly 0
         }
 
+        It 'Still runs GitHub CLI updates when WinGet server detection is unavailable' {
+            Mock gh {}
+            Mock copilot {}
+            Mock Get-Command {
+                param($Name)
+
+                if ($Name -in @('winget', 'gh', 'copilot')) {
+                    return @{ Name = $Name }
+                }
+
+                return $null
+            }
+
+            Update-AllTheThings -SkipModules -SkipScripts -SkipHelp
+
+            Should -Invoke Write-Warning -Exactly 1 -ParameterFilter {
+                $Message -match 'Unable to determine the Windows operating system caption'
+            }
+            Should -Invoke winget -Exactly 0
+            Should -Invoke gh -Exactly 1 -ParameterFilter { ($Arguments -join ' ') -eq 'extension upgrade --all' }
+            Should -Invoke copilot -Exactly 1 -ParameterFilter { ($Arguments -join ' ') -eq 'update' }
+        }
+
         It 'Still runs later CLI updates when WinGet is skipped explicitly' {
             Mock gh {}
             Mock copilot {}

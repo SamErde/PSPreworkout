@@ -153,10 +153,6 @@ function Update-AllTheThings {
             }
         }
 
-        $SkipGitHubCli = $false
-        $SkipCopilotCli = $false
-        $SkipChocolateyUpdates = $false
-
         #region UpdatePowerShell
 
         # ==================== Update PowerShell Modules ====================
@@ -283,32 +279,21 @@ function Update-AllTheThings {
                 $WindowsOsCaption = (Get-CimInstance -ClassName CIM_OperatingSystem).Caption
             } elseif (Get-Command -Name 'Get-WmiObject' -ErrorAction SilentlyContinue) {
                 $WindowsOsCaption = (Get-WmiObject -Class Win32_OperatingSystem).Caption
-            } else {
-                Write-Warning -Message 'Unable to determine the Windows operating system caption. Skipping Windows package and CLI updates as a safety precaution.'
+            } elseif ($WinGetCommand -and (-not $SkipWinGet)) {
+                Write-Warning -Message 'Unable to determine the Windows operating system caption. Skipping WinGet updates as a safety precaution.'
                 $SkipWinGet = $true
-                $SkipGitHubCli = $true
-                $SkipCopilotCli = $true
-                $SkipChocolateyUpdates = $true
             }
 
-            if (
-                ($WindowsOsCaption -match 'Server') -and
-                (
-                    (-not $SkipWinGet) -or
-                    (-not $SkipGitHubCli) -or
-                    (-not $SkipCopilotCli) -or
-                    ($IncludeChocolatey -and (-not $SkipChocolateyUpdates))
-                )
-            ) {
+            if ($WinGetCommand -and (-not $SkipWinGet) -and ($WindowsOsCaption -match 'Server')) {
                 # If on Windows Server, prompt to continue before automatically updating packages.
-                Write-Warning -Message 'This is a server and updates could affect production systems. Do you want to continue with updating packages and CLI tools?'
+                Write-Warning -Message 'This is a server and updates could affect production systems. Do you want to continue with updating packages?'
 
                 $Yes = New-Object System.Management.Automation.Host.ChoiceDescription '&Yes', 'Description.'
                 $No = New-Object System.Management.Automation.Host.ChoiceDescription '&No', 'Description.'
                 $Options = [System.Management.Automation.Host.ChoiceDescription[]]($Yes, $No)
 
                 $Title = 'Windows Server OS Found'
-                $Message = 'Do you want to continue with updates on your server?'
+                $Message = "Do you want to run 'winget update' on your server?"
                 if (Get-Command -Name 'Get-HostChoice' -ErrorAction SilentlyContinue) {
                     $Result = Get-HostChoice -Title $Title -Message $Message -Options $Options -DefaultChoice 1
                 } else {
@@ -316,13 +301,10 @@ function Update-AllTheThings {
                 }
                 switch ($Result) {
                     0 {
-                        Write-Verbose 'Continuing with Windows Server updates.'
+                        Write-Verbose 'Continuing with WinGet package updates.'
                     }
                     1 {
                         $SkipWinGet = $true
-                        $SkipGitHubCli = $true
-                        $SkipCopilotCli = $true
-                        $SkipChocolateyUpdates = $true
                     }
                 }
             }
@@ -423,40 +405,32 @@ function Update-AllTheThings {
         #endregion UpdateMacOS
 
         #region UpdateGitHubCli
-        if (-not $SkipGitHubCli) {
-            & $InvokeOptionalCliUpdate -CommandName 'gh' `
-                -DisplayName '[7] Updating GitHub CLI Extensions' `
-                -CurrentOperation 'Updating GitHub CLI Extensions' `
-                -TargetName 'GitHub CLI extensions' `
-                -ActionName 'Upgrade all installed extensions' `
-                -PercentComplete 90 `
-                -UpdateCommand {
-                    gh extension upgrade --all
-                }
-        } else {
-            Write-Host '[7] Skipping GitHub CLI Extensions'
-        }
+        & $InvokeOptionalCliUpdate -CommandName 'gh' `
+            -DisplayName '[7] Updating GitHub CLI Extensions' `
+            -CurrentOperation 'Updating GitHub CLI Extensions' `
+            -TargetName 'GitHub CLI extensions' `
+            -ActionName 'Upgrade all installed extensions' `
+            -PercentComplete 90 `
+            -UpdateCommand {
+                gh extension upgrade --all
+            }
         #endregion UpdateGitHubCli
 
         #region UpdateCopilotCli
-        if (-not $SkipCopilotCli) {
-            & $InvokeOptionalCliUpdate -CommandName 'copilot' `
-                -DisplayName '[8] Updating GitHub Copilot CLI' `
-                -CurrentOperation 'Updating GitHub Copilot CLI' `
-                -TargetName 'GitHub Copilot CLI' `
-                -ActionName 'Update installed CLI' `
-                -PercentComplete 95 `
-                -UpdateCommand {
-                    copilot update
-                }
-        } else {
-            Write-Host '[8] Skipping GitHub Copilot CLI'
-        }
+        & $InvokeOptionalCliUpdate -CommandName 'copilot' `
+            -DisplayName '[8] Updating GitHub Copilot CLI' `
+            -CurrentOperation 'Updating GitHub Copilot CLI' `
+            -TargetName 'GitHub Copilot CLI' `
+            -ActionName 'Update installed CLI' `
+            -PercentComplete 95 `
+            -UpdateCommand {
+                copilot update
+            }
         #endregion UpdateCopilotCli
 
         #region UpdateChocolatey
         # Upgrade Chocolatey packages. Need to check for admin to avoid errors/warnings.
-        if ((Get-Command choco -ErrorAction SilentlyContinue) -and $IncludeChocolatey -and (-not $SkipChocolateyUpdates)) {
+        if ((Get-Command choco -ErrorAction SilentlyContinue) -and $IncludeChocolatey) {
             # Update the outer progress bar
             $PercentCompleteOuter = 98
             $ProgressParamOuter = @{
