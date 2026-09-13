@@ -382,6 +382,9 @@ function Update-AllTheThings {
                     $WindowsOsCaption = (Get-CimInstance -ClassName CIM_OperatingSystem).Caption
                 } elseif (Get-Command -Name 'Get-WmiObject' -ErrorAction SilentlyContinue) {
                     $WindowsOsCaption = (Get-WmiObject -Class Win32_OperatingSystem).Caption
+                } else {
+                    Write-Warning -Message 'Unable to determine the Windows operating system caption. Skipping WinGet updates as a safety precaution.'
+                    $SkipWinGet = $true
                 }
             }
 

@@ -338,6 +338,25 @@ Describe 'Update-AllTheThings' {
             }
         }
 
+        It 'Skips WinGet when the Windows OS caption cannot be determined' {
+            Mock Get-Command {
+                param($Name)
+
+                if ($Name -eq 'winget') {
+                    return @{ Name = 'winget' }
+                }
+
+                return $null
+            }
+
+            Update-AllTheThings -SkipModules -SkipScripts -SkipHelp
+
+            Should -Invoke Write-Warning -Exactly 1 -ParameterFilter {
+                $Message -match 'Unable to determine the Windows operating system caption'
+            }
+            Should -Invoke winget -Exactly 0
+        }
+
         It 'Still runs later CLI updates when WinGet is skipped explicitly' {
             Mock gh {}
             Mock copilot {}
