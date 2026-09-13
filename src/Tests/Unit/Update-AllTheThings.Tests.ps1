@@ -355,6 +355,29 @@ Describe 'Update-AllTheThings' {
             }
         }
 
+        It 'Falls back to WMI when CIM is available but throws' {
+            Mock Get-HostChoice { 0 }
+            Mock Get-CimInstance { throw 'CIM failure' }
+            Mock Get-WmiObject { @{ Caption = 'Windows Server 2025 Datacenter' } }
+            Mock Get-Command {
+                param($Name)
+
+                if ($Name -in @('Get-CimInstance', 'Get-HostChoice', 'Get-WmiObject', 'winget')) {
+                    return @{ Name = $Name }
+                }
+
+                return $null
+            }
+
+            Update-AllTheThings -SkipModules -SkipScripts -SkipHelp
+
+            Should -Invoke Get-CimInstance -Exactly 1 -ParameterFilter { $ClassName -eq 'CIM_OperatingSystem' }
+            Should -Invoke Get-WmiObject -Exactly 1 -ParameterFilter { $Class -eq 'Win32_OperatingSystem' }
+            Should -Invoke winget -Exactly 1 -ParameterFilter {
+                ($Arguments -join ' ') -eq 'upgrade --silent --scope user --accept-package-agreements --accept-source-agreements --all'
+            }
+        }
+
         It 'Skips WinGet when the Windows OS caption cannot be determined' {
             Mock Get-Command {
                 param($Name)

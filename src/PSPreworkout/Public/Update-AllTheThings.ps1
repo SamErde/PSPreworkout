@@ -275,13 +275,29 @@ function Update-AllTheThings {
             $WinGetCommand = Get-Command -Name 'winget' -ErrorAction SilentlyContinue
             $WindowsOsCaption = $null
 
-            if (Get-Command -Name 'Get-CimInstance' -ErrorAction SilentlyContinue) {
-                $WindowsOsCaption = (Get-CimInstance -ClassName CIM_OperatingSystem).Caption
-            } elseif (Get-Command -Name 'Get-WmiObject' -ErrorAction SilentlyContinue) {
-                $WindowsOsCaption = (Get-WmiObject -Class Win32_OperatingSystem).Caption
-            } elseif ($WinGetCommand -and (-not $SkipWinGet)) {
-                Write-Warning -Message 'Unable to determine the Windows operating system caption. Skipping WinGet updates as a safety precaution.'
-                $SkipWinGet = $true
+            if ($WinGetCommand -and (-not $SkipWinGet)) {
+                try {
+                    if (Get-Command -Name 'Get-CimInstance' -ErrorAction SilentlyContinue) {
+                        $WindowsOsCaption = (Get-CimInstance -ClassName CIM_OperatingSystem).Caption
+                    }
+                } catch {
+                    Write-Verbose 'Get-CimInstance failed while checking the Windows operating system caption.'
+                }
+
+                if ([string]::IsNullOrWhiteSpace($WindowsOsCaption)) {
+                    try {
+                        if (Get-Command -Name 'Get-WmiObject' -ErrorAction SilentlyContinue) {
+                            $WindowsOsCaption = (Get-WmiObject -Class Win32_OperatingSystem).Caption
+                        }
+                    } catch {
+                        Write-Verbose 'Get-WmiObject failed while checking the Windows operating system caption.'
+                    }
+                }
+
+                if ([string]::IsNullOrWhiteSpace($WindowsOsCaption)) {
+                    Write-Warning -Message 'Unable to determine the Windows operating system caption. Skipping WinGet updates as a safety precaution.'
+                    $SkipWinGet = $true
+                }
             }
 
             if ($WinGetCommand -and (-not $SkipWinGet) -and ($WindowsOsCaption -match 'Server')) {
