@@ -303,6 +303,26 @@ Describe 'Update-AllTheThings' {
 
             Should -Invoke winget -Exactly 0
         }
+
+        It 'Still runs later CLI updates when WinGet is skipped explicitly' {
+            Mock gh {}
+            Mock copilot {}
+            Mock Get-Command {
+                param($Name)
+
+                if ($Name -in @('gh', 'copilot')) {
+                    return @{ Name = $Name }
+                }
+
+                return $null
+            }
+
+            Update-AllTheThings -SkipModules -SkipScripts -SkipHelp -SkipWinGet
+
+            Should -Invoke gh -Exactly 1 -ParameterFilter { ($Arguments -join ' ') -eq 'extension upgrade --all' }
+            Should -Invoke copilot -Exactly 1 -ParameterFilter { ($Arguments -join ' ') -eq 'update' }
+            Should -Invoke winget -Exactly 0
+        }
     }
 
     Context 'Parameter Types' {

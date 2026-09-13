@@ -374,7 +374,7 @@ function Update-AllTheThings {
         # >>> Create a section to check OS and client/server OS at the top of the script <<< #
         if ($IsWindows -or ($PSVersionTable.PSVersion -le [version]'5.1')) {
 
-            if ((Get-CimInstance -ClassName CIM_OperatingSystem).Caption -match 'Server') {
+            if ((-not $SkipWinGet) -and ((Get-CimInstance -ClassName CIM_OperatingSystem).Caption -match 'Server')) {
                 # If on Windows Server, prompt to continue before automatically updating packages.
                 Write-Warning -Message 'This is a server and updates could affect production systems. Do you want to continue with updating packages?'
 
@@ -420,8 +420,7 @@ function Update-AllTheThings {
                     Write-Host '[4] WinGet was not found. Skipping WinGet update.'
                 }
             } else {
-                Write-Host '[3] Skipping WinGet'
-                continue
+                Write-Host '[4] Skipping WinGet'
             }
         } else {
             Write-Verbose '[4] Not Windows. Skipping WinGet.'
