@@ -2,6 +2,10 @@ BeforeAll {
     # Import the module or function under test
     $ModulePath = Split-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -Parent
     $PublicPath = Join-Path -Path $ModulePath -ChildPath 'PSPreworkout\Public'
+    $RepoRoot = Split-Path -Path $ModulePath -Parent
+    $PackagedScriptPath = Join-Path -Path $RepoRoot -ChildPath 'Scripts\Update-AllTheThings.ps1'
+    $script:OriginalIsLinux = $IsLinux
+    $script:OriginalIsMacOS = $IsMacOS
     $script:OriginalIsWindows = $IsWindows
 
     function Write-PSPreworkoutTelemetry {
@@ -100,6 +104,8 @@ BeforeAll {
 }
 
 AfterAll {
+    Set-Variable -Name IsLinux -Value $script:OriginalIsLinux -Force
+    Set-Variable -Name IsMacOS -Value $script:OriginalIsMacOS -Force
     Set-Variable -Name IsWindows -Value $script:OriginalIsWindows -Force
 }
 
@@ -282,6 +288,8 @@ Describe 'Update-AllTheThings' {
 
     Context 'Windows Server WinGet Prompt' {
         BeforeEach {
+            Set-Variable -Name IsLinux -Value $false -Force
+            Set-Variable -Name IsMacOS -Value $false -Force
             Set-Variable -Name IsWindows -Value $true -Force
             Mock Set-PSRepository {}
             Mock Write-Host {}
@@ -293,6 +301,8 @@ Describe 'Update-AllTheThings' {
         }
 
         AfterEach {
+            Set-Variable -Name IsLinux -Value $script:OriginalIsLinux -Force
+            Set-Variable -Name IsMacOS -Value $script:OriginalIsMacOS -Force
             Set-Variable -Name IsWindows -Value $script:OriginalIsWindows -Force
         }
 
@@ -477,6 +487,46 @@ Describe 'Update-AllTheThings' {
         It 'Should have AcceptPrompts parameter as switch type' {
             $Function = Get-Command Update-AllTheThings
             $Function.Parameters['AcceptPrompts'].ParameterType.Name | Should -Be 'SwitchParameter'
+        }
+    }
+
+    Context 'Packaged Script Safeguards' {
+        BeforeEach {
+            Set-Variable -Name IsLinux -Value $false -Force
+            Set-Variable -Name IsMacOS -Value $false -Force
+            Set-Variable -Name IsWindows -Value $true -Force
+            Mock Set-PSRepository {}
+            Mock Write-Host {}
+            Mock Write-Progress {}
+            Mock Write-Verbose {}
+            Mock Write-Warning {}
+            Mock winget {}
+            . $PackagedScriptPath
+        }
+
+        AfterEach {
+            Set-Variable -Name IsLinux -Value $script:OriginalIsLinux -Force
+            Set-Variable -Name IsMacOS -Value $script:OriginalIsMacOS -Force
+            Set-Variable -Name IsWindows -Value $script:OriginalIsWindows -Force
+        }
+
+        It 'Skips WinGet in the packaged script when the Windows OS caption cannot be determined' {
+            Mock Get-Command {
+                param($Name)
+
+                if ($Name -eq 'winget') {
+                    return @{ Name = 'winget' }
+                }
+
+                return $null
+            }
+
+            Update-AllTheThings -SkipModules -SkipScripts -SkipHelp
+
+            Should -Invoke Write-Warning -Exactly 1 -ParameterFilter {
+                $Message -match 'Unable to determine the Windows operating system caption'
+            }
+            Should -Invoke winget -Exactly 0
         }
     }
 }

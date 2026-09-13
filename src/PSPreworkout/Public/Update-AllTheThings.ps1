@@ -274,8 +274,11 @@ function Update-AllTheThings {
         if ($IsWindows -or ($PSVersionTable.PSVersion -le [version]'5.1')) {
             $WinGetCommand = Get-Command -Name 'winget' -ErrorAction SilentlyContinue
             $WindowsOsCaption = $null
+            $ShouldUpdateWinGet = $false
 
             if ($WinGetCommand -and (-not $SkipWinGet)) {
+                $ShouldUpdateWinGet = $PSCmdlet.ShouldProcess('WinGet packages', 'Upgrade all user-scoped packages')
+
                 try {
                     if (Get-Command -Name 'Get-CimInstance' -ErrorAction SilentlyContinue) {
                         $WindowsOsCaption = (Get-CimInstance -ClassName CIM_OperatingSystem).Caption
@@ -300,7 +303,7 @@ function Update-AllTheThings {
                 }
             }
 
-            if ((-not $WhatIfPreference) -and $WinGetCommand -and (-not $SkipWinGet) -and ($WindowsOsCaption -match 'Server')) {
+            if ($ShouldUpdateWinGet -and (-not $WhatIfPreference) -and ($WindowsOsCaption -match 'Server')) {
                 # If on Windows Server, prompt to continue before automatically updating packages.
                 Write-Warning -Message 'This is a server and updates could affect production systems. Do you want to continue with updating packages?'
 
@@ -321,25 +324,28 @@ function Update-AllTheThings {
                     }
                     1 {
                         $SkipWinGet = $true
+                        $ShouldUpdateWinGet = $false
                     }
                 }
             }
 
             if (-not $SkipWinGet) {
                 if ($WinGetCommand) {
-                    # Update all winget packages
-                    Write-Host '[4] Updating Winget Packages'
-                    # Update the outer progress bar for winget section
-                    $PercentCompleteOuter = 80
-                    $ProgressParamOuter = @{
-                        Id               = 0
-                        Activity         = 'Update Everything'
-                        CurrentOperation = 'Updating Winget Packages'
-                        Status           = "Progress: $PercentCompleteOuter`% Complete"
-                        PercentComplete  = $PercentCompleteOuter
+                    if ($ShouldUpdateWinGet -or $WhatIfPreference) {
+                        # Update all winget packages
+                        Write-Host '[4] Updating Winget Packages'
+                        # Update the outer progress bar for winget section
+                        $PercentCompleteOuter = 80
+                        $ProgressParamOuter = @{
+                            Id               = 0
+                            Activity         = 'Update Everything'
+                            CurrentOperation = 'Updating Winget Packages'
+                            Status           = "Progress: $PercentCompleteOuter`% Complete"
+                            PercentComplete  = $PercentCompleteOuter
+                        }
+                        Write-Progress @ProgressParamOuter
                     }
-                    Write-Progress @ProgressParamOuter
-                    if ($PSCmdlet.ShouldProcess('WinGet packages', 'Upgrade all user-scoped packages')) {
+                    if ($ShouldUpdateWinGet) {
                         winget upgrade --silent --scope user --accept-package-agreements --accept-source-agreements --all
                     }
                 } else {
