@@ -275,6 +275,7 @@ function Update-AllTheThings {
             $WinGetCommand = Get-Command -Name 'winget' -ErrorAction SilentlyContinue
             $WindowsOsCaption = $null
             $ShouldUpdateWinGet = $false
+            $SkipServerPrompt = $PSBoundParameters.ContainsKey('Confirm') -and (-not $Confirm)
 
             if ($WinGetCommand -and (-not $SkipWinGet)) {
                 $ShouldUpdateWinGet = $PSCmdlet.ShouldProcess('WinGet packages', 'Upgrade all user-scoped packages')
@@ -303,7 +304,7 @@ function Update-AllTheThings {
                 }
             }
 
-            if ($ShouldUpdateWinGet -and (-not $WhatIfPreference) -and ($WindowsOsCaption -match 'Server')) {
+            if ($ShouldUpdateWinGet -and (-not $SkipServerPrompt) -and (-not $WhatIfPreference) -and ($WindowsOsCaption -match 'Server')) {
                 # If on Windows Server, prompt to continue before automatically updating packages.
                 Write-Warning -Message 'This is a server and updates could affect production systems. Do you want to continue with updating packages?'
 
