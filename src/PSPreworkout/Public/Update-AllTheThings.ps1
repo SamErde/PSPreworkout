@@ -313,19 +313,19 @@ function Update-AllTheThings {
             }
 
             if (-not $SkipWinGet) {
-                # Update all winget packages
-                Write-Host '[4] Updating Winget Packages'
-                # Update the outer progress bar for winget section
-                $PercentCompleteOuter = 80
-                $ProgressParamOuter = @{
-                    Id               = 0
-                    Activity         = 'Update Everything'
-                    CurrentOperation = 'Updating Winget Packages'
-                    Status           = "Progress: $PercentCompleteOuter`% Complete"
-                    PercentComplete  = $PercentCompleteOuter
-                }
-                Write-Progress @ProgressParamOuter
                 if ($WinGetCommand) {
+                    # Update all winget packages
+                    Write-Host '[4] Updating Winget Packages'
+                    # Update the outer progress bar for winget section
+                    $PercentCompleteOuter = 80
+                    $ProgressParamOuter = @{
+                        Id               = 0
+                        Activity         = 'Update Everything'
+                        CurrentOperation = 'Updating Winget Packages'
+                        Status           = "Progress: $PercentCompleteOuter`% Complete"
+                        PercentComplete  = $PercentCompleteOuter
+                    }
+                    Write-Progress @ProgressParamOuter
                     if ($PSCmdlet.ShouldProcess('WinGet packages', 'Upgrade all user-scoped packages')) {
                         winget upgrade --silent --scope user --accept-package-agreements --accept-source-agreements --all
                     }
