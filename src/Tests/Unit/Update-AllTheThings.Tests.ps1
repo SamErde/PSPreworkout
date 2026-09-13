@@ -380,6 +380,26 @@ Describe 'Update-AllTheThings' {
             }
         }
 
+        It 'Skips the Windows Server prompt when AcceptPrompts is specified' {
+            Mock Get-HostChoice { throw 'prompted' }
+            Mock Get-Command {
+                param($Name)
+
+                if ($Name -in @('Get-CimInstance', 'Get-HostChoice', 'winget')) {
+                    return @{ Name = $Name }
+                }
+
+                return $null
+            }
+
+            Update-AllTheThings -SkipModules -SkipScripts -SkipHelp -AcceptPrompts
+
+            Should -Invoke Get-HostChoice -Exactly 0
+            Should -Invoke winget -Exactly 1 -ParameterFilter {
+                ($Arguments -join ' ') -eq 'upgrade --silent --scope user --accept-package-agreements --accept-source-agreements --all'
+            }
+        }
+
         It 'Falls back to WMI for the server prompt when CIM is unavailable' {
             Mock Get-HostChoice { 0 }
             Mock Get-CimInstance {}
