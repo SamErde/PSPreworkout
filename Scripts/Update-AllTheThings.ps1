@@ -377,18 +377,7 @@ function Update-AllTheThings {
             $WinGetCommand = Get-Command -Name 'winget' -ErrorAction SilentlyContinue
             $WindowsOsCaption = $null
             $ShouldUpdateWinGet = $false
-            $ConfirmHandledByShouldProcess = $false
-
-            if ($PSBoundParameters.ContainsKey('Confirm')) {
-                $ConfirmHandledByShouldProcess = [bool]$Confirm
-            } elseif (
-                ($ConfirmPreference -ne [System.Management.Automation.ConfirmImpact]::None) -and
-                (([System.Management.Automation.ConfirmImpact]$ConfirmPreference) -le [System.Management.Automation.ConfirmImpact]::Medium)
-            ) {
-                $ConfirmHandledByShouldProcess = $true
-            }
-
-            $SkipServerPrompt = ($PSBoundParameters.ContainsKey('Confirm') -and (-not $Confirm)) -or $ConfirmHandledByShouldProcess
+            $SkipServerPrompt = $PSBoundParameters.ContainsKey('Confirm') -and (-not $Confirm)
 
             if ($WinGetCommand -and (-not $SkipWinGet)) {
                 $ShouldUpdateWinGet = $PSCmdlet.ShouldProcess('WinGet packages', 'Upgrade all user-scoped packages')
