@@ -332,6 +332,24 @@ Describe 'Update-AllTheThings' {
             Should -Invoke winget -Exactly 0
         }
 
+        It 'Skips the Windows Server prompt during WhatIf' {
+            Mock Get-HostChoice { throw 'prompted' }
+            Mock Get-Command {
+                param($Name)
+
+                if ($Name -in @('Get-CimInstance', 'Get-HostChoice', 'winget')) {
+                    return @{ Name = $Name }
+                }
+
+                return $null
+            }
+
+            Update-AllTheThings -SkipModules -SkipScripts -SkipHelp -WhatIf
+
+            Should -Invoke Get-HostChoice -Exactly 0
+            Should -Invoke winget -Exactly 0
+        }
+
         It 'Falls back to WMI for the server prompt when CIM is unavailable' {
             Mock Get-HostChoice { 0 }
             Mock Get-CimInstance {}

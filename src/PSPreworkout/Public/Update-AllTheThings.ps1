@@ -300,7 +300,7 @@ function Update-AllTheThings {
                 }
             }
 
-            if ($WinGetCommand -and (-not $SkipWinGet) -and ($WindowsOsCaption -match 'Server')) {
+            if ((-not $WhatIfPreference) -and $WinGetCommand -and (-not $SkipWinGet) -and ($WindowsOsCaption -match 'Server')) {
                 # If on Windows Server, prompt to continue before automatically updating packages.
                 Write-Warning -Message 'This is a server and updates could affect production systems. Do you want to continue with updating packages?'
 
