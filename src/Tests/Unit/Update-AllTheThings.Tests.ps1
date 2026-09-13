@@ -2,6 +2,7 @@ BeforeAll {
     # Import the module or function under test
     $ModulePath = Split-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -Parent
     $PublicPath = Join-Path -Path $ModulePath -ChildPath 'PSPreworkout\Public'
+    $script:OriginalIsWindows = $IsWindows
 
     function Write-PSPreworkoutTelemetry {
         [CmdletBinding()]
@@ -43,7 +44,52 @@ BeforeAll {
         $Arguments | Out-Null
     }
 
+    function winget {
+        [CmdletBinding()]
+        param(
+            [Parameter(ValueFromRemainingArguments)]
+            [string[]]$Arguments
+        )
+
+        $Arguments | Out-Null
+    }
+
+    function Get-HostChoice {
+        [CmdletBinding()]
+        param(
+            [Parameter()]
+            [string]$Title,
+
+            [Parameter()]
+            [string]$Message,
+
+            [Parameter()]
+            [System.Management.Automation.Host.ChoiceDescription[]]$Options,
+
+            [Parameter()]
+            [int]$DefaultChoice
+        )
+
+        $Title, $Message, $Options, $DefaultChoice | Out-Null
+        return 0
+    }
+
+    function Get-CimInstance {
+        [CmdletBinding()]
+        param(
+            [Parameter()]
+            [string]$ClassName
+        )
+
+        $ClassName | Out-Null
+        return @{ Caption = 'Windows 11' }
+    }
+
     . (Join-Path -Path $PublicPath -ChildPath 'Update-AllTheThings.ps1')
+}
+
+AfterAll {
+    Set-Variable -Name IsWindows -Value $script:OriginalIsWindows -Force
 }
 
 Describe 'Update-AllTheThings' {
@@ -203,6 +249,59 @@ Describe 'Update-AllTheThings' {
             Update-AllTheThings -SkipModules -SkipScripts -SkipHelp -SkipWinGet
 
             Should -Invoke copilot -Exactly 0
+        }
+    }
+
+    Context 'Windows Server WinGet Prompt' {
+        BeforeEach {
+            Set-Variable -Name IsWindows -Value $true -Force
+            Mock Set-PSRepository {}
+            Mock Write-Host {}
+            Mock Write-Progress {}
+            Mock Write-Verbose {}
+            Mock Write-Warning {}
+            Mock winget {}
+            Mock Get-CimInstance { @{ Caption = 'Windows Server 2025 Datacenter' } }
+        }
+
+        AfterEach {
+            Set-Variable -Name IsWindows -Value $script:OriginalIsWindows -Force
+        }
+
+        It 'Continues with WinGet updates when the server prompt returns Yes' {
+            Mock Get-HostChoice { 0 }
+            Mock Get-Command {
+                param($Name)
+
+                if ($Name -in @('Get-HostChoice', 'winget')) {
+                    return @{ Name = $Name }
+                }
+
+                return $null
+            }
+
+            Update-AllTheThings -SkipModules -SkipScripts -SkipHelp
+
+            Should -Invoke winget -Exactly 1 -ParameterFilter {
+                ($Arguments -join ' ') -eq 'upgrade --silent --scope user --accept-package-agreements --accept-source-agreements --all'
+            }
+        }
+
+        It 'Skips WinGet updates when the server prompt returns No' {
+            Mock Get-HostChoice { 1 }
+            Mock Get-Command {
+                param($Name)
+
+                if ($Name -in @('Get-HostChoice', 'winget')) {
+                    return @{ Name = $Name }
+                }
+
+                return $null
+            }
+
+            Update-AllTheThings -SkipModules -SkipScripts -SkipHelp
+
+            Should -Invoke winget -Exactly 0
         }
     }
 

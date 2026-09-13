@@ -212,6 +212,48 @@ function Update-AllTheThings {
             }
         }
 
+        $InvokeOptionalCliUpdate = {
+            param(
+                [Parameter(Mandatory)]
+                [string]$CommandName,
+
+                [Parameter(Mandatory)]
+                [string]$DisplayName,
+
+                [Parameter(Mandatory)]
+                [string]$CurrentOperation,
+
+                [Parameter(Mandatory)]
+                [string]$TargetName,
+
+                [Parameter(Mandatory)]
+                [string]$ActionName,
+
+                [Parameter(Mandatory)]
+                [int]$PercentComplete,
+
+                [Parameter(Mandatory)]
+                [scriptblock]$UpdateCommand
+            )
+
+            if (Get-Command -Name $CommandName -ErrorAction SilentlyContinue) {
+                Write-Host $DisplayName
+                $ProgressParamOuter = @{
+                    Id               = 0
+                    Activity         = 'Update Everything'
+                    CurrentOperation = $CurrentOperation
+                    Status           = "Progress: $PercentComplete`% Complete"
+                    PercentComplete  = $PercentComplete
+                }
+                Write-Progress @ProgressParamOuter
+                if ($PSCmdlet.ShouldProcess($TargetName, $ActionName)) {
+                    & $UpdateCommand
+                }
+            } else {
+                Write-Verbose "$DisplayName was skipped because $CommandName was not found."
+            }
+        }
+
         #region UpdatePowerShell
 
         # ==================== Update PowerShell Modules ====================
@@ -342,7 +384,11 @@ function Update-AllTheThings {
 
                 $Title = 'Windows Server OS Found'
                 $Message = "Do you want to run 'winget update' on your server?"
-                $Result = $Host.UI.PromptForChoice($Title, $Message, $Options, 1)
+                if (Get-Command -Name 'Get-HostChoice' -ErrorAction SilentlyContinue) {
+                    $Result = Get-HostChoice -Title $Title -Message $Message -Options $Options -DefaultChoice 1
+                } else {
+                    $Result = $Host.UI.PromptForChoice($Title, $Message, $Options, 1)
+                }
                 switch ($Result) {
                     0 {
                         Write-Verbose 'Continuing with WinGet package updates.'
@@ -450,43 +496,27 @@ function Update-AllTheThings {
         #endregion UpdateMacOS
 
         #region UpdateGitHubCli
-        if (Get-Command -Name 'gh' -ErrorAction SilentlyContinue) {
-            Write-Host '[7] Updating GitHub CLI Extensions'
-            $PercentCompleteOuter = 90
-            $ProgressParamOuter = @{
-                Id               = 0
-                Activity         = 'Update Everything'
-                CurrentOperation = 'Updating GitHub CLI Extensions'
-                Status           = "Progress: $PercentCompleteOuter`% Complete"
-                PercentComplete  = $PercentCompleteOuter
-            }
-            Write-Progress @ProgressParamOuter
-            if ($PSCmdlet.ShouldProcess('GitHub CLI extensions', 'Upgrade all installed extensions')) {
+        & $InvokeOptionalCliUpdate -CommandName 'gh' `
+            -DisplayName '[7] Updating GitHub CLI Extensions' `
+            -CurrentOperation 'Updating GitHub CLI Extensions' `
+            -TargetName 'GitHub CLI extensions' `
+            -ActionName 'Upgrade all installed extensions' `
+            -PercentComplete 90 `
+            -UpdateCommand {
                 gh extension upgrade --all
             }
-        } else {
-            Write-Verbose '[7] GitHub CLI was not found. Skipping section.'
-        }
         #endregion UpdateGitHubCli
 
         #region UpdateCopilotCli
-        if (Get-Command -Name 'copilot' -ErrorAction SilentlyContinue) {
-            Write-Host '[8] Updating GitHub Copilot CLI'
-            $PercentCompleteOuter = 95
-            $ProgressParamOuter = @{
-                Id               = 0
-                Activity         = 'Update Everything'
-                CurrentOperation = 'Updating GitHub Copilot CLI'
-                Status           = "Progress: $PercentCompleteOuter`% Complete"
-                PercentComplete  = $PercentCompleteOuter
-            }
-            Write-Progress @ProgressParamOuter
-            if ($PSCmdlet.ShouldProcess('GitHub Copilot CLI', 'Update installed CLI')) {
+        & $InvokeOptionalCliUpdate -CommandName 'copilot' `
+            -DisplayName '[8] Updating GitHub Copilot CLI' `
+            -CurrentOperation 'Updating GitHub Copilot CLI' `
+            -TargetName 'GitHub Copilot CLI' `
+            -ActionName 'Update installed CLI' `
+            -PercentComplete 95 `
+            -UpdateCommand {
                 copilot update
             }
-        } else {
-            Write-Verbose '[8] GitHub Copilot CLI was not found. Skipping section.'
-        }
         #endregion UpdateCopilotCli
 
         #region UpdateChocolatey
