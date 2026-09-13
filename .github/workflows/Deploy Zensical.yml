@@ -1,19 +1,19 @@
-name: 📖 Deploy MkDocs to GitHub Pages
+name: 📖 Deploy Zensical Docs to GitHub Pages
 
 on:
-  # Run when changes are made to the contents of the docs folder, the MkDocs config, or this workflow.
+  # Run when changes are made to the docs content, docs dependencies, workflow, or config.
   push:
     branches:
       - main
     paths:
       - "docs/**"
-      - ".github/workflows/Deploy MkDocs.yml"
+      - ".github/workflows/Deploy Zensical.yml"
       - "mkdocs.yml"
 
   # Allow manual triggering of the workflow.
   workflow_dispatch:
 
-permissions:  # added using https://github.com/step-security/secure-repo
+permissions:
   contents: read
 
 jobs:
@@ -33,14 +33,14 @@ jobs:
       - name: 🐍 Setup Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
-          python-version: "3.12" # specify the Python version
+          python-version: "3.12"
 
-      - name: ➕ Install Dependencies
+      - name: ➕ Install Zensical
         run: |
           python -m pip install --upgrade pip
           pip install -r docs/requirements.txt
 
-      - name: 👷‍♂️ Deploy MkDocs to GitHub Pages
+      - name: 👷‍♂️ Deploy Zensical Docs to GitHub Pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: mkdocs gh-deploy --force
+        run: zensical gh-deploy --force
