@@ -41,6 +41,7 @@ function Update-AllTheThings {
 
     [CmdletBinding(
         SupportsShouldProcess,
+        ConfirmImpact = 'Medium',
         HelpUri = 'https://day3bits.com/PSPreworkout/Update-AllTheThings'
     )]
     [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '', Justification = 'This is what we do.')]
@@ -280,10 +281,13 @@ function Update-AllTheThings {
                 ($ConfirmPreference -ne [System.Management.Automation.ConfirmImpact]::None) -and
                 (([System.Management.Automation.ConfirmImpact]$ConfirmPreference) -le [System.Management.Automation.ConfirmImpact]::Medium)
             )
+            $NeedServerPrompt = $WinGetCommand -and (-not $SkipWinGet) -and (-not $SkipServerPrompt) -and (-not $ShouldProcessHandlesConsent)
 
             if ($WinGetCommand -and (-not $SkipWinGet)) {
                 $ShouldUpdateWinGet = $PSCmdlet.ShouldProcess('WinGet packages', 'Upgrade all user-scoped packages')
+            }
 
+            if ($NeedServerPrompt) {
                 try {
                     if (Get-Command -Name 'Get-CimInstance' -ErrorAction SilentlyContinue) {
                         $WindowsOsCaption = (Get-CimInstance -ClassName CIM_OperatingSystem).Caption
@@ -305,10 +309,11 @@ function Update-AllTheThings {
                 if ([string]::IsNullOrWhiteSpace($WindowsOsCaption)) {
                     Write-Warning -Message 'Unable to determine the Windows operating system caption. Skipping WinGet updates as a safety precaution.'
                     $SkipWinGet = $true
+                    $ShouldUpdateWinGet = $false
                 }
             }
 
-            if ($ShouldUpdateWinGet -and (-not $SkipServerPrompt) -and (-not $ShouldProcessHandlesConsent) -and ($WindowsOsCaption -match 'Server')) {
+            if ($ShouldUpdateWinGet -and $NeedServerPrompt -and ($WindowsOsCaption -match 'Server')) {
                 # If on Windows Server, prompt to continue before automatically updating packages.
                 Write-Warning -Message 'This is a server and updates could affect production systems. Do you want to continue with updating packages?'
 

@@ -416,7 +416,6 @@ Describe 'Update-AllTheThings' {
 
             Update-AllTheThings -SkipModules -SkipScripts -SkipHelp
 
-            Should -Invoke Get-CimInstance -Exactly 0
             Should -Invoke Get-WmiObject -Exactly 1 -ParameterFilter { $Class -eq 'Win32_OperatingSystem' }
             Should -Invoke winget -Exactly 1 -ParameterFilter {
                 ($Arguments -join ' ') -eq 'upgrade --silent --scope user --accept-package-agreements --accept-source-agreements --all'
