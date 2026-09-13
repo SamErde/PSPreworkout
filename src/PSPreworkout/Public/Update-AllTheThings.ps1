@@ -243,7 +243,7 @@ function Update-AllTheThings {
                 $Result = $Host.UI.PromptForChoice($Title, $Message, $Options, 1)
                 switch ($Result) {
                     0 {
-                        continue
+                        Write-Verbose 'Continuing with WinGet package updates.'
                     }
                     1 {
                         $SkipWinGet = $true

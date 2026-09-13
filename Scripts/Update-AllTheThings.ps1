@@ -60,7 +60,7 @@ function Test-IsElevated {
             # Check if we're on macOS and if user is in admin or wheel groups
             if ($IsMacOS -or (Get-Command 'sw_vers' -ErrorAction SilentlyContinue)) {
                 # Method 3a: Use groups command to check admin group membership
-                $groups = & Get-Groups 2>$null
+                $groups = & groups 2>$null
                 if ($LASTEXITCODE -eq 0 -and $groups) {
                     $groupList = $groups -split '\s+'
                     if ($groupList -contains 'admin' -or $groupList -contains 'wheel') {
@@ -345,7 +345,7 @@ function Update-AllTheThings {
                 $Result = $Host.UI.PromptForChoice($Title, $Message, $Options, 1)
                 switch ($Result) {
                     0 {
-                        continue
+                        Write-Verbose 'Continuing with WinGet package updates.'
                     }
                     1 {
                         $SkipWinGet = $true

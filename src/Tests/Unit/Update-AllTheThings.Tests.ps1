@@ -2,6 +2,47 @@ BeforeAll {
     # Import the module or function under test
     $ModulePath = Split-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -Parent
     $PublicPath = Join-Path -Path $ModulePath -ChildPath 'PSPreworkout\Public'
+
+    function Write-PSPreworkoutTelemetry {
+        [CmdletBinding()]
+        param(
+            [Parameter()]
+            [string]$EventName,
+
+            [Parameter()]
+            [string[]]$ParameterNamesOnly
+        )
+
+        $EventName, $ParameterNamesOnly | Out-Null
+    }
+
+    function Test-IsElevated {
+        [CmdletBinding()]
+        param()
+
+        return $false
+    }
+
+    function gh {
+        [CmdletBinding()]
+        param(
+            [Parameter(ValueFromRemainingArguments)]
+            [string[]]$Arguments
+        )
+
+        $Arguments | Out-Null
+    }
+
+    function copilot {
+        [CmdletBinding()]
+        param(
+            [Parameter(ValueFromRemainingArguments)]
+            [string[]]$Arguments
+        )
+
+        $Arguments | Out-Null
+    }
+
     . (Join-Path -Path $PublicPath -ChildPath 'Update-AllTheThings.ps1')
 }
 
@@ -103,6 +144,65 @@ Describe 'Update-AllTheThings' {
         It 'Should update GitHub Copilot CLI when copilot is available' {
             $Function = Get-Command Update-AllTheThings
             $Function.Definition | Should -Match 'copilot update'
+        }
+    }
+
+    Context 'GitHub CLI Tool Updates' {
+        BeforeEach {
+            Mock Set-PSRepository {}
+            Mock Write-Host {}
+            Mock Write-Progress {}
+            Mock Write-Verbose {}
+            Mock gh {}
+            Mock copilot {}
+        }
+
+        It 'Runs gh extension upgrade when gh is available' {
+            Mock Get-Command {
+                param($Name)
+
+                if ($Name -eq 'gh') {
+                    return @{ Name = 'gh' }
+                }
+
+                return $null
+            }
+
+            Update-AllTheThings -SkipModules -SkipScripts -SkipHelp -SkipWinGet
+
+            Should -Invoke gh -Exactly 1 -ParameterFilter { ($Arguments -join ' ') -eq 'extension upgrade --all' }
+        }
+
+        It 'Does not run gh extension upgrade when gh is unavailable' {
+            Mock Get-Command { $null }
+
+            Update-AllTheThings -SkipModules -SkipScripts -SkipHelp -SkipWinGet
+
+            Should -Invoke gh -Exactly 0
+        }
+
+        It 'Runs copilot update when copilot is available' {
+            Mock Get-Command {
+                param($Name)
+
+                if ($Name -eq 'copilot') {
+                    return @{ Name = 'copilot' }
+                }
+
+                return $null
+            }
+
+            Update-AllTheThings -SkipModules -SkipScripts -SkipHelp -SkipWinGet
+
+            Should -Invoke copilot -Exactly 1 -ParameterFilter { ($Arguments -join ' ') -eq 'update' }
+        }
+
+        It 'Does not run copilot update when copilot is unavailable' {
+            Mock Get-Command { $null }
+
+            Update-AllTheThings -SkipModules -SkipScripts -SkipHelp -SkipWinGet
+
+            Should -Invoke copilot -Exactly 0
         }
     }
 
