@@ -242,4 +242,4 @@ Version: 0.5.10
 
 ## RELATED LINKS
 
-{{ Fill in the related links here }}
+- [Update-AllTheThings](https://day3bits.com/PSPreworkout/Update-AllTheThings)

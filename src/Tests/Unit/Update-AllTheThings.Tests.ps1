@@ -261,6 +261,23 @@ Describe 'Update-AllTheThings' {
 
             Should -Invoke copilot -Exactly 0
         }
+
+        It 'Does not run GitHub CLI updates during WhatIf' {
+            Mock Get-Command {
+                param($Name)
+
+                if ($Name -in @('gh', 'copilot')) {
+                    return @{ Name = $Name }
+                }
+
+                return $null
+            }
+
+            Update-AllTheThings -SkipModules -SkipScripts -SkipHelp -SkipWinGet -WhatIf
+
+            Should -Invoke gh -Exactly 0
+            Should -Invoke copilot -Exactly 0
+        }
     }
 
     Context 'Windows Server WinGet Prompt' {
@@ -360,10 +377,11 @@ Describe 'Update-AllTheThings' {
         It 'Still runs later CLI updates when WinGet is skipped explicitly' {
             Mock gh {}
             Mock copilot {}
+            Mock Get-HostChoice { 0 }
             Mock Get-Command {
                 param($Name)
 
-                if ($Name -in @('gh', 'copilot')) {
+                if ($Name -in @('Get-CimInstance', 'Get-HostChoice', 'gh', 'copilot')) {
                     return @{ Name = $Name }
                 }
 
