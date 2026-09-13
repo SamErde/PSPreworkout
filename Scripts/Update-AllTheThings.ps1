@@ -147,6 +147,7 @@ function Update-AllTheThings {
     )]
     [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '', Justification = 'This is what we do.')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '', Justification = 'Interactive Use')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWMICmdlet', '', Justification = 'Get-WmiObject is used as a fallback when CimCmdlets are unavailable.')]
     [Alias('uatt')]
     param (
         # Skip the step that updates PowerShell modules
@@ -374,12 +375,20 @@ function Update-AllTheThings {
         # >>> Create a section to check OS and client/server OS at the top of the script <<< #
         if ($IsWindows -or ($PSVersionTable.PSVersion -le [version]'5.1')) {
             $WinGetCommand = Get-Command -Name 'winget' -ErrorAction SilentlyContinue
+            $WindowsOsCaption = $null
+
+            if ($WinGetCommand -and (-not $SkipWinGet)) {
+                if (Get-Command -Name 'Get-CimInstance' -ErrorAction SilentlyContinue) {
+                    $WindowsOsCaption = (Get-CimInstance -ClassName CIM_OperatingSystem).Caption
+                } elseif (Get-Command -Name 'Get-WmiObject' -ErrorAction SilentlyContinue) {
+                    $WindowsOsCaption = (Get-WmiObject -Class Win32_OperatingSystem).Caption
+                }
+            }
 
             if (
                 $WinGetCommand -and
                 (-not $SkipWinGet) -and
-                (Get-Command -Name 'Get-CimInstance' -ErrorAction SilentlyContinue) -and
-                ((Get-CimInstance -ClassName CIM_OperatingSystem).Caption -match 'Server')
+                ($WindowsOsCaption -match 'Server')
             ) {
                 # If on Windows Server, prompt to continue before automatically updating packages.
                 Write-Warning -Message 'This is a server and updates could affect production systems. Do you want to continue with updating packages?'

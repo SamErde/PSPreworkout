@@ -85,6 +85,17 @@ BeforeAll {
         return @{ Caption = 'Windows 11' }
     }
 
+    function Get-WmiObject {
+        [CmdletBinding()]
+        param(
+            [Parameter()]
+            [string]$Class
+        )
+
+        $Class | Out-Null
+        return @{ Caption = 'Windows 11' }
+    }
+
     . (Join-Path -Path $PublicPath -ChildPath 'Update-AllTheThings.ps1')
 }
 
@@ -302,6 +313,29 @@ Describe 'Update-AllTheThings' {
             Update-AllTheThings -SkipModules -SkipScripts -SkipHelp
 
             Should -Invoke winget -Exactly 0
+        }
+
+        It 'Falls back to WMI for the server prompt when CIM is unavailable' {
+            Mock Get-HostChoice { 0 }
+            Mock Get-CimInstance {}
+            Mock Get-WmiObject { @{ Caption = 'Windows Server 2025 Datacenter' } }
+            Mock Get-Command {
+                param($Name)
+
+                if ($Name -in @('Get-HostChoice', 'Get-WmiObject', 'winget')) {
+                    return @{ Name = $Name }
+                }
+
+                return $null
+            }
+
+            Update-AllTheThings -SkipModules -SkipScripts -SkipHelp
+
+            Should -Invoke Get-CimInstance -Exactly 0
+            Should -Invoke Get-WmiObject -Exactly 1 -ParameterFilter { $Class -eq 'Win32_OperatingSystem' }
+            Should -Invoke winget -Exactly 1 -ParameterFilter {
+                ($Arguments -join ' ') -eq 'upgrade --silent --scope user --accept-package-agreements --accept-source-agreements --all'
+            }
         }
 
         It 'Still runs later CLI updates when WinGet is skipped explicitly' {
