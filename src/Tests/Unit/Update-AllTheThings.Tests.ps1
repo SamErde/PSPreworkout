@@ -273,7 +273,7 @@ Describe 'Update-AllTheThings' {
             Mock Get-Command {
                 param($Name)
 
-                if ($Name -in @('Get-HostChoice', 'winget')) {
+                if ($Name -in @('Get-CimInstance', 'Get-HostChoice', 'winget')) {
                     return @{ Name = $Name }
                 }
 
@@ -292,7 +292,7 @@ Describe 'Update-AllTheThings' {
             Mock Get-Command {
                 param($Name)
 
-                if ($Name -in @('Get-HostChoice', 'winget')) {
+                if ($Name -in @('Get-CimInstance', 'Get-HostChoice', 'winget')) {
                     return @{ Name = $Name }
                 }
 

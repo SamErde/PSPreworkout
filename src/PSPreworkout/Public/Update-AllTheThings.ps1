@@ -271,8 +271,14 @@ function Update-AllTheThings {
         #region UpdateWinget
         # >>> Create a section to check OS and client/server OS at the top of the script <<< #
         if ($IsWindows -or ($PSVersionTable.PSVersion -le [version]'5.1')) {
+            $WinGetCommand = Get-Command -Name 'winget' -ErrorAction SilentlyContinue
 
-            if ((-not $SkipWinGet) -and ((Get-CimInstance -ClassName CIM_OperatingSystem).Caption -match 'Server')) {
+            if (
+                $WinGetCommand -and
+                (-not $SkipWinGet) -and
+                (Get-Command -Name 'Get-CimInstance' -ErrorAction SilentlyContinue) -and
+                ((Get-CimInstance -ClassName CIM_OperatingSystem).Caption -match 'Server')
+            ) {
                 # If on Windows Server, prompt to continue before automatically updating packages.
                 Write-Warning -Message 'This is a server and updates could affect production systems. Do you want to continue with updating packages?'
 
@@ -310,7 +316,7 @@ function Update-AllTheThings {
                     PercentComplete  = $PercentCompleteOuter
                 }
                 Write-Progress @ProgressParamOuter
-                if (Get-Command winget -ErrorAction SilentlyContinue) {
+                if ($WinGetCommand) {
                     if ($PSCmdlet.ShouldProcess('WinGet packages', 'Upgrade all user-scoped packages')) {
                         winget upgrade --silent --scope user --accept-package-agreements --accept-source-agreements --all
                     }
