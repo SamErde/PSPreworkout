@@ -1,6 +1,6 @@
 <#PSScriptInfo
-.DESCRIPTION A script to automatically update all PowerShell modules, PowerShell Help, and packages (apt, brew, Chocolatey, winget).
-.VERSION 0.5.8
+.DESCRIPTION A script to automatically update all PowerShell modules, PowerShell Help, GitHub CLI tools, and packages (apt, brew, Chocolatey, winget).
+.VERSION 0.5.10
 .GUID 3a1a1ec9-0ef6-4f84-963d-be1505dab6a8
 .AUTHOR Sam Erde
 .COPYRIGHT (c) 2024 Sam Erde. All rights reserved.
@@ -23,16 +23,81 @@ function Test-IsElevated {
     .OUTPUTS
     Boolean
     #>
-    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout')]
+    [CmdletBinding(HelpUri = 'https://day3bits.com/PSPreworkout/Test-IsElevated')]
     [Alias('isadmin', 'isroot')]
+    [OutputType([bool])]
     param ()
+
+    # Send non-identifying usage statistics to PostHog.
+    Write-PSPreworkoutTelemetry -EventName $MyInvocation.MyCommand.Name -ParameterNamesOnly $MyInvocation.BoundParameters.Keys
 
     if (($PSVersionTable.PSVersion.Major -le 5) -or $IsWindows) {
         $CurrentUser = [Security.Principal.WindowsPrincipal]([Security.Principal.WindowsIdentity]::GetCurrent())
         return $CurrentUser.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
     } else {
-        # Must be Linux or OSX, so use the id util. Root has userid of 0.
-        return 0 -eq (id -u)
+        # Unix-like systems (Linux, macOS, etc.)
+        # Method 1: Try id command with error handling
+        try {
+            $userId = & id -u 2>$null
+            if ($LASTEXITCODE -eq 0 -and $null -ne $userId) {
+                return 0 -eq [int]$userId
+            }
+        } catch {
+            Write-Debug "id command failed: $($_.Exception.Message)"
+        }
+
+        # Method 2: Check username via .NET
+        try {
+            if ([System.Environment]::UserName -eq 'root') {
+                return $true
+            }
+        } catch {
+            Write-Debug ".NET username check failed: $($_.Exception.Message)"
+        }
+
+        # Method 3: Check for macOS admin group membership
+        try {
+            # Check if we're on macOS and if user is in admin or wheel groups
+            if ($IsMacOS -or (Get-Command 'sw_vers' -ErrorAction SilentlyContinue)) {
+                # Method 3a: Use groups command to check admin group membership
+                $groups = & Get-Groups 2>$null
+                if ($LASTEXITCODE -eq 0 -and $groups) {
+                    $groupList = $groups -split '\s+'
+                    if ($groupList -contains 'admin' -or $groupList -contains 'wheel') {
+                        return $true
+                    }
+                }
+
+                # Method 3b: Use id command to check group IDs
+                $groupIds = & id -G 2>$null
+                if ($LASTEXITCODE -eq 0 -and $groupIds) {
+                    $gidList = $groupIds -split '\s+' | ForEach-Object { [int]$_ }
+                    if ($gidList -contains 80 -or $gidList -contains 0) {
+                        # 80=admin, 0=wheel
+                        return $true
+                    }
+                }
+            }
+        } catch {
+            Write-Debug "macOS admin group check failed: $($_.Exception.Message)"
+        }
+
+        # Method 4: Check effective user ID via /proc (Linux-specific)
+        try {
+            if (Test-Path '/proc/self/status') {
+                $statusContent = Get-Content '/proc/self/status' -ErrorAction SilentlyContinue
+                $uidLine = $statusContent | Where-Object { $_ -match '^Uid:' }
+                if ($uidLine -and $uidLine -match '\s+(\d+)\s+') {
+                    return 0 -eq [int]$matches[1]
+                }
+            }
+        } catch {
+            Write-Debug "/proc status check failed: $($_.Exception.Message)"
+        }
+
+        # All methods failed
+        Write-Warning 'Unable to determine elevation status on this Unix-like system. All detection methods failed.'
+        return $false
     }
 }
 function Update-AllTheThings {
@@ -41,7 +106,7 @@ function Update-AllTheThings {
     Update all the things!
 
     .DESCRIPTION
-    A script to automatically update all PowerShell modules, PowerShell Help, and packages (apt, brew, Chocolatey, winget).
+    A script to automatically update all PowerShell modules, PowerShell Help, GitHub CLI tools, and packages (apt, brew, Chocolatey, winget).
 
     .PARAMETER SkipModules
     Skip the step that updates PowerShell modules.
@@ -70,10 +135,17 @@ function Update-AllTheThings {
     Update-AllTheThings -AcceptPrompts
 
     Updates all of the things and automatically accepts Linux package upgrade prompts.
+
+    .NOTES
+    Author: Sam Erde
+    Version: 0.5.10
     #>
 
-    [CmdletBinding(SupportsShouldProcess)]
-    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', 'Update-AllTheThings', Justification = 'This is what we do.')]
+    [CmdletBinding(
+        SupportsShouldProcess,
+        HelpUri = 'https://day3bits.com/PSPreworkout/Update-AllTheThings'
+    )]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '', Justification = 'This is what we do.')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '', Justification = 'Interactive Use')]
     [Alias('uatt')]
     param (
@@ -110,6 +182,9 @@ function Update-AllTheThings {
     )
 
     begin {
+        # Send non-identifying usage statistics to PostHog.
+        Write-PSPreworkoutTelemetry -EventName $MyInvocation.MyCommand.Name -ParameterNamesOnly $MyInvocation.BoundParameters.Keys
+
         # Spacing to get host output from script, winget, and choco all below the progress bar.
         $Banner = @"
   __  __        __     __         ___   ____
@@ -120,7 +195,7 @@ function Update-AllTheThings {
 /_  __/ /  ___   /_  __/ /  (_)__  ___ ____
  / / / _ \/ -_)   / / / _ \/ / _ \/ _ `(_-<
 /_/ /_//_/\__/   /_/ /_//_/_/_//_/\_, /___/
-                                 /___/ 0.5.9
+                                 /___/ 0.5.10
 
 "@
         Write-Host $Banner
@@ -128,9 +203,13 @@ function Update-AllTheThings {
 
     process {
         Write-Verbose 'Set the PowerShell Gallery as a trusted installation source.'
-        Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
+        if ($PSCmdlet.ShouldProcess('PSGallery', 'Set PowerShellGet repository as trusted')) {
+            Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
+        }
         if (Get-Command -Name Set-PSResourceRepository -ErrorAction SilentlyContinue) {
-            Set-PSResourceRepository -Name 'PSGallery' -Trusted
+            if ($PSCmdlet.ShouldProcess('PSGallery', 'Set PSResourceGet repository as trusted')) {
+                Set-PSResourceRepository -Name 'PSGallery' -Trusted
+            }
         }
 
         #region UpdatePowerShell
@@ -197,7 +276,9 @@ function Update-AllTheThings {
 
             # Finally update the current module
             try {
-                Update-Module $module.Name
+                if ($PSCmdlet.ShouldProcess($module.Name, 'Update PowerShell module')) {
+                    Update-Module $module.Name
+                }
             } catch [Microsoft.PowerShell.Commands.WriteErrorException] {
                 # Add a catch for mismatched certificates between module versions.
                 Write-Verbose $_
@@ -207,7 +288,9 @@ function Update-AllTheThings {
         # ##### Add a section for installed scripts +++++
         if (-not $SkipScripts) {
             Write-Host '[2] Updating PowerShell Scripts'
-            Update-Script
+            if ($PSCmdlet.ShouldProcess('Installed PowerShell scripts', 'Update scripts')) {
+                Update-Script
+            }
         } else {
             Write-Host '[2] Skipping PowerShell Scripts'
         }
@@ -233,10 +316,12 @@ function Update-AllTheThings {
         if (-not $SkipHelp) {
             Write-Host '[3] Updating PowerShell Help'
             # Fixes error with culture ID 127 (Invariant Country), which is not associated with any language
-            if ((Get-Culture).LCID -eq 127) {
-                Update-Help -UICulture en-US -ErrorAction SilentlyContinue
-            } else {
-                Update-Help -ErrorAction SilentlyContinue
+            if ($PSCmdlet.ShouldProcess('PowerShell help files', 'Update help')) {
+                if ((Get-Culture).LCID -eq 127) {
+                    Update-Help -UICulture en-US -ErrorAction SilentlyContinue
+                } else {
+                    Update-Help -ErrorAction SilentlyContinue
+                }
             }
         } else {
             Write-Host '[3] Skipping PowerShell Help'
@@ -282,7 +367,9 @@ function Update-AllTheThings {
                 }
                 Write-Progress @ProgressParamOuter
                 if (Get-Command winget -ErrorAction SilentlyContinue) {
-                    winget upgrade --silent --scope user --accept-package-agreements --accept-source-agreements --all
+                    if ($PSCmdlet.ShouldProcess('WinGet packages', 'Upgrade all user-scoped packages')) {
+                        winget upgrade --silent --scope user --accept-package-agreements --accept-source-agreements --all
+                    }
                 } else {
                     Write-Host '[4] WinGet was not found. Skipping WinGet update.'
                 }
@@ -303,35 +390,39 @@ function Update-AllTheThings {
 
             if (Get-Command apt -ErrorAction SilentlyContinue) {
                 Write-Host '[5] Updating apt packages.'
-                if ($NeedsSudo) {
-                    & sudo apt update
-                    if ($AcceptPrompts) {
-                        & sudo apt upgrade -y
+                if ($PSCmdlet.ShouldProcess('apt packages', 'Update and upgrade packages')) {
+                    if ($NeedsSudo) {
+                        & sudo apt update
+                        if ($AcceptPrompts) {
+                            & sudo apt upgrade -y
+                        } else {
+                            & sudo apt upgrade
+                        }
                     } else {
-                        & sudo apt upgrade
-                    }
-                } else {
-                    & apt update
-                    if ($AcceptPrompts) {
-                        & apt upgrade -y
-                    } else {
-                        & apt upgrade
+                        & apt update
+                        if ($AcceptPrompts) {
+                            & apt upgrade -y
+                        } else {
+                            & apt upgrade
+                        }
                     }
                 }
             }
             if (Get-Command dnf -ErrorAction SilentlyContinue) {
                 Write-Host '[5] Updating dnf packages.'
-                if ($NeedsSudo) {
-                    if ($AcceptPrompts) {
-                        & sudo dnf update -y
+                if ($PSCmdlet.ShouldProcess('dnf packages', 'Update packages')) {
+                    if ($NeedsSudo) {
+                        if ($AcceptPrompts) {
+                            & sudo dnf update -y
+                        } else {
+                            & sudo dnf update
+                        }
                     } else {
-                        & sudo dnf update
-                    }
-                } else {
-                    if ($AcceptPrompts) {
-                        & dnf update -y
-                    } else {
-                        & dnf update
+                        if ($AcceptPrompts) {
+                            & dnf update -y
+                        } else {
+                            & dnf update
+                        }
                     }
                 }
             }
@@ -343,22 +434,66 @@ function Update-AllTheThings {
         #region UpdateMacOS
         # Early testing. No progress bar yet. Need to check for admin and different package managers.
         if ($IsMacOS) {
-            softwareupdate -l
+            if ($PSCmdlet.ShouldProcess('macOS software updates', 'List available updates')) {
+                softwareupdate -l
+            }
             if (Get-Command brew -ErrorAction SilentlyContinue) {
                 Write-Host '[6] Updating brew packages.'
-                brew update
-                brew upgrade
+                if ($PSCmdlet.ShouldProcess('Homebrew packages', 'Update and upgrade packages')) {
+                    brew update
+                    brew upgrade
+                }
             }
         } else {
             Write-Verbose '[6] Not macOS. Skipping section.'
         }
         #endregion UpdateMacOS
 
+        #region UpdateGitHubCli
+        if (Get-Command -Name 'gh' -ErrorAction SilentlyContinue) {
+            Write-Host '[7] Updating GitHub CLI Extensions'
+            $PercentCompleteOuter = 90
+            $ProgressParamOuter = @{
+                Id               = 0
+                Activity         = 'Update Everything'
+                CurrentOperation = 'Updating GitHub CLI Extensions'
+                Status           = "Progress: $PercentCompleteOuter`% Complete"
+                PercentComplete  = $PercentCompleteOuter
+            }
+            Write-Progress @ProgressParamOuter
+            if ($PSCmdlet.ShouldProcess('GitHub CLI extensions', 'Upgrade all installed extensions')) {
+                gh extension upgrade --all
+            }
+        } else {
+            Write-Verbose '[7] GitHub CLI was not found. Skipping section.'
+        }
+        #endregion UpdateGitHubCli
+
+        #region UpdateCopilotCli
+        if (Get-Command -Name 'copilot' -ErrorAction SilentlyContinue) {
+            Write-Host '[8] Updating GitHub Copilot CLI'
+            $PercentCompleteOuter = 95
+            $ProgressParamOuter = @{
+                Id               = 0
+                Activity         = 'Update Everything'
+                CurrentOperation = 'Updating GitHub Copilot CLI'
+                Status           = "Progress: $PercentCompleteOuter`% Complete"
+                PercentComplete  = $PercentCompleteOuter
+            }
+            Write-Progress @ProgressParamOuter
+            if ($PSCmdlet.ShouldProcess('GitHub Copilot CLI', 'Update installed CLI')) {
+                copilot update
+            }
+        } else {
+            Write-Verbose '[8] GitHub Copilot CLI was not found. Skipping section.'
+        }
+        #endregion UpdateCopilotCli
+
         #region UpdateChocolatey
         # Upgrade Chocolatey packages. Need to check for admin to avoid errors/warnings.
         if ((Get-Command choco -ErrorAction SilentlyContinue) -and $IncludeChocolatey) {
             # Update the outer progress bar
-            $PercentCompleteOuter = 90
+            $PercentCompleteOuter = 98
             $ProgressParamOuter = @{
                 Id               = 0
                 Activity         = 'Update Everything'
@@ -367,21 +502,25 @@ function Update-AllTheThings {
                 PercentComplete  = $PercentCompleteOuter
             }
             Write-Progress @ProgressParamOuter
-            Write-Host '[7] Updating Chocolatey Packages'
+            Write-Host '[9] Updating Chocolatey Packages'
             # Add a function/parameter to run these two feature configuration options, which requires admin to set.
             if (Test-IsElevated) {
                 # Oops, this depends on PSPreworkout being installed or that function otherwise being available.
-                choco feature enable -n=allowGlobalConfirmation
-                choco feature disable --name=showNonElevatedWarnings
+                if ($PSCmdlet.ShouldProcess('Chocolatey features', 'Enable global confirmation and disable non-elevated warnings')) {
+                    choco feature enable -n=allowGlobalConfirmation
+                    choco feature disable --name=showNonElevatedWarnings
+                }
             } else {
                 Write-Verbose "Run once as an administrator to disable Chocolatey's showNonElevatedWarnings." -Verbose
             }
-            choco upgrade chocolatey -y --limit-output --accept-license --no-color
-            choco upgrade all -y --limit-output --accept-license --no-color
+            if ($PSCmdlet.ShouldProcess('Chocolatey packages', 'Upgrade Chocolatey and all packages')) {
+                choco upgrade chocolatey -y --limit-output --accept-license --no-color
+                choco upgrade all -y --limit-output --accept-license --no-color
+            }
             # Padding to reset host before updating the progress bar.
             Write-Host ' '
         } else {
-            Write-Host '[7] Skipping Chocolatey'
+            Write-Host '[9] Skipping Chocolatey'
         }
         #endregion UpdateChocolatey
 

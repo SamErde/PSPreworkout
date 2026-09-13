@@ -4,7 +4,7 @@ function Update-AllTheThings {
     Update all the things!
 
     .DESCRIPTION
-    A script to automatically update all PowerShell modules, PowerShell Help, and packages (apt, brew, Chocolatey, winget).
+    A script to automatically update all PowerShell modules, PowerShell Help, GitHub CLI tools, and packages (apt, brew, Chocolatey, winget).
 
     .PARAMETER SkipModules
     Skip the step that updates PowerShell modules.
@@ -93,7 +93,7 @@ function Update-AllTheThings {
 /_  __/ /  ___   /_  __/ /  (_)__  ___ ____
  / / / _ \/ -_)   / / / _ \/ / _ \/ _ `(_-<
 /_/ /_//_/\__/   /_/ /_//_/_/_//_/\_, /___/
-                                 /___/ v0.5.9
+                                 /___/ v0.5.10
 
 "@
         Write-Host $Banner
@@ -347,11 +347,51 @@ function Update-AllTheThings {
         }
         #endregion UpdateMacOS
 
+        #region UpdateGitHubCli
+        if (Get-Command -Name 'gh' -ErrorAction SilentlyContinue) {
+            Write-Host '[7] Updating GitHub CLI Extensions'
+            $PercentCompleteOuter = 90
+            $ProgressParamOuter = @{
+                Id               = 0
+                Activity         = 'Update Everything'
+                CurrentOperation = 'Updating GitHub CLI Extensions'
+                Status           = "Progress: $PercentCompleteOuter`% Complete"
+                PercentComplete  = $PercentCompleteOuter
+            }
+            Write-Progress @ProgressParamOuter
+            if ($PSCmdlet.ShouldProcess('GitHub CLI extensions', 'Upgrade all installed extensions')) {
+                gh extension upgrade --all
+            }
+        } else {
+            Write-Verbose '[7] GitHub CLI was not found. Skipping section.'
+        }
+        #endregion UpdateGitHubCli
+
+        #region UpdateCopilotCli
+        if (Get-Command -Name 'copilot' -ErrorAction SilentlyContinue) {
+            Write-Host '[8] Updating GitHub Copilot CLI'
+            $PercentCompleteOuter = 95
+            $ProgressParamOuter = @{
+                Id               = 0
+                Activity         = 'Update Everything'
+                CurrentOperation = 'Updating GitHub Copilot CLI'
+                Status           = "Progress: $PercentCompleteOuter`% Complete"
+                PercentComplete  = $PercentCompleteOuter
+            }
+            Write-Progress @ProgressParamOuter
+            if ($PSCmdlet.ShouldProcess('GitHub Copilot CLI', 'Update installed CLI')) {
+                copilot update
+            }
+        } else {
+            Write-Verbose '[8] GitHub Copilot CLI was not found. Skipping section.'
+        }
+        #endregion UpdateCopilotCli
+
         #region UpdateChocolatey
         # Upgrade Chocolatey packages. Need to check for admin to avoid errors/warnings.
         if ((Get-Command choco -ErrorAction SilentlyContinue) -and $IncludeChocolatey) {
             # Update the outer progress bar
-            $PercentCompleteOuter = 90
+            $PercentCompleteOuter = 98
             $ProgressParamOuter = @{
                 Id               = 0
                 Activity         = 'Update Everything'
@@ -360,7 +400,7 @@ function Update-AllTheThings {
                 PercentComplete  = $PercentCompleteOuter
             }
             Write-Progress @ProgressParamOuter
-            Write-Host '[7] Updating Chocolatey Packages'
+            Write-Host '[9] Updating Chocolatey Packages'
             # Add a function/parameter to run these two feature configuration options, which requires admin to set.
             if (Test-IsElevated) {
                 # Oops, this depends on PSPreworkout being installed or that function otherwise being available.
@@ -378,7 +418,7 @@ function Update-AllTheThings {
             # Padding to reset host before updating the progress bar.
             Write-Host ' '
         } else {
-            Write-Host '[7] Skipping Chocolatey'
+            Write-Host '[9] Skipping Chocolatey'
         }
         #endregion UpdateChocolatey
 

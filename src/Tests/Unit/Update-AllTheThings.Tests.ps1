@@ -66,6 +66,12 @@ Describe 'Update-AllTheThings' {
             $Help.Examples.Example.Count | Should -BeGreaterOrEqual 2
         }
 
+        It 'Should mention GitHub CLI tools in help description' {
+            $Help = Get-Help Update-AllTheThings
+            $Help.Description.Text | Should -Match 'GitHub CLI'
+            $Help.Description.Text | Should -Match 'GitHub Copilot CLI'
+        }
+
         It 'Should have an example demonstrating AcceptPrompts usage' {
             $Help = Get-Help Update-AllTheThings -Examples
             $ExamplesText = $Help.Examples.Example.Code -join ' '
@@ -87,6 +93,16 @@ Describe 'Update-AllTheThings' {
         It 'Should have PSAvoidUsingWriteHost suppression attribute' {
             $Function = Get-Command Update-AllTheThings
             $Function.ScriptBlock.Attributes.TypeId.Name | Should -Contain 'SuppressMessageAttribute'
+        }
+
+        It 'Should update installed GitHub CLI extensions when gh is available' {
+            $Function = Get-Command Update-AllTheThings
+            $Function.Definition | Should -Match 'gh extension upgrade --all'
+        }
+
+        It 'Should update GitHub Copilot CLI when copilot is available' {
+            $Function = Get-Command Update-AllTheThings
+            $Function.Definition | Should -Match 'copilot update'
         }
     }
 

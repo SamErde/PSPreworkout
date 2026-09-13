@@ -32,7 +32,7 @@ This cmdlet has the following aliases:
 
 ## DESCRIPTION
 
-A script to automatically update all PowerShell modules, PowerShell Help, and packages (apt, brew, Chocolatey, winget).
+A script to automatically update all PowerShell modules, PowerShell Help, GitHub CLI tools, and packages (apt, brew, Chocolatey, winget).
 
 ## EXAMPLES
 
@@ -241,4 +241,3 @@ Version: 0.5.10
 ## RELATED LINKS
 
 {{ Fill in the related links here }}
-
