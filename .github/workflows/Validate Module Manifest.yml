@@ -1,21 +1,8 @@
 name: 🔍 Validate Module Manifest
 
 on:
+  # Intentionally manual-only for now; not wired to pull_request/push triggers.
   workflow_dispatch:
-  #pull_request:
-  #  branches:
-  #    - main
-  #    - prerelease
-  #  paths:
-  #    - "src/PSPreworkout/Public/**"
-  #    - "src/PSPreworkout/PSPreworkout.psd1"
-  #push:
-  #  branches:
-  #    - main
-  #    - prerelease
-  #  paths:
-  #    - "src/PSPreworkout/Public/**"
-  #    - "src/PSPreworkout/PSPreworkout.psd1"
 
 permissions:
   contents: read
@@ -24,6 +11,7 @@ jobs:
   validate-manifest:
     name: 🧪 Validate and Update Manifest
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: write
       pull-requests: write

@@ -1,4 +1,4 @@
-# Formats markdown files in docs/ using Prettier on push or manual trigger
+# Formats markdown files in docs/ using Prettier. Manual trigger only (workflow_dispatch).
 name: 🖼️ Format Markdown
 
 on:
@@ -10,6 +10,7 @@ permissions:
 jobs:
   format:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: write
     steps:
