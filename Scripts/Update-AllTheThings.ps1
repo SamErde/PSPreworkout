@@ -124,7 +124,7 @@ function Update-AllTheThings {
     Include Chocolatey package updates.
 
     .PARAMETER AcceptPrompts
-    Automatically accept prompts to install updates in Linux (apt, dnf).
+    Automatically accept prompts to install updates in Linux (apt, dnf) and continue WinGet updates on Windows Server without showing the extra server confirmation prompt.
 
     .EXAMPLE
     Update-AllTheThings
@@ -134,7 +134,7 @@ function Update-AllTheThings {
     .EXAMPLE
     Update-AllTheThings -AcceptPrompts
 
-    Updates all of the things and automatically accepts Linux package upgrade prompts.
+    Updates all of the things and automatically accepts Linux package upgrade prompts and the additional WinGet confirmation prompt on Windows Server.
 
     .NOTES
     Author: Sam Erde
@@ -184,8 +184,10 @@ function Update-AllTheThings {
     )
 
     begin {
-        # Send non-identifying usage statistics to PostHog.
-        Write-PSPreworkoutTelemetry -EventName $MyInvocation.MyCommand.Name -ParameterNamesOnly $MyInvocation.BoundParameters.Keys
+        # Send non-identifying usage statistics to PostHog when the helper is available.
+        if (Get-Command -Name 'Write-PSPreworkoutTelemetry' -ErrorAction SilentlyContinue) {
+            Write-PSPreworkoutTelemetry -EventName $MyInvocation.MyCommand.Name -ParameterNamesOnly $MyInvocation.BoundParameters.Keys
+        }
 
         # Spacing to get host output from script, winget, and choco all below the progress bar.
         $Banner = @"

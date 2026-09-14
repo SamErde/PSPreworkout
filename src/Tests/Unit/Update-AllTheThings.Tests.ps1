@@ -3,7 +3,7 @@ BeforeAll {
     $ModulePath = Split-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -Parent
     $PublicPath = Join-Path -Path $ModulePath -ChildPath 'PSPreworkout\Public'
     $RepoRoot = Split-Path -Path $ModulePath -Parent
-    $PackagedScriptPath = Join-Path -Path $RepoRoot -ChildPath 'Scripts\Update-AllTheThings.ps1'
+    $script:PackagedScriptPath = Join-Path -Path $RepoRoot -ChildPath 'Scripts\Update-AllTheThings.ps1'
     $script:OriginalIsLinux = $IsLinux
     $script:OriginalIsMacOS = $IsMacOS
     $script:OriginalIsWindows = $IsWindows
@@ -23,6 +23,7 @@ BeforeAll {
 
     function Test-IsElevated {
         [CmdletBinding()]
+        [OutputType([bool])]
         param()
 
         return $false
@@ -60,6 +61,7 @@ BeforeAll {
 
     function Get-HostChoice {
         [CmdletBinding()]
+        [OutputType([int])]
         param(
             [Parameter()]
             [string]$Title,
@@ -76,28 +78,6 @@ BeforeAll {
 
         $Title, $Message, $Options, $DefaultChoice | Out-Null
         return 0
-    }
-
-    function Get-CimInstance {
-        [CmdletBinding()]
-        param(
-            [Parameter()]
-            [string]$ClassName
-        )
-
-        $ClassName | Out-Null
-        return @{ Caption = 'Windows 11' }
-    }
-
-    function Get-WmiObject {
-        [CmdletBinding()]
-        param(
-            [Parameter()]
-            [string]$Class
-        )
-
-        $Class | Out-Null
-        return @{ Caption = 'Windows 11' }
     }
 
     . (Join-Path -Path $PublicPath -ChildPath 'Update-AllTheThings.ps1')
@@ -162,6 +142,7 @@ Describe 'Update-AllTheThings' {
             $Help = Get-Help Update-AllTheThings -Parameter AcceptPrompts
             $Help | Should -Not -BeNullOrEmpty
             $Help.Description.Text | Should -Match 'accept prompts.*Linux'
+            $Help.Description.Text | Should -Match 'WinGet.*Windows Server'
         }
 
         It 'Should have examples in help documentation' {
@@ -291,16 +272,35 @@ Describe 'Update-AllTheThings' {
             Set-Variable -Name IsLinux -Value $false -Force
             Set-Variable -Name IsMacOS -Value $false -Force
             Set-Variable -Name IsWindows -Value $true -Force
+            Set-Item -Path Function:\Get-CimInstance -Value {
+                param(
+                    [Parameter()]
+                    [string]$ClassName
+                )
+
+                $ClassName | Out-Null
+                return @{ Caption = 'Windows Server 2025 Datacenter' }
+            }
+            Set-Item -Path Function:\Get-WmiObject -Value {
+                param(
+                    [Parameter()]
+                    [string]$Class
+                )
+
+                $Class | Out-Null
+                return @{ Caption = 'Windows Server 2025 Datacenter' }
+            }
             Mock Set-PSRepository {}
             Mock Write-Host {}
             Mock Write-Progress {}
             Mock Write-Verbose {}
             Mock Write-Warning {}
             Mock winget {}
-            Mock Get-CimInstance { @{ Caption = 'Windows Server 2025 Datacenter' } }
         }
 
         AfterEach {
+            Remove-Item -Path Function:\Get-CimInstance -ErrorAction SilentlyContinue
+            Remove-Item -Path Function:\Get-WmiObject -ErrorAction SilentlyContinue
             Set-Variable -Name IsLinux -Value $script:OriginalIsLinux -Force
             Set-Variable -Name IsMacOS -Value $script:OriginalIsMacOS -Force
             Set-Variable -Name IsWindows -Value $script:OriginalIsWindows -Force
@@ -535,12 +535,13 @@ Describe 'Update-AllTheThings' {
             Set-Variable -Name IsMacOS -Value $false -Force
             Set-Variable -Name IsWindows -Value $true -Force
             Mock Set-PSRepository {}
+            Mock Set-PSResourceRepository {}
             Mock Write-Host {}
             Mock Write-Progress {}
             Mock Write-Verbose {}
             Mock Write-Warning {}
             Mock winget {}
-            . $PackagedScriptPath
+            . $script:PackagedScriptPath
         }
 
         AfterEach {
@@ -566,6 +567,23 @@ Describe 'Update-AllTheThings' {
                 $Message -match 'Unable to determine the Windows operating system caption'
             }
             Should -Invoke winget -Exactly 0
+        }
+
+        It 'Does not require telemetry helpers in the packaged script' {
+            Remove-Item -Path Function:\Write-PSPreworkoutTelemetry -ErrorAction SilentlyContinue
+            Mock gh {}
+            Mock copilot {}
+            Mock Get-Command {
+                param($Name)
+
+                if ($Name -eq 'Write-PSPreworkoutTelemetry') {
+                    return $null
+                }
+
+                return $null
+            } -ParameterFilter { $Name -eq 'Write-PSPreworkoutTelemetry' }
+
+            { Update-AllTheThings -SkipModules -SkipScripts -SkipHelp -SkipWinGet -WhatIf } | Should -Not -Throw
         }
     }
 }

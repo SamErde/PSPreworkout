@@ -48,13 +48,16 @@ Updates all of the things it can!
 
 Update-AllTheThings -AcceptPrompts
 
-Updates all of the things and automatically accepts Linux package upgrade prompts.
+Updates all of the things and automatically accepts Linux package upgrade
+prompts and the additional WinGet confirmation prompt on Windows Server.
 
 ## PARAMETERS
 
 ### -AcceptPrompts
 
-Automatically accept prompts to install updates in Linux (apt, dnf).
+Automatically accept prompts to install updates in Linux (apt, dnf) and
+continue WinGet updates on Windows Server without showing the extra server
+confirmation prompt.
 
 ```yaml
 Type: System.Management.Automation.SwitchParameter
