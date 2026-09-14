@@ -5,6 +5,8 @@ $ModuleRoot = [System.IO.Path]::GetFullPath(
 $PrivatePaths = @(
     'Test-PSPreworkoutCommand.ps1'
     'Get-PSPreworkoutPlatform.ps1'
+    'Write-UpdateAllTheThingsProgress.ps1'
+    'Invoke-UpdateNativeCommand.ps1'
     'Get-CimOperatingSystemCaption.ps1'
     'Get-WmiOperatingSystemCaption.ps1'
     'Get-WindowsOperatingSystemCaption.ps1'
@@ -12,6 +14,13 @@ $PrivatePaths = @(
     'Invoke-WinGetUpgrade.ps1'
     'Invoke-GitHubCliExtensionUpgrade.ps1'
     'Invoke-GitHubCopilotCliUpdate.ps1'
+    'Set-UpdateRepositoryTrust.ps1'
+    'Update-PowerShellArtifact.ps1'
+    'Update-WinGetPackage.ps1'
+    'Update-LinuxPackage.ps1'
+    'Update-MacOSPackage.ps1'
+    'Update-OptionalCli.ps1'
+    'Update-ChocolateyPackage.ps1'
     'Write-PSPreworkoutTelemetry.ps1'
 )
 

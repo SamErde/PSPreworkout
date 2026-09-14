@@ -41,6 +41,8 @@ if (-not $PSBoundParameters.ContainsKey('OutputPath')) {
 $SourcePaths = @(
     (Join-Path -Path $ModuleRoot -ChildPath 'Private\Test-PSPreworkoutCommand.ps1')
     (Join-Path -Path $ModuleRoot -ChildPath 'Private\Get-PSPreworkoutPlatform.ps1')
+    (Join-Path -Path $ModuleRoot -ChildPath 'Private\Write-UpdateAllTheThingsProgress.ps1')
+    (Join-Path -Path $ModuleRoot -ChildPath 'Private\Invoke-UpdateNativeCommand.ps1')
     (Join-Path -Path $ModuleRoot -ChildPath 'Private\Get-CimOperatingSystemCaption.ps1')
     (Join-Path -Path $ModuleRoot -ChildPath 'Private\Get-WmiOperatingSystemCaption.ps1')
     (Join-Path -Path $ModuleRoot -ChildPath 'Private\Get-WindowsOperatingSystemCaption.ps1')
@@ -48,6 +50,13 @@ $SourcePaths = @(
     (Join-Path -Path $ModuleRoot -ChildPath 'Private\Invoke-WinGetUpgrade.ps1')
     (Join-Path -Path $ModuleRoot -ChildPath 'Private\Invoke-GitHubCliExtensionUpgrade.ps1')
     (Join-Path -Path $ModuleRoot -ChildPath 'Private\Invoke-GitHubCopilotCliUpdate.ps1')
+    (Join-Path -Path $ModuleRoot -ChildPath 'Private\Set-UpdateRepositoryTrust.ps1')
+    (Join-Path -Path $ModuleRoot -ChildPath 'Private\Update-PowerShellArtifact.ps1')
+    (Join-Path -Path $ModuleRoot -ChildPath 'Private\Update-WinGetPackage.ps1')
+    (Join-Path -Path $ModuleRoot -ChildPath 'Private\Update-LinuxPackage.ps1')
+    (Join-Path -Path $ModuleRoot -ChildPath 'Private\Update-MacOSPackage.ps1')
+    (Join-Path -Path $ModuleRoot -ChildPath 'Private\Update-OptionalCli.ps1')
+    (Join-Path -Path $ModuleRoot -ChildPath 'Private\Update-ChocolateyPackage.ps1')
     (Join-Path -Path $ModuleRoot -ChildPath 'Public\Test-IsElevated.ps1')
     $UpdateCommandPath
 )

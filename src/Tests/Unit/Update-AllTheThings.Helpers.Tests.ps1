@@ -129,4 +129,56 @@ Describe 'Update-AllTheThings compatibility helpers' {
             { & $CommandName -Command { 23 } } | Should -Throw '*exit code 23*'
         }
     }
+
+    Context 'Invoke-UpdateNativeCommand' {
+        It 'passes the command name and arguments to the invocation seam' {
+            $script:InvokedCommand = $null
+            $script:InvokedArguments = $null
+            $Command = {
+                param($CommandName, $CommandArguments)
+
+                $script:InvokedCommand = $CommandName
+                $script:InvokedArguments = $CommandArguments
+                return 0
+            }
+
+            Invoke-UpdateNativeCommand -Name 'package-manager' -ArgumentList 'update', '-y' `
+                -FailureMessage 'Package update' -Command $Command
+
+            $script:InvokedCommand | Should -Be 'package-manager'
+            $script:InvokedArguments | Should -Be @('update', '-y')
+        }
+
+        It 'throws with context when the native command fails' {
+            {
+                Invoke-UpdateNativeCommand -Name 'package-manager' -FailureMessage 'Package update' `
+                    -Command { 17 }
+            } | Should -Throw 'Package update failed with exit code 17.'
+        }
+    }
+
+    Context 'Write-UpdateAllTheThingsProgress' {
+        BeforeEach {
+            Mock Write-Progress
+        }
+
+        It 'writes a parent progress record' {
+            Write-UpdateAllTheThingsProgress -CurrentOperation 'Testing progress' -PercentComplete 42
+
+            Should -Invoke Write-Progress -Exactly 1 -ParameterFilter {
+                $Id -eq 0 -and
+                $Activity -eq 'Update Everything' -and
+                $CurrentOperation -eq 'Testing progress' -and
+                $PercentComplete -eq 42
+            }
+        }
+
+        It 'completes the parent progress record' {
+            Write-UpdateAllTheThingsProgress -Completed
+
+            Should -Invoke Write-Progress -Exactly 1 -ParameterFilter {
+                $Id -eq 0 -and $Completed
+            }
+        }
+    }
 }

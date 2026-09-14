@@ -4,11 +4,13 @@ BeforeDiscovery {
             Name          = 'GitHub CLI extensions'
             CommandName   = 'gh'
             UpdateCommand = 'Invoke-GitHubCliExtensionUpgrade'
+            UpdateScript  = { Invoke-GitHubCliExtensionUpgrade }
         }
         @{
             Name          = 'GitHub Copilot CLI'
             CommandName   = 'copilot'
             UpdateCommand = 'Invoke-GitHubCopilotCliUpdate'
+            UpdateScript  = { Invoke-GitHubCopilotCliUpdate }
         }
     )
 }
@@ -20,17 +22,10 @@ BeforeAll {
 Describe 'Update-AllTheThings optional CLI updates' {
     BeforeEach {
         $script:AvailableCommands = @()
-        $script:SkipUnrelatedUpdates = @{
-            SkipModules = $true
-            SkipScripts = $true
-            SkipHelp    = $true
-            SkipWinGet  = $true
-        }
 
-        Mock Get-PSPreworkoutPlatform { 'Unknown' }
         Mock Test-PSPreworkoutCommand { $Name -in $script:AvailableCommands }
-        Mock Write-Host
-        Mock Write-Progress
+        Mock Write-Information
+        Mock Write-UpdateAllTheThingsProgress
         Mock Write-Verbose
         Mock Invoke-GitHubCliExtensionUpgrade
         Mock Invoke-GitHubCopilotCliUpdate
@@ -38,14 +33,26 @@ Describe 'Update-AllTheThings optional CLI updates' {
 
     It 'updates <Name> when <CommandName> is available' -ForEach $CliCases {
         $script:AvailableCommands = @($CommandName)
+        $UpdateParameters = @{
+            CommandName      = $CommandName
+            DisplayName      = "Updating $Name"
+            CurrentOperation = "Updating $Name"
+            TargetName       = $Name
+            ActionName       = "Update $Name"
+            PercentComplete  = 90
+            UpdateCommand    = $UpdateScript
+            Confirm          = $false
+        }
 
-        Update-AllTheThings @script:SkipUnrelatedUpdates
+        Update-OptionalCli @UpdateParameters
 
         Should -Invoke -CommandName $UpdateCommand -Exactly 1
     }
 
     It 'does not update <Name> when <CommandName> is unavailable' -ForEach $CliCases {
-        Update-AllTheThings @script:SkipUnrelatedUpdates
+        Update-OptionalCli -CommandName $CommandName -DisplayName "Updating $Name" `
+            -CurrentOperation "Updating $Name" -TargetName $Name -ActionName "Update $Name" `
+            -PercentComplete 90 -UpdateCommand $UpdateScript -Confirm:$false
 
         Should -Invoke -CommandName $UpdateCommand -Exactly 0
     }
@@ -53,7 +60,14 @@ Describe 'Update-AllTheThings optional CLI updates' {
     It 'does not run optional CLI updates during WhatIf' {
         $script:AvailableCommands = @('gh', 'copilot')
 
-        Update-AllTheThings @script:SkipUnrelatedUpdates -WhatIf
+        Update-OptionalCli -CommandName 'gh' -DisplayName 'Updating GitHub CLI extensions' `
+            -CurrentOperation 'Updating GitHub CLI extensions' -TargetName 'GitHub CLI extensions' `
+            -ActionName 'Update GitHub CLI extensions' -PercentComplete 90 `
+            -UpdateCommand { Invoke-GitHubCliExtensionUpgrade } -WhatIf
+        Update-OptionalCli -CommandName 'copilot' -DisplayName 'Updating GitHub Copilot CLI' `
+            -CurrentOperation 'Updating GitHub Copilot CLI' -TargetName 'GitHub Copilot CLI' `
+            -ActionName 'Update GitHub Copilot CLI' -PercentComplete 95 `
+            -UpdateCommand { Invoke-GitHubCopilotCliUpdate } -WhatIf
 
         Should -Invoke Invoke-GitHubCliExtensionUpgrade -Exactly 0
         Should -Invoke Invoke-GitHubCopilotCliUpdate -Exactly 0

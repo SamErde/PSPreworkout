@@ -34,7 +34,7 @@ This cmdlet has the following aliases:
 
 A script to automatically update all PowerShell modules, PowerShell Help,
 GitHub CLI extensions, GitHub Copilot CLI, and packages (apt, brew,
-Chocolatey, winget).
+Chocolatey, WinGet).
 
 ## EXAMPLES
 
@@ -185,7 +185,7 @@ HelpMessage: ''
 
 ### -SkipWinGet
 
-Skip the step the updates WinGet packages.
+Skip the step that updates WinGet packages.
 
 ```yaml
 Type: System.Management.Automation.SwitchParameter
@@ -240,7 +240,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 Author: Sam Erde
-Version: 0.5.10
+Version: 0.6.0
 
 
 ## RELATED LINKS

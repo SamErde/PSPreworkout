@@ -1,6 +1,6 @@
 <#PSScriptInfo
-.DESCRIPTION A script to automatically update all PowerShell modules, PowerShell Help, GitHub CLI extensions, GitHub Copilot CLI, and packages (apt, brew, Chocolatey, winget).
-.VERSION 0.5.10
+.DESCRIPTION A script to automatically update all PowerShell modules, PowerShell Help, GitHub CLI extensions, GitHub Copilot CLI, and packages (apt, brew, Chocolatey, WinGet).
+.VERSION 0.6.0
 .GUID 3a1a1ec9-0ef6-4f84-963d-be1505dab6a8
 .AUTHOR Sam Erde
 .COPYRIGHT (c) 2024 Sam Erde. All rights reserved.
@@ -55,7 +55,6 @@ function Get-PSPreworkoutPlatform {
     if ($PSVersionTable.PSEdition -eq 'Desktop') {
         return 'Windows'
     }
-
     if (Get-Variable -Name IsWindows -ValueOnly -ErrorAction SilentlyContinue) {
         return 'Windows'
     }
@@ -69,6 +68,112 @@ function Get-PSPreworkoutPlatform {
     }
 
     return 'Unknown'
+}
+
+function Write-UpdateAllTheThingsProgress {
+    <#
+    .SYNOPSIS
+    Writes progress for Update-AllTheThings.
+
+    .DESCRIPTION
+    Centralizes the parent progress record used by Update-AllTheThings and its
+    private update helpers.
+
+    .PARAMETER CurrentOperation
+    The operation currently being performed.
+
+    .PARAMETER PercentComplete
+    The percentage of the overall update that is complete.
+
+    .PARAMETER Completed
+    Completes and removes the progress record.
+
+    .OUTPUTS
+    None
+    #>
+
+    [CmdletBinding()]
+    param(
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
+        [string]$CurrentOperation,
+
+        [Parameter()]
+        [ValidateRange(0, 100)]
+        [int]$PercentComplete = 0,
+
+        [Parameter()]
+        [switch]$Completed
+    )
+
+    if ($Completed) {
+        Write-Progress -Id 0 -Activity 'Update Everything' -Completed
+        return
+    }
+
+    $ProgressParameters = @{
+        Id               = 0
+        Activity         = 'Update Everything'
+        CurrentOperation = $CurrentOperation
+        Status           = "Progress: $PercentComplete`% Complete"
+        PercentComplete  = $PercentComplete
+    }
+    Write-Progress @ProgressParameters
+}
+
+function Invoke-UpdateNativeCommand {
+    <#
+    .SYNOPSIS
+    Invokes a native update command and validates its exit code.
+
+    .DESCRIPTION
+    Provides consistent invocation and explicit failure handling for native
+    package-manager commands.
+
+    .PARAMETER Name
+    The native command to invoke.
+
+    .PARAMETER ArgumentList
+    Arguments passed to the native command.
+
+    .PARAMETER FailureMessage
+    Context included in the terminating error when the command fails.
+
+    .PARAMETER Command
+    An invocation seam used by unit tests.
+
+    .OUTPUTS
+    None
+    #>
+
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
+        [string]$Name,
+
+        [Parameter()]
+        [AllowEmptyCollection()]
+        [string[]]$ArgumentList = @(),
+
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
+        [string]$FailureMessage,
+
+        [Parameter(DontShow)]
+        [ValidateNotNull()]
+        [scriptblock]$Command = {
+            param($CommandName, $CommandArguments)
+
+            & $CommandName @CommandArguments | Out-Host
+            return $LASTEXITCODE
+        }
+    )
+
+    $ExitCode = & $Command $Name $ArgumentList
+    if ($ExitCode -ne 0) {
+        throw "$FailureMessage failed with exit code $ExitCode."
+    }
 }
 
 function Get-CimOperatingSystemCaption {
@@ -279,6 +384,429 @@ function Invoke-GitHubCopilotCliUpdate {
     }
 }
 
+function Set-UpdateRepositoryTrust {
+    <#
+    .SYNOPSIS
+    Trusts supported PowerShell Gallery repositories.
+
+    .DESCRIPTION
+    Configures PSGallery as trusted for the installed PowerShellGet and
+    PSResourceGet clients.
+
+    .OUTPUTS
+    None
+    #>
+
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Medium')]
+    param()
+
+    Write-Verbose 'Set the PowerShell Gallery as a trusted installation source.'
+
+    if (
+        (Test-PSPreworkoutCommand -Name 'Set-PSRepository') -and
+        $PSCmdlet.ShouldProcess('PSGallery', 'Set PowerShellGet repository as trusted')
+    ) {
+        Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
+    }
+
+    if (
+        (Test-PSPreworkoutCommand -Name 'Set-PSResourceRepository') -and
+        $PSCmdlet.ShouldProcess('PSGallery', 'Set PSResourceGet repository as trusted')
+    ) {
+        Set-PSResourceRepository -Name 'PSGallery' -Trusted
+    }
+}
+
+function Update-PowerShellArtifact {
+    <#
+    .SYNOPSIS
+    Updates installed PowerShell modules, scripts, and help.
+
+    .DESCRIPTION
+    Handles PowerShell-native update operations and their progress reporting.
+
+    .PARAMETER SkipModules
+    Skips installed module updates.
+
+    .PARAMETER SkipScripts
+    Skips installed script updates.
+
+    .PARAMETER SkipHelp
+    Skips PowerShell help updates.
+
+    .OUTPUTS
+    None
+    #>
+
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Medium')]
+    param(
+        [Parameter()]
+        [switch]$SkipModules,
+
+        [Parameter()]
+        [switch]$SkipScripts,
+
+        [Parameter()]
+        [switch]$SkipHelp
+    )
+
+    Write-UpdateAllTheThingsProgress -CurrentOperation 'Getting Installed PowerShell Modules' -PercentComplete 1
+
+    if ($SkipModules) {
+        Write-Information '[1] Skipping PowerShell Modules' -InformationAction Continue
+    } elseif (-not (Test-PSPreworkoutCommand -Name 'Get-InstalledModule')) {
+        Write-Warning 'Get-InstalledModule was not found. Skipping PowerShell module updates.'
+    } else {
+        Write-Information '[1] Getting Installed PowerShell Modules' -InformationAction Continue
+        $Modules = @(Get-InstalledModule)
+        Write-Information "[2] Updating $($Modules.Count) PowerShell Modules" -InformationAction Continue
+
+        $ModuleIndex = 0
+        foreach ($Module in $Modules) {
+            ++$ModuleIndex
+            $ModulePercent = [math]::Ceiling(($ModuleIndex / $Modules.Count) * 100)
+            $OverallPercent = [math]::Ceiling(10 + (60 * ($ModulePercent / 100)))
+
+            Write-UpdateAllTheThingsProgress -CurrentOperation "Updating PowerShell module $($Module.Name)" -PercentComplete $OverallPercent
+            Write-Progress -Id 1 -ParentId 0 -Activity 'Updating PowerShell Modules' `
+                -CurrentOperation $Module.Name -Status "Progress: $ModulePercent`% Complete" `
+                -PercentComplete $ModulePercent
+
+            if ($Module.Version -match 'alpha|beta|prerelease|preview') {
+                Write-Information "`t`tSkipping $($Module.Name) because a prerelease version is currently installed." -InformationAction Continue
+                continue
+            }
+
+            try {
+                if ($PSCmdlet.ShouldProcess($Module.Name, 'Update PowerShell module')) {
+                    Update-Module -Name $Module.Name
+                }
+            } catch [Microsoft.PowerShell.Commands.WriteErrorException] {
+                Write-Warning "Unable to update PowerShell module '$($Module.Name)': $($_.Exception.Message)"
+            }
+        }
+    }
+
+    Write-Progress -Id 1 -Activity 'Updating PowerShell Modules' -Completed
+
+    if ($SkipScripts) {
+        Write-Information '[2] Skipping PowerShell Scripts' -InformationAction Continue
+    } elseif (-not (Test-PSPreworkoutCommand -Name 'Update-Script')) {
+        Write-Warning 'Update-Script was not found. Skipping PowerShell script updates.'
+    } else {
+        Write-Information '[2] Updating PowerShell Scripts' -InformationAction Continue
+        if ($PSCmdlet.ShouldProcess('Installed PowerShell scripts', 'Update scripts')) {
+            Update-Script
+        }
+    }
+
+    Write-UpdateAllTheThingsProgress -CurrentOperation 'Updating PowerShell Help' -PercentComplete 70
+
+    if ($SkipHelp) {
+        Write-Information '[3] Skipping PowerShell Help' -InformationAction Continue
+    } else {
+        Write-Information '[3] Updating PowerShell Help' -InformationAction Continue
+        if ($PSCmdlet.ShouldProcess('PowerShell help files', 'Update help')) {
+            if ((Get-Culture).LCID -eq 127) {
+                Update-Help -UICulture en-US -ErrorAction SilentlyContinue
+            } else {
+                Update-Help -ErrorAction SilentlyContinue
+            }
+        }
+    }
+}
+
+function Update-WinGetPackage {
+    <#
+    .SYNOPSIS
+    Updates user-scoped WinGet packages.
+
+    .DESCRIPTION
+    Applies Windows Server safeguards before invoking WinGet.
+
+    .PARAMETER Skip
+    Skips WinGet package updates.
+
+    .PARAMETER AcceptPrompts
+    Bypasses the additional Windows Server confirmation prompt.
+
+    .OUTPUTS
+    None
+    #>
+
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Medium')]
+    param(
+        [Parameter()]
+        [switch]$Skip,
+
+        [Parameter()]
+        [switch]$AcceptPrompts
+    )
+
+    if ($Skip) {
+        Write-Information '[4] Skipping WinGet' -InformationAction Continue
+        return
+    }
+
+    if (-not (Test-PSPreworkoutCommand -Name 'winget')) {
+        Write-Information '[4] WinGet was not found. Skipping WinGet update.' -InformationAction Continue
+        return
+    }
+
+    $ShouldUpdate = $PSCmdlet.ShouldProcess('WinGet packages', 'Upgrade all user-scoped packages')
+    $SkipServerPrompt = $AcceptPrompts -or $WhatIfPreference -or (
+        $PSBoundParameters.ContainsKey('Confirm') -and (-not $Confirm)
+    )
+    $ShouldProcessHandlesConsent = ($PSBoundParameters.ContainsKey('Confirm') -and $Confirm) -or (
+        ($ConfirmPreference -ne [System.Management.Automation.ConfirmImpact]::None) -and
+        (([System.Management.Automation.ConfirmImpact]$ConfirmPreference) -le [System.Management.Automation.ConfirmImpact]::Medium)
+    )
+    $NeedServerPrompt = (-not $SkipServerPrompt) -and (-not $ShouldProcessHandlesConsent)
+
+    if ($NeedServerPrompt) {
+        $WindowsOsCaption = Get-WindowsOperatingSystemCaption
+        if ([string]::IsNullOrWhiteSpace($WindowsOsCaption)) {
+            Write-Warning -Message 'Unable to determine the Windows operating system caption. Skipping WinGet updates as a safety precaution.'
+            return
+        }
+
+        if ($ShouldUpdate -and ($WindowsOsCaption -match 'Server')) {
+            Write-Warning -Message 'This is a server and updates could affect production systems. Do you want to continue with updating packages?'
+            if ((Read-WinGetServerChoice) -ne 0) {
+                return
+            }
+            Write-Verbose 'Continuing with WinGet package updates.'
+        }
+    }
+
+    if ($ShouldUpdate -or $WhatIfPreference) {
+        Write-Information '[4] Updating WinGet Packages' -InformationAction Continue
+        Write-UpdateAllTheThingsProgress -CurrentOperation 'Updating WinGet Packages' -PercentComplete 80
+    }
+
+    if ($ShouldUpdate) {
+        Invoke-WinGetUpgrade
+    }
+}
+
+function Update-LinuxPackage {
+    <#
+    .SYNOPSIS
+    Updates packages with supported Linux package managers.
+
+    .DESCRIPTION
+    Updates apt and dnf packages, using sudo only when the current process is
+    not elevated.
+
+    .PARAMETER AcceptPrompts
+    Passes the non-interactive acceptance argument to package managers.
+
+    .OUTPUTS
+    None
+    #>
+
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Medium')]
+    param(
+        [Parameter()]
+        [switch]$AcceptPrompts
+    )
+
+    $AptAvailable = Test-PSPreworkoutCommand -Name 'apt'
+    $DnfAvailable = Test-PSPreworkoutCommand -Name 'dnf'
+    if ((-not $AptAvailable) -and (-not $DnfAvailable)) {
+        return
+    }
+
+    $NeedsSudo = -not (Test-IsElevated)
+
+    if ($AptAvailable) {
+        Write-Information '[5] Updating apt packages.' -InformationAction Continue
+        if ($PSCmdlet.ShouldProcess('apt packages', 'Update and upgrade packages')) {
+            $CommandName = if ($NeedsSudo) { 'sudo' } else { 'apt' }
+            $UpdateArguments = if ($NeedsSudo) { @('apt', 'update') } else { @('update') }
+            [string[]]$UpgradeArguments = if ($NeedsSudo) { @('apt', 'upgrade') } else { @('upgrade') }
+            if ($AcceptPrompts) {
+                $UpgradeArguments += '-y'
+            }
+
+            Invoke-UpdateNativeCommand -Name $CommandName -ArgumentList $UpdateArguments -FailureMessage 'apt package index update'
+            Invoke-UpdateNativeCommand -Name $CommandName -ArgumentList $UpgradeArguments -FailureMessage 'apt package upgrade'
+        }
+    }
+
+    if ($DnfAvailable) {
+        Write-Information '[5] Updating dnf packages.' -InformationAction Continue
+        if ($PSCmdlet.ShouldProcess('dnf packages', 'Update packages')) {
+            $CommandName = if ($NeedsSudo) { 'sudo' } else { 'dnf' }
+            [string[]]$Arguments = if ($NeedsSudo) { @('dnf', 'update') } else { @('update') }
+            if ($AcceptPrompts) {
+                $Arguments += '-y'
+            }
+
+            Invoke-UpdateNativeCommand -Name $CommandName -ArgumentList $Arguments -FailureMessage 'dnf package update'
+        }
+    }
+}
+
+function Update-MacOSPackage {
+    <#
+    .SYNOPSIS
+    Updates supported macOS software.
+
+    .DESCRIPTION
+    Lists macOS software updates and updates Homebrew packages when Homebrew is
+    installed.
+
+    .OUTPUTS
+    None
+    #>
+
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Medium')]
+    param()
+
+    if ($PSCmdlet.ShouldProcess('macOS software updates', 'List available updates')) {
+        Invoke-UpdateNativeCommand -Name 'softwareupdate' -ArgumentList '-l' -FailureMessage 'macOS software update query'
+    }
+
+    if (Test-PSPreworkoutCommand -Name 'brew') {
+        Write-Information '[6] Updating brew packages.' -InformationAction Continue
+        if ($PSCmdlet.ShouldProcess('Homebrew packages', 'Update and upgrade packages')) {
+            Invoke-UpdateNativeCommand -Name 'brew' -ArgumentList 'update' -FailureMessage 'Homebrew update'
+            Invoke-UpdateNativeCommand -Name 'brew' -ArgumentList 'upgrade' -FailureMessage 'Homebrew upgrade'
+        }
+    }
+}
+
+function Update-OptionalCli {
+    <#
+    .SYNOPSIS
+    Updates an optional command-line tool.
+
+    .DESCRIPTION
+    Runs a supplied update command when its command-line tool is installed.
+
+    .PARAMETER CommandName
+    The command used to detect whether the tool is installed.
+
+    .PARAMETER DisplayName
+    The status text displayed to the user.
+
+    .PARAMETER CurrentOperation
+    The operation shown in the progress record.
+
+    .PARAMETER TargetName
+    The ShouldProcess target.
+
+    .PARAMETER ActionName
+    The ShouldProcess action.
+
+    .PARAMETER PercentComplete
+    The overall completion percentage.
+
+    .PARAMETER UpdateCommand
+    The update operation to invoke.
+
+    .OUTPUTS
+    None
+    #>
+
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Medium')]
+    param(
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
+        [string]$CommandName,
+
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
+        [string]$DisplayName,
+
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
+        [string]$CurrentOperation,
+
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
+        [string]$TargetName,
+
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
+        [string]$ActionName,
+
+        [Parameter(Mandatory)]
+        [ValidateRange(0, 100)]
+        [int]$PercentComplete,
+
+        [Parameter(Mandatory)]
+        [ValidateNotNull()]
+        [scriptblock]$UpdateCommand
+    )
+
+    if (-not (Test-PSPreworkoutCommand -Name $CommandName)) {
+        Write-Verbose "$DisplayName was skipped because $CommandName was not found."
+        return
+    }
+
+    Write-Information $DisplayName -InformationAction Continue
+    Write-UpdateAllTheThingsProgress -CurrentOperation $CurrentOperation -PercentComplete $PercentComplete
+    if ($PSCmdlet.ShouldProcess($TargetName, $ActionName)) {
+        & $UpdateCommand
+    }
+}
+
+function Update-ChocolateyPackage {
+    <#
+    .SYNOPSIS
+    Updates Chocolatey and installed Chocolatey packages.
+
+    .DESCRIPTION
+    Optionally configures Chocolatey features when elevated, then updates
+    Chocolatey and all installed packages.
+
+    .PARAMETER Include
+    Enables Chocolatey package updates.
+
+    .OUTPUTS
+    None
+    #>
+
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Medium')]
+    param(
+        [Parameter()]
+        [switch]$Include
+    )
+
+    if ((-not $Include) -or (-not (Test-PSPreworkoutCommand -Name 'choco'))) {
+        Write-Information '[9] Skipping Chocolatey' -InformationAction Continue
+        return
+    }
+
+    Write-UpdateAllTheThingsProgress -CurrentOperation 'Updating Chocolatey Packages' -PercentComplete 98
+    Write-Information '[9] Updating Chocolatey Packages' -InformationAction Continue
+
+    if (Test-IsElevated) {
+        if ($PSCmdlet.ShouldProcess('Chocolatey features', 'Enable global confirmation and disable non-elevated warnings')) {
+            Invoke-UpdateNativeCommand -Name 'choco' -ArgumentList @(
+                'feature', 'enable', '-n=allowGlobalConfirmation'
+            ) -FailureMessage 'Chocolatey global confirmation configuration'
+            Invoke-UpdateNativeCommand -Name 'choco' -ArgumentList @(
+                'feature', 'disable', '--name=showNonElevatedWarnings'
+            ) -FailureMessage 'Chocolatey non-elevated warning configuration'
+        }
+    } else {
+        Write-Verbose "Run once as an administrator to disable Chocolatey's showNonElevatedWarnings." -Verbose
+    }
+
+    if ($PSCmdlet.ShouldProcess('Chocolatey packages', 'Upgrade Chocolatey and all packages')) {
+        $UpgradeArguments = @('-y', '--limit-output', '--accept-license', '--no-color')
+        $SelfUpdateArguments = @('upgrade', 'chocolatey') + $UpgradeArguments
+        $PackageUpdateArguments = @('upgrade', 'all') + $UpgradeArguments
+        Invoke-UpdateNativeCommand -Name 'choco' -ArgumentList $SelfUpdateArguments -FailureMessage 'Chocolatey self-update'
+        Invoke-UpdateNativeCommand -Name 'choco' -ArgumentList $PackageUpdateArguments -FailureMessage 'Chocolatey package update'
+    }
+
+    Write-Information ' ' -InformationAction Continue
+}
+
 function Test-IsElevated {
     <#
     .SYNOPSIS
@@ -379,7 +907,7 @@ function Update-AllTheThings {
     Update all the things!
 
     .DESCRIPTION
-    A script to automatically update all PowerShell modules, PowerShell Help, GitHub CLI extensions, GitHub Copilot CLI, and packages (apt, brew, Chocolatey, winget).
+    A script to automatically update all PowerShell modules, PowerShell Help, GitHub CLI extensions, GitHub Copilot CLI, and packages (apt, brew, Chocolatey, WinGet).
 
     .PARAMETER SkipModules
     Skip the step that updates PowerShell modules.
@@ -391,7 +919,7 @@ function Update-AllTheThings {
     Skip the step that updates PowerShell help.
 
     .PARAMETER SkipWinGet
-    Skip the step the updates WinGet packages.
+    Skip the step that updates WinGet packages.
 
     .PARAMETER IncludeChocolatey
     Include Chocolatey package updates.
@@ -411,7 +939,7 @@ function Update-AllTheThings {
 
     .NOTES
     Author: Sam Erde
-    Version: 0.5.10
+    Version: 0.6.0
     #>
 
     [CmdletBinding(
@@ -425,43 +953,35 @@ function Update-AllTheThings {
     param (
         # Skip the step that updates PowerShell modules
         [Parameter()]
-        [switch]
-        $SkipModules,
+        [switch]$SkipModules,
 
         # Skip the step that updates PowerShell scripts
         [Parameter()]
-        [switch]
-        $SkipScripts,
+        [switch]$SkipScripts,
 
         # Skip the step that updates PowerShell help
         [Parameter()]
-        [switch]
-        $SkipHelp,
+        [switch]$SkipHelp,
 
         # Skip the step that updates WinGet packages
         [Parameter()]
-        [switch]
-        $SkipWinGet,
+        [switch]$SkipWinGet,
 
-        # Skip the step that updates Chocolatey packages
+        # Include Chocolatey package updates
         [Parameter()]
         [Alias('SkipChoco')]
-        [switch]
-        $IncludeChocolatey,
+        [switch]$IncludeChocolatey,
 
-        # Automatically accept prompts to install updates in Linux
+        # Automatically accept prompts to install updates
         [Parameter()]
-        [switch]
-        $AcceptPrompts
+        [switch]$AcceptPrompts
     )
 
     begin {
-        # Send non-identifying usage statistics to PostHog when the helper is available.
         if (Test-PSPreworkoutCommand -Name 'Write-PSPreworkoutTelemetry') {
             Write-PSPreworkoutTelemetry -EventName $MyInvocation.MyCommand.Name -ParameterNamesOnly $MyInvocation.BoundParameters.Keys
         }
 
-        # Spacing to get host output from script, winget, and choco all below the progress bar.
         $Banner = @"
   __  __        __     __         ___   ____
  / / / /__  ___/ /__ _/ /____    / _ | / / /
@@ -471,325 +991,42 @@ function Update-AllTheThings {
 /_  __/ /  ___   /_  __/ /  (_)__  ___ ____
  / / / _ \/ -_)   / / / _ \/ / _ \/ _ `(_-<
 /_/ /_//_/\__/   /_/ /_//_/_/_//_/\_, /___/
-                                 /___/ v0.5.10
+                                 /___/ v0.6.0
 
 "@
         Write-Host $Banner
-    } # end begin block
+    }
 
     process {
+        $CommonParameters = @{}
+        foreach ($CommonParameterName in 'WhatIf', 'Confirm') {
+            if ($PSBoundParameters.ContainsKey($CommonParameterName)) {
+                $CommonParameters[$CommonParameterName] = $PSBoundParameters[$CommonParameterName]
+            }
+        }
+
         $Platform = Get-PSPreworkoutPlatform
 
-        Write-Verbose 'Set the PowerShell Gallery as a trusted installation source.'
-        if (
-            (Test-PSPreworkoutCommand -Name 'Set-PSRepository') -and
-            $PSCmdlet.ShouldProcess('PSGallery', 'Set PowerShellGet repository as trusted')
-        ) {
-            Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
-        }
-        if (Test-PSPreworkoutCommand -Name 'Set-PSResourceRepository') {
-            if ($PSCmdlet.ShouldProcess('PSGallery', 'Set PSResourceGet repository as trusted')) {
-                Set-PSResourceRepository -Name 'PSGallery' -Trusted
-            }
-        }
+        Set-UpdateRepositoryTrust @CommonParameters
+        Update-PowerShellArtifact -SkipModules:$SkipModules -SkipScripts:$SkipScripts -SkipHelp:$SkipHelp @CommonParameters
 
-        $InvokeOptionalCliUpdate = {
-            param(
-                [Parameter(Mandatory)]
-                [string]$CommandName,
-
-                [Parameter(Mandatory)]
-                [string]$DisplayName,
-
-                [Parameter(Mandatory)]
-                [string]$CurrentOperation,
-
-                [Parameter(Mandatory)]
-                [string]$TargetName,
-
-                [Parameter(Mandatory)]
-                [string]$ActionName,
-
-                [Parameter(Mandatory)]
-                [int]$PercentComplete,
-
-                [Parameter(Mandatory)]
-                [scriptblock]$UpdateCommand
-            )
-
-            if (Test-PSPreworkoutCommand -Name $CommandName) {
-                Write-Host $DisplayName
-                $ProgressParamOuter = @{
-                    Id               = 0
-                    Activity         = 'Update Everything'
-                    CurrentOperation = $CurrentOperation
-                    Status           = "Progress: $PercentComplete`% Complete"
-                    PercentComplete  = $PercentComplete
-                }
-                Write-Progress @ProgressParamOuter
-                if ($PSCmdlet.ShouldProcess($TargetName, $ActionName)) {
-                    & $UpdateCommand
-                }
-            } else {
-                Write-Verbose "$DisplayName was skipped because $CommandName was not found."
-            }
-        }
-
-        #region UpdatePowerShell
-
-        # ==================== Update PowerShell Modules ====================
-
-        # Update the outer progress bar
-        $PercentCompleteOuter = 1
-        $ProgressParamOuter = @{
-            Id               = 0
-            Activity         = 'Update Everything'
-            CurrentOperation = 'Getting Installed PowerShell Modules'
-            Status           = "Progress: $PercentCompleteOuter`% Complete"
-            PercentComplete  = $PercentCompleteOuter
-        }
-        Write-Progress @ProgressParamOuter
-
-        if (-not $SkipModules) {
-            # Get all installed PowerShell modules
-            Write-Host '[1] Getting Installed PowerShell Modules'
-            $Modules = (Get-InstalledModule)
-            $ModuleCount = $Modules.Count
-            Write-Host "[2] Updating $ModuleCount PowerShell Modules"
-        } else {
-            Write-Host '[1] Skipping PowerShell Modules'
-        }
-
-        # Estimate 10% progress so far and 70% at the next step
-        $PercentCompleteOuter_Modules = 10
-        [int]$Module_i = 0
-
-        # Update all PowerShell modules
-        foreach ($module in $Modules) {
-            # Update the module loop counter and percent complete for both progress bars
-            ++$Module_i
-            [double]$PercentCompleteInner = [math]::ceiling( (($Module_i / $ModuleCount) * 100) )
-            [double]$PercentCompleteOuter = [math]::ceiling( $PercentCompleteOuter_Modules + (60 * ($PercentCompleteInner / 100)) )
-
-            # Update the outer progress bar while updating modules
-            $ProgressParamOuter = @{
-                Id              = 0
-                Activity        = 'Update Everything'
-                Status          = "Progress: $PercentCompleteOuter`% Complete"
-                PercentComplete = $PercentCompleteOuter
-            }
-            Write-Progress @ProgressParamOuter
-
-            # Update the child progress bar while updating modules
-            $ProgressParam1 = @{
-                Id               = 1
-                ParentId         = 0
-                Activity         = 'Updating PowerShell Modules'
-                CurrentOperation = "$($module.Name)"
-                Status           = "Progress: $PercentCompleteInner`% Complete"
-                PercentComplete  = $PercentCompleteInner
-            }
-            Write-Progress @ProgressParam1
-
-            # Do not update prerelease modules
-            if ($module.Version -match 'alpha|beta|prerelease|preview') {
-                Write-Information "`t`tSkipping $($module.Name) because a prerelease version is currently installed." -InformationAction Continue
-                continue
-            }
-
-            # Finally update the current module
-            try {
-                if ($PSCmdlet.ShouldProcess($module.Name, 'Update PowerShell module')) {
-                    Update-Module $module.Name
-                }
-            } catch [Microsoft.PowerShell.Commands.WriteErrorException] {
-                # Add a catch for mismatched certificates between module versions.
-                Write-Verbose $_
-            }
-        }
-
-        # ##### Add a section for installed scripts +++++
-        if (-not $SkipScripts) {
-            Write-Host '[2] Updating PowerShell Scripts'
-            if ($PSCmdlet.ShouldProcess('Installed PowerShell scripts', 'Update scripts')) {
-                Update-Script
-            }
-        } else {
-            Write-Host '[2] Skipping PowerShell Scripts'
-        }
-        # ##### Add a section for installed scripts +++++
-
-        # Complete the child progress bar after updating modules
-        Write-Progress -Id 1 -Activity 'Updating PowerShell Modules' -Completed
-
-
-        # ==================== Update PowerShell Help ====================
-
-        # Update the outer progress bar while updating help
-        $PercentCompleteOuter = 70
-        $ProgressParamOuter = @{
-            Id               = 0
-            Activity         = 'Update Everything'
-            CurrentOperation = 'Updating PowerShell Help'
-            Status           = "Progress: $PercentCompleteOuter`% Complete"
-            PercentComplete  = $PercentCompleteOuter
-        }
-        Write-Progress @ProgressParamOuter
-
-        if (-not $SkipHelp) {
-            Write-Host '[3] Updating PowerShell Help'
-            # Fixes error with culture ID 127 (Invariant Country), which is not associated with any language
-            if ($PSCmdlet.ShouldProcess('PowerShell help files', 'Update help')) {
-                if ((Get-Culture).LCID -eq 127) {
-                    Update-Help -UICulture en-US -ErrorAction SilentlyContinue
-                } else {
-                    Update-Help -ErrorAction SilentlyContinue
-                }
-            }
-        } else {
-            Write-Host '[3] Skipping PowerShell Help'
-        }
-        #endregion UpdatePowerShell
-
-        #region UpdateWinget
-        # >>> Create a section to check OS and client/server OS at the top of the script <<< #
         if ($Platform -eq 'Windows') {
-            $WinGetAvailable = Test-PSPreworkoutCommand -Name 'winget'
-            $WindowsOsCaption = $null
-            $ShouldUpdateWinGet = $false
-            $SkipServerPrompt = $AcceptPrompts -or $WhatIfPreference -or ($PSBoundParameters.ContainsKey('Confirm') -and (-not $Confirm))
-            $ShouldProcessHandlesConsent = ($PSBoundParameters.ContainsKey('Confirm') -and $Confirm) -or (
-                ($ConfirmPreference -ne [System.Management.Automation.ConfirmImpact]::None) -and
-                (([System.Management.Automation.ConfirmImpact]$ConfirmPreference) -le [System.Management.Automation.ConfirmImpact]::Medium)
-            )
-            $NeedServerPrompt = $WinGetAvailable -and (-not $SkipWinGet) -and (-not $SkipServerPrompt) -and (-not $ShouldProcessHandlesConsent)
-
-            if ($WinGetAvailable -and (-not $SkipWinGet)) {
-                $ShouldUpdateWinGet = $PSCmdlet.ShouldProcess('WinGet packages', 'Upgrade all user-scoped packages')
-            }
-
-            if ($NeedServerPrompt) {
-                $WindowsOsCaption = Get-WindowsOperatingSystemCaption
-
-                if ([string]::IsNullOrWhiteSpace($WindowsOsCaption)) {
-                    Write-Warning -Message 'Unable to determine the Windows operating system caption. Skipping WinGet updates as a safety precaution.'
-                    $SkipWinGet = $true
-                    $ShouldUpdateWinGet = $false
-                }
-            }
-
-            if ($ShouldUpdateWinGet -and $NeedServerPrompt -and ($WindowsOsCaption -match 'Server')) {
-                # If on Windows Server, prompt to continue before automatically updating packages.
-                Write-Warning -Message 'This is a server and updates could affect production systems. Do you want to continue with updating packages?'
-
-                $Result = Read-WinGetServerChoice
-                switch ($Result) {
-                    0 {
-                        Write-Verbose 'Continuing with WinGet package updates.'
-                    }
-                    1 {
-                        $SkipWinGet = $true
-                        $ShouldUpdateWinGet = $false
-                    }
-                }
-            }
-
-            if (-not $SkipWinGet) {
-                if ($WinGetAvailable) {
-                    if ($ShouldUpdateWinGet -or $WhatIfPreference) {
-                        # Update all winget packages
-                        Write-Host '[4] Updating Winget Packages'
-                        # Update the outer progress bar for winget section
-                        $PercentCompleteOuter = 80
-                        $ProgressParamOuter = @{
-                            Id               = 0
-                            Activity         = 'Update Everything'
-                            CurrentOperation = 'Updating Winget Packages'
-                            Status           = "Progress: $PercentCompleteOuter`% Complete"
-                            PercentComplete  = $PercentCompleteOuter
-                        }
-                        Write-Progress @ProgressParamOuter
-                    }
-                    if ($ShouldUpdateWinGet) {
-                        Invoke-WinGetUpgrade
-                    }
-                } else {
-                    Write-Host '[4] WinGet was not found. Skipping WinGet update.'
-                }
-            } else {
-                Write-Host '[4] Skipping WinGet'
-            }
+            Update-WinGetPackage -Skip:$SkipWinGet -AcceptPrompts:$AcceptPrompts @CommonParameters
         } else {
             Write-Verbose '[4] Not Windows. Skipping WinGet.'
         }
-        #endregion UpdateWinget
 
-        #region UpdateLinuxPackages
-        # Early testing. No progress bar yet. Need to check for admin, different distros, and different package managers.
         if ($Platform -eq 'Linux') {
-            # Determine if we need sudo (not needed if already root)
-            $NeedsSudo = -not (Test-IsElevated)
-
-            if (Test-PSPreworkoutCommand -Name 'apt') {
-                Write-Host '[5] Updating apt packages.'
-                if ($PSCmdlet.ShouldProcess('apt packages', 'Update and upgrade packages')) {
-                    if ($NeedsSudo) {
-                        & sudo apt update
-                        if ($AcceptPrompts) {
-                            & sudo apt upgrade -y
-                        } else {
-                            & sudo apt upgrade
-                        }
-                    } else {
-                        & apt update
-                        if ($AcceptPrompts) {
-                            & apt upgrade -y
-                        } else {
-                            & apt upgrade
-                        }
-                    }
-                }
-            }
-            if (Test-PSPreworkoutCommand -Name 'dnf') {
-                Write-Host '[5] Updating dnf packages.'
-                if ($PSCmdlet.ShouldProcess('dnf packages', 'Update packages')) {
-                    if ($NeedsSudo) {
-                        if ($AcceptPrompts) {
-                            & sudo dnf update -y
-                        } else {
-                            & sudo dnf update
-                        }
-                    } else {
-                        if ($AcceptPrompts) {
-                            & dnf update -y
-                        } else {
-                            & dnf update
-                        }
-                    }
-                }
-            }
+            Update-LinuxPackage -AcceptPrompts:$AcceptPrompts @CommonParameters
         } else {
             Write-Verbose '[5] Not Linux. Skipping section.'
         }
-        #endregion UpdateLinuxPackages
 
-        #region UpdateMacOS
-        # Early testing. No progress bar yet. Need to check for admin and different package managers.
         if ($Platform -eq 'macOS') {
-            if ($PSCmdlet.ShouldProcess('macOS software updates', 'List available updates')) {
-                softwareupdate -l
-            }
-            if (Test-PSPreworkoutCommand -Name 'brew') {
-                Write-Host '[6] Updating brew packages.'
-                if ($PSCmdlet.ShouldProcess('Homebrew packages', 'Update and upgrade packages')) {
-                    brew update
-                    brew upgrade
-                }
-            }
+            Update-MacOSPackage @CommonParameters
         } else {
             Write-Verbose '[6] Not macOS. Skipping section.'
         }
-        #endregion UpdateMacOS
 
         $OptionalCliUpdates = @(
             @{
@@ -799,9 +1036,7 @@ function Update-AllTheThings {
                 TargetName       = 'GitHub CLI extensions'
                 ActionName       = 'Upgrade all installed extensions'
                 PercentComplete  = 90
-                UpdateCommand    = {
-                    Invoke-GitHubCliExtensionUpgrade
-                }
+                UpdateCommand    = { Invoke-GitHubCliExtensionUpgrade }
             }
             @{
                 CommandName      = 'copilot'
@@ -810,67 +1045,20 @@ function Update-AllTheThings {
                 TargetName       = 'GitHub Copilot CLI'
                 ActionName       = 'Update installed CLI'
                 PercentComplete  = 95
-                UpdateCommand    = {
-                    Invoke-GitHubCopilotCliUpdate
-                }
+                UpdateCommand    = { Invoke-GitHubCopilotCliUpdate }
             }
         )
 
         foreach ($CliUpdate in $OptionalCliUpdates) {
-            & $InvokeOptionalCliUpdate @CliUpdate
+            Update-OptionalCli @CliUpdate @CommonParameters
         }
 
-        #region UpdateChocolatey
-        # Upgrade Chocolatey packages. Need to check for admin to avoid errors/warnings.
-        if ((Test-PSPreworkoutCommand -Name 'choco') -and $IncludeChocolatey) {
-            # Update the outer progress bar
-            $PercentCompleteOuter = 98
-            $ProgressParamOuter = @{
-                Id               = 0
-                Activity         = 'Update Everything'
-                CurrentOperation = 'Updating Chocolatey Packages'
-                Status           = "Progress: $PercentCompleteOuter`% Complete"
-                PercentComplete  = $PercentCompleteOuter
-            }
-            Write-Progress @ProgressParamOuter
-            Write-Host '[9] Updating Chocolatey Packages'
-            # Add a function/parameter to run these two feature configuration options, which requires admin to set.
-            if (Test-IsElevated) {
-                # Oops, this depends on PSPreworkout being installed or that function otherwise being available.
-                if ($PSCmdlet.ShouldProcess('Chocolatey features', 'Enable global confirmation and disable non-elevated warnings')) {
-                    choco feature enable -n=allowGlobalConfirmation
-                    choco feature disable --name=showNonElevatedWarnings
-                }
-            } else {
-                Write-Verbose "Run once as an administrator to disable Chocolatey's showNonElevatedWarnings." -Verbose
-            }
-            if ($PSCmdlet.ShouldProcess('Chocolatey packages', 'Upgrade Chocolatey and all packages')) {
-                choco upgrade chocolatey -y --limit-output --accept-license --no-color
-                choco upgrade all -y --limit-output --accept-license --no-color
-            }
-            # Padding to reset host before updating the progress bar.
-            Write-Host ' '
-        } else {
-            Write-Host '[9] Skipping Chocolatey'
-        }
-        #endregion UpdateChocolatey
-
-    } # end process block
+        Update-ChocolateyPackage -Include:$IncludeChocolatey @CommonParameters
+    }
 
     end {
         Write-Host 'Done.'
-        # Update the outer progress bar
-        $PercentCompleteOuter = 100
-        $ProgressParamOuter = @{
-            Id               = 0
-            Activity         = 'Update Everything'
-            CurrentOperation = 'Finished'
-            Status           = "Progress: $PercentCompleteOuter`% Complete"
-            PercentComplete  = $PercentCompleteOuter
-        }
-        Write-Progress @ProgressParamOuter
-        # Complete the outer progress bar
-        Write-Progress -Id 0 -Activity 'Update Everything' -Completed
+        Write-UpdateAllTheThingsProgress -CurrentOperation 'Finished' -PercentComplete 100
+        Write-UpdateAllTheThingsProgress -Completed
     }
-
 }
