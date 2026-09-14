@@ -46,6 +46,7 @@ function Update-AllTheThings {
     )]
     [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '', Justification = 'This is what we do.')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '', Justification = 'Interactive Use')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSShouldProcess', '', Justification = 'WhatIf and Confirm are forwarded to private helpers that call ShouldProcess.')]
     [Alias('uatt')]
     param (
         # Skip the step that updates PowerShell modules

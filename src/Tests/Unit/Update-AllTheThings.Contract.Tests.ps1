@@ -11,6 +11,7 @@ BeforeDiscovery {
     $SuppressionCases = @(
         @{ Category = 'PSUseSingularNouns' }
         @{ Category = 'PSAvoidUsingWriteHost' }
+        @{ Category = 'PSShouldProcess' }
     )
 }
 BeforeAll {
