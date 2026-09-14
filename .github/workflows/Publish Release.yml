@@ -4,12 +4,10 @@ name: 🏷️ Publish from Changelog Tag
 # matches this tag and publish a new GitHub release with it, then publish the module to the PowerShell Gallery.
 on:
   push:
+    # `paths` filters aren't reliably applied to tag pushes, so this trigger is scoped to
+    # version tags only; the job's `if` guard below double-checks the ref is a tag.
     tags:
       - 'v*.*.*'
-    branches:
-      - main
-    paths:
-      - 'CHANGELOG.md'
 
   # Allows manual triggering of the workflow.
   workflow_dispatch:
@@ -20,7 +18,7 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   release:
@@ -28,6 +26,9 @@ jobs:
     # Only run if the commit contains a tag
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
     steps:
 
       - name: Harden the runner (Audit all outbound calls)
@@ -38,14 +39,32 @@ jobs:
       - name: ✅ Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
+      - name: 📝 Extract Changelog Section
+        id: changelog
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="${GITHUB_REF_NAME#v}"
+          awk -v ver="$version" '
+            $0 ~ "^## \\[" ver "\\]" { found=1; print; next }
+            found && /^## \[/ { exit }
+            found { print }
+          ' CHANGELOG.md > RELEASE_NOTES.md
+          if [ ! -s RELEASE_NOTES.md ]; then
+            echo "::error::No CHANGELOG.md section found matching version $version"
+            exit 1
+          fi
+
       - name: 📦 Create GitHub Release
-        # Creates a new release from a changelog section that matches a commit tag (eg: v1.2.5)
-        uses: docker://antonyurchenko/git-release:latest@sha256:499561e8dc416d976f1b130584f3bdb9ba2129c9c871449b007a3c4dd7a5eb08
+        # Creates a new release using the changelog section matching the pushed tag (eg: v1.2.5)
+        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3.0.3
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         with:
-          args: |
-            artifacts\\${{ GitHub.repository }}.zip
+          body_path: RELEASE_NOTES.md
+          files: |
+            artifacts/**/*.zip
+            src/Archive/**/*.zip
 
       - name: 🚀 Publish PowerShell Module
         env:
