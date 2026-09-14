@@ -17,8 +17,10 @@ function Test-IsElevated {
     [OutputType([bool])]
     param ()
 
-    # Send non-identifying usage statistics to PostHog.
-    Write-PSPreworkoutTelemetry -EventName $MyInvocation.MyCommand.Name -ParameterNamesOnly $MyInvocation.BoundParameters.Keys
+    # The standalone Update-AllTheThings script does not include module telemetry.
+    if (Get-Command -Name Write-PSPreworkoutTelemetry -CommandType Function -ErrorAction SilentlyContinue) {
+        Write-PSPreworkoutTelemetry -EventName $MyInvocation.MyCommand.Name -ParameterNamesOnly $MyInvocation.BoundParameters.Keys
+    }
 
     if (($PSVersionTable.PSVersion.Major -le 5) -or $IsWindows) {
         $CurrentUser = [Security.Principal.WindowsPrincipal]([Security.Principal.WindowsIdentity]::GetCurrent())
@@ -49,7 +51,7 @@ function Test-IsElevated {
             # Check if we're on macOS and if user is in admin or wheel groups
             if ($IsMacOS -or (Get-Command 'sw_vers' -ErrorAction SilentlyContinue)) {
                 # Method 3a: Use groups command to check admin group membership
-                $groups = & Get-Groups 2>$null
+                $groups = & groups 2>$null
                 if ($LASTEXITCODE -eq 0 -and $groups) {
                     $groupList = $groups -split '\s+'
                     if ($groupList -contains 'admin' -or $groupList -contains 'wheel') {

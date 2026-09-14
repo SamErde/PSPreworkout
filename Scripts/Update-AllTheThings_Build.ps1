@@ -1,3 +1,4 @@
+[CmdletBinding()]
 param (
     # Type of version level update
     [Parameter(Position = 0)]
@@ -13,66 +14,110 @@ param (
     # Publish the script
     [Parameter()]
     [switch]
-    $Publish
+    $Publish,
+
+    # Destination for the generated standalone script
+    [Parameter()]
+    [ValidateNotNullOrEmpty()]
+    [string]
+    $OutputPath
 )
 
-# Detect if running as a script or copy/paste in shell ($PSScriptRoot vs $PWD).
-if ($PSScriptRoot) {
-    $ScriptInfo = (Join-Path -Path $PSScriptRoot -ChildPath 'Update-AllTheThings_ScriptInfo.ps1')
-    $Path1 = $([System.IO.Path]::Combine($PSScriptRoot, '..', 'src', 'PSPreworkout', 'Public', 'Test-IsElevated.ps1'))
-    $Path2 = $([System.IO.Path]::Combine($PSScriptRoot, '..', 'src', 'PSPreworkout', 'Public', 'Update-AllTheThings.ps1'))
+$ScriptsRoot = if ($PSScriptRoot) {
+    $PSScriptRoot
 } else {
-    $ScriptInfo = (Join-Path -Path $pwd -ChildPath 'Update-AllTheThings_ScriptInfo.ps1')
-    $Path1 = $([System.IO.Path]::Combine($PWD, '..', 'src', 'PSPreworkout', 'Public', 'Test-IsElevated.ps1'))
-    $Path2 = $([System.IO.Path]::Combine($PWD, '..', 'src', 'PSPreworkout', 'Public', 'Update-AllTheThings.ps1'))
+    $PWD.Path
 }
 
-# Get the contents of the PSScriptInfo file and any scripts to merge.
-$Content0 = Get-Content -Path $ScriptInfo
-$Content1 = Get-Content -Path $Path1
-$Content2 = Get-Content -Path $Path2
+$RepositoryRoot = [System.IO.Path]::GetFullPath((Join-Path -Path $ScriptsRoot -ChildPath '..'))
+$ModuleRoot = Join-Path -Path $RepositoryRoot -ChildPath 'src\PSPreworkout'
+$ScriptInfoPath = Join-Path -Path $ScriptsRoot -ChildPath 'Update-AllTheThings_ScriptInfo.ps1'
+$UpdateCommandPath = Join-Path -Path $ModuleRoot -ChildPath 'Public\Update-AllTheThings.ps1'
 
-# Find the current version number in file Content2.
+if (-not $PSBoundParameters.ContainsKey('OutputPath')) {
+    $OutputPath = Join-Path -Path $ScriptsRoot -ChildPath 'Update-AllTheThings.ps1'
+}
+
+$SourcePaths = @(
+    (Join-Path -Path $ModuleRoot -ChildPath 'Private\Test-PSPreworkoutCommand.ps1')
+    (Join-Path -Path $ModuleRoot -ChildPath 'Private\Get-PSPreworkoutPlatform.ps1')
+    (Join-Path -Path $ModuleRoot -ChildPath 'Private\Write-UpdateAllTheThingsProgress.ps1')
+    (Join-Path -Path $ModuleRoot -ChildPath 'Private\Invoke-UpdateNativeCommand.ps1')
+    (Join-Path -Path $ModuleRoot -ChildPath 'Private\Get-CimOperatingSystemCaption.ps1')
+    (Join-Path -Path $ModuleRoot -ChildPath 'Private\Get-WmiOperatingSystemCaption.ps1')
+    (Join-Path -Path $ModuleRoot -ChildPath 'Private\Get-WindowsOperatingSystemCaption.ps1')
+    (Join-Path -Path $ModuleRoot -ChildPath 'Private\Read-WinGetServerChoice.ps1')
+    (Join-Path -Path $ModuleRoot -ChildPath 'Private\Invoke-WinGetUpgrade.ps1')
+    (Join-Path -Path $ModuleRoot -ChildPath 'Private\Invoke-GitHubCliExtensionUpgrade.ps1')
+    (Join-Path -Path $ModuleRoot -ChildPath 'Private\Invoke-GitHubCopilotCliUpdate.ps1')
+    (Join-Path -Path $ModuleRoot -ChildPath 'Private\Set-UpdateRepositoryTrust.ps1')
+    (Join-Path -Path $ModuleRoot -ChildPath 'Private\Update-PowerShellArtifact.ps1')
+    (Join-Path -Path $ModuleRoot -ChildPath 'Private\Update-WinGetPackage.ps1')
+    (Join-Path -Path $ModuleRoot -ChildPath 'Private\Update-LinuxPackage.ps1')
+    (Join-Path -Path $ModuleRoot -ChildPath 'Private\Update-MacOSPackage.ps1')
+    (Join-Path -Path $ModuleRoot -ChildPath 'Private\Update-OptionalCli.ps1')
+    (Join-Path -Path $ModuleRoot -ChildPath 'Private\Update-ChocolateyPackage.ps1')
+    (Join-Path -Path $ModuleRoot -ChildPath 'Public\Test-IsElevated.ps1')
+    $UpdateCommandPath
+)
+
+$ScriptInfoContent = Get-Content -LiteralPath $ScriptInfoPath -Raw
+$UpdateCommandContent = Get-Content -LiteralPath $UpdateCommandPath -Raw
+$NewLine = [string][char]13 + [string][char]10
+
 $SemVerPattern = 'v(\d+)\.(\d+)\.(\d+)'
-$SemVerMatch = [regex]::Match($Content2, $SemVerPattern)
-# Remove the 'v' and incrememnt the manjor, minor, or build # if specified by function parameters.
-$CurrentVersion = [version]$(($semVerMatch.Value).Replace('v', ''))
+$SemVerMatch = [regex]::Match($UpdateCommandContent, $SemVerPattern)
+if (-not $SemVerMatch.Success) {
+    throw "Unable to find a semantic version in '$UpdateCommandPath'."
+}
+
+$CurrentVersion = [version]$SemVerMatch.Groups[0].Value.TrimStart('v')
 
 if ($CustomVersion) {
-    # Manually set a custom new version number.
-    $NewVersion = "v$($CustomVersion.Replace('v',''))"
+    $NewVersion = $CustomVersion
 } else {
-    $NewVersion = $CurrentVersion
-}
-
-if ($Major -or $Minor -or $Patch) {
-    if ($VersionLevel -eq 'Major') {
-        $NewVersion = [version]::new($CurrentVersion.Major + 1, 0, 0)
-        $NewVersion = "v$($NewVersion)"
-    }
-    if ($VersionLevel -eq 'Minor') {
-        $NewVersion = [version]::new($CurrentVersion.Major, $CurrentVersion.Minor + 1, 0)
-        $NewVersion = "v$($NewVersion)"
-    }
-    if ($Versionlevel -eq 'Patch') {
-        $NewVersion = [version]::new($CurrentVersion.Major, $CurrentVersion.Minor, $CurrentVersion.Patch + 1)
-        $NewVersion = "v$($NewVersion)"
+    switch ($VersionLevel) {
+        'Major' {
+            $NewVersion = [version]::new($CurrentVersion.Major + 1, 0, 0)
+        }
+        'Minor' {
+            $NewVersion = [version]::new($CurrentVersion.Major, $CurrentVersion.Minor + 1, 0)
+        }
+        'Patch' {
+            $NewVersion = [version]::new($CurrentVersion.Major, $CurrentVersion.Minor, $CurrentVersion.Build + 1)
+        }
+        default {
+            $NewVersion = $CurrentVersion
+        }
     }
 }
 
-# Check the version number in PSScriptInfo.
-$ScriptInfoVersion = $Content0 | Select-String -Pattern '.VERSION ((\d+).(\d+).(\d+))'
-if ($NewVersion -ne $ScriptInfoVersion) {
-    # Align the version to the contents of the script if they are different.
-    $Content0 = $Content0.Replace($ScriptInfoVersion, ".VERSION $($NewVersion.ToString())")
+$ScriptInfoVersionPattern = '(?m)^\.VERSION\s+\d+\.\d+\.\d+\s*$'
+if (-not [regex]::IsMatch($ScriptInfoContent, $ScriptInfoVersionPattern)) {
+    throw "Unable to find a .VERSION declaration in '$ScriptInfoPath'."
 }
 
-# Set the new version number in the contents of the script.
-$Content2 = $Content2.Replace($($SemVerMatch.Value), $NewVersion)
+$ScriptInfoContent = [regex]::Replace(
+    $ScriptInfoContent,
+    $ScriptInfoVersionPattern,
+    ".VERSION $NewVersion"
+)
+$UpdateCommandContent = $UpdateCommandContent.Replace($SemVerMatch.Value, "v$NewVersion")
 
-# Write the PSScriptInfo and scripts into the merged script.
-$Content0 + $Content1 + $Content2 | Set-Content -Path 'Update-AllTheThings.ps1'
+$GeneratedParts = @(($ScriptInfoContent -replace "`r`n?|\n", $NewLine).TrimEnd())
+foreach ($SourcePath in $SourcePaths) {
+    if ($SourcePath -eq $UpdateCommandPath) {
+        $GeneratedParts += ($UpdateCommandContent -replace "`r`n?|\n", $NewLine).TrimEnd()
+    } else {
+        $SourceContent = Get-Content -LiteralPath $SourcePath -Raw
+        $GeneratedParts += ($SourceContent -replace "`r`n?|\n", $NewLine).TrimEnd()
+    }
+}
+
+$GeneratedContent = ($GeneratedParts -join ($NewLine + $NewLine)) + $NewLine
+$Utf8NoBom = [System.Text.UTF8Encoding]::new($false)
+[System.IO.File]::WriteAllText($OutputPath, $GeneratedContent, $Utf8NoBom)
 
 if ($PSBoundParameters.ContainsKey('Publish')) {
-    # Publish-Script -Path ./Update-AllTheThings -NuGetApiKey ${{ secrets.POWERSHELLGALLERY_KEY }}
+    # Publish-Script -Path $OutputPath -NuGetApiKey ${{ secrets.POWERSHELLGALLERY_KEY }}
 }
