@@ -199,14 +199,14 @@
     {
       "label": "PesterTest",
       "type": "shell",
-      "command": "Invoke-Pester '${workspaceFolder}/src/Tests/Unit' -Output Detailed",
+      "command": "Import-Module Pester -RequiredVersion 5.9.1;Invoke-Pester '${workspaceFolder}/src/Tests/Unit' -Output Detailed",
       "problemMatcher": "$pester",
       "group": "test"
     },
     {
       "label": "Pester-Single-Coverage",
       "type": "shell",
-      "command": "Import-Module -Name '${workspaceFolder}/src/${workspaceFolderBasename}/${workspaceFolderBasename}.psm1';$pesterConfig = New-PesterConfiguration;$pesterConfig.run.Path = '${workspaceFolder}/src/Tests/Unit/*/${input:functionName}.Tests.ps1';$pesterConfig.CodeCoverage.Enabled = $true;$pesterConfig.CodeCoverage.Path = '${workspaceFolder}/src/${workspaceFolderBasename}/*/${input:functionName}.ps1';Invoke-Pester -Configuration $pesterConfig",
+      "command": "Import-Module Pester -RequiredVersion 5.9.1;Import-Module -Name '${workspaceFolder}/src/${workspaceFolderBasename}/${workspaceFolderBasename}.psm1';$pesterConfig = New-PesterConfiguration;$pesterConfig.run.Path = '${workspaceFolder}/src/Tests/Unit/*/${input:functionName}.Tests.ps1';$pesterConfig.CodeCoverage.Enabled = $true;$pesterConfig.CodeCoverage.Path = '${workspaceFolder}/src/${workspaceFolderBasename}/*/${input:functionName}.ps1';Invoke-Pester -Configuration $pesterConfig",
       "problemMatcher": "$pester",
       "presentation": {
         "echo": false,
@@ -217,7 +217,7 @@
     {
       "label": "Pester-Single-Detailed",
       "type": "shell",
-      "command": "Import-Module -Name '${workspaceFolder}/src/${workspaceFolderBasename}/${workspaceFolderBasename}.psm1';Invoke-Pester '${workspaceFolder}/src/Tests/Unit/*/${input:functionName}.Tests.ps1' -Output Detailed",
+      "command": "Import-Module Pester -RequiredVersion 5.9.1;Import-Module -Name '${workspaceFolder}/src/${workspaceFolderBasename}/${workspaceFolderBasename}.psm1';Invoke-Pester '${workspaceFolder}/src/Tests/Unit/*/${input:functionName}.Tests.ps1' -Output Detailed",
       "problemMatcher": "$pester",
       "presentation": {
         "echo": false,
@@ -228,7 +228,7 @@
     {
       "label": "DevCC-Single",
       "type": "shell",
-      "command": "Import-Module -Name '${workspaceFolder}/src/${workspaceFolderBasename}/${workspaceFolderBasename}.psm1';$pesterConfig = New-PesterConfiguration;$pesterConfig.run.Path = '${workspaceFolder}/src/Tests/Unit/*/${input:functionName}.Tests.ps1';$pesterConfig.CodeCoverage.Enabled = $true;$pesterConfig.CodeCoverage.Path = '${workspaceFolder}/src/${workspaceFolderBasename}/*/${input:functionName}.ps1';$pesterConfig.CodeCoverage.OutputPath = '${workspaceFolder}/cov.xml';$pesterConfig.CodeCoverage.OutputFormat = 'CoverageGutters';Invoke-Pester -Configuration $pesterConfig",
+      "command": "Import-Module Pester -RequiredVersion 5.9.1;Import-Module -Name '${workspaceFolder}/src/${workspaceFolderBasename}/${workspaceFolderBasename}.psm1';$pesterConfig = New-PesterConfiguration;$pesterConfig.run.Path = '${workspaceFolder}/src/Tests/Unit/*/${input:functionName}.Tests.ps1';$pesterConfig.CodeCoverage.Enabled = $true;$pesterConfig.CodeCoverage.Path = '${workspaceFolder}/src/${workspaceFolderBasename}/*/${input:functionName}.ps1';$pesterConfig.CodeCoverage.OutputPath = '${workspaceFolder}/cov.xml';$pesterConfig.CodeCoverage.OutputFormat = 'CoverageGutters';Invoke-Pester -Configuration $pesterConfig",
       "problemMatcher": "$pester",
       "presentation": {
         "echo": false,
@@ -239,7 +239,7 @@
     {
       "label": "Integration-Single-Detailed",
       "type": "shell",
-      "command": "Import-Module -Name '${workspaceFolder}/src/${workspaceFolderBasename}/${workspaceFolderBasename}.psm1';Invoke-Pester '${workspaceFolder}/src/Tests/Integration/*/${input:functionName}.Tests.ps1' -Output Detailed",
+      "command": "Import-Module Pester -RequiredVersion 5.9.1;Import-Module -Name '${workspaceFolder}/src/${workspaceFolderBasename}/${workspaceFolderBasename}.psm1';Invoke-Pester '${workspaceFolder}/src/Tests/Integration/*/${input:functionName}.Tests.ps1' -Output Detailed",
       "problemMatcher": "$pester",
       "presentation": {
         "echo": false,
