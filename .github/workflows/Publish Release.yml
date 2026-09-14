@@ -59,10 +59,23 @@ jobs:
         shell: pwsh
         run: .\src\actions_bootstrap.ps1
 
-      - name: 👷‍♂️ Build Module Archive
+      - name: 👷‍♂️ Build Module
+        # Run every task except Archive so the module is built and tested first.
+        shell: pwsh
+        run: Invoke-Build -Task Clean, ValidateRequirements, ImportModuleManifest, FormattingCheck, Analyze, Test, CreateHelpStart, Build, IntegrationTest -File .\src\PSPreworkout.build.ps1
+
+      - name: 🧹 Remove Test Reports from Artifacts
+        # ccReport/testOutput are test-run artifacts, not part of the shipped module;
+        # strip them before archiving so the release package only contains the module.
+        shell: pwsh
+        run: |
+          Remove-Item -Path '.\src\Artifacts\ccReport' -Recurse -Force -ErrorAction SilentlyContinue
+          Remove-Item -Path '.\src\Artifacts\testOutput' -Recurse -Force -ErrorAction SilentlyContinue
+
+      - name: 📦 Archive Module
         # Produces the .\src\Archive\*.zip package that the release step attaches below.
         shell: pwsh
-        run: Invoke-Build -File .\src\PSPreworkout.build.ps1
+        run: Invoke-Build -Task Archive -File .\src\PSPreworkout.build.ps1
 
       - name: 📦 Create GitHub Release
         # Creates a new release using the changelog section matching the pushed tag (eg: v1.2.5)
