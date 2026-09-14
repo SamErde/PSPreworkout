@@ -53,7 +53,7 @@ jobs:
     runs-on: ubuntu-latest
     concurrency:
       group: github-pages
-      cancel-in-progress: true
+      cancel-in-progress: false
     permissions:
       pages: write
       id-token: write
