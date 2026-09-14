@@ -63,7 +63,7 @@ $SourcePaths = @(
 
 $ScriptInfoContent = Get-Content -LiteralPath $ScriptInfoPath -Raw
 $UpdateCommandContent = Get-Content -LiteralPath $UpdateCommandPath -Raw
-$LineFeed = [string][char]10
+$NewLine = [string][char]13 + [string][char]10
 
 $SemVerPattern = 'v(\d+)\.(\d+)\.(\d+)'
 $SemVerMatch = [regex]::Match($UpdateCommandContent, $SemVerPattern)
@@ -104,17 +104,17 @@ $ScriptInfoContent = [regex]::Replace(
 )
 $UpdateCommandContent = $UpdateCommandContent.Replace($SemVerMatch.Value, "v$NewVersion")
 
-$GeneratedParts = @(($ScriptInfoContent -replace "`r`n?", $LineFeed).TrimEnd())
+$GeneratedParts = @(($ScriptInfoContent -replace "`r`n?|\n", $NewLine).TrimEnd())
 foreach ($SourcePath in $SourcePaths) {
     if ($SourcePath -eq $UpdateCommandPath) {
-        $GeneratedParts += ($UpdateCommandContent -replace "`r`n?", $LineFeed).TrimEnd()
+        $GeneratedParts += ($UpdateCommandContent -replace "`r`n?|\n", $NewLine).TrimEnd()
     } else {
         $SourceContent = Get-Content -LiteralPath $SourcePath -Raw
-        $GeneratedParts += ($SourceContent -replace "`r`n?", $LineFeed).TrimEnd()
+        $GeneratedParts += ($SourceContent -replace "`r`n?|\n", $NewLine).TrimEnd()
     }
 }
 
-$GeneratedContent = ($GeneratedParts -join ($LineFeed + $LineFeed)) + $LineFeed
+$GeneratedContent = ($GeneratedParts -join ($NewLine + $NewLine)) + $NewLine
 $Utf8NoBom = [System.Text.UTF8Encoding]::new($false)
 [System.IO.File]::WriteAllText($OutputPath, $GeneratedContent, $Utf8NoBom)
 
