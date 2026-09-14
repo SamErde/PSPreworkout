@@ -10,8 +10,8 @@ Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
 $modulesToInstall = New-Object System.Collections.Generic.List[object]
 # https://github.com/pester/Pester
 [void]$modulesToInstall.Add(([PSCustomObject]@{
-            ModuleName = 'Pester'
-            #ModuleVersion = '5.6.1'
+            ModuleName    = 'Pester'
+            ModuleVersion = '5.9.1'
         }))
 # https://github.com/nightroman/Invoke-Build
 [void]$modulesToInstall.Add(([PSCustomObject]@{
@@ -48,7 +48,14 @@ foreach ($module in $modulesToInstall) {
         } else {
             Install-Module @installSplat
         }
-        Import-Module -Name $module.ModuleName -ErrorAction Stop
+        $importSplat = @{
+            Name        = $module.ModuleName
+            ErrorAction = 'Stop'
+        }
+        if ($module.ModuleVersion) {
+            $importSplat.RequiredVersion = $module.ModuleVersion
+        }
+        Import-Module @importSplat
         '  - Successfully installed {0}' -f $module.ModuleName
     } catch {
         $message = 'Failed to install {0}' -f $module.ModuleName

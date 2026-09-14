@@ -10,6 +10,7 @@ on:
       - "src/PSPreworkout.build.ps1"
       - "src/PSPreworkout.Settings.ps1"
       - "src/PSScriptAnalyzerSettings.psd1"
+      - "Scripts/Update-AllTheThings*"
       - ".github/workflows/Build Module.yml"
 
   workflow_dispatch:
@@ -57,3 +58,33 @@ jobs:
           name: zip-archive
           path: .\src\Archive
           if-no-files-found: warn
+
+  compatibility-test:
+    name: 🧪 Update-AllTheThings (${{ matrix.name }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Windows PowerShell 5.1
+            os: windows-latest
+            executable: powershell.exe
+          - name: PowerShell 7 on Windows
+            os: windows-latest
+            executable: pwsh
+          - name: PowerShell 7 on Linux
+            os: ubuntu-latest
+            executable: pwsh
+
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
+        with:
+          egress-policy: audit
+
+      - name: ✅ Checkout Repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: 🧪 Run focused compatibility tests
+        run: ${{ matrix.executable }} -NoLogo -NoProfile -File ./src/Tests/Invoke-UpdateAllTheThingsCompatibility.ps1

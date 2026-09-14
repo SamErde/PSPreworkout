@@ -49,7 +49,7 @@ function Test-ManifestBool ($Path) {
 $str = @()
 $str = 'Clean', 'ValidateRequirements', 'ImportModuleManifest'
 $str += 'FormattingCheck'
-$str += 'Analyze', 'Test'
+$str += 'Test', 'Analyze'
 $str += 'CreateHelpStart'
 $str2 = $str
 $str2 += 'Build', 'Archive'
@@ -57,7 +57,7 @@ $str += 'Build', 'IntegrationTest', 'Archive'
 Add-BuildTask -Name . -Jobs $str
 
 #Local testing build process
-Add-BuildTask TestLocal Clean, ImportModuleManifest, Analyze, Test
+Add-BuildTask TestLocal Clean, ImportModuleManifest, Test, Analyze
 
 #Local help file creation process
 Add-BuildTask HelpLocal Clean, ImportModuleManifest, CreateHelpStart
@@ -312,8 +312,17 @@ Add-BuildTask FormattingCheck {
 Add-BuildTask Test {
 
     Write-Build White "      Importing desired Pester version. Min: $script:MinPesterVersion Max: $script:MaxPesterVersion"
-    Remove-Module -Name Pester -Force -ErrorAction SilentlyContinue # there are instances where some containers have Pester already in the session
-    Import-Module -Name Pester -MinimumVersion $script:MinPesterVersion -MaximumVersion $script:MaxPesterVersion -ErrorAction 'Stop'
+    $loadedPester = Get-Module -Name Pester |
+        Sort-Object -Property Version -Descending |
+        Select-Object -First 1
+    if (-not $loadedPester) {
+        Import-Module -Name Pester -MinimumVersion $script:MinPesterVersion -MaximumVersion $script:MaxPesterVersion -ErrorAction 'Stop'
+    } elseif (
+        $loadedPester.Version -lt $script:MinPesterVersion -or
+        $loadedPester.Version -gt $script:MaxPesterVersion
+    ) {
+        throw "Loaded Pester version $($loadedPester.Version) is outside the supported range."
+    }
 
     $codeCovPath = "$script:ArtifactsPath\ccReport\"
     $testOutPutPath = "$script:ArtifactsPath\testOutput\"
@@ -329,6 +338,7 @@ Add-BuildTask Test {
         $pesterConfiguration.Run.PassThru = $true
         $pesterConfiguration.Run.Exit = $false
         $pesterConfiguration.CodeCoverage.Enabled = $true
+        $pesterConfiguration.CodeCoverage.UseBreakpoints = $false
         # Fixed by inserting "\src" in front of \$ModuleName
         $pesterConfiguration.CodeCoverage.Path = "..\..\..\src\$ModuleName\*\*.ps1"
         $pesterConfiguration.CodeCoverage.CoveragePercentTarget = $script:coverageThreshold
@@ -379,11 +389,21 @@ Add-BuildTask Test {
 Add-BuildTask DevCC {
     Write-Build White '      Generating code coverage report at root...'
     Write-Build White "      Importing desired Pester version. Min: $script:MinPesterVersion Max: $script:MaxPesterVersion"
-    Remove-Module -Name Pester -Force -ErrorAction SilentlyContinue # there are instances where some containers have Pester already in the session
-    Import-Module -Name Pester -MinimumVersion $script:MinPesterVersion -MaximumVersion $script:MaxPesterVersion -ErrorAction 'Stop'
+    $loadedPester = Get-Module -Name Pester |
+        Sort-Object -Property Version -Descending |
+        Select-Object -First 1
+    if (-not $loadedPester) {
+        Import-Module -Name Pester -MinimumVersion $script:MinPesterVersion -MaximumVersion $script:MaxPesterVersion -ErrorAction 'Stop'
+    } elseif (
+        $loadedPester.Version -lt $script:MinPesterVersion -or
+        $loadedPester.Version -gt $script:MaxPesterVersion
+    ) {
+        throw "Loaded Pester version $($loadedPester.Version) is outside the supported range."
+    }
     $pesterConfiguration = New-PesterConfiguration
     $pesterConfiguration.run.Path = $script:UnitTestsPath
     $pesterConfiguration.CodeCoverage.Enabled = $true
+    $pesterConfiguration.CodeCoverage.UseBreakpoints = $false
     $pesterConfiguration.CodeCoverage.Path = "$PSScriptRoot\$ModuleName\*\*.ps1"
     $pesterConfiguration.CodeCoverage.CoveragePercentTarget = $script:coverageThreshold
     $pesterConfiguration.CodeCoverage.OutputPath = '..\..\..\cov.xml'

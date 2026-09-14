@@ -32,7 +32,9 @@ This cmdlet has the following aliases:
 
 ## DESCRIPTION
 
-A script to automatically update all PowerShell modules, PowerShell Help, and packages (apt, brew, Chocolatey, winget).
+A script to automatically update all PowerShell modules, PowerShell Help,
+GitHub CLI extensions, GitHub Copilot CLI, and packages (apt, brew,
+Chocolatey, winget).
 
 ## EXAMPLES
 
@@ -46,13 +48,16 @@ Updates all of the things it can!
 
 Update-AllTheThings -AcceptPrompts
 
-Updates all of the things and automatically accepts Linux package upgrade prompts.
+Updates all of the things and automatically accepts Linux package upgrade
+prompts and the additional WinGet confirmation prompt on Windows Server.
 
 ## PARAMETERS
 
 ### -AcceptPrompts
 
-Automatically accept prompts to install updates in Linux (apt, dnf).
+Automatically accept prompts to install updates in Linux (apt, dnf) and
+continue WinGet updates on Windows Server without showing the extra server
+confirmation prompt.
 
 ```yaml
 Type: System.Management.Automation.SwitchParameter
@@ -240,5 +245,4 @@ Version: 0.5.10
 
 ## RELATED LINKS
 
-{{ Fill in the related links here }}
-
+- [Update-AllTheThings](https://day3bits.com/PSPreworkout/Update-AllTheThings)
