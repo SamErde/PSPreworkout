@@ -19,6 +19,9 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
 
     steps:
       - name: ✅ Checkout Repository
@@ -59,6 +62,24 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
+      - name: ✅ Ensure deployment run is current branch head
+        id: current-head-check
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v8
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const branch = context.ref.replace("refs/heads/", "");
+            const response = await github.rest.repos.getBranch({ owner, repo, branch });
+            const latestSha = response.data.commit.sha;
+            const isCurrentHead = latestSha === context.sha;
+
+            core.setOutput("is_current_head", isCurrentHead ? "true" : "false");
+
+            if (!isCurrentHead) {
+              core.notice(`Skipping stale deploy. Run SHA ${context.sha} is behind branch head ${latestSha}.`);
+            }
+
       - name: 🚀 Deploy GitHub Pages artifact
         id: deployment
+        if: steps.current-head-check.outputs.is_current_head == 'true'
         uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
