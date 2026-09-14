@@ -18,29 +18,72 @@ permissions:
 
 jobs:
   build:
-    permissions:
-      contents: write
-
     runs-on: ubuntu-latest
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
-      cancel-in-progress: true
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      pages: write
 
     steps:
       - name: ✅ Checkout Repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
+      - name: ⚙️ Configure GitHub Pages
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+
       - name: 🐍 Setup Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.12"
+          cache: pip
+          cache-dependency-path: docs/requirements.txt
 
       - name: ➕ Install Zensical
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r docs/requirements.txt
+        run: python -m pip install --require-hashes --requirement docs/requirements.txt
 
-      - name: 👷‍♂️ Deploy Zensical Docs to GitHub Pages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: zensical gh-deploy --force
+      - name: 🏗️ Build Zensical Docs
+        run: zensical build
+
+      - name: 📦 Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: github-pages
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: ✅ Ensure deployment run is current branch head
+        id: current-head-check
+        uses: actions/github-script@d746ffe35508b1917358783b479e04febd2b8f71 # v9.0.0
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const branch = context.ref.replace("refs/heads/", "");
+            const response = await github.rest.repos.getBranch({ owner, repo, branch });
+            const latestSha = response.data.commit.sha;
+            const isCurrentHead = latestSha === context.sha;
+
+            core.setOutput("is_current_head", isCurrentHead ? "true" : "false");
+
+            if (!isCurrentHead) {
+              core.notice(`Skipping stale deploy. Run SHA ${context.sha} is behind branch head ${latestSha}.`);
+            }
+
+      - name: 🚀 Deploy GitHub Pages artifact
+        id: deployment
+        if: steps.current-head-check.outputs.is_current_head == 'true'
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
