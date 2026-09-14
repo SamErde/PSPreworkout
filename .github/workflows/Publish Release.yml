@@ -55,6 +55,15 @@ jobs:
             exit 1
           fi
 
+      - name: 🥾 Bootstrap
+        shell: pwsh
+        run: .\src\actions_bootstrap.ps1
+
+      - name: 👷‍♂️ Build Module Archive
+        # Produces the .\src\Archive\*.zip package that the release step attaches below.
+        shell: pwsh
+        run: Invoke-Build -File .\src\PSPreworkout.build.ps1
+
       - name: 📦 Create GitHub Release
         # Creates a new release using the changelog section matching the pushed tag (eg: v1.2.5)
         uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3.0.3
@@ -62,9 +71,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         with:
           body_path: RELEASE_NOTES.md
-          files: |
-            artifacts/**/*.zip
-            src/Archive/**/*.zip
+          files: src/Archive/*.zip
+          fail_on_unmatched_files: true
 
       - name: 🚀 Publish PowerShell Module
         env:
