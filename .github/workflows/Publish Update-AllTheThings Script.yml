@@ -1,0 +1,85 @@
+name: 📜 Publish Update-AllTheThings Script
+
+# When pushing a new standalone-script version tag (eg: script-v0.6.0), verify the tagged
+# commit is already merged into main and publish Scripts\Update-AllTheThings.ps1 to PSGallery.
+# The standalone script uses its own SemVer track, so this workflow listens for script-v*.*.*
+# rather than the module release workflow's v*.*.* tags.
+on:
+  push:
+    # `paths` filters aren't reliably applied to tag pushes, so this trigger is scoped to
+    # standalone-script version tags only; the job's `if` guard below double-checks the ref.
+    tags:
+      - 'script-v*.*.*'
+
+  # Allows manual triggering of the workflow.
+  workflow_dispatch:
+
+# Only allow one job to run at a time
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  publish-script:
+    name: 🚀 Publish Script
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/script-v')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
+        with:
+          egress-policy: audit
+
+      - name: ✅ Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # Full history is required so the ancestry check below can compare the
+          # workflow target commit against origin/main.
+          fetch-depth: 0
+
+      - name: 🔒 Verify Tag Is on Main
+        # Require that the workflow target commit was merged into main (eg: via a completed PR)
+        # before publishing, rather than allowing a tag on any arbitrary branch to publish.
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+            echo "::error::Workflow target commit $GITHUB_SHA is not an ancestor of origin/main. Merge the corresponding pull request into main before publishing the standalone script."
+            exit 1
+          fi
+
+      - name: 🥾 Bootstrap
+        shell: pwsh
+        run: .\src\actions_bootstrap.ps1
+
+      - name: 📦 Ensure PowerShell Gallery Publish Cmdlets
+        shell: pwsh
+        run: |
+          if (-not (Get-Command -Name Publish-Script -ErrorAction SilentlyContinue)) {
+            Install-Module -Name PowerShellGet -Repository PSGallery -Force -AllowClobber -SkipPublisherCheck -ErrorAction Stop
+          }
+
+          Import-Module -Name PowerShellGet -Force -ErrorAction Stop
+          Get-Command -Name Publish-Script, Test-ScriptFileInfo -ErrorAction Stop | Out-Null
+
+      - name: ✅ Validate Script Metadata
+        # Validate the committed standalone script before publishing so the workflow never
+        # ships metadata that PowerShellGet cannot parse.
+        shell: pwsh
+        run: Test-ScriptFileInfo -Path .\Scripts\Update-AllTheThings.ps1
+
+      - name: 🚀 Publish PowerShell Script
+        env:
+          POWERSHELLGALLERY_KEY: ${{ secrets.POWERSHELLGALLERY_KEY }}
+        shell: pwsh
+        run: |
+          if (-not $env:POWERSHELLGALLERY_KEY) {
+            throw 'POWERSHELLGALLERY_KEY environment variable is not set.'
+          }
+
+          Publish-Script -Path '.\Scripts\Update-AllTheThings.ps1' -NuGetApiKey $env:POWERSHELLGALLERY_KEY -ErrorAction Stop
