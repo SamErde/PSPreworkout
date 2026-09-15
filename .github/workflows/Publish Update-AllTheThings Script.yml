@@ -14,10 +14,12 @@ on:
   # Allows manual triggering of the workflow.
   workflow_dispatch:
 
-# Only allow one job to run at a time
+# Only allow one publish to run at a time across all triggers (each tag push otherwise gets
+# its own github.ref, defeating a per-ref group). Never cancel an in-progress publish, since
+# doing so could leave a partially-uploaded Gallery release reported as canceled.
 concurrency:
-  group: ${{ github.ref }}
-  cancel-in-progress: true
+  group: publish-update-all-the-things-script
+  cancel-in-progress: false
 
 permissions:
   contents: read
