@@ -109,16 +109,17 @@ function Import-BuildPester {
     [CmdletBinding()]
     param()
 
-    $loadedPester = Get-Module -Name Pester |
-        Sort-Object -Property Version -Descending |
-        Select-Object -First 1
+    $loadedPester = @(Get-Module -Name Pester)
 
     if ($loadedPester) {
-        if ($loadedPester.Version -ne $script:PesterVersion) {
-            throw "Loaded Pester version $($loadedPester.Version) does not match the required version $script:PesterVersion."
+        $mismatchedPester = @($loadedPester | Where-Object { $_.Version -ne $script:PesterVersion })
+        if ($mismatchedPester) {
+            throw "Loaded Pester version(s) $($mismatchedPester.Version -join ', ') do not match the required version $script:PesterVersion."
         }
 
-        return $loadedPester
+        return $loadedPester |
+            Sort-Object -Property Version -Descending |
+            Select-Object -First 1
     }
 
     Import-Module -Name Pester -RequiredVersion $script:PesterVersion -ErrorAction Stop
