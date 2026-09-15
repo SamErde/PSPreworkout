@@ -41,6 +41,8 @@ jobs:
           # Full history is required so the ancestry check below can compare the
           # workflow target commit against origin/main.
           fetch-depth: 0
+          # Don't leave the GITHUB_TOKEN in local git config; nothing in this job needs to push.
+          persist-credentials: false
 
       - name: 🔒 Verify Tag Is on Main
         # Require that the workflow target commit was merged into main (eg: via a completed PR)
@@ -67,11 +69,36 @@ jobs:
           Import-Module -Name PowerShellGet -Force -ErrorAction Stop
           Get-Command -Name Publish-Script, Test-ScriptFileInfo -ErrorAction Stop | Out-Null
 
-      - name: ✅ Validate Script Metadata
-        # Validate the committed standalone script before publishing so the workflow never
-        # ships metadata that PowerShellGet cannot parse.
+      - name: 🔁 Verify Committed Script Is Up to Date
+        # Regenerate the standalone script from source and fail if it differs from what's
+        # committed, so a forgotten rebuild can never cause stale behavior to be published.
         shell: pwsh
-        run: Test-ScriptFileInfo -Path .\Scripts\Update-AllTheThings.ps1
+        run: |
+          $Before = Get-Content -LiteralPath .\Scripts\Update-AllTheThings.ps1 -Raw
+          .\Scripts\Update-AllTheThings_Build.ps1
+          $After = Get-Content -LiteralPath .\Scripts\Update-AllTheThings.ps1 -Raw
+          if ($Before -ne $After) {
+              throw 'Scripts\Update-AllTheThings.ps1 is out of date with its source. Run Scripts\Update-AllTheThings_Build.ps1 and commit the result before publishing.'
+          }
+
+      - name: ✅ Validate Script Metadata and Tag Version
+        # Validate the committed standalone script's metadata, and (on a tag push) require the
+        # tag's version to match the script's .VERSION so the Gallery release is traceable back
+        # to the tag that published it.
+        shell: pwsh
+        run: |
+          $ScriptInfo = Test-ScriptFileInfo -Path .\Scripts\Update-AllTheThings.ps1
+
+          if ($env:GITHUB_REF -like 'refs/tags/*') {
+              $TagMatch = [regex]::Match($env:GITHUB_REF_NAME, '^script-v(?<Version>\d+\.\d+\.\d+)$')
+              if (-not $TagMatch.Success) {
+                  throw "Invalid script release tag '$env:GITHUB_REF_NAME'."
+              }
+
+              if ([version]$ScriptInfo.Version -ne [version]$TagMatch.Groups['Version'].Value) {
+                  throw "Tag version '$env:GITHUB_REF_NAME' does not match script version '$($ScriptInfo.Version)'."
+              }
+          }
 
       - name: 🚀 Publish PowerShell Script
         env:
