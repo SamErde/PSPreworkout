@@ -79,8 +79,8 @@ jobs:
         run: |
           Import-Module -Name Pester -RequiredVersion 5.9.1 -ErrorAction Stop
           $Result = Invoke-Pester -Path .\src\Tests\Unit\Update-AllTheThings.Package.Tests.ps1 -PassThru
-          if ($Result.FailedCount -gt 0) {
-              throw "Update-AllTheThings.Package.Tests.ps1 reported $($Result.FailedCount) failure(s). Fix the packaged script before publishing."
+          if ($Result.Result -ne 'Passed') {
+              throw "Update-AllTheThings.Package.Tests.ps1 did not pass (Result: $($Result.Result), FailedCount: $($Result.FailedCount)). Fix the packaged script before publishing."
           }
 
       - name: ✅ Validate Script Metadata and Tag Version
