@@ -2,6 +2,8 @@ name: 🏷️ Publish from Changelog Tag
 
 # When pushing a new commit that is tagged with a version (eg: v1.2.5), check CHANGELOG.md for a header that
 # matches this tag and publish a new GitHub release with it, then publish the module to the PowerShell Gallery.
+# The tagged commit must already be merged into main (eg: via a completed pull request); see the
+# "Verify Tag Is on Main" step below.
 on:
   push:
     # `paths` filters aren't reliably applied to tag pushes, so this trigger is scoped to
@@ -38,6 +40,21 @@ jobs:
 
       - name: ✅ Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # Full history is required so the ancestry check below can compare the
+          # tagged commit against origin/main.
+          fetch-depth: 0
+
+      - name: 🔒 Verify Tag Is on Main
+        # Require that the tagged commit was merged into main (eg: via a completed PR)
+        # before releasing, rather than allowing a tag on any arbitrary branch to publish.
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+            echo "::error::Tag $GITHUB_REF_NAME points to commit $GITHUB_SHA, which is not an ancestor of origin/main. Merge the corresponding pull request into main before tagging a release."
+            exit 1
+          fi
 
       - name: 📝 Extract Changelog Section
         id: changelog
