@@ -14,6 +14,30 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [2.2.0] - 2026-09-14
+
+### Added
+
+- `Update-AllTheThings` - Add support for updating the GitHub CLI and GitHub Copilot CLI.
+
+### Changed
+
+- `Update-AllTheThings` - Refactor update orchestration into focused package-manager, native-command, and PowerShell update helpers.
+- `Update-AllTheThings` - Improve cross-platform behavior, progress reporting, command detection, and generated script consistency.
+- Expand unit and compatibility test coverage for update orchestration, package managers, CLI updates, and Windows PowerShell 5.1 behavior.
+
+### Fixed
+
+- `Update-AllTheThings` - Preserve later update stages when WinGet is skipped and avoid misleading or duplicate confirmation prompts.
+
+### Security
+
+- `Update-AllTheThings` - Add safeguards around WinGet server detection and server-side CLI updates, including safe fallbacks for legacy hosts.
+
+[*Full Changelog*](https://github.com/SamErde/PSPreworkout/compare/v2.1.1...v2.2.0)
+
+---
+
 ## [2.1.1] - 2026-05-11
 
 ### Changed
@@ -491,3 +515,4 @@ This release is focused on enhancements that make the existing functions more us
 [2.0.0]: https://github.com/SamErde/PSPreworkout/tag/v2.0.0
 [2.1.0]: https://github.com/SamErde/PSPreworkout/tag/v2.1.0
 [2.1.1]: https://github.com/SamErde/PSPreworkout/tag/v2.1.1
+[2.2.0]: https://github.com/SamErde/PSPreworkout/tag/v2.2.0

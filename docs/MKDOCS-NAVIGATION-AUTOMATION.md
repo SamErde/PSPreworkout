@@ -136,7 +136,7 @@ To change which category a function belongs to:
 
 ```powershell
 # Run the Pester tests
-Import-Module Pester
+Import-Module Pester -RequiredVersion 5.9.1
 Invoke-Pester -Path ./src/Tests/Unit/Update-MkDocsNavigation.Tests.ps1
 ```
 

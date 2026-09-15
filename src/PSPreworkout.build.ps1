@@ -92,10 +92,41 @@ Enter-Build {
     # Ensure our builds fail until if below a minimum defined code test coverage threshold
     $script:coverageThreshold = 30
 
-    [version]$script:MinPesterVersion = '5.2.2'
-    [version]$script:MaxPesterVersion = '5.99.99'
+    [version]$script:PesterVersion = '5.9.1'
     $script:testOutputFormat = 'NUnitXML'
 } #Enter-Build
+
+<#
+.SYNOPSIS
+    Imports the exact Pester version required by the build.
+.DESCRIPTION
+    Reuses a matching Pester module already loaded in the current process and
+    rejects other versions because PowerShell cannot unload Pester assemblies.
+.OUTPUTS
+    System.Management.Automation.PSModuleInfo
+#>
+function Import-BuildPester {
+    [CmdletBinding()]
+    param()
+
+    $loadedPester = @(Get-Module -Name Pester)
+
+    if ($loadedPester) {
+        $mismatchedPester = @($loadedPester | Where-Object { $_.Version -ne $script:PesterVersion })
+        if ($mismatchedPester) {
+            throw "Loaded Pester version(s) $($mismatchedPester.Version -join ', ') do not match the required version $script:PesterVersion."
+        }
+
+        return $loadedPester |
+            Sort-Object -Property Version -Descending |
+            Select-Object -First 1
+    }
+
+    Import-Module -Name Pester -RequiredVersion $script:PesterVersion -ErrorAction Stop
+    Get-Module -Name Pester |
+        Sort-Object -Property Version -Descending |
+        Select-Object -First 1
+} #Import-BuildPester
 
 # Define headers as separator, task path, synopsis, and location, e.g. for Ctrl+Click in VSCode.
 # Also change the default color to Green. If you need task start times, use `$Task.Started`.
@@ -311,18 +342,8 @@ Add-BuildTask FormattingCheck {
 #Synopsis: Invokes all Pester Unit Tests in the Tests\Unit folder (if it exists)
 Add-BuildTask Test {
 
-    Write-Build White "      Importing desired Pester version. Min: $script:MinPesterVersion Max: $script:MaxPesterVersion"
-    $loadedPester = Get-Module -Name Pester |
-        Sort-Object -Property Version -Descending |
-        Select-Object -First 1
-    if (-not $loadedPester) {
-        Import-Module -Name Pester -MinimumVersion $script:MinPesterVersion -MaximumVersion $script:MaxPesterVersion -ErrorAction 'Stop'
-    } elseif (
-        $loadedPester.Version -lt $script:MinPesterVersion -or
-        $loadedPester.Version -gt $script:MaxPesterVersion
-    ) {
-        throw "Loaded Pester version $($loadedPester.Version) is outside the supported range."
-    }
+    Write-Build White "      Importing required Pester version: $script:PesterVersion"
+    $null = Import-BuildPester
 
     $codeCovPath = "$script:ArtifactsPath\ccReport\"
     $testOutPutPath = "$script:ArtifactsPath\testOutput\"
@@ -388,18 +409,8 @@ Add-BuildTask Test {
 #Synopsis: Used primarily during active development to generate xml file to graphically display code coverage in VSCode using Coverage Gutters
 Add-BuildTask DevCC {
     Write-Build White '      Generating code coverage report at root...'
-    Write-Build White "      Importing desired Pester version. Min: $script:MinPesterVersion Max: $script:MaxPesterVersion"
-    $loadedPester = Get-Module -Name Pester |
-        Sort-Object -Property Version -Descending |
-        Select-Object -First 1
-    if (-not $loadedPester) {
-        Import-Module -Name Pester -MinimumVersion $script:MinPesterVersion -MaximumVersion $script:MaxPesterVersion -ErrorAction 'Stop'
-    } elseif (
-        $loadedPester.Version -lt $script:MinPesterVersion -or
-        $loadedPester.Version -gt $script:MaxPesterVersion
-    ) {
-        throw "Loaded Pester version $($loadedPester.Version) is outside the supported range."
-    }
+    Write-Build White "      Importing required Pester version: $script:PesterVersion"
+    $null = Import-BuildPester
     $pesterConfiguration = New-PesterConfiguration
     $pesterConfiguration.run.Path = $script:UnitTestsPath
     $pesterConfiguration.CodeCoverage.Enabled = $true
@@ -530,7 +541,7 @@ Add-BuildTask UpdateCBH -After AssetCopy {
 #>
 "@
 
-    $CBHPattern = '(?ms)(\<#.*\.SYNOPSIS.*?#>)'
+    $CBHPattern = '(?ms)(\<#.*?\.SYNOPSIS.*?#>)'
     Get-ChildItem -Path "$script:ArtifactsPath\Public\*.ps1" -File | ForEach-Object {
         $FormattedOutFile = $_.FullName
         Write-Output "      Replacing CBH in file: $($FormattedOutFile)"
@@ -597,9 +608,8 @@ Add-BuildTask Build {
 #Synopsis: Invokes all Pester Integration Tests in the Tests\Integration folder (if it exists)
 Add-BuildTask IntegrationTest {
     if (Test-Path -Path $script:IntegrationTestsPath) {
-        Write-Build White "      Importing desired Pester version. Min: $script:MinPesterVersion Max: $script:MaxPesterVersion"
-        Remove-Module -Name Pester -Force -ErrorAction SilentlyContinue # there are instances where some containers have Pester already in the session
-        Import-Module -Name Pester -MinimumVersion $script:MinPesterVersion -MaximumVersion $script:MaxPesterVersion -ErrorAction 'Stop'
+        Write-Build White "      Importing required Pester version: $script:PesterVersion"
+        $null = Import-BuildPester
 
         Write-Build White "      Performing Pester Integration Tests in $($invokePesterParams.path)"
 
