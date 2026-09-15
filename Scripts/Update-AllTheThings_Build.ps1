@@ -118,6 +118,10 @@ $GeneratedContent = ($GeneratedParts -join ($NewLine + $NewLine)) + $NewLine
 $Utf8NoBom = [System.Text.UTF8Encoding]::new($false)
 [System.IO.File]::WriteAllText($OutputPath, $GeneratedContent, $Utf8NoBom)
 
-if ($PSBoundParameters.ContainsKey('Publish')) {
-    # Publish-Script -Path $OutputPath -NuGetApiKey ${{ secrets.POWERSHELLGALLERY_KEY }}
+if ($Publish) {
+    if (-not $env:POWERSHELLGALLERY_KEY) {
+        throw 'POWERSHELLGALLERY_KEY environment variable is not set.'
+    }
+
+    Publish-Script -Path $OutputPath -NuGetApiKey $env:POWERSHELLGALLERY_KEY -ErrorAction Stop
 }

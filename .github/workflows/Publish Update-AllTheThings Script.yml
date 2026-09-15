@@ -1,0 +1,114 @@
+name: 📜 Publish Update-AllTheThings Script
+
+# When pushing a new standalone-script version tag (eg: script-v0.6.0), verify the tagged
+# commit is already merged into main and publish Scripts\Update-AllTheThings.ps1 to PSGallery.
+# The standalone script uses its own SemVer track, so this workflow listens for script-v*.*.*
+# rather than the module release workflow's v*.*.* tags.
+on:
+  push:
+    # `paths` filters aren't reliably applied to tag pushes, so this trigger is scoped to
+    # standalone-script version tags only; the job's `if` guard below double-checks the ref.
+    tags:
+      - 'script-v*.*.*'
+
+  # Allows manual triggering of the workflow.
+  workflow_dispatch:
+
+# Only allow one publish to run at a time across all triggers (each tag push otherwise gets
+# its own github.ref, defeating a per-ref group). Never cancel an in-progress publish, since
+# doing so could leave a partially-uploaded Gallery release reported as canceled.
+concurrency:
+  group: publish-update-all-the-things-script
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  publish-script:
+    name: 🚀 Publish Script
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/script-v')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
+        with:
+          egress-policy: audit
+
+      - name: ✅ Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # Full history is required so the ancestry check below can compare the
+          # workflow target commit against origin/main.
+          fetch-depth: 0
+          # Don't leave the GITHUB_TOKEN in local git config; nothing in this job needs to push.
+          persist-credentials: false
+
+      - name: 🔒 Verify Tag Is on Main
+        # Require that the workflow target commit was merged into main (eg: via a completed PR)
+        # before publishing, rather than allowing a tag on any arbitrary branch to publish.
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+            echo "::error::Workflow target commit $GITHUB_SHA is not an ancestor of origin/main. Merge the corresponding pull request into main before publishing the standalone script."
+            exit 1
+          fi
+
+      - name: 🥾 Bootstrap
+        shell: pwsh
+        run: .\src\actions_bootstrap.ps1
+
+      - name: 📦 Ensure PowerShell Gallery Publish Cmdlets
+        shell: pwsh
+        run: |
+          if (-not (Get-Command -Name Publish-Script -ErrorAction SilentlyContinue)) {
+            Install-Module -Name PowerShellGet -Repository PSGallery -Force -AllowClobber -SkipPublisherCheck -ErrorAction Stop
+          }
+
+          Import-Module -Name PowerShellGet -Force -ErrorAction Stop
+          Get-Command -Name Publish-Script, Test-ScriptFileInfo -ErrorAction Stop | Out-Null
+
+      - name: 🔁 Verify Packaged Script Is Up to Date and Loads
+        # Run the Pester package tests: they rebuild the standalone script and fail if it
+        # differs from the committed file, and load it in an isolated process to catch a
+        # stale or broken generated artifact before it is published.
+        shell: pwsh
+        run: |
+          Import-Module -Name Pester -RequiredVersion 5.9.1 -ErrorAction Stop
+          $Result = Invoke-Pester -Path .\src\Tests\Unit\Update-AllTheThings.Package.Tests.ps1 -PassThru
+          if ($Result.Result -ne 'Passed') {
+              throw "Update-AllTheThings.Package.Tests.ps1 did not pass (Result: $($Result.Result), FailedCount: $($Result.FailedCount)). Fix the packaged script before publishing."
+          }
+
+      - name: ✅ Validate Script Metadata and Tag Version
+        # Validate the committed standalone script's metadata, and (on a tag push) require the
+        # tag's version to match the script's .VERSION so the Gallery release is traceable back
+        # to the tag that published it.
+        shell: pwsh
+        run: |
+          $ScriptInfo = Test-ScriptFileInfo -Path .\Scripts\Update-AllTheThings.ps1
+
+          if ($env:GITHUB_REF -like 'refs/tags/*') {
+              $TagMatch = [regex]::Match($env:GITHUB_REF_NAME, '^script-v(?<Version>\d+\.\d+\.\d+)$')
+              if (-not $TagMatch.Success) {
+                  throw "Invalid script release tag '$env:GITHUB_REF_NAME'."
+              }
+
+              if ([version]$ScriptInfo.Version -ne [version]$TagMatch.Groups['Version'].Value) {
+                  throw "Tag version '$env:GITHUB_REF_NAME' does not match script version '$($ScriptInfo.Version)'."
+              }
+          }
+
+      - name: 🚀 Publish PowerShell Script
+        env:
+          POWERSHELLGALLERY_KEY: ${{ secrets.POWERSHELLGALLERY_KEY }}
+        shell: pwsh
+        run: |
+          if (-not $env:POWERSHELLGALLERY_KEY) {
+            throw 'POWERSHELLGALLERY_KEY environment variable is not set.'
+          }
+
+          Publish-Script -Path '.\Scripts\Update-AllTheThings.ps1' -NuGetApiKey $env:POWERSHELLGALLERY_KEY -ErrorAction Stop
