@@ -117,9 +117,9 @@ pygments==2.21.0 \
     # via
     #   -r requirements.in
     #   zensical
-pymdown-extensions==12.0 \
-    --hash=sha256:ae9ee9bfd1c1e3d291d6f6ff1883a7ef388594905e80c0c714b9c596fd8a5cb7 \
-    --hash=sha256:d00b32be02715676bfec9183371928d1db44e1cd58dbeb76c7f27d9f72682039
+pymdown-extensions==12.1 \
+    --hash=sha256:4a254b771acfcddc6c110a7f4590d818f1f849e2d5aacf69b4b07c8dd2a9700d \
+    --hash=sha256:fdb8f47f5d7fd069d10ef2a7d8908e613d7865ff0419d544a0ffd3984e884f11
     # via
     #   -r requirements.in
     #   zensical
