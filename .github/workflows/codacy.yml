@@ -25,10 +25,10 @@ on:
 permissions:
   contents: read
 
-# One run per pull request or branch. Only pull request runs are cancelled by newer pushes, so
-# every push to main and every scheduled scan still uploads its SARIF results.
+# Pull request runs are grouped per PR and cancelled by newer pushes. Other runs are grouped per
+# commit so no pending push or scheduled scan is replaced and every one uploads its SARIF results.
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:

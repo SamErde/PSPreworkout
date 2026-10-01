@@ -22,9 +22,10 @@ permissions:
 
 # One run per triggering event and branch; a newer run cancels the older in-progress run.
 # For workflow_run events, github.ref is always the default branch, so the triggering run's
-# head branch is used instead to avoid unrelated pull requests cancelling each other.
+# head repository and branch are used instead so unrelated pull requests (including forks that
+# share a branch name) do not cancel each other.
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.workflow_run.head_branch || github.ref }}
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.workflow_run.head_repository.full_name }}-${{ github.event.workflow_run.head_branch || github.ref }}
   cancel-in-progress: true
 
 jobs:
