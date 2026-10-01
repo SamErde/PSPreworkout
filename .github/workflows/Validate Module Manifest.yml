@@ -14,7 +14,6 @@ jobs:
     timeout-minutes: 10
     permissions:
       contents: write
-      pull-requests: write
     concurrency:
       group: manifest-validation-${{ github.ref }}
       cancel-in-progress: false
@@ -34,7 +33,7 @@ jobs:
         run: |
           $ErrorActionPreference = 'Stop'
 
-          $ModuleSourcePath = "${{ github.workspace }}/src/PSPreworkout"
+          $ModuleSourcePath = "$env:GITHUB_WORKSPACE/src/PSPreworkout"
           $manifestPath = "$ModuleSourcePath/PSPreworkout.psd1"
 
           # Validate manifest file exists
@@ -169,7 +168,7 @@ jobs:
 
           Write-Host "Updating module manifest..." -ForegroundColor Cyan
 
-          $ModuleSourcePath = "${{ github.workspace }}/src/PSPreworkout"
+          $ModuleSourcePath = "$env:GITHUB_WORKSPACE/src/PSPreworkout"
           $manifestPath = "$ModuleSourcePath/PSPreworkout.psd1"
 
           # Function to extract public functions
