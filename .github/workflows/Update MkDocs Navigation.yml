@@ -92,8 +92,10 @@ jobs:
 
       - name: ✅ Summary
         if: always()
+        env:
+          NAVIGATION_CHANGED: ${{ steps.check_changes.outputs.changed }}
         run: |
-          if [ "${{ steps.check_changes.outputs.changed }}" == "true" ]; then
+          if [ "$NAVIGATION_CHANGED" == "true" ]; then
             echo "### ✅ MkDocs Navigation Updated" >> $GITHUB_STEP_SUMMARY
             echo "The MkDocs navigation has been automatically updated and committed." >> $GITHUB_STEP_SUMMARY
           else

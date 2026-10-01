@@ -78,8 +78,10 @@ jobs:
 
       - name: 📦 Package External Help
         shell: pwsh
+        env:
+          REPOSITORY_NAME: ${{ github.event.repository.name }}
         run: |
-          Write-Host "${{ github.event.repository.name }}" -ForegroundColor Green
+          Write-Host "$env:REPOSITORY_NAME" -ForegroundColor Green
           Write-Host "Current Directory: $PWD" -ForegroundColor Cyan
 
           Import-Module -Name PlatyPS
