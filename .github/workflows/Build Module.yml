@@ -18,14 +18,18 @@ on:
 permissions:
   contents: read
 
+# One run per pull request (or ref for manual runs) across both jobs; a newer push cancels the
+# older in-progress run. Defined at workflow level so the compatibility matrix legs don't
+# cancel each other, which a shared job-level group would do.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     name: 🧪 Run Tests and Build
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
-      cancel-in-progress: true
     # strategy:
     #  fail-fast: false
 
@@ -37,6 +41,8 @@ jobs:
 
       - name: ✅ Checkout Repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: 🥾 Bootstrap
         shell: pwsh
@@ -86,6 +92,8 @@ jobs:
 
       - name: ✅ Checkout Repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: 🧪 Run focused compatibility tests
         run: ${{ matrix.executable }} -NoLogo -NoProfile -File ./src/Tests/Invoke-UpdateAllTheThingsCompatibility.ps1

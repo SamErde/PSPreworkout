@@ -25,6 +25,12 @@ on:
 permissions:
   contents: read
 
+# One run per pull request or branch. Only pull request runs are cancelled by newer pushes, so
+# every push to main and every scheduled scan still uploads its SARIF results.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   codacy-security-scan:
     permissions:
@@ -43,6 +49,8 @@ jobs:
 
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       # Execute Codacy Analysis CLI and generate a SARIF output with the security issues identified during the analysis
       - name: Run Codacy Analysis CLI

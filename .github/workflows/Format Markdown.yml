@@ -7,6 +7,12 @@ on:
 permissions:
   contents: read
 
+# This workflow pushes formatting commits, so runs are serialized and never cancelled mid-push.
+# Checkout credentials stay persisted because the formatting action pushes with them.
+concurrency:
+  group: format-markdown
+  cancel-in-progress: false
+
 jobs:
   format:
     runs-on: ubuntu-latest
