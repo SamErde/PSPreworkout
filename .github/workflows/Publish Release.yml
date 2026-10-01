@@ -14,10 +14,15 @@ on:
   # Allows manual triggering of the workflow.
   workflow_dispatch:
 
-# Only allow one job to run at a time
+# Only allow one release to run at a time across all tags, using a fixed group name so it cannot
+# collide with another workflow's ref-based group. Never cancel an in-progress release, since doing
+# so could leave a GitHub release created without the matching PowerShell Gallery publish.
+# `queue: max` keeps every pending release queued (up to 100) instead of the default behavior of
+# replacing an older pending run with a newer one, so no intermediate tag is silently skipped.
 concurrency:
-  group: ${{ github.ref }}
-  cancel-in-progress: true
+  group: publish-release-module
+  cancel-in-progress: false
+  queue: max
 
 permissions:
   contents: read
@@ -44,6 +49,20 @@ jobs:
           # Full history is required so the ancestry check below can compare the
           # tagged commit against origin/main.
           fetch-depth: 0
+          # Don't leave the contents:write GITHUB_TOKEN available to later steps (third-party
+          # bootstrap modules, tests). Nothing in this job pushes; the release step uses the API.
+          persist-credentials: false
+
+      - name: 🔑 Verify PowerShell Gallery Key Is Available
+        # Fail before building or creating the GitHub release if the key is missing, rather than
+        # leaving a published GitHub release without the matching PowerShell Gallery package.
+        env:
+          PS_GALLERY_KEY: ${{ secrets.POWERSHELLGALLERY_KEY }}
+        shell: pwsh
+        run: |
+          if (-not $env:PS_GALLERY_KEY) {
+            throw 'POWERSHELLGALLERY_KEY secret is not available to this job.'
+          }
 
       - name: 🔒 Verify Tag Is on Main
         # Require that the tagged commit was merged into main (eg: via a completed PR)
@@ -96,9 +115,8 @@ jobs:
 
       - name: 📦 Create GitHub Release
         # Creates a new release using the changelog section matching the pushed tag (eg: v1.2.5)
+        # Uses the job's GITHUB_TOKEN (the action's default `token` input) with contents: write.
         uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3.0.3
-        env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         with:
           body_path: RELEASE_NOTES.md
           files: src/Archive/*.zip
@@ -111,4 +129,8 @@ jobs:
         run: |
           Write-Verbose "Script root dir:`t $PSScriptRoot"
           Write-Verbose "Working directory:`t $($PWD.path)"
-          Publish-Module -Path '.\src\PSPreworkout' -NuGetApiKey ${{ secrets.POWERSHELLGALLERY_KEY }}
+          if (-not $env:PS_GALLERY_KEY) {
+            throw 'POWERSHELLGALLERY_KEY secret is not available to this job.'
+          }
+
+          Publish-Module -Path '.\src\PSPreworkout' -NuGetApiKey $env:PS_GALLERY_KEY
