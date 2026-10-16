@@ -20,13 +20,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    # Replace obsolete builds for this ref without interrupting an in-progress deployment.
+    # Queue builds without dropping a newer pending run; stale pushes skip the expensive work.
     concurrency:
       group: ${{ github.workflow }}-build-${{ github.ref }}
-      cancel-in-progress: true
+      cancel-in-progress: false
+      queue: max
     permissions:
       contents: read
       pages: write
+    outputs:
+      is_current_head: ${{ steps.current-head-check.outputs.is_current_head }}
 
     steps:
       - name: Harden the runner (Audit all outbound calls)
@@ -34,15 +37,38 @@ jobs:
         with:
           egress-policy: audit
 
+      - name: Check current branch head
+        id: current-head-check
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            if (context.eventName === "workflow_dispatch") {
+              core.setOutput("is_current_head", "true");
+              return;
+            }
+
+            const { owner, repo } = context.repo;
+            const branch = context.ref.replace("refs/heads/", "");
+            const response = await github.rest.repos.getBranch({ owner, repo, branch });
+            const isCurrentHead = response.data.commit.sha === context.sha;
+            core.setOutput("is_current_head", isCurrentHead ? "true" : "false");
+
+            if (!isCurrentHead) {
+              core.notice(`Skipping stale build. Run SHA ${context.sha} is behind branch head ${response.data.commit.sha}.`);
+            }
+
       - name: ✅ Checkout Repository
+        if: steps.current-head-check.outputs.is_current_head == 'true'
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
       - name: ⚙️ Configure GitHub Pages
+        if: steps.current-head-check.outputs.is_current_head == 'true'
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
 
       - name: 🐍 Setup Python
+        if: steps.current-head-check.outputs.is_current_head == 'true'
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.12"
@@ -50,19 +76,22 @@ jobs:
           cache-dependency-path: docs/requirements.txt
 
       - name: ➕ Install Zensical
+        if: steps.current-head-check.outputs.is_current_head == 'true'
         run: python -m pip install --require-hashes --requirement docs/requirements.txt
 
       - name: 🏗️ Build Zensical Docs
+        if: steps.current-head-check.outputs.is_current_head == 'true'
         run: zensical build
 
       - name: 📦 Upload GitHub Pages artifact
+        if: steps.current-head-check.outputs.is_current_head == 'true'
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
           path: site
 
   deploy:
     needs: build
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && needs.build.outputs.is_current_head == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     concurrency:
