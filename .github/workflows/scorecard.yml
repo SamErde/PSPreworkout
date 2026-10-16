@@ -17,6 +17,11 @@ on:
 # Declare default permissions as read only.
 permissions: read-all
 
+# Only the latest scan for the default branch is needed across push, schedule, and protection changes.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   analysis:
     name: Scorecard analysis
