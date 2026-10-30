@@ -22,7 +22,7 @@ jobs:
 
     - name: '👷‍♂️ Auto-assign Issue'
       if: github.event_name == 'issues'
-      uses: pozil/auto-assign-issue@af6beea6bdf1e8eb373f061c5bc168681fc6d011 # v4.0.1
+      uses: pozil/auto-assign-issue@d6e511896e5f1d2408e74db74416647d8ff80c8c # v4.1.0
       with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           numOfAssignee: 1
@@ -30,7 +30,7 @@ jobs:
           allowSelfAssign: true
     - name: '👷‍♂️ Auto-assign PR'
       if: github.event_name == 'pull_request'
-      uses: pozil/auto-assign-issue@af6beea6bdf1e8eb373f061c5bc168681fc6d011 # v4.0.1
+      uses: pozil/auto-assign-issue@d6e511896e5f1d2408e74db74416647d8ff80c8c # v4.1.0
       with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           numOfAssignee: 1
