@@ -54,22 +54,67 @@ jobs:
 
       # Execute Codacy Analysis CLI and generate a SARIF output with the security issues identified during the analysis
       - name: Run Codacy Analysis CLI
-        uses: codacy/codacy-analysis-cli-action@d840f886c4bd4edc059706d09c6a1586111c540b # 1.1.0
+        uses: codacy/codacy-analysis-cli-action@562ee3e92b8e92df8b67e0a5ff8aa8e261919c08 # v4.4.7
         with:
           # Check https://github.com/codacy/codacy-analysis-cli#project-token to get your project token from your Codacy repository
           # You can also omit the token and run the tools that support default configurations
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
           verbose: true
+          # Infrastructure or analyzer failures must not produce a successful empty scan.
+          fail-if-incomplete: true
           output: results.sarif
           format: sarif
           # Adjust severity of non-security issues
           gh-code-scanning-compat: true
-          # Force 0 exit code to allow SARIF file generation
-          # This will handover control about PR rejection to the GitHub side
+          # Report findings through GitHub code scanning without failing on issue counts.
+          # Analyzer failures still fail the job via fail-if-incomplete.
           max-allowed-issues: 2147483647
 
-      # Upload the SARIF file generated in the previous step
+      # Codacy emits one run per tool/language; GitHub requires one run per tool/category.
+      - name: Combine SARIF runs for each analyzer
+        if: ${{ !cancelled() && hashFiles('results.sarif') != '' }}
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+
+          path = Path("results.sarif")
+          report = json.loads(path.read_text(encoding="utf-8"))
+          combined = {}
+          for run in report["runs"]:
+              driver = run["tool"]["driver"]
+              key = (driver["name"], driver["version"])
+              if key not in combined:
+                  combined[key] = {
+                      "tool": {"driver": {**driver, "rules": []}},
+                      "results": [],
+                      "artifacts": [],
+                      "invocations": [],
+                  }
+              target = combined[key]
+              rules = {rule["id"]: rule for rule in target["tool"]["driver"]["rules"]}
+              rules.update({rule["id"]: rule for rule in driver.get("rules", [])})
+              target["tool"]["driver"]["rules"] = list(rules.values())
+              artifacts = {artifact["location"]["uri"]: artifact for artifact in target["artifacts"]}
+              artifacts.update({artifact["location"]["uri"]: artifact for artifact in run.get("artifacts", [])})
+              target["artifacts"] = list(artifacts.values())
+              for result in run.get("results", []):
+                  # Codacy supplies ruleId and uri too; remove indices invalidated by combining arrays.
+                  result.pop("ruleIndex", None)
+                  for location in result.get("locations", []):
+                      location["physicalLocation"]["artifactLocation"].pop("index", None)
+                  target["results"].append(result)
+              target["invocations"].extend(run.get("invocations", []))
+          report["runs"] = list(combined.values())
+          # The CLI container owns the original; write the normalized report as the runner user.
+          Path("results-combined.sarif").write_text(json.dumps(report), encoding="utf-8")
+          print(f"Prepared {len(report['runs'])} analyzer runs with "
+                f"{sum(len(run['results']) for run in report['runs'])} findings.")
+
+      # Preserve available findings even when strict mode reports an incomplete scan.
+      # The failed analysis step still fails the job.
       - name: Upload SARIF results file
+        if: ${{ !cancelled() && hashFiles('results-combined.sarif') != '' }}
         uses: github/codeql-action/upload-sarif@24c54180a607b1449ed407dd24f251e4e9147c8d # v4.38.3
         with:
-          sarif_file: results.sarif
+          sarif_file: results-combined.sarif
