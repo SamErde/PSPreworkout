@@ -1,4 +1,5 @@
 # Bootstrap dependencies
+$env:PSPREWORKOUT_DISABLE_TELEMETRY = '1'
 
 # https://docs.microsoft.com/powershell/module/packagemanagement/get-packageprovider
 Get-PackageProvider -Name Nuget -ForceBootstrap | Out-Null

@@ -14,6 +14,19 @@ This repository follows best practices and style guidelines that are commonly ac
 
 Additional details are described well in this project's [PowerShell instructions](instructions/powershell.instructions.md) file.
 
+## Telemetry during development
+
+Build tasks, compatibility tests, VS Code tasks, and PowerShell CI workflows set
+`PSPREWORKOUT_DISABLE_TELEMETRY=1` for their process and child processes. Each Pester
+test file also opts out before importing or invoking module commands, so direct
+`Invoke-Pester` runs do not contribute to usage analytics.
+
+Telemetry unit tests temporarily clear the opt-out only with `Invoke-RestMethod`
+mocked, then restore the inherited setting after every test. New test files should
+set `$env:PSPREWORKOUT_DISABLE_TELEMETRY = '1'` in `BeforeAll` before importing the
+module. For other manual development sessions, set this variable before invoking
+PSPreworkout commands.
+
 ## Automated Module Manifest Updates
 
 When you add a new public function to the module, the build process and GitHub Actions workflows will automatically update the module manifest (`PSPreworkout.psd1`) to include:

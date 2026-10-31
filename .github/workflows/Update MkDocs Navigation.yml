@@ -16,6 +16,10 @@ on:
 permissions:
   contents: read
 
+# Keep all build, test and documentation sessions out of usage analytics.
+env:
+  PSPREWORKOUT_DISABLE_TELEMETRY: '1'
+
 jobs:
   update-navigation:
     runs-on: ubuntu-latest
