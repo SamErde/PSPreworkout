@@ -274,7 +274,7 @@ jobs:
 
       - name: 💾 Commit Changes
         if: steps.check.outputs.needs_update == 'true'
-        uses: stefanzweifel/git-auto-commit-action@4a55954c782fc1ea30b9056cd3e7a2b40ca8887d # v7.2.0
+        uses: stefanzweifel/git-auto-commit-action@d0b01107b5db882071f96de5dd4b54961ea93f4c # v7.2.1
         with:
           commit_message: "🤖 Auto-update module manifest with new functions and aliases"
           file_pattern: "src/PSPreworkout/PSPreworkout.psd1"
