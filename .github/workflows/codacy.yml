@@ -106,14 +106,15 @@ jobs:
                   target["results"].append(result)
               target["invocations"].extend(run.get("invocations", []))
           report["runs"] = list(combined.values())
-          path.write_text(json.dumps(report), encoding="utf-8")
+          # The CLI container owns the original; write the normalized report as the runner user.
+          Path("results-combined.sarif").write_text(json.dumps(report), encoding="utf-8")
           print(f"Prepared {len(report['runs'])} analyzer runs with "
                 f"{sum(len(run['results']) for run in report['runs'])} findings.")
 
       # Preserve available findings even when strict mode reports an incomplete scan.
       # The failed analysis step still fails the job.
       - name: Upload SARIF results file
-        if: ${{ !cancelled() && hashFiles('results.sarif') != '' }}
+        if: ${{ !cancelled() && hashFiles('results-combined.sarif') != '' }}
         uses: github/codeql-action/upload-sarif@24c54180a607b1449ed407dd24f251e4e9147c8d # v4.38.3
         with:
-          sarif_file: results.sarif
+          sarif_file: results-combined.sarif
