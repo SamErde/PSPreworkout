@@ -70,6 +70,46 @@ jobs:
           # Analyzer failures still fail the job via fail-if-incomplete.
           max-allowed-issues: 2147483647
 
+      # Codacy emits one run per tool/language; GitHub requires one run per tool/category.
+      - name: Combine SARIF runs for each analyzer
+        if: ${{ !cancelled() && hashFiles('results.sarif') != '' }}
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+
+          path = Path("results.sarif")
+          report = json.loads(path.read_text(encoding="utf-8"))
+          combined = {}
+          for run in report["runs"]:
+              driver = run["tool"]["driver"]
+              key = (driver["name"], driver["version"])
+              if key not in combined:
+                  combined[key] = {
+                      "tool": {"driver": {**driver, "rules": []}},
+                      "results": [],
+                      "artifacts": [],
+                      "invocations": [],
+                  }
+              target = combined[key]
+              rules = {rule["id"]: rule for rule in target["tool"]["driver"]["rules"]}
+              rules.update({rule["id"]: rule for rule in driver.get("rules", [])})
+              target["tool"]["driver"]["rules"] = list(rules.values())
+              artifacts = {artifact["location"]["uri"]: artifact for artifact in target["artifacts"]}
+              artifacts.update({artifact["location"]["uri"]: artifact for artifact in run.get("artifacts", [])})
+              target["artifacts"] = list(artifacts.values())
+              for result in run.get("results", []):
+                  # Codacy supplies ruleId and uri too; remove indices invalidated by combining arrays.
+                  result.pop("ruleIndex", None)
+                  for location in result.get("locations", []):
+                      location["physicalLocation"]["artifactLocation"].pop("index", None)
+                  target["results"].append(result)
+              target["invocations"].extend(run.get("invocations", []))
+          report["runs"] = list(combined.values())
+          path.write_text(json.dumps(report), encoding="utf-8")
+          print(f"Prepared {len(report['runs'])} analyzer runs with "
+                f"{sum(len(run['results']) for run in report['runs'])} findings.")
+
       # Preserve available findings even when strict mode reports an incomplete scan.
       # The failed analysis step still fails the job.
       - name: Upload SARIF results file
