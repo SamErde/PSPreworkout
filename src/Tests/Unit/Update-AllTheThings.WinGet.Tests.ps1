@@ -19,6 +19,9 @@ BeforeDiscovery {
 }
 
 BeforeAll {
+    # Protect direct Invoke-Pester runs before importing or invoking module commands.
+    $env:PSPREWORKOUT_DISABLE_TELEMETRY = '1'
+
     . (Join-Path -Path $PSScriptRoot -ChildPath '..\Helpers\Update-AllTheThings.TestHelpers.ps1')
 }
 

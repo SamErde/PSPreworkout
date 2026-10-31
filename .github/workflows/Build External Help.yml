@@ -28,6 +28,10 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.workflow_run.head_repository.full_name }}-${{ github.event.workflow_run.head_branch || github.ref }}
   cancel-in-progress: true
 
+# Keep all build, test and documentation sessions out of usage analytics.
+env:
+  PSPREWORKOUT_DISABLE_TELEMETRY: '1'
+
 jobs:
   package_help:
     if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}

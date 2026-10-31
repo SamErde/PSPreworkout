@@ -1,3 +1,8 @@
+BeforeAll {
+    # Also protect direct Invoke-Pester runs of this file, before any module imports.
+    $env:PSPREWORKOUT_DISABLE_TELEMETRY = '1'
+}
+
 <#
 BeforeAll {
     Set-Location -Path $PSScriptRoot
