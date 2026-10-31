@@ -70,8 +70,10 @@ jobs:
           # Analyzer failures still fail the job via fail-if-incomplete.
           max-allowed-issues: 2147483647
 
-      # Upload the SARIF file generated in the previous step
+      # Preserve available findings even when strict mode reports an incomplete scan.
+      # The failed analysis step still fails the job.
       - name: Upload SARIF results file
+        if: ${{ !cancelled() && hashFiles('results.sarif') != '' }}
         uses: github/codeql-action/upload-sarif@24c54180a607b1449ed407dd24f251e4e9147c8d # v4.38.3
         with:
           sarif_file: results.sarif
