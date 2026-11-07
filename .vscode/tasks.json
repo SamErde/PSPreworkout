@@ -21,6 +21,11 @@
 // ${pathSeparator} - character used by the operating system to separate components in file paths
 {
   "version": "2.0.0",
+  "options": {
+    "env": {
+      "PSPREWORKOUT_DISABLE_TELEMETRY": "1"
+    }
+  },
   "windows": {
     "options": {
       "shell": {

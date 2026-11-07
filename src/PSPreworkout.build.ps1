@@ -37,6 +37,10 @@
             AppVeyor  - actions_bootstrap.ps1
 #>
 
+# Disable telemetry for every build task, including Test, DevCC and IntegrationTest.
+# Child PowerShell processes inherit this process-scoped setting.
+$env:PSPREWORKOUT_DISABLE_TELEMETRY = '1'
+
 #Include: Settings
 $ModuleName = [regex]::Match((Get-Item $BuildFile).Name, '^(.*)\.build\.ps1$').Groups[1].Value
 . "./$ModuleName.Settings.ps1"

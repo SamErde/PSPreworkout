@@ -1,4 +1,7 @@
 BeforeAll {
+    # Protect direct Invoke-Pester runs before importing or invoking module commands.
+    $env:PSPREWORKOUT_DISABLE_TELEMETRY = '1'
+
     $NavigationScriptPath = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, '..', '..', '..', '.github', 'cicd-scripts', 'Update-MkDocsNavigation.ps1'))
     # Source the script to get access to its functions
     . $NavigationScriptPath

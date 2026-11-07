@@ -1,4 +1,7 @@
 ﻿BeforeAll {
+    # Protect direct Invoke-Pester runs before importing or invoking module commands.
+    $env:PSPREWORKOUT_DISABLE_TELEMETRY = '1'
+
     # Import the module or function under test
     $ModulePath = Split-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -Parent
     $PublicPath = Join-Path -Path $ModulePath -ChildPath 'PSPreworkout\Public'

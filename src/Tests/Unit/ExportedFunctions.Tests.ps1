@@ -1,4 +1,7 @@
 BeforeAll {
+    # Protect direct Invoke-Pester runs before importing or invoking module commands.
+    $env:PSPREWORKOUT_DISABLE_TELEMETRY = '1'
+
     Set-Location -Path $PSScriptRoot
     $ModuleName = 'PSPreworkout'
     $PathToManifest = [System.IO.Path]::Combine('..', '..', $ModuleName, "$ModuleName.psd1")

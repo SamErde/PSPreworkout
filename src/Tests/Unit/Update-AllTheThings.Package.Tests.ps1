@@ -1,4 +1,7 @@
 BeforeAll {
+    # Protect direct Invoke-Pester runs before importing or invoking module commands.
+    $env:PSPREWORKOUT_DISABLE_TELEMETRY = '1'
+
     $RepositoryRoot = [System.IO.Path]::GetFullPath(
         (Join-Path -Path $PSScriptRoot -ChildPath '..\..\..')
     )

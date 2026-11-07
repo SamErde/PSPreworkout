@@ -10,6 +10,9 @@ files used by the cross-platform GitHub Actions matrix.
 [CmdletBinding()]
 param()
 
+# Keep focused local and CI compatibility runs out of usage analytics.
+$env:PSPREWORKOUT_DISABLE_TELEMETRY = '1'
+
 $PesterVersion = [version]'5.9.1'
 if ($PSVersionTable.PSEdition -eq 'Desktop') {
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
