@@ -65,21 +65,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 > [!NOTE]
 > Thanks to [Jorge Suarez](https://github.com/jorgeasaurus) for contributing this version, which adds improvements to `Update-AllTheThings`! Be sure to check out his featured projects:
-> 
+>
 > ### Intune Hydration Kit
-> 
+>
 > PowerShell module that bootstraps Microsoft Intune tenants with boilerplate configurations. .
-> 
+>
 > ### 📸 Intune-Snapshot-Recovery
-> 
+>
 > Automated backup and restore toolkit for Microsoft Intune tenant configurations using GitHub Actions.
-> 
+>
 > ### 🍎 PsJamfBackupRestore
-> 
+>
 > PowerShell-based solution for backing up and restoring Jamf Pro configurations, ensuring business continuity for macOS management.
-> 
+>
 > ### 💻 MgConsoleGuiGraphSearch
-> 
+>
 > Interactive Microsoft Graph search tool using console GUI for various Microsoft 365 and Azure AD object types.
 
 ## [2.0.0] - 2025-11-26
@@ -98,12 +98,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
   - Data sent to PostHog analytics service to understand usage patterns and guide development priorities.
 
 ### Fixed
+
 - `New-ScriptFromTemplate` - (Thanks to @jdhitsolutions for finding these issues!)
   - Fix 'Author' parameter that was incorrectly referencing $Name variable.
   - Fix examples that referenced non-existent 'Parameter' parameter.
 - `Update-AllTheThings` - SkipChoco alias issue in module manifest.
 
 ### Security and Quality
+
 - `Get-PowerShellPortable` - Refactor to be cleaner, more efficient, and better documented.
 - `Get-CommandHistory` - Refactor for improved command filtering.
 - Codebase readability improvements.

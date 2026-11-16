@@ -429,7 +429,7 @@
         } else {
             # Return the list of modules with updates to the host or the pipeline.
             Write-Host "Found $($ModulesWithUpdates.Count) modules with updates available." -ForegroundColor Yellow
-            $ModulesWithUpdates
+            foreach ($ModuleUpdate in $ModulesWithUpdates) { $ModuleUpdate }
         }
     } # end process block
 }

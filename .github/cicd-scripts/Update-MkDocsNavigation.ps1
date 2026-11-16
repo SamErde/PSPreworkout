@@ -46,6 +46,7 @@ function Get-FunctionCategory {
         - Daily Functions: General utility functions for everyday use
     #>
     [CmdletBinding()]
+    [OutputType([string])]
     param (
         [Parameter(Mandatory)]
         [string]$FunctionName
@@ -92,6 +93,7 @@ function Get-CategorizedFunction {
         AliasesToExport and are not included in FunctionsToExport.
     #>
     [CmdletBinding()]
+    [OutputType([hashtable])]
     param (
         [Parameter(Mandatory)]
         [string]$ManifestPath
