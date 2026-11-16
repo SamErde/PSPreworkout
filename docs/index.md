@@ -1,3 +1,4 @@
+<!-- markdownlint-disable line-length -->
 <!-- markdownlint-disable first-line-heading -->
 <!-- markdownlint-disable blanks-around-headings -->
 <!-- markdownlint-disable no-inline-html -->

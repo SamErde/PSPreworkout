@@ -2,11 +2,13 @@
 
 ## Overview
 
-This document describes the automated solution for keeping the MkDocs navigation synchronized with the PowerShell module's exported functions.
+This document describes the automated solution for keeping the MkDocs navigation synchronized with the
+PowerShell module's exported functions.
 
 ## Problem Statement
 
-Previously, the `nav` section in `mkdocs.yml` had to be manually maintained whenever new functions were added to the module. This led to:
+Previously, the `nav` section in `mkdocs.yml` had to be manually maintained whenever new functions were
+added to the module. This led to:
 
 - Missing functions in documentation navigation
 - Duplicate entries

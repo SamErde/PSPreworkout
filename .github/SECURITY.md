@@ -7,7 +7,8 @@ If you discover a vulnerability in PSPreworkout, please follow the _following pr
 1. Open a generic bug issue advising you have discovered a vulnerability.
    - Avoid sharing specifics or details of the vulnerability in an open GitHub issue.
 2. A repo owner will reach out to you to establish a private form of communication.
-3. We will evaluate the vulnerability and, if necessary, release a fix or mitigating steps to address it. We will contact you to let you know the outcome, and will credit you in the report.
+3. We will evaluate the vulnerability and, if necessary, release a fix or mitigating steps to address it.
+   We will contact you to let you know the outcome, and will credit you in the report.
 
    Please **do not disclose the vulnerability publicly** until a fix is released!
 
