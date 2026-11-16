@@ -1,4 +1,8 @@
 ---
+exclude_paths:
+  - ".github/instructions/github-actions-ci-cd-best-practices.instructions.md"
+  - "src/Draft/Remove-OldModule.ps1"
+  - "src/MarkdownRepair.ps1"
 engines:
   markdownlint:
     exclude_paths:
