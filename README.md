@@ -1,3 +1,7 @@
+<!-- markdownlint-disable line-length -->
+<!-- markdownlint-disable blanks-around-headings -->
+<!-- markdownlint-disable no-inline-html -->
+
 <a name='top'></a><div id='top' />
 # PowerShell Preworkout (PSPreworkout)
 

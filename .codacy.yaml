@@ -1,0 +1,7 @@
+---
+engines:
+  markdownlint:
+    exclude_paths:
+      - ".github/instructions/**"
+      - "docs/[A-Z][a-z]*-*.md"
+      - "docs/PSPreworkout.md"
