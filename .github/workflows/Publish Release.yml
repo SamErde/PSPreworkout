@@ -101,7 +101,7 @@ jobs:
         shell: pwsh
         run: .\src\actions_bootstrap.ps1
 
-      - name: 👷‍♂️ Build Module
+      - name: 👷 Build Module
         # Run every task except Archive so the module is built and tested first.
         shell: pwsh
         run: Invoke-Build -Task Clean, ValidateRequirements, ImportModuleManifest, FormattingCheck, Analyze, Test, CreateHelpStart, Build, IntegrationTest -File .\src\PSPreworkout.build.ps1

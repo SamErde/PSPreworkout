@@ -52,7 +52,7 @@ jobs:
         shell: pwsh
         run: .\src\actions_bootstrap.ps1
 
-      - name: 👷‍♂️ Test and Build
+      - name: 👷 Test and Build
         shell: pwsh
         run: Invoke-Build -File .\src\PSPreworkout.build.ps1
 
